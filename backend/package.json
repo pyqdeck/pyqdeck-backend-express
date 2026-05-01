@@ -1,0 +1,32 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "format": "prettier --write ."
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.33.2",
+  "dependencies": {
+    "@clerk/express": "^2.1.11",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.4.1",
+    "helmet": "^8.1.0",
+    "mailgen": "^2.0.34",
+    "mongoose": "^9.6.1",
+    "morgan": "^1.10.1",
+    "resend": "^6.12.2",
+    "zod": "^4.4.1"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3"
+  }
+}
