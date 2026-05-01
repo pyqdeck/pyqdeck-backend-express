@@ -13,6 +13,7 @@ database.connect().catch((err) => {
 
 const PORT = config.port || 3000;
 const server = app.listen(PORT, () => {
+  logger.info('🚀 System initialized and connected to Better Stack!');
   logger.info(`Server is running on port ${PORT} in ${config.nodeEnv} mode`);
   logger.info(
     `API Documentation available at http://localhost:${PORT}/api-docs`

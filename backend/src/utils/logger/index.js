@@ -47,12 +47,12 @@ class LoggerService {
           format: combine(timestamp(), errors({ stack: true }), json()),
         })
       );
+    }
 
-      // 3. Better Stack (Logtail) Transport (If token provided)
-      if (process.env.LOGTAIL_SOURCE_TOKEN) {
-        const logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN);
-        transports.push(new LogtailTransport(logtail));
-      }
+    // 3. Better Stack (Logtail) Transport (Always enabled if token provided)
+    if (process.env.LOGTAIL_SOURCE_TOKEN) {
+      const logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN);
+      transports.push(new LogtailTransport(logtail));
     }
 
     this.#logger = winston.createLogger({
