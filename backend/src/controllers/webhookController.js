@@ -1,6 +1,6 @@
 import { Webhook } from 'svix';
 import config from '../config/index.js';
-import * as userService from '../services/userService.js';
+import userService from '../services/userService.js';
 import { loggerService } from '../utils/index.js';
 
 const logger = loggerService.getLogger();
