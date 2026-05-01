@@ -84,7 +84,6 @@ const tagSchema = new mongoose.Schema(
   }
 );
 
-tagSchema.index({ slug: 1 });
 tagSchema.index({ redirectSlugs: 1 });
 tagSchema.index({ usageCount: -1 });
 
