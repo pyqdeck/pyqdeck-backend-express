@@ -25,13 +25,20 @@ export async function syncUser(req, res, next) {
         primaryEmail ||
         'Unknown';
 
-      user = await userRepository.create({ clerkId: userId, name, email: primaryEmail });
+      user = await userRepository.create({
+        clerkId: userId,
+        name,
+        email: primaryEmail,
+      });
       logger.info('User provisioned on-demand', { clerkId: userId });
     }
 
     req.dbUser = user;
   } catch (err) {
-    logger.error('Failed to sync user', { clerkId: userId, error: err.message });
+    logger.error('Failed to sync user', {
+      clerkId: userId,
+      error: err.message,
+    });
   }
 
   next();

@@ -1,6 +1,45 @@
 import mongoose from 'mongoose';
 import { z } from 'zod';
 
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - clerkId
+ *         - name
+ *         - email
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The auto-generated id of the user
+ *         clerkId:
+ *           type: string
+ *           description: The unique ID from Clerk authentication
+ *         name:
+ *           type: string
+ *           description: The name of the user
+ *         email:
+ *           type: string
+ *           format: email
+ *           description: The email of the user
+ *         role:
+ *           type: string
+ *           enum: [normal, admin]
+ *           default: normal
+ *           description: The role of the user
+ *         isActive:
+ *           type: boolean
+ *           default: true
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ */
 export const UserRole = z.enum(['normal', 'admin']);
 
 const userSchema = new mongoose.Schema(

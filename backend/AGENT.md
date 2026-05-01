@@ -17,20 +17,20 @@ No test framework is configured yet.
 
 Create a `.env` file. Required keys:
 
-| Variable | Default | Notes |
-|---|---|---|
-| `PORT` | `3000` | |
-| `NODE_ENV` | `development` | |
-| `MONGODB_URI` | `mongodb://localhost:27017/backend` | |
-| `CLERK_PUBLISHABLE_KEY` | — | Required for auth |
-| `CLERK_SECRET_KEY` | — | Required for auth |
-| `RESEND_API_KEY` | — | Optional; email silently skipped if absent |
-| `MAIL_FROM` | `noreply@example.com` | |
-| `APP_NAME` | `Backend API` | Used in emails |
-| `APP_URL` | `http://localhost:3000` | |
-| `RATE_LIMIT_WINDOW_MS` | `900000` | 15 min |
-| `RATE_LIMIT_MAX` | `100` | |
-| `DEBUG` | `false` | Enables debug logging |
+| Variable                | Default                             | Notes                                      |
+| ----------------------- | ----------------------------------- | ------------------------------------------ |
+| `PORT`                  | `3000`                              |                                            |
+| `NODE_ENV`              | `development`                       |                                            |
+| `MONGODB_URI`           | `mongodb://localhost:27017/backend` |                                            |
+| `CLERK_PUBLISHABLE_KEY` | —                                   | Required for auth                          |
+| `CLERK_SECRET_KEY`      | —                                   | Required for auth                          |
+| `RESEND_API_KEY`        | —                                   | Optional; email silently skipped if absent |
+| `MAIL_FROM`             | `noreply@example.com`               |                                            |
+| `APP_NAME`              | `Backend API`                       | Used in emails                             |
+| `APP_URL`               | `http://localhost:3000`             |                                            |
+| `RATE_LIMIT_WINDOW_MS`  | `900000`                            | 15 min                                     |
+| `RATE_LIMIT_MAX`        | `100`                               |                                            |
+| `DEBUG`                 | `false`                             | Enables debug logging                      |
 
 ## Architecture
 
