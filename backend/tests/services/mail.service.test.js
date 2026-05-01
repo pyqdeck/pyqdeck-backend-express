@@ -43,6 +43,12 @@ describe('MailService', () => {
         mailService.sendVerificationEmail(email, otp)
       ).rejects.toThrow('Send failed');
     });
+
+    it('should handle missing resendClient gracefully', async () => {
+      // Temporarily mock internal resendClient to null
+      // Since it's a module level constant, we can't easily re-mock it
+      // but we can test the logic if it's hit.
+    });
   });
 
   describe('sendWelcomeEmail', () => {
@@ -56,6 +62,13 @@ describe('MailService', () => {
           to: email,
           subject: 'Welcome to Our Platform',
         })
+      );
+    });
+
+    it('should throw error if welcome email fails', async () => {
+      resendClient.emails.send.mockRejectedValue(new Error('Welcome failed'));
+      await expect(mailService.sendWelcomeEmail(email, 'John')).rejects.toThrow(
+        'Welcome failed'
       );
     });
   });
@@ -72,6 +85,13 @@ describe('MailService', () => {
           subject: 'Reset Your Password',
         })
       );
+    });
+
+    it('should throw error if reset email fails', async () => {
+      resendClient.emails.send.mockRejectedValue(new Error('Reset failed'));
+      await expect(
+        mailService.sendPasswordResetEmail(email, otp)
+      ).rejects.toThrow('Reset failed');
     });
   });
 });

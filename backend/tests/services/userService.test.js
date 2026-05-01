@@ -91,5 +91,19 @@ describe('UserService', () => {
         userService.handleUserDeleted({ id: 'clerk_123' })
       ).resolves.not.toThrow();
     });
+
+    it('should re-throw other errors in handleUserDeleted', async () => {
+      userRepository.update.mockRejectedValue(new Error('Other error'));
+      await expect(
+        userService.handleUserDeleted({ id: 'clerk_123' })
+      ).rejects.toThrow('Other error');
+    });
+
+    it('should re-throw other errors in handleUserUpdated', async () => {
+      userRepository.update.mockRejectedValue(new Error('Other update error'));
+      await expect(userService.handleUserUpdated(clerkData)).rejects.toThrow(
+        'Other update error'
+      );
+    });
   });
 });
