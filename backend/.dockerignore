@@ -1,0 +1,8 @@
+node_modules
+pnpm-debug.log
+coverage
+test-report.junit.xml
+.env
+.git
+.github
+*.md

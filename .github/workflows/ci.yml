@@ -95,3 +95,22 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           report_type: test_results
           directory: ./backend/
+
+  docker-build:
+    name: Docker Build Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          push: false
+          tags: pyqdeck-backend:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
