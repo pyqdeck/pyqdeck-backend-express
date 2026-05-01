@@ -27,3 +27,7 @@ cd backend
 pnpm test
 pnpm test:coverage
 ```
+
+## Coverage Visualization
+
+![Codecov Sunburst](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express/graphs/sunburst.svg?token=3RQZRCU6QZ)
