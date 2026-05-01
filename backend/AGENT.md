@@ -48,8 +48,26 @@ Request → Middleware → Route → Controller → Service → Repository → M
 - `src/services/` — Business logic; `healthService.js`, `mail.service.js`, `rateLimiter.service.js`
 - `src/controllers/` — HTTP handlers; call services, use formatters, throw typed errors
 - `src/routes/` — Route mounting; currently only `health.js` (`GET /api/v1/health`, `GET /api/v1/health/detailed`)
-- `src/middlewares/` — `errorHandler.js` (global), `rateLimiter.middleware.js`, `validationMiddleware.js`
-- `src/utils/` — `logger/` (ConsoleLogger), `errors/` (BaseError + subclasses), `formatters/` (successFormatter/errorFormatter), `validators/` (Zod helpers), `constants.js` (rate limits, roles)
+- `src/middlewares/` — `errorHandler.js` (global), `rateLimiter.middleware.js`, `validationMiddleware.js`, `pagination.middleware.js` (attaches `req.pagination = { page, limit, skip }`)
+- `src/utils/` — `logger/` (ConsoleLogger), `errors/` (BaseError + subclasses), `formatters/` (successFormatter/errorFormatter), `validators/` (Zod helpers), `pagination/` (parsePagination, paginate, paginationSchema), `constants.js` (rate limits, roles)
+
+**Pagination:**
+
+Use `paginate()` middleware + `paginate()` utility together. The middleware parses `?page=` and `?limit=` query params (defaults: `page=1`, `limit=20`, max `limit=100`) and attaches `req.pagination` to the request. The utility runs `.find().skip().limit()` and `.countDocuments()` in parallel and returns `{ items, total, page, limit }`. Pass that directly to `successFormatter.formatList()`.
+
+```js
+import { paginate as paginateMiddleware } from '../middlewares/pagination.middleware.js';
+import { paginate, successFormatter } from '../utils/index.js';
+
+router.get('/things', paginateMiddleware(), async (req, res, next) => {
+  try {
+    const { items, total, page, limit } = await paginate(Thing, filter, req.pagination);
+    res.json(successFormatter.formatList(items, total, page, limit));
+  } catch (err) {
+    next(err);
+  }
+});
+```
 
 **Key design decisions:**
 
