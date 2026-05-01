@@ -7,6 +7,7 @@ import config from './config/index.js';
 import database from './config/database.js';
 import { loggerService } from './utils/index.js';
 import healthRoutes from './routes/health.js';
+import webhookRoutes from './routes/webhook.js';
 import errorHandler from './middlewares/errorHandler.js';
 
 const logger = loggerService.getLogger();
@@ -18,6 +19,9 @@ app.use(cors());
 
 // Logging
 app.use(morgan('dev'));
+
+// Webhook routes (must be before express.json() — svix needs the raw body)
+app.use('/api/v1/webhooks', webhookRoutes);
 
 // Parsing
 app.use(express.json());

@@ -7,6 +7,7 @@ const config = {
   clerk: {
     publishableKey: process.env.CLERK_PUBLISHABLE_KEY,
     secretKey: process.env.CLERK_SECRET_KEY,
+    webhookSecret: process.env.CLERK_WEBHOOK_SECRET,
   },
   mail: {
     apiKey: process.env.RESEND_API_KEY || '',
