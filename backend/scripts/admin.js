@@ -2,6 +2,7 @@ import { Command } from 'commander';
 import chalk from 'chalk';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import ora from 'ora';
 import enquirer from 'enquirer';
@@ -74,6 +75,7 @@ async function mainMenu() {
       { name: 'seed', message: '🌱 Seed Initial Data' },
       { name: 'clean', message: chalk.red('☢️  Clean Database (Wipe All)') },
       { name: 'env', message: '🔑 Check Environment' },
+      { name: 'logs', message: '📋 View System Logs' },
       { name: 'exit', message: '❌ Exit' },
     ],
   });
@@ -95,6 +97,9 @@ async function mainMenu() {
       break;
     case 'env':
       checkEnv();
+      break;
+    case 'logs':
+      await manageLogs();
       break;
     case 'exit':
       console.log(chalk.gray('Goodbye!'));
@@ -354,8 +359,84 @@ function checkEnv() {
 /**
  * CLI Arguments Support (Legacy/CI)
  */
+async function manageLogs() {
+  const logDir = path.join(__dirname, '../logs');
+
+  if (!fs.existsSync(logDir)) {
+    console.log(
+      chalk.yellow('\nNo logs directory found yet. Start the app first!')
+    );
+    return;
+  }
+
+  const files = fs
+    .readdirSync(logDir)
+    .filter((f) => f.endsWith('.log'))
+    .sort()
+    .reverse();
+
+  if (files.length === 0) {
+    console.log(chalk.yellow('\nNo log files found in logs/ directory.'));
+    return;
+  }
+
+  const { file } = await new AutoComplete({
+    name: 'file',
+    message: 'Select a log file to view:',
+    choices: files,
+  }).run();
+
+  const { action } = await new Select({
+    name: 'action',
+    message: `Actions for ${file}:`,
+    choices: [
+      { name: 'view', message: '📄 View last 50 lines' },
+      { name: 'tail', message: '🕒 Tail (Real-time stream)' },
+      { name: 'back', message: '⬅️ Back' },
+    ],
+  }).run();
+
+  const filePath = path.join(logDir, file);
+
+  if (action === 'view') {
+    const content = fs.readFileSync(filePath, 'utf8').split('\n');
+    const lastLines = content.slice(-50).join('\n');
+    console.log(chalk.gray('\n--- Last 50 Lines ---'));
+    console.log(lastLines);
+    console.log(chalk.gray('--- End of File ---\n'));
+  } else if (action === 'tail') {
+    console.log(chalk.cyan(`\n👀 Tailing ${file}. Press Ctrl+C to stop...\n`));
+
+    // Show last 10 lines first
+    const content = fs.readFileSync(filePath, 'utf8').split('\n');
+    console.log(content.slice(-10).join('\n'));
+
+    let lastSize = fs.statSync(filePath).size;
+
+    fs.watch(filePath, (event) => {
+      if (event === 'change') {
+        const currSize = fs.statSync(filePath).size;
+        if (currSize > lastSize) {
+          const buffer = Buffer.alloc(currSize - lastSize);
+          const fd = fs.openSync(filePath, 'r');
+          fs.readSync(fd, buffer, 0, currSize - lastSize, lastSize);
+          fs.closeSync(fd);
+          process.stdout.write(buffer.toString());
+          lastSize = currSize;
+        }
+      }
+    });
+
+    // Keep process alive for watch
+    await new Promise(() => {});
+  }
+}
+
+/**
+ * CLI Arguments Support (Legacy/CI)
+ */
 const userCmd = program.command('user').description('Manage users');
-userCmd.command('list').action(() => showStats()); // Reusing stats for quick list
+userCmd.command('list').action(() => showStats());
 
 program
   .command('interactive')

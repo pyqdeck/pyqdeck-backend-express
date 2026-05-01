@@ -2,3 +2,4 @@ node_modules
 .env
 coverage
 test-report.junit.xml
+logs

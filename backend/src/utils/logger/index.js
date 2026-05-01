@@ -31,11 +31,8 @@ class LoggerService {
       }),
     ];
 
-    // 2. File Transport (Production/Staging only)
-    if (
-      process.env.NODE_ENV !== 'development' &&
-      process.env.NODE_ENV !== 'test'
-    ) {
+    // 2. File Transport (Production/Staging/Development only)
+    if (process.env.NODE_ENV !== 'test') {
       transports.push(
         new DailyRotateFile({
           filename: 'logs/application-%DATE%.log',
