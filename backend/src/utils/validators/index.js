@@ -1,6 +1,6 @@
 import { ValidationError } from '../errors/index.js';
 
-export function validateSchema(schema, data, options = {}) {
+export function validateSchema(schema, data, _options = {}) {
   const result = schema.safeParse(data);
 
   if (!result.success) {
@@ -18,7 +18,7 @@ export function validateSchema(schema, data, options = {}) {
   return result.data;
 }
 
-export function safeValidateSchema(schema, data, options = {}) {
+export function safeValidateSchema(schema, data, _options = {}) {
   const result = schema.safeParse(data);
 
   if (!result.success) {
@@ -39,6 +39,6 @@ export function safeValidateSchema(schema, data, options = {}) {
   };
 }
 
-export function createValidator(schema, options = {}) {
-  return (data) => validateSchema(schema, data, options);
+export function createValidator(schema, _options = {}) {
+  return (data) => validateSchema(schema, data);
 }

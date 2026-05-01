@@ -2,8 +2,6 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import request from 'supertest';
 import express from 'express';
 import * as webhookController from '../../src/controllers/webhookController.js';
-import { userService } from '../../src/services/userService.js';
-import { Webhook } from 'svix';
 import { rateLimiter } from '../../src/middlewares/rateLimiter.middleware.js';
 
 const { mockVerify, mockUserService } = vi.hoisted(() => ({

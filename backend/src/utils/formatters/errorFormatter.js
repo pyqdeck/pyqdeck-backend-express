@@ -1,5 +1,5 @@
 const errorFormatter = {
-  formatError(error, statusCode = 500) {
+  formatError(error, _statusCode = 500) {
     const isOperational = error instanceof Error && error.statusCode;
 
     if (isOperational) {

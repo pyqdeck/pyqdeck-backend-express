@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import mongoose from 'mongoose';
 import { healthRepository } from '../../src/repositories/healthRepository.js';
 
 describe('HealthRepository', () => {

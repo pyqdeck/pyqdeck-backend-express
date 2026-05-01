@@ -1,8 +1,5 @@
 import { rateLimiterService } from '../services/rateLimiter.service.js';
 import { RATE_LIMITS } from '../utils/constants.js';
-import { loggerService } from '../utils/index.js';
-
-const logger = loggerService.getLogger();
 
 export function rateLimiter(presetName, options) {
   const { windowMs, max } =

@@ -1,5 +1,3 @@
-import config from '../config/index.js';
-
 class InMemoryRateLimitStore {
   #store = new Map();
 

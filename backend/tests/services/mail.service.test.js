@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import * as mailService from '../../src/services/mail.service.js';
-import { resendClient, mailGenerator } from '../../src/config/mail.config.js';
+import { resendClient } from '../../src/config/mail.config.js';
 
 vi.mock('../../src/config/mail.config.js', () => ({
   resendClient: {

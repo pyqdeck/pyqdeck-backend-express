@@ -8,8 +8,11 @@ export default defineConfig({
     include: ['tests/**/*.test.js'],
     hookTimeout: 120000,
     testTimeout: 120000,
-    forksOptions: {
-      singleFork: true,
+    pool: 'forks',
+    poolOptions: {
+      forks: {
+        singleFork: true,
+      },
     },
     reporters: ['default', 'junit'],
     outputFile: 'test-report.junit.xml',

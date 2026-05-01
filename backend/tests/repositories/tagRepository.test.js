@@ -1,5 +1,4 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import mongoose from 'mongoose';
 import { tagRepository } from '../../src/repositories/tagRepository.js';
 import { Tag } from '../../src/models/Tag.js';
 import { NotFoundError, ConflictError } from '../../src/utils/errors/index.js';
