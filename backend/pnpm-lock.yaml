@@ -11,6 +11,9 @@ importers:
       '@clerk/express':
         specifier: ^2.1.11
         version: 2.1.11(express@5.2.1)
+      '@logtail/node':
+        specifier: ^0.5.8
+        version: 0.5.8
       '@logtail/winston':
         specifier: ^0.5.8
         version: 0.5.8(winston@3.19.0)
