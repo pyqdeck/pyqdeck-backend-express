@@ -4,6 +4,7 @@ import express from 'express';
 import * as webhookController from '../../src/controllers/webhookController.js';
 import { userService } from '../../src/services/userService.js';
 import { Webhook } from 'svix';
+import { rateLimiter } from '../../src/middlewares/rateLimiter.middleware.js';
 
 const { mockVerify, mockUserService } = vi.hoisted(() => ({
   mockVerify: vi.fn(),
@@ -27,6 +28,11 @@ vi.mock('../../src/services/userService.js', () => ({
   default: mockUserService,
 }));
 
+vi.mock('../../src/middlewares/rateLimiter.middleware.js', () => ({
+  rateLimiter: vi.fn(() => (req, res, next) => next()),
+  default: vi.fn(() => (req, res, next) => next()),
+}));
+
 describe('WebhookController', () => {
   let app;
 
@@ -35,6 +41,7 @@ describe('WebhookController', () => {
     app = express();
     app.post(
       '/webhook',
+      rateLimiter('WEBHOOK'),
       express.raw({ type: 'application/json' }),
       webhookController.handleClerkWebhook
     );

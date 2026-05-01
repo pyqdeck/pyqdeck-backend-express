@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import express from 'express';
 import * as webhookController from '../controllers/webhookController.js';
+import { rateLimiter } from '../middlewares/rateLimiter.middleware.js';
 
 const router = Router();
 
@@ -51,6 +52,7 @@ const router = Router();
  */
 router.post(
   '/clerk',
+  rateLimiter('WEBHOOK'),
   express.raw({ type: 'application/json' }),
   webhookController.handleClerkWebhook
 );
