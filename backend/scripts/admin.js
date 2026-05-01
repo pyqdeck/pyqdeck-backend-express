@@ -72,6 +72,7 @@ async function mainMenu() {
     choices: [
       { name: 'users', message: '👤 Manage Users' },
       { name: 'stats', message: '📊 View Statistics' },
+      { name: 'insights', message: '🔬 Aggregation Insights' },
       { name: 'seed', message: '🌱 Seed Initial Data' },
       { name: 'clean', message: chalk.red('☢️  Clean Database (Wipe All)') },
       { name: 'env', message: '🔑 Check Environment' },
@@ -88,6 +89,9 @@ async function mainMenu() {
       break;
     case 'stats':
       await showStats();
+      break;
+    case 'insights':
+      await showInsights();
       break;
     case 'seed':
       await seedData();
@@ -357,7 +361,144 @@ function checkEnv() {
 }
 
 /**
- * CLI Arguments Support (Legacy/CI)
+ * Aggregation-powered Insights
+ */
+async function showInsights() {
+  const insightPrompt = new Select({
+    name: 'report',
+    message: 'Which report would you like to see?',
+    choices: [
+      { name: 'roles', message: '👥 Users by Role' },
+      { name: 'papers_by_year', message: '📅 Papers by Year' },
+      { name: 'unsolved', message: '❓ Unsolved Questions' },
+      { name: 'top_bookmarked', message: '⭐ Top Bookmarked Papers' },
+      { name: 'back', message: '⬅️  Back' },
+    ],
+  });
+
+  const report = await insightPrompt.run();
+  if (report === 'back') return;
+
+  await withDb(async (spinner) => {
+    spinner.start('Running aggregation...');
+
+    if (report === 'roles') {
+      // --- Report 1: Count users grouped by role ---
+      const results = await User.aggregate([
+        { $group: { _id: '$role', count: { $sum: 1 } } },
+        { $sort: { count: -1 } },
+      ]);
+      spinner.stop();
+
+      const table = new Table({
+        head: [chalk.cyan('Role'), chalk.cyan('User Count')],
+        colWidths: [15, 15],
+      });
+      results.forEach((r) => {
+        const roleColor =
+          r._id === 'admin'
+            ? chalk.red
+            : r._id === 'editor'
+              ? chalk.magenta
+              : chalk.white;
+        table.push([roleColor(r._id), r.count]);
+      });
+      console.log(chalk.bold('\n👥 Users by Role'));
+      console.log(table.toString());
+    } else if (report === 'papers_by_year') {
+      // --- Report 2: Count papers grouped by exam year ---
+      const results = await Paper.aggregate([
+        { $group: { _id: '$examYear', count: { $sum: 1 } } },
+        { $sort: { _id: -1 } },
+        { $limit: 10 },
+      ]);
+      spinner.stop();
+
+      const table = new Table({
+        head: [chalk.cyan('Year'), chalk.cyan('Papers')],
+        colWidths: [10, 10],
+      });
+      results.forEach((r) => table.push([r._id ?? 'N/A', r.count]));
+      console.log(chalk.bold('\n📅 Papers by Exam Year (Top 10)'));
+      console.log(table.toString());
+    } else if (report === 'unsolved') {
+      // --- Report 3: Questions that have no Solution ---
+      const results = await Question.aggregate([
+        {
+          $lookup: {
+            from: 'solutions',
+            localField: '_id',
+            foreignField: 'questionId',
+            as: 'solutions',
+          },
+        },
+        { $match: { solutions: { $size: 0 } } },
+        { $count: 'unsolved' },
+      ]);
+      spinner.stop();
+
+      const count = results[0]?.unsolved ?? 0;
+      const total = await Question.countDocuments();
+      const pct = total > 0 ? ((count / total) * 100).toFixed(1) : 0;
+
+      const table = new Table({
+        head: [chalk.cyan('Metric'), chalk.cyan('Value')],
+        colWidths: [25, 15],
+      });
+      table.push(
+        ['Total Questions', total],
+        ['Without Solution', chalk.red(count)],
+        ['Coverage', chalk.green(`${100 - pct}%`)]
+      );
+      console.log(chalk.bold('\n❓ Question Solution Coverage'));
+      console.log(table.toString());
+    } else if (report === 'top_bookmarked') {
+      // --- Report 4: Papers sorted by how many times they are bookmarked ---
+      const results = await Bookmark.aggregate([
+        { $match: { resourceType: 'Paper' } },
+        { $group: { _id: '$resourceId', bookmarks: { $sum: 1 } } },
+        { $sort: { bookmarks: -1 } },
+        { $limit: 5 },
+        {
+          $lookup: {
+            from: 'papers',
+            localField: '_id',
+            foreignField: '_id',
+            as: 'paper',
+          },
+        },
+        { $unwind: '$paper' },
+        {
+          $project: {
+            title: '$paper.title',
+            year: '$paper.examYear',
+            bookmarks: 1,
+          },
+        },
+      ]);
+      spinner.stop();
+
+      const table = new Table({
+        head: [chalk.cyan('Paper'), chalk.cyan('Year'), chalk.cyan('⭐')],
+        colWidths: [40, 8, 8],
+      });
+
+      if (results.length === 0) {
+        console.log(chalk.yellow('\nNo bookmarks found yet.'));
+      } else {
+        results.forEach((r) =>
+          table.push([r.title ?? 'Unknown', r.year ?? '—', r.bookmarks])
+        );
+        console.log(chalk.bold('\n⭐ Top 5 Bookmarked Papers'));
+        console.log(table.toString());
+      }
+    }
+    console.log();
+  });
+}
+
+/**
+ * Log Viewer
  */
 async function manageLogs() {
   const logDir = path.join(__dirname, '../logs');
