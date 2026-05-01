@@ -11,6 +11,8 @@ export default defineConfig({
     forksOptions: {
       singleFork: true,
     },
+    reporters: ['default', 'junit'],
+    outputFile: 'test-report.junit.xml',
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json-summary', 'json', 'html', 'lcov'],
