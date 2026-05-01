@@ -39,13 +39,19 @@ class PaperRepository {
   }
 
   async updateStatus(id, status) {
-    const paper = await Paper.findByIdAndUpdate(id, { status }, { new: true });
+    const paper = await Paper.findByIdAndUpdate(
+      id,
+      { status },
+      { returnDocument: 'after' }
+    );
     if (!paper) throw new NotFoundError('Paper not found');
     return paper;
   }
 
   async update(id, data) {
-    const paper = await Paper.findByIdAndUpdate(id, data, { new: true });
+    const paper = await Paper.findByIdAndUpdate(id, data, {
+      returnDocument: 'after',
+    });
     if (!paper) throw new NotFoundError('Paper not found');
     return paper;
   }

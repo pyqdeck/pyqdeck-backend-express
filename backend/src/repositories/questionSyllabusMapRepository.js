@@ -46,7 +46,7 @@ class QuestionSyllabusMapRepository {
 
   async update(id, data) {
     const mapping = await QuestionSyllabusMap.findByIdAndUpdate(id, data, {
-      new: true,
+      returnDocument: 'after',
     });
     if (!mapping)
       throw new NotFoundError('Question-syllabus mapping not found');

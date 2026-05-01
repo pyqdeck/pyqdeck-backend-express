@@ -36,7 +36,7 @@ class UniversityRepository {
 
   async update(id, data) {
     const university = await University.findByIdAndUpdate(id, data, {
-      new: true,
+      returnDocument: 'after',
     });
     if (!university) throw new NotFoundError('University not found');
     return university;

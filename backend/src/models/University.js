@@ -100,7 +100,6 @@ const universitySchema = new mongoose.Schema(
 );
 
 universitySchema.index({ isActive: 1 });
-universitySchema.index({ slug: 1 });
 universitySchema.index({ redirectSlugs: 1 });
 
 export const University = mongoose.model('University', universitySchema);

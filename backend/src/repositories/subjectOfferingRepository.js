@@ -50,7 +50,7 @@ class SubjectOfferingRepository {
 
   async update(id, data) {
     const offering = await SubjectOffering.findByIdAndUpdate(id, data, {
-      new: true,
+      returnDocument: 'after',
     });
     if (!offering) throw new NotFoundError('Subject offering not found');
     return offering;

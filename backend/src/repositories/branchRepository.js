@@ -38,7 +38,9 @@ class BranchRepository {
   }
 
   async update(id, data) {
-    const branch = await Branch.findByIdAndUpdate(id, data, { new: true });
+    const branch = await Branch.findByIdAndUpdate(id, data, {
+      returnDocument: 'after',
+    });
     if (!branch) throw new NotFoundError('Branch not found');
     return branch;
   }

@@ -42,7 +42,7 @@ class QuestionPaperMapRepository {
 
   async update(id, data) {
     const mapping = await QuestionPaperMap.findByIdAndUpdate(id, data, {
-      new: true,
+      returnDocument: 'after',
     });
     if (!mapping) throw new NotFoundError('Question-paper mapping not found');
     return mapping;

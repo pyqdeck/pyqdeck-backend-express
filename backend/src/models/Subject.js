@@ -104,7 +104,6 @@ const subjectSchema = new mongoose.Schema(
 );
 
 subjectSchema.index({ isActive: 1 });
-subjectSchema.index({ subjectCode: 1 });
 subjectSchema.index({ redirectSlugs: 1 });
 
 export const Subject = mongoose.model('Subject', subjectSchema);

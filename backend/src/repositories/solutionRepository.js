@@ -30,7 +30,7 @@ class SolutionRepository {
     const solution = await Solution.findByIdAndUpdate(
       id,
       { $inc: { [field]: 1 } },
-      { new: true }
+      { returnDocument: 'after' }
     );
     if (!solution) throw new NotFoundError('Solution not found');
     return solution;
@@ -40,14 +40,16 @@ class SolutionRepository {
     const solution = await Solution.findByIdAndUpdate(
       id,
       { status },
-      { new: true }
+      { returnDocument: 'after' }
     );
     if (!solution) throw new NotFoundError('Solution not found');
     return solution;
   }
 
   async update(id, data) {
-    const solution = await Solution.findByIdAndUpdate(id, data, { new: true });
+    const solution = await Solution.findByIdAndUpdate(id, data, {
+      returnDocument: 'after',
+    });
     if (!solution) throw new NotFoundError('Solution not found');
     return solution;
   }

@@ -40,7 +40,9 @@ class SemesterRepository {
   }
 
   async update(id, data) {
-    const semester = await Semester.findByIdAndUpdate(id, data, { new: true });
+    const semester = await Semester.findByIdAndUpdate(id, data, {
+      returnDocument: 'after',
+    });
     if (!semester) throw new NotFoundError('Semester not found');
     return semester;
   }

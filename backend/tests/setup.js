@@ -8,6 +8,9 @@ beforeAll(async () => {
   mongod = await MongoMemoryServer.create();
   const uri = mongod.getUri();
   await mongoose.connect(uri);
+  // Ensure indexes are created for all registered models
+  const models = mongoose.modelNames();
+  await Promise.all(models.map((name) => mongoose.model(name).syncIndexes()));
 });
 
 afterAll(async () => {

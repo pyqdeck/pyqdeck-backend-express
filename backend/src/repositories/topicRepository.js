@@ -38,7 +38,9 @@ class TopicRepository {
   }
 
   async update(id, data) {
-    const topic = await Topic.findByIdAndUpdate(id, data, { new: true });
+    const topic = await Topic.findByIdAndUpdate(id, data, {
+      returnDocument: 'after',
+    });
     if (!topic) throw new NotFoundError('Topic not found');
     return topic;
   }

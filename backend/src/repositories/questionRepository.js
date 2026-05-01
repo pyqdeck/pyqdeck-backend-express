@@ -41,7 +41,9 @@ class QuestionRepository {
   }
 
   async update(id, data) {
-    const question = await Question.findByIdAndUpdate(id, data, { new: true });
+    const question = await Question.findByIdAndUpdate(id, data, {
+      returnDocument: 'after',
+    });
     if (!question) throw new NotFoundError('Question not found');
     return question;
   }

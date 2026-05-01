@@ -43,7 +43,7 @@ class UserRepository {
 
   async update(clerkId, updateData) {
     const user = await User.findOneAndUpdate({ clerkId }, updateData, {
-      new: true,
+      returnDocument: 'after',
     });
     if (!user) {
       throw new NotFoundError('User not found');

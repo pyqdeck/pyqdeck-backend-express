@@ -37,7 +37,9 @@ class SubjectRepository {
   }
 
   async update(id, data) {
-    const subject = await Subject.findByIdAndUpdate(id, data, { new: true });
+    const subject = await Subject.findByIdAndUpdate(id, data, {
+      returnDocument: 'after',
+    });
     if (!subject) throw new NotFoundError('Subject not found');
     return subject;
   }

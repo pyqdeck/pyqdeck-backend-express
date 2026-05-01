@@ -42,7 +42,7 @@ class TagRepository {
     const tag = await Tag.findByIdAndUpdate(
       id,
       { $inc: { usageCount: 1 } },
-      { new: true }
+      { returnDocument: 'after' }
     );
     if (!tag) throw new NotFoundError('Tag not found');
     return tag;
@@ -52,14 +52,16 @@ class TagRepository {
     const tag = await Tag.findByIdAndUpdate(
       id,
       { $inc: { usageCount: -1 } },
-      { new: true }
+      { returnDocument: 'after' }
     );
     if (!tag) throw new NotFoundError('Tag not found');
     return tag;
   }
 
   async update(id, data) {
-    const tag = await Tag.findByIdAndUpdate(id, data, { new: true });
+    const tag = await Tag.findByIdAndUpdate(id, data, {
+      returnDocument: 'after',
+    });
     if (!tag) throw new NotFoundError('Tag not found');
     return tag;
   }

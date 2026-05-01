@@ -40,7 +40,9 @@ class ModuleRepository {
   }
 
   async update(id, data) {
-    const module = await Module.findByIdAndUpdate(id, data, { new: true });
+    const module = await Module.findByIdAndUpdate(id, data, {
+      returnDocument: 'after',
+    });
     if (!module) throw new NotFoundError('Module not found');
     return module;
   }

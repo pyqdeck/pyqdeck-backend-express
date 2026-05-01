@@ -30,7 +30,9 @@ class SyllabusRepository {
   }
 
   async update(id, data) {
-    const syllabus = await Syllabus.findByIdAndUpdate(id, data, { new: true });
+    const syllabus = await Syllabus.findByIdAndUpdate(id, data, {
+      returnDocument: 'after',
+    });
     if (!syllabus) throw new NotFoundError('Syllabus not found');
     return syllabus;
   }
