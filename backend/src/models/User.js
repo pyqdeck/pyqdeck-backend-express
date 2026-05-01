@@ -52,8 +52,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.index({ email: 1 });
-userSchema.index({ clerkId: 1 });
 userSchema.index({ isActive: 1 });
 
 export const User = mongoose.model('User', userSchema);
