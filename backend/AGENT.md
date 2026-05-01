@@ -9,9 +9,17 @@ pnpm install          # install dependencies
 pnpm dev              # development server with hot reload (node --watch)
 pnpm start            # production server
 pnpm format           # format with Prettier
+pnpm test             # run tests once
+pnpm test:coverage    # run tests with coverage
+pnpm test:watch       # run tests in watch mode
 ```
 
-No test framework is configured yet.
+## Testing & CI/CD
+
+- **Framework**: Vitest (configured in `vitest.config.js`)
+- **Coverage**: V8 (configured to output HTML, LCOV, and JUnit reports)
+- **CI/CD**: GitHub Actions (`.github/workflows/ci.yml`)
+- **Analytics**: Codecov (integrated for coverage tracking and test analytics)
 
 ## Environment Variables
 
