@@ -1,33 +1,40 @@
 # PYQDeck Backend
 
-[![codecov](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express/graph/badge.svg?token=3RQZRCU6QZ)](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express)
-[![CI Pipeline](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/ci.yml)
+![Status](https://img.shields.io/badge/Status-Live-brightgreen?style=for-the-badge&logo=statuspage)
+[![codecov](https://img.shields.io/codecov/c/github/pyqdeck/pyqdeck-backend-express?style=for-the-badge&token=3RQZRCU6QZ)](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express)
+[![CI Pipeline](https://img.shields.io/github/actions/workflow/status/pyqdeck/pyqdeck-backend-express/ci.yml?branch=main&style=for-the-badge&logo=github-actions)](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/ci.yml)
 
-Express backend for the PYQDeck application. This project uses:
-- Express.js
-- MongoDB & Mongoose
-- Clerk for Authentication
-- Resend for Emails
-- Svix for Webhooks
-- Zod for Validation
-- Vitest for Testing
+Express backend for the PYQDeck application.
 
-## Getting Started
+## 🚀 Mission Control
+
+| Tool | Link | Description |
+| :--- | :--- | :--- |
+| **Public Status** | [pyqdeck.betteruptime.com](https://pyqdeck.betteruptime.com/) | 24/7 Uptime & Incident reporting |
+| **Internal Stats** | `/api/v1/status` | Real-time CPU/RAM (Dev Mode only) |
+| **API Docs** | `/api-docs` | Interactive Swagger/OpenAPI documentation |
+
+## 🛠️ Tech Stack
+- **Runtime**: Node.js (Express)
+- **Database**: MongoDB (Mongoose)
+- **Auth**: Clerk
+- **CI/CD**: GitHub Actions + Docker + CodeQL + Codecov
+
+## 💻 Development
 
 ```bash
 cd backend
 pnpm install
-pnpm dev
+pnpm dev # Status monitor available at /api/v1/status
 ```
 
-## Testing
+## 🧪 Quality & Testing
 
 ```bash
-cd backend
-pnpm test
-pnpm test:coverage
+pnpm test          # Run all tests
+pnpm test:coverage # Generate coverage report (Threshold: 80%)
 ```
 
-## Coverage Visualization
+## 📊 Coverage Visualization
 
 ![Codecov Sunburst](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express/graphs/sunburst.svg?token=3RQZRCU6QZ)
