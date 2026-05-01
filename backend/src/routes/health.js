@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as healthController from '../controllers/healthController.js';
+import { isAdmin } from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
@@ -82,6 +83,6 @@ router.get('/health', healthController.healthCheck);
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-router.get('/health/detailed', healthController.detailedHealth);
+router.get('/health/detailed', isAdmin, healthController.detailedHealth);
 
 export default router;

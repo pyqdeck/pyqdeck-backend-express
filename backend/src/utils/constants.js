@@ -6,4 +6,5 @@ export const RATE_LIMITS = {
 export const UserRole = {
   NORMAL: 'normal',
   ADMIN: 'admin',
+  EDITOR: 'editor',
 };
