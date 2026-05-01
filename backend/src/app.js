@@ -9,6 +9,8 @@ import webhookRoutes from './routes/webhook.js';
 import { syncUser } from './middlewares/syncUser.middleware.js';
 import errorHandler from './middlewares/errorHandler.js';
 import * as Sentry from '@sentry/node';
+import { createRouteHandler } from 'uploadthing/express';
+import { uploadRouter } from './utils/uploadthing.js';
 import { swaggerSpec } from './docs/swagger.js';
 
 const app = express();
@@ -41,6 +43,12 @@ app.use(syncUser);
 
 // Routes
 app.use('/api/v1', healthRoutes);
+app.use(
+  '/api/v1/uploadthing',
+  createRouteHandler({
+    router: uploadRouter,
+  })
+);
 
 // Error handling
 app.use(errorHandler);
