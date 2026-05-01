@@ -24,10 +24,12 @@ describe('QuestionRepository', () => {
 
     it('should throw ConflictError on duplicate slug', async () => {
       await questionRepository.create(questionData);
-      await expect(questionRepository.create({
-        ...questionData,
-        text: 'different text'
-      })).rejects.toThrow(ConflictError);
+      await expect(
+        questionRepository.create({
+          ...questionData,
+          text: 'different text',
+        })
+      ).rejects.toThrow(ConflictError);
     });
   });
 
@@ -50,7 +52,10 @@ describe('QuestionRepository', () => {
   describe('findAll', () => {
     it('should return paginated questions', async () => {
       await questionRepository.create(questionData);
-      const result = await questionRepository.findAll({}, { page: 1, limit: 10 });
+      const result = await questionRepository.findAll(
+        {},
+        { page: 1, limit: 10 }
+      );
       expect(result.items).toHaveLength(1);
     });
   });
@@ -59,7 +64,10 @@ describe('QuestionRepository', () => {
     it('should find questions by tags', async () => {
       const tagId = new mongoose.Types.ObjectId();
       await questionRepository.create({ ...questionData, tags: [tagId] });
-      const result = await questionRepository.findByTags([tagId], { page: 1, limit: 10 });
+      const result = await questionRepository.findByTags([tagId], {
+        page: 1,
+        limit: 10,
+      });
       expect(result.items).toHaveLength(1);
     });
   });
@@ -67,7 +75,9 @@ describe('QuestionRepository', () => {
   describe('update', () => {
     it('should update successfully', async () => {
       const created = await questionRepository.create(questionData);
-      const updated = await questionRepository.update(created.id, { text: 'Updated Text' });
+      const updated = await questionRepository.update(created.id, {
+        text: 'Updated Text',
+      });
       expect(updated.text).toBe('Updated Text');
     });
   });
@@ -76,7 +86,9 @@ describe('QuestionRepository', () => {
     it('should delete successfully', async () => {
       const created = await questionRepository.create(questionData);
       await questionRepository.delete(created.id);
-      await expect(questionRepository.findById(created.id)).rejects.toThrow(NotFoundError);
+      await expect(questionRepository.findById(created.id)).rejects.toThrow(
+        NotFoundError
+      );
     });
   });
 });

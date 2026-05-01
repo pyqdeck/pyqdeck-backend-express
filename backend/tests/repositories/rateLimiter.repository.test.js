@@ -29,9 +29,9 @@ describe('InMemoryRateLimitStore', () => {
 
     it('should reset after window expires', async () => {
       await inMemoryRateLimitStore.increment(key, windowMs);
-      
+
       vi.advanceTimersByTime(windowMs + 1);
-      
+
       const record = await inMemoryRateLimitStore.increment(key, windowMs);
       expect(record.count).toBe(1);
     });
@@ -55,9 +55,9 @@ describe('InMemoryRateLimitStore', () => {
     it('should remove expired records', async () => {
       await inMemoryRateLimitStore.increment(key, windowMs);
       vi.advanceTimersByTime(windowMs + 1);
-      
+
       await inMemoryRateLimitStore.cleanup();
-      
+
       // We can't easily check the private #store, but we can verify get returns null
       // and ensure it doesn't crash.
       const record = await inMemoryRateLimitStore.get(key);
