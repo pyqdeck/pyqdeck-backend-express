@@ -1,3 +1,5 @@
 .qoder
 .cline
 .claude
+test-report.junit.xml
+*.junit.xml
