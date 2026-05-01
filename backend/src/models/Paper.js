@@ -25,7 +25,7 @@ import { z } from 'zod';
  *           type: integer
  *         examType:
  *           type: string
- *           enum: [regular, re-exam, supplementary, mid-sem, end-sem, internal]
+ *           enum: [regular, re-exam, supplementary, end-sem, internal]
  *         session:
  *           type: string
  *           example: Nov-Dec
@@ -39,9 +39,6 @@ import { z } from 'zod';
  *         slug:
  *           type: string
  *           example: compiler-design-2021-regular
- *         pdfUrl:
- *           type: string
- *           format: uri
  *         uploadedBy:
  *           type: string
  *           description: Reference to User
@@ -61,7 +58,6 @@ export const ExamType = z.enum([
   'regular',
   're-exam',
   'supplementary',
-  'mid-sem',
   'end-sem',
   'internal',
 ]);
@@ -86,14 +82,7 @@ const paperSchema = new mongoose.Schema(
     },
     examType: {
       type: String,
-      enum: [
-        'regular',
-        're-exam',
-        'supplementary',
-        'mid-sem',
-        'end-sem',
-        'internal',
-      ],
+      enum: ['regular', 're-exam', 'supplementary', 'end-sem', 'internal'],
       required: true,
     },
     session: {
@@ -118,10 +107,6 @@ const paperSchema = new mongoose.Schema(
       unique: true,
       immutable: true,
       lowercase: true,
-      trim: true,
-    },
-    pdfUrl: {
-      type: String,
       trim: true,
     },
     uploadedBy: {
@@ -171,7 +156,6 @@ export const paperZodSchema = z.object({
   regulation: z.string().max(20).optional(),
   duration: z.number().int().min(0).optional(),
   maxMarks: z.number().min(0).optional(),
-  pdfUrl: z.string().url().optional(),
   uploadedBy: z.string().optional(),
   status: PaperStatus.default('pending'),
 });
