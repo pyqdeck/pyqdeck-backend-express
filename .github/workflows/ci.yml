@@ -48,6 +48,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Audit dependencies
+        run: pnpm audit --audit-level=high
+
       - name: Check code formatting
         run: pnpm dlx prettier --check .
         continue-on-error: true
