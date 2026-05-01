@@ -39,7 +39,7 @@ import { z } from 'zod';
  *           description: Reference to Semester
  *         role:
  *           type: string
- *           enum: [normal, admin]
+ *           enum: [normal, admin, editor]
  *           default: normal
  *           description: The role of the user
  *         isActive:
@@ -52,7 +52,7 @@ import { z } from 'zod';
  *           type: string
  *           format: date-time
  */
-export const UserRole = z.enum(['normal', 'admin']);
+export const UserRole = z.enum(['normal', 'admin', 'editor']);
 
 const userSchema = new mongoose.Schema(
   {
@@ -90,7 +90,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['normal', 'admin'],
+      enum: ['normal', 'admin', 'editor'],
       default: 'normal',
     },
     isActive: {
