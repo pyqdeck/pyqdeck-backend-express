@@ -50,9 +50,5 @@ jobs:
           WEBHOOK_SECRET: whsec_test_1234567890
 
       - name: Run k6 Smoke Test
-        uses: grafana/k6-action@v0.3.1
-        with:
-          filename: backend/tests/load/smoke.js
-          flags: --env API_URL=http://host.docker.internal:3000/api/v1
-        env:
-          K6_DOCKER_FLAGS: --add-host=host.docker.internal:host-gateway
+        run: |
+          docker run --rm --network host -i grafana/k6 run - < backend/tests/load/smoke.js --env API_URL=http://localhost:3000/api/v1
