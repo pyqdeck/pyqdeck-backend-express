@@ -8,9 +8,15 @@ import healthRoutes from './routes/health.js';
 import webhookRoutes from './routes/webhook.js';
 import { syncUser } from './middlewares/syncUser.middleware.js';
 import errorHandler from './middlewares/errorHandler.js';
+import * as Sentry from '@sentry/node';
 import { swaggerSpec } from './docs/swagger.js';
 
 const app = express();
+
+// Sentry error handler (Must be after app is initialized)
+if (process.env.SENTRY_DSN) {
+  Sentry.setupExpressErrorHandler(app);
+}
 
 // Security middlewares
 app.use(helmet());

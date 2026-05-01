@@ -24,6 +24,8 @@
     "@clerk/express": "^2.1.11",
     "@logtail/node": "^0.5.8",
     "@logtail/winston": "^0.5.8",
+    "@sentry/node": "^10.51.0",
+    "@sentry/profiling-node": "^10.51.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
