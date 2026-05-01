@@ -65,7 +65,7 @@ const syllabusSchema = new mongoose.Schema(
   }
 );
 
-syllabusSchema.index({ subjectOfferingId: 1 });
+// syllabusSchema.index({ subjectOfferingId: 1 }); // Removed redundant index
 
 export const Syllabus = mongoose.model('Syllabus', syllabusSchema);
 export default Syllabus;
