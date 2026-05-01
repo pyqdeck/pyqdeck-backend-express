@@ -1,6 +1,15 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { beforeAll, afterAll, beforeEach } from 'vitest';
+import { beforeAll, afterAll, beforeEach, vi } from 'vitest';
+
+// Mock Clerk middleware
+vi.mock('@clerk/express', () => ({
+  clerkMiddleware: () => (req, res, next) => {
+    req.auth = { userId: 'test_user_123' };
+    next();
+  },
+  getAuth: () => ({ userId: 'test_user_123' }),
+}));
 
 let mongod;
 
