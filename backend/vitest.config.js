@@ -13,7 +13,7 @@ export default defineConfig({
     },
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json-summary', 'json', 'html'],
+      reporter: ['text', 'json-summary', 'json', 'html', 'lcov'],
     },
   },
 });

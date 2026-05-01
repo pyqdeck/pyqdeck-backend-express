@@ -76,3 +76,11 @@ jobs:
           name: coverage-report
           path: backend/coverage/
           retention-days: 14
+
+      - name: Upload coverage reports to Codecov
+        if: always()
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./backend/coverage/
+          fail_ci_if_error: false
