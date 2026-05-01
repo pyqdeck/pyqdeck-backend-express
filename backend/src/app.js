@@ -6,6 +6,9 @@ import { clerkMiddleware } from '@clerk/express';
 import swaggerUi from 'swagger-ui-express';
 import healthRoutes from './routes/health.js';
 import webhookRoutes from './routes/webhook.js';
+import universityRoutes from './routes/universities.js';
+import subjectRoutes from './routes/subjects.js';
+import paperRoutes from './routes/papers.js';
 import { syncUser } from './middlewares/syncUser.middleware.js';
 import errorHandler from './middlewares/errorHandler.js';
 import * as Sentry from '@sentry/node';
@@ -43,6 +46,9 @@ app.use(syncUser);
 
 // Routes
 app.use('/api/v1', healthRoutes);
+app.use('/api/v1/universities', universityRoutes);
+app.use('/api/v1/subjects', subjectRoutes);
+app.use('/api/v1/papers', paperRoutes);
 app.use(
   '/api/v1/uploadthing',
   createRouteHandler({

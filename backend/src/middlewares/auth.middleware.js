@@ -1,5 +1,19 @@
+import { getAuth } from '@clerk/express';
 import { UnauthorizedError, ForbiddenError } from '../utils/errors/index.js';
 import { UserRole } from '../utils/constants.js';
+
+/**
+ * Ensures the request has a valid Clerk session.
+ * Returns 401 JSON (not a redirect) — correct for REST APIs.
+ * clerkMiddleware() in app.js already populates req.auth.
+ */
+export function requireAuthentication(req, res, next) {
+  const { userId } = getAuth(req);
+  if (!userId) {
+    return next(new UnauthorizedError('Authentication required'));
+  }
+  next();
+}
 
 /**
  * Middleware to restrict access based on user roles
