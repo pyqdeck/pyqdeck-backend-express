@@ -114,3 +114,12 @@ jobs:
           tags: pyqdeck-backend:test
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy to Render
+    needs: [test, docker-build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Deploy Hook
+        run: curl -s -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}

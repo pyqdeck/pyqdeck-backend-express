@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: pyqdeck-backend
+    runtime: docker
+    plan: free
+    region: singapore # Or your preferred region
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: APP_NAME
+        value: PyqDeck
+      - key: MONGODB_URI
+        sync: false # Should be set in Render dashboard
+      - key: CLERK_PUBLISHABLE_KEY
+        sync: false # Should be set in Render dashboard
+      - key: CLERK_SECRET_KEY
+        sync: false # Should be set in Render dashboard
+      - key: CLERK_WEBHOOK_SECRET
+        sync: false # Should be set in Render dashboard
+      - key: RESEND_API_KEY
+        sync: false # Should be set in Render dashboard
+      - key: MAIL_FROM
+        sync: false # Should be set in Render dashboard
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX
+        value: 100
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    healthCheckPath: /api/v1/health
