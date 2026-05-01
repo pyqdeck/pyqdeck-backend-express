@@ -45,7 +45,8 @@
   },
   "pnpm": {
     "overrides": {
-      "effect": ">=3.20.0"
+      "effect": ">=3.20.0",
+      "uuid": ">=14.0.0"
     },
     "neverBuiltDependencies": [
       "mongodb-memory-server"
