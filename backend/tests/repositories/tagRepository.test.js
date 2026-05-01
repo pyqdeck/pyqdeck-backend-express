@@ -24,12 +24,16 @@ describe('TagRepository', () => {
 
     it('should throw ConflictError on duplicate name', async () => {
       await tagRepository.create(tagData);
-      await expect(tagRepository.create({ ...tagData, slug: 'other' })).rejects.toThrow(ConflictError);
+      await expect(
+        tagRepository.create({ ...tagData, slug: 'other' })
+      ).rejects.toThrow(ConflictError);
     });
 
     it('should throw ConflictError on duplicate slug', async () => {
       await tagRepository.create(tagData);
-      await expect(tagRepository.create({ ...tagData, name: 'other' })).rejects.toThrow(ConflictError);
+      await expect(
+        tagRepository.create({ ...tagData, name: 'other' })
+      ).rejects.toThrow(ConflictError);
     });
   });
 
@@ -49,7 +53,10 @@ describe('TagRepository', () => {
     });
 
     it('should find by redirectSlugs', async () => {
-      await tagRepository.create({ ...tagData, redirectSlugs: ['old-tag-slug'] });
+      await tagRepository.create({
+        ...tagData,
+        redirectSlugs: ['old-tag-slug'],
+      });
       const tag = await tagRepository.findBySlug('old-tag-slug');
       expect(tag.slug).toBe(tagData.slug);
     });
@@ -91,7 +98,9 @@ describe('TagRepository', () => {
   describe('update', () => {
     it('should update successfully', async () => {
       const created = await tagRepository.create(tagData);
-      const updated = await tagRepository.update(created.id, { name: 'Updated Tag' });
+      const updated = await tagRepository.update(created.id, {
+        name: 'Updated Tag',
+      });
       expect(updated.name).toBe('Updated Tag');
     });
   });
@@ -100,7 +109,9 @@ describe('TagRepository', () => {
     it('should delete successfully', async () => {
       const created = await tagRepository.create(tagData);
       await tagRepository.delete(created.id);
-      await expect(tagRepository.findById(created.id)).rejects.toThrow(NotFoundError);
+      await expect(tagRepository.findById(created.id)).rejects.toThrow(
+        NotFoundError
+      );
     });
   });
 });

@@ -18,13 +18,17 @@ describe('SyllabusRepository', () => {
   describe('create', () => {
     it('should create a new syllabus successfully', async () => {
       const syllabus = await syllabusRepository.create(syllabusData);
-      expect(syllabus.subjectOfferingId.toString()).toBe(subjectOfferingId.toString());
+      expect(syllabus.subjectOfferingId.toString()).toBe(
+        subjectOfferingId.toString()
+      );
       expect(syllabus.description).toBe(syllabusData.description);
     });
 
     it('should throw ConflictError if syllabus for same subject offering exists', async () => {
       await syllabusRepository.create(syllabusData);
-      await expect(syllabusRepository.create(syllabusData)).rejects.toThrow(ConflictError);
+      await expect(syllabusRepository.create(syllabusData)).rejects.toThrow(
+        ConflictError
+      );
     });
   });
 
@@ -37,20 +41,27 @@ describe('SyllabusRepository', () => {
 
     it('should throw NotFoundError if syllabus does not exist', async () => {
       const nonExistentId = new mongoose.Types.ObjectId();
-      await expect(syllabusRepository.findById(nonExistentId)).rejects.toThrow(NotFoundError);
+      await expect(syllabusRepository.findById(nonExistentId)).rejects.toThrow(
+        NotFoundError
+      );
     });
   });
 
   describe('findBySubjectOffering', () => {
     it('should find a syllabus by subject offering id', async () => {
       await syllabusRepository.create(syllabusData);
-      const syllabus = await syllabusRepository.findBySubjectOffering(subjectOfferingId);
-      expect(syllabus.subjectOfferingId.toString()).toBe(subjectOfferingId.toString());
+      const syllabus =
+        await syllabusRepository.findBySubjectOffering(subjectOfferingId);
+      expect(syllabus.subjectOfferingId.toString()).toBe(
+        subjectOfferingId.toString()
+      );
     });
 
     it('should throw NotFoundError if syllabus not found for offering', async () => {
       const otherOfferingId = new mongoose.Types.ObjectId();
-      await expect(syllabusRepository.findBySubjectOffering(otherOfferingId)).rejects.toThrow(NotFoundError);
+      await expect(
+        syllabusRepository.findBySubjectOffering(otherOfferingId)
+      ).rejects.toThrow(NotFoundError);
     });
   });
 
@@ -64,7 +75,9 @@ describe('SyllabusRepository', () => {
 
     it('should throw NotFoundError when updating non-existent syllabus', async () => {
       const nonExistentId = new mongoose.Types.ObjectId();
-      await expect(syllabusRepository.update(nonExistentId, { description: 'New' })).rejects.toThrow(NotFoundError);
+      await expect(
+        syllabusRepository.update(nonExistentId, { description: 'New' })
+      ).rejects.toThrow(NotFoundError);
     });
   });
 
@@ -72,12 +85,16 @@ describe('SyllabusRepository', () => {
     it('should delete a syllabus successfully', async () => {
       const created = await syllabusRepository.create(syllabusData);
       await syllabusRepository.delete(created.id);
-      await expect(syllabusRepository.findById(created.id)).rejects.toThrow(NotFoundError);
+      await expect(syllabusRepository.findById(created.id)).rejects.toThrow(
+        NotFoundError
+      );
     });
 
     it('should throw NotFoundError when deleting non-existent syllabus', async () => {
       const nonExistentId = new mongoose.Types.ObjectId();
-      await expect(syllabusRepository.delete(nonExistentId)).rejects.toThrow(NotFoundError);
+      await expect(syllabusRepository.delete(nonExistentId)).rejects.toThrow(
+        NotFoundError
+      );
     });
   });
 });

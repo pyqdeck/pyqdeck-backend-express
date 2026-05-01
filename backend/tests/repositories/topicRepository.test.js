@@ -26,7 +26,9 @@ describe('TopicRepository', () => {
 
     it('should throw ConflictError on duplicate slug for same module', async () => {
       await topicRepository.create(topicData);
-      await expect(topicRepository.create(topicData)).rejects.toThrow(ConflictError);
+      await expect(topicRepository.create(topicData)).rejects.toThrow(
+        ConflictError
+      );
     });
   });
 
@@ -38,7 +40,9 @@ describe('TopicRepository', () => {
     });
 
     it('should throw NotFoundError if not found', async () => {
-      await expect(topicRepository.findById(new mongoose.Types.ObjectId())).rejects.toThrow(NotFoundError);
+      await expect(
+        topicRepository.findById(new mongoose.Types.ObjectId())
+      ).rejects.toThrow(NotFoundError);
     });
   });
 
@@ -46,7 +50,10 @@ describe('TopicRepository', () => {
     it('should return paginated topics for a module sorted by order', async () => {
       await topicRepository.create({ ...topicData, slug: 't2', order: 2 });
       await topicRepository.create(topicData);
-      const result = await topicRepository.findByModule(moduleId, { page: 1, limit: 10 });
+      const result = await topicRepository.findByModule(moduleId, {
+        page: 1,
+        limit: 10,
+      });
       expect(result.items).toHaveLength(2);
       expect(result.items[0].order).toBe(1);
       expect(result.items[1].order).toBe(2);
@@ -56,13 +63,22 @@ describe('TopicRepository', () => {
   describe('findByModuleAndSlug', () => {
     it('should find a topic by module and slug', async () => {
       await topicRepository.create(topicData);
-      const topic = await topicRepository.findByModuleAndSlug(moduleId, topicData.slug);
+      const topic = await topicRepository.findByModuleAndSlug(
+        moduleId,
+        topicData.slug
+      );
       expect(topic.slug).toBe(topicData.slug);
     });
 
     it('should find by redirectSlugs', async () => {
-      await topicRepository.create({ ...topicData, redirectSlugs: ['old-topic-slug'] });
-      const topic = await topicRepository.findByModuleAndSlug(moduleId, 'old-topic-slug');
+      await topicRepository.create({
+        ...topicData,
+        redirectSlugs: ['old-topic-slug'],
+      });
+      const topic = await topicRepository.findByModuleAndSlug(
+        moduleId,
+        'old-topic-slug'
+      );
       expect(topic.slug).toBe(topicData.slug);
     });
   });
@@ -70,7 +86,9 @@ describe('TopicRepository', () => {
   describe('update', () => {
     it('should update successfully', async () => {
       const created = await topicRepository.create(topicData);
-      const updated = await topicRepository.update(created.id, { title: 'Updated Topic' });
+      const updated = await topicRepository.update(created.id, {
+        title: 'Updated Topic',
+      });
       expect(updated.title).toBe('Updated Topic');
     });
   });
@@ -79,7 +97,9 @@ describe('TopicRepository', () => {
     it('should delete successfully', async () => {
       const created = await topicRepository.create(topicData);
       await topicRepository.delete(created.id);
-      await expect(topicRepository.findById(created.id)).rejects.toThrow(NotFoundError);
+      await expect(topicRepository.findById(created.id)).rejects.toThrow(
+        NotFoundError
+      );
     });
   });
 });
