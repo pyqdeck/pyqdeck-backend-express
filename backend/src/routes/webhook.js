@@ -10,45 +10,54 @@ const router = Router();
  * /webhooks/clerk:
  *   post:
  *     tags:
- *       - Webhooks
- *     summary: Handle Clerk webhooks
- *     description: Endpoint for Clerk to send user synchronization events (created, updated, deleted).
+ *       - External Integrations
+ *     summary: Sync Clerk User Data
+ *     description: |
+ *       Secure endpoint for Clerk.com to send user lifecycle events (created, updated, deleted).
+ *
+ *       **Verification**: This endpoint verifies the [Svix Webhook Signature](https://docs.clerk.com/main-concepts/webhooks)
+ *       to ensure requests originate from Clerk.
  *     security: []
  *     parameters:
  *       - in: header
  *         name: svix-id
+ *         description: Unique webhook event ID
  *         required: true
- *         schema:
- *           type: string
+ *         schema: { type: string }
  *       - in: header
  *         name: svix-timestamp
+ *         description: Unix timestamp of the event
  *         required: true
- *         schema:
- *           type: string
+ *         schema: { type: string }
  *       - in: header
  *         name: svix-signature
+ *         description: HMAC-SHA256 signature
  *         required: true
- *         schema:
- *           type: string
+ *         schema: { type: string }
  *     requestBody:
+ *       description: Clerk Webhook Event Object
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             properties:
+ *               data: { type: object }
+ *               object: { type: string, example: "event" }
+ *               type: { type: string, example: "user.created" }
  *     responses:
  *       200:
- *         description: Webhook processed successfully
+ *         description: Event acknowledged and processed
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 received:
- *                   type: boolean
- *                   example: true
+ *                 received: { type: boolean, example: true }
  *       400:
- *         description: Invalid webhook signature
+ *         $ref: '#/components/responses/BadRequest'
+ *       429:
+ *         $ref: '#/components/responses/TooManyRequests'
  */
 router.post(
   '/clerk',

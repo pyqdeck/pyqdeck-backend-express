@@ -8,12 +8,12 @@ const router = Router();
  * /health:
  *   get:
  *     tags:
- *       - Health
+ *       - System
  *     summary: Basic health check
- *     description: Returns the basic health status of the API.
+ *     description: Returns the operational status of the API instance. Used by load balancers and uptime monitors.
  *     responses:
  *       200:
- *         description: API is healthy
+ *         description: API is operational
  *         content:
  *           application/json:
  *             schema:
@@ -21,8 +21,10 @@ const router = Router();
  *               properties:
  *                 success:
  *                   type: boolean
+ *                   example: true
  *                 message:
  *                   type: string
+ *                   example: Health check successful
  *                 data:
  *                   type: object
  *                   properties:
@@ -33,7 +35,7 @@ const router = Router();
  *                       type: string
  *                       format: date-time
  *       503:
- *         description: API is unhealthy
+ *         $ref: '#/components/responses/InternalServerError'
  */
 router.get('/health', healthController.healthCheck);
 
@@ -42,12 +44,12 @@ router.get('/health', healthController.healthCheck);
  * /health/detailed:
  *   get:
  *     tags:
- *       - Health
- *     summary: Detailed health check
- *     description: Returns detailed health status including database connectivity and memory usage.
+ *       - System
+ *     summary: Detailed system health
+ *     description: Provides deep insights into system health, including database connectivity, memory usage, and process uptime.
  *     responses:
  *       200:
- *         description: API is fully healthy
+ *         description: All systems operational
  *         content:
  *           application/json:
  *             schema:
@@ -55,21 +57,30 @@ router.get('/health', healthController.healthCheck);
  *               properties:
  *                 success:
  *                   type: boolean
- *                 message:
- *                   type: string
+ *                   example: true
  *                 data:
  *                   type: object
  *                   properties:
  *                     status:
  *                       type: string
+ *                       example: healthy
  *                     database:
  *                       type: string
+ *                       example: connected
  *                     memory:
  *                       type: object
+ *                       properties:
+ *                         rss: { type: string, example: "120 MB" }
+ *                         heapTotal: { type: string, example: "80 MB" }
  *                     uptime:
  *                       type: number
+ *                       example: 3600
  *       503:
- *         description: API has issues (e.g. database down)
+ *         description: System degradation detected (e.g., database disconnected)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.get('/health/detailed', healthController.detailedHealth);
 
