@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "format": "prettier --write ."
   },
   "type": "module",
@@ -30,6 +32,9 @@
     "zod": "^4.4.1"
   },
   "devDependencies": {
-    "prettier": "^3.5.3"
+    "mongodb-memory-server": "^11.1.0",
+    "prettier": "^3.5.3",
+    "supertest": "^7.2.2",
+    "vitest": "^4.1.5"
   }
 }

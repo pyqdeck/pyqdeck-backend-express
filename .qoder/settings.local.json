@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(cat /mnt/d/projects/pyqdeck-new/package.json 2>/dev/null || echo \"No root package.json\")",
+      "Bash(find /mnt/d/projects/pyqdeck-new/backend/src -type f -name \"*.js\" | head -30)",
+      "Bash(find /mnt/d/projects/pyqdeck-new/backend/src -type f -name \"*.js\" | head -60)"
+    ]
+  }
+}
