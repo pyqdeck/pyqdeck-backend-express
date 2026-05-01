@@ -122,6 +122,6 @@ router.patch(
  *     security:
  *       - bearerAuth: []
  */
-router.delete('/:id', requireAuth(), isAdmin, paperController.remove);
+router.delete('/:id', requireAuthentication, isAdmin, paperController.remove);
 
 export default router;

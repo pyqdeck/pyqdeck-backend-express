@@ -84,6 +84,6 @@ router.patch(
  *     security:
  *       - bearerAuth: []
  */
-router.delete('/:id', requireAuth(), isAdmin, subjectController.remove);
+router.delete('/:id', requireAuthentication, isAdmin, subjectController.remove);
 
 export default router;
