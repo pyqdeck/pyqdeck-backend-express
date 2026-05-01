@@ -4,7 +4,7 @@ export function validateSchema(schema, data, options = {}) {
   const result = schema.safeParse(data);
 
   if (!result.success) {
-    const errors = result.error.errors.map((err) => ({
+    const errors = result.error.issues.map((err) => ({
       path: err.path.join('.'),
       message: err.message,
     }));
@@ -25,7 +25,7 @@ export function safeValidateSchema(schema, data, options = {}) {
     return {
       success: false,
       data: null,
-      details: result.error.errors.map((err) => ({
+      details: result.error.issues.map((err) => ({
         path: err.path.join('.'),
         message: err.message,
       })),

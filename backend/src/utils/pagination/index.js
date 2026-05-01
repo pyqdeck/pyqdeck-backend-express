@@ -22,7 +22,7 @@ export const paginationSchema = z.object({
 export function parsePagination(query) {
   const result = paginationSchema.safeParse(query);
   if (!result.success) {
-    const messages = result.error.errors
+    const messages = result.error.issues
       .map((e) => `${e.path.join('.')}: ${e.message}`)
       .join(', ');
     throw new ValidationError(messages);
