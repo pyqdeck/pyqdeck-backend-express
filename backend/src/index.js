@@ -8,6 +8,7 @@ import database from './config/database.js';
 import { loggerService } from './utils/index.js';
 import healthRoutes from './routes/health.js';
 import webhookRoutes from './routes/webhook.js';
+import { syncUser } from './middlewares/syncUser.middleware.js';
 import errorHandler from './middlewares/errorHandler.js';
 
 const logger = loggerService.getLogger();
@@ -29,6 +30,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Clerk Middleware
 app.use(clerkMiddleware());
+app.use(syncUser);
 
 // Database connection
 database.connect().catch((err) => {
