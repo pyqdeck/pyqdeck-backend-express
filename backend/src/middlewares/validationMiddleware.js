@@ -14,7 +14,13 @@ export function validateBody(schema) {
 export function validateQuery(schema) {
   return (req, res, next) => {
     try {
-      req.query = validateSchema(schema, req.query);
+      const validated = validateSchema(schema, req.query);
+      Object.defineProperty(req, 'query', {
+        value: validated,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
       next();
     } catch (error) {
       next(error);
@@ -25,7 +31,13 @@ export function validateQuery(schema) {
 export function validateParams(schema) {
   return (req, res, next) => {
     try {
-      req.params = validateSchema(schema, req.params);
+      const validated = validateSchema(schema, req.params);
+      Object.defineProperty(req, 'params', {
+        value: validated,
+        writable: true,
+        enumerable: true,
+        configurable: true,
+      });
       next();
     } catch (error) {
       next(error);

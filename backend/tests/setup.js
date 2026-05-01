@@ -2,6 +2,26 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { beforeAll, afterAll, beforeEach, vi } from 'vitest';
 
+// Mock loggerService to silence logs during tests
+vi.mock('../src/utils/logger/index.js', () => ({
+  loggerService: {
+    getLogger: () => ({
+      info: vi.fn(),
+      error: vi.fn(),
+      warn: vi.fn(),
+      debug: vi.fn(),
+    }),
+  },
+  default: {
+    getLogger: () => ({
+      info: vi.fn(),
+      error: vi.fn(),
+      warn: vi.fn(),
+      debug: vi.fn(),
+    }),
+  },
+}));
+
 // Mock Clerk middleware and client
 vi.mock('@clerk/express', () => ({
   clerkMiddleware: () => (req, res, next) => {
