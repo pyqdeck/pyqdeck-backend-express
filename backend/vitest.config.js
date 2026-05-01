@@ -8,8 +8,8 @@ export default defineConfig({
     include: ['tests/**/*.test.js'],
     hookTimeout: 120000,
     testTimeout: 120000,
-    fileParallelism: false,
-    maxWorkers: 1,
-    minWorkers: 1,
+    forksOptions: {
+      singleFork: true,
+    },
   },
 });
