@@ -1,42 +1,64 @@
-class ConsoleLogger {
-  #debugEnabled;
+import winston from 'winston';
+import DailyRotateFile from 'winston-daily-rotate-file';
+import { Logtail } from '@logtail/node';
+import { LogtailTransport } from '@logtail/winston';
 
-  constructor() {
-    this.#debugEnabled =
-      process.env.DEBUG === 'true' || process.env.NODE_ENV === 'development';
-  }
+const { combine, timestamp, json, colorize, printf, errors } = winston.format;
 
-  info(message, meta = {}) {
-    this.#log('INFO', message, meta);
-  }
-
-  error(message, meta = {}) {
-    this.#log('ERROR', message, meta);
-  }
-
-  warn(message, meta = {}) {
-    this.#log('WARN', message, meta);
-  }
-
-  debug(message, meta = {}) {
-    if (this.#debugEnabled) {
-      this.#log('DEBUG', message, meta);
-    }
-  }
-
-  #log(level, message, meta) {
-    const timestamp = new Date().toISOString();
+// Custom format for local console (Human-readable)
+const consoleFormat = printf(
+  ({ level, message, timestamp, stack, ...meta }) => {
     const metaStr =
       Object.keys(meta).length > 0 ? ` ${JSON.stringify(meta)}` : '';
-    console.log(`[${level}] ${timestamp} - ${message}${metaStr}`);
+    return `${timestamp} [${level}]: ${stack || message}${metaStr}`;
   }
-}
+);
 
 class LoggerService {
   #logger;
 
   constructor() {
-    this.#logger = new ConsoleLogger();
+    const transports = [
+      // 1. Console Transport (Always enabled)
+      new winston.transports.Console({
+        level: process.env.LOG_LEVEL || 'info',
+        format: combine(
+          colorize(),
+          timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+          errors({ stack: true }),
+          consoleFormat
+        ),
+      }),
+    ];
+
+    // 2. File Transport (Production/Staging only)
+    if (
+      process.env.NODE_ENV !== 'development' &&
+      process.env.NODE_ENV !== 'test'
+    ) {
+      transports.push(
+        new DailyRotateFile({
+          filename: 'logs/application-%DATE%.log',
+          datePattern: 'YYYY-MM-DD',
+          zippedArchive: true,
+          maxSize: '20m',
+          maxFiles: '14d',
+          level: 'info',
+          format: combine(timestamp(), errors({ stack: true }), json()),
+        })
+      );
+
+      // 3. Better Stack (Logtail) Transport (If token provided)
+      if (process.env.LOGTAIL_SOURCE_TOKEN) {
+        const logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN);
+        transports.push(new LogtailTransport(logtail));
+      }
+    }
+
+    this.#logger = winston.createLogger({
+      level: process.env.LOG_LEVEL || 'info',
+      transports,
+    });
   }
 
   getLogger() {
