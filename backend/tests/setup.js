@@ -2,13 +2,24 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { beforeAll, afterAll, beforeEach, vi } from 'vitest';
 
-// Mock Clerk middleware
+// Mock Clerk middleware and client
 vi.mock('@clerk/express', () => ({
   clerkMiddleware: () => (req, res, next) => {
     req.auth = { userId: 'test_user_123' };
     next();
   },
   getAuth: () => ({ userId: 'test_user_123' }),
+  clerkClient: {
+    users: {
+      getUser: vi.fn().mockResolvedValue({
+        id: 'test_user_123',
+        firstName: 'Test',
+        lastName: 'User',
+        emailAddresses: [{ id: 'email_1', emailAddress: 'test@example.com' }],
+        primaryEmailAddressId: 'email_1',
+      }),
+    },
+  },
 }));
 
 let mongod;
