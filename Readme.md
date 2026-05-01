@@ -1,7 +1,7 @@
 # PYQDeck Backend
 
 [![codecov](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express/graph/badge.svg?token=3RQZRCU6QZ)](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express)
-[![CI Pipeline](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/ci.yml/badge.svg)](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/ci.yml)
 
 Express backend for the PYQDeck application. This project uses:
 - Express.js
