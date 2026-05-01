@@ -1,30 +1,37 @@
-# Use Node 20 slim as the base image
-FROM node:20-slim AS base
-
-# Install pnpm
+# Stage 1: Dependencies
+FROM node:20-slim AS deps
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
-# Set working directory
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+# Install production dependencies only
+RUN pnpm install --prod --frozen-lockfile
+
+# Stage 2: Runtime
+FROM node:20-slim AS runner
 WORKDIR /app
 
-# --- Build Stage ---
-FROM base AS build
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile
-COPY . .
+# Create a non-root user for security
+RUN groupadd -g 1001 nodejs && \
+    useradd -u 1001 -g nodejs -s /bin/sh -m nodeuser
 
-# --- Production Stage ---
-FROM base AS runtime
 ENV NODE_ENV=production
+ENV PORT=3000
 
-# Copy only production dependencies
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --prod --frozen-lockfile
+# Copy necessary files from deps stage
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/package.json ./package.json
 
 # Copy source code
 COPY src ./src
+
+# Set proper ownership
+RUN chown -R nodeuser:nodejs /app
+
+# Switch to non-root user
+USER nodeuser
 
 # Expose the application port
 EXPOSE 3000
