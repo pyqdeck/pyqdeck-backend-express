@@ -45,6 +45,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
 
+      - name: Cache MongoDB binaries
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/mongodb-binaries
+          key: ${{ runner.os }}-mongodb-binaries
+          restore-keys: |
+            ${{ runner.os }}-mongodb-binaries
+
       - name: Install dependencies
         run: pnpm install
 
