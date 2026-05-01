@@ -13,26 +13,28 @@ import statusMonitor from 'express-status-monitor';
 
 const app = express();
 
-// Real-time Status Monitor (must be before other middlewares)
-app.use(
-  statusMonitor({
-    title: 'PyqDeck API Status',
-    path: '/api/v1/status',
-    spans: [
-      { interval: 1, retention: 60 },
-      { interval: 5, retention: 60 },
-      { interval: 15, retention: 60 },
-    ],
-    healthChecks: [
-      {
-        protocol: 'http',
-        host: 'localhost',
-        path: '/api/v1/health',
-        port: process.env.PORT || 3000,
-      },
-    ],
-  })
-);
+// Real-time Status Monitor (Development Only)
+if (process.env.NODE_ENV === 'development') {
+  app.use(
+    statusMonitor({
+      title: 'PyqDeck API Status',
+      path: '/api/v1/status',
+      spans: [
+        { interval: 1, retention: 60 },
+        { interval: 5, retention: 60 },
+        { interval: 15, retention: 60 },
+      ],
+      healthChecks: [
+        {
+          protocol: 'http',
+          host: 'localhost',
+          path: '/api/v1/health',
+          port: process.env.PORT || 3000,
+        },
+      ],
+    })
+  );
+}
 
 // Security middlewares
 app.use(helmet());
