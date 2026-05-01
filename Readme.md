@@ -11,7 +11,6 @@ Express backend for the PYQDeck application.
 | Tool | Link | Description |
 | :--- | :--- | :--- |
 | **Public Status** | [pyqdeck.betteruptime.com](https://pyqdeck.betteruptime.com/) | 24/7 Uptime & Incident reporting |
-| **Internal Stats** | `/api/v1/status` | Real-time CPU/RAM (Dev Mode only) |
 | **API Docs** | `/api-docs` | Interactive Swagger/OpenAPI documentation |
 
 ## 🛠️ Tech Stack
