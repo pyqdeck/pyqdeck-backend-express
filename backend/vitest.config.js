@@ -11,5 +11,9 @@ export default defineConfig({
     forksOptions: {
       singleFork: true,
     },
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json-summary', 'json'],
+    },
   },
 });

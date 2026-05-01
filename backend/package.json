@@ -7,8 +7,11 @@
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "type": "module",
   "keywords": [],
@@ -32,6 +35,11 @@
     "zod": "^4.4.1"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@vitest/coverage-v8": "^4.1.5",
+    "eslint": "^10.2.1",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.5.0",
     "mongodb-memory-server": "^11.1.0",
     "prettier": "^3.5.3",
     "supertest": "^7.2.2",
