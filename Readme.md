@@ -1,8 +1,8 @@
 # PYQDeck Backend
 
-![Status](https://img.shields.io/badge/Status-Live-brightgreen?style=for-the-badge&logo=statuspage)
-[![codecov](https://img.shields.io/codecov/c/github/pyqdeck/pyqdeck-backend-express?style=for-the-badge&token=3RQZRCU6QZ)](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express)
-[![CI Pipeline](https://img.shields.io/github/actions/workflow/status/pyqdeck/pyqdeck-backend-express/ci.yml?branch=main&style=for-the-badge&logo=github-actions)](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/ci.yml)
+![Build Status](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/ci.yml/badge.svg)
+[![codecov](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express/branch/main/graph/badge.svg)](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express)
+![Security Scan](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/codeql-analysis.yml/badge.svg)
 
 Express backend for the PYQDeck application.
 
