@@ -61,7 +61,11 @@ import { paginate, successFormatter } from '../utils/index.js';
 
 router.get('/things', paginateMiddleware(), async (req, res, next) => {
   try {
-    const { items, total, page, limit } = await paginate(Thing, filter, req.pagination);
+    const { items, total, page, limit } = await paginate(
+      Thing,
+      filter,
+      req.pagination
+    );
     res.json(successFormatter.formatList(items, total, page, limit));
   } catch (err) {
     next(err);

@@ -31,7 +31,12 @@ export function parsePagination(query) {
   return { page, limit, skip: (page - 1) * limit };
 }
 
-export async function paginate(model, filter = {}, { page, limit, skip }, options = {}) {
+export async function paginate(
+  model,
+  filter = {},
+  { page, limit, skip },
+  options = {}
+) {
   const [items, total] = await Promise.all([
     model.find(filter, null, options).skip(skip).limit(limit),
     model.countDocuments(filter),
