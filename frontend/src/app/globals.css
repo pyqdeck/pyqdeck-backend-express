@@ -1,9 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
-/* @import '@clerk/themes/shadcn.css'; */
-
-@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
@@ -47,6 +44,34 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Custom Branding Colors */
+  --color-teal-badge: #e6fafa;
+  --color-teal-badge-foreground: #00a3a3;
+  --color-purple-badge: #f3e8ff;
+  --color-purple-badge-foreground: #7e22ce;
+  --color-amber-badge: #fff4e6;
+  --color-amber-badge-foreground: #d97706;
+  --color-emerald-badge: #ecfdf5;
+  --color-emerald-badge-foreground: #059669;
+
+  /* Dark mode overrides for custom colors */
+  --color-teal-badge-dark: oklch(0.15 0.05 195);
+  --color-teal-badge-foreground-dark: oklch(0.8 0.1 200);
+
+  /* Brand gradient */
+  --color-brand-to: oklch(0.546 0.245 264.052);
+
+  /* Semantic accent tokens */
+  --color-success: oklch(0.696 0.17 160.65);
+  --color-success-bg: oklch(0.696 0.17 160.65 / 0.1);
+  --color-success-border: oklch(0.696 0.17 160.65 / 0.3);
+  --color-warning: oklch(0.828 0.186 84.429);
+  --color-warning-bg: oklch(0.828 0.186 84.429 / 0.1);
+  --color-info: oklch(0.623 0.214 259.815);
+  --color-info-bg: oklch(0.623 0.214 259.815 / 0.1);
+  --color-teal: oklch(0.696 0.17 188);
+  --color-teal-bg: oklch(0.696 0.17 188 / 0.1);
 }
 
 :root {
