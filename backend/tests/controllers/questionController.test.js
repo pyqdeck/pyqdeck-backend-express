@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as questionController from '../../src/controllers/questionController.js';
 import questionService from '../../src/services/questionService.js';
 
-
 vi.mock('../../src/services/questionService.js', () => ({
   default: {
     listByPaper: vi.fn(),

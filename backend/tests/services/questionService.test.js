@@ -3,7 +3,6 @@ import { questionService } from '../../src/services/questionService.js';
 import questionRepository from '../../src/repositories/questionRepository.js';
 import questionPaperMapRepository from '../../src/repositories/questionPaperMapRepository.js';
 
-
 vi.mock('../../src/repositories/questionRepository.js', () => ({
   default: {
     findById: vi.fn(),

@@ -2,7 +2,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as solutionController from '../../src/controllers/solutionController.js';
 import solutionService from '../../src/services/solutionService.js';
 
-
 vi.mock('../../src/services/solutionService.js', () => ({
   default: {
     listByQuestion: vi.fn(),
