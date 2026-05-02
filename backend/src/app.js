@@ -47,7 +47,11 @@ app.use('/api/v1/webhooks', webhookRoutes);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// API Documentation (Swagger)
+// API documentation (OpenAPI 3) — use for SDK generation (orval, openapi-generator, etc.)
+app.get('/api-docs/openapi.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.json(swaggerSpec);
+});
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Clerk Middleware

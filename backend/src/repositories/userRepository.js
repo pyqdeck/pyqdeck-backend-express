@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { User } from '../models/User.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 
@@ -59,6 +60,36 @@ class UserRepository {
   async existsByClerkId(clerkId) {
     const count = await User.countDocuments({ clerkId });
     return count > 0;
+  }
+
+  async getStats(userId) {
+    const results = await User.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(userId) } },
+      {
+        $lookup: {
+          from: 'bookmarks',
+          localField: '_id',
+          foreignField: 'userId',
+          as: 'bookmarks',
+        },
+      },
+      {
+        $lookup: {
+          from: 'solutions',
+          localField: '_id',
+          foreignField: 'authorId',
+          as: 'solutions',
+        },
+      },
+      {
+        $project: {
+          bookmarksCount: { $size: '$bookmarks' },
+          solutionsCount: { $size: '$solutions' },
+        },
+      },
+    ]);
+
+    return results[0] || { bookmarksCount: 0, solutionsCount: 0 };
   }
 }
 

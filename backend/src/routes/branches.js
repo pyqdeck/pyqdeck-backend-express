@@ -15,18 +15,89 @@ const updateBranchSchema = branchZodSchema
   .omit({ universityId: true });
 
 /**
- * GET /api/v1/universities/:universityId/branches
+ * @openapi
+ * /universities/{universityId}/branches:
+ *   get:
+ *     operationId: listBranches
+ *     tags: [Branches]
+ *     summary: List branches for a university
+ *     parameters:
+ *       - in: path
+ *         name: universityId
+ *         required: true
+ *         schema: { type: string }
+ *       - in: query
+ *         name: page
+ *         schema: { type: integer, minimum: 1, default: 1 }
+ *       - in: query
+ *         name: limit
+ *         schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+ *     responses:
+ *       200:
+ *         description: Paginated branches
  */
 router.get('/', paginate(), branchController.list);
 
 /**
- * GET /api/v1/universities/:universityId/branches/:slug
+ * @openapi
+ * /universities/{universityId}/branches/{slug}:
+ *   get:
+ *     operationId: getBranchBySlug
+ *     tags: [Branches]
+ *     summary: Get a branch by slug under a university
+ *     parameters:
+ *       - in: path
+ *         name: universityId
+ *         required: true
+ *         schema: { type: string }
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Branch details
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.get('/:slug', branchController.getBySlug);
 
 /**
- * POST /api/v1/universities/:universityId/branches
- * Admin only
+ * @openapi
+ * /universities/{universityId}/branches:
+ *   post:
+ *     operationId: createBranch
+ *     tags: [Branches]
+ *     summary: Create a branch (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: universityId
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       description: Branch payload (universityId is taken from the URL path)
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [name, shortName, slug]
+ *             properties:
+ *               name: { type: string }
+ *               shortName: { type: string }
+ *               branchCode: { type: string }
+ *               slug: { type: string }
+ *               redirectSlugs:
+ *                 type: array
+ *                 items: { type: string }
+ *               isActive: { type: boolean }
+ *     responses:
+ *       201:
+ *         description: Created
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
  */
 router.post(
   '/',
@@ -37,8 +108,45 @@ router.post(
 );
 
 /**
- * PATCH /api/v1/universities/:universityId/branches/:id
- * Admin only
+ * @openapi
+ * /universities/{universityId}/branches/{id}:
+ *   patch:
+ *     operationId: updateBranch
+ *     tags: [Branches]
+ *     summary: Update a branch (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: universityId
+ *         required: true
+ *         schema: { type: string }
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name: { type: string }
+ *               shortName: { type: string }
+ *               branchCode: { type: string }
+ *               slug: { type: string }
+ *               redirectSlugs:
+ *                 type: array
+ *                 items: { type: string }
+ *               isActive: { type: boolean }
+ *     responses:
+ *       200:
+ *         description: Updated
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.patch(
   '/:id',
@@ -49,8 +157,30 @@ router.patch(
 );
 
 /**
- * DELETE /api/v1/universities/:universityId/branches/:id
- * Admin only
+ * @openapi
+ * /universities/{universityId}/branches/{id}:
+ *   delete:
+ *     operationId: deleteBranch
+ *     tags: [Branches]
+ *     summary: Delete a branch (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: universityId
+ *         required: true
+ *         schema: { type: string }
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Deleted
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.delete('/:id', requireAuthentication, isAdmin, branchController.remove);
 

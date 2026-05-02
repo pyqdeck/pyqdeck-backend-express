@@ -6,7 +6,7 @@ import topicRepository from '../../src/repositories/topicRepository.js';
 import questionSyllabusMapRepository from '../../src/repositories/questionSyllabusMapRepository.js';
 
 vi.mock('../../src/repositories/syllabusRepository.js', () => ({
-  default: { findBySubjectOffering: vi.fn() },
+  default: { findBySubjectOffering: vi.fn(), getHierarchy: vi.fn() },
 }));
 vi.mock('../../src/repositories/moduleRepository.js', () => ({
   default: { findBySyllabus: vi.fn() },
@@ -22,23 +22,14 @@ describe('SyllabusService', () => {
   beforeEach(() => vi.clearAllMocks());
 
   describe('getBySubjectOffering', () => {
-    it('should return full syllabus hierarchy', async () => {
-      const mockSyllabus = { _id: 's1', toJSON: () => ({ id: 's1' }) };
-      const mockModule = { _id: 'm1', toJSON: () => ({ id: 'm1' }) };
-      const mockTopic = { id: 't1' };
-
-      syllabusRepository.findBySubjectOffering.mockResolvedValue(mockSyllabus);
-      moduleRepository.findBySyllabus.mockResolvedValue({
-        items: [mockModule],
-      });
-      topicRepository.findByModule.mockResolvedValue({ items: [mockTopic] });
+    it('should return full syllabus hierarchy via repository', async () => {
+      const mockResult = { id: 's1', modules: [{ id: 'm1', topics: [] }] };
+      syllabusRepository.getHierarchy.mockResolvedValue(mockResult);
 
       const result = await syllabusService.getBySubjectOffering('so1');
 
-      expect(syllabusRepository.findBySubjectOffering).toHaveBeenCalledWith(
-        'so1'
-      );
-      expect(result.modules[0].topics).toContain(mockTopic);
+      expect(syllabusRepository.getHierarchy).toHaveBeenCalledWith('so1');
+      expect(result).toEqual(mockResult);
     });
   });
 

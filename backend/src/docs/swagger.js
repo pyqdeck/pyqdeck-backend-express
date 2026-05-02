@@ -36,6 +36,35 @@ Most endpoints require a valid Clerk JWT token. Include it in the header:
         description: 'Production server',
       },
     ],
+    tags: [
+      { name: 'System', description: 'Health and operational status' },
+      {
+        name: 'External Integrations',
+        description: 'Webhooks and third-party callbacks',
+      },
+      { name: 'Universities', description: 'University directory' },
+      { name: 'Branches', description: 'Branches under a university' },
+      { name: 'Semesters', description: 'Semesters under a branch' },
+      { name: 'Subjects', description: 'Academic subjects' },
+      {
+        name: 'SubjectOfferings',
+        description: 'Subject instances per term (slugs, syllabus links)',
+      },
+      {
+        name: 'Syllabus',
+        description: 'Modules, topics, and syllabus-scoped questions',
+      },
+      { name: 'Questions', description: 'Question bank and search' },
+      { name: 'Papers', description: 'Exam papers' },
+      { name: 'PaperQuestions', description: 'Questions linked to a paper' },
+      { name: 'Solutions', description: 'User solutions, votes, moderation' },
+      {
+        name: 'Bookmarks',
+        description: 'Saved questions, papers, and solutions',
+      },
+      { name: 'Users', description: 'Current user profile' },
+      { name: 'Search', description: 'Global search' },
+    ],
     components: {
       securitySchemes: {
         bearerAuth: {
