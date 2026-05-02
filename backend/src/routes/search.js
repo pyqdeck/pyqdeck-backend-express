@@ -26,6 +26,31 @@ const router = Router();
  *     responses:
  *       200:
  *         description: Aggregated search results
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         questions:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Question'
+ *                         subjects:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Subject'
+ *                         papers:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Paper'
+ *                         totalQuestions: { type: integer }
+ *                         totalSubjects: { type: integer }
+ *                         totalPapers: { type: integer }
  */
 router.get('/', paginate(), searchController.unifiedSearch);
 

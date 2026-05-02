@@ -50,6 +50,22 @@ const updateSchema = subjectOfferingZodSchema.partial().omit({
  *     responses:
  *       200:
  *         description: Paginated subject offerings
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/SubjectOffering'
+ *                         pagination:
+ *                           $ref: '#/components/schemas/Pagination'
  */
 router.get('/', paginate(), subjectOfferingController.list);
 
@@ -68,6 +84,15 @@ router.get('/', paginate(), subjectOfferingController.list);
  *     responses:
  *       200:
  *         description: Subject offering
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/SubjectOffering'
  *       404:
  *         $ref: '#/components/responses/NotFound'
  */
@@ -88,6 +113,15 @@ router.get('/id/:id', subjectOfferingController.getById);
  *     responses:
  *       200:
  *         description: Subject offering
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/SubjectOffering'
  *       404:
  *         $ref: '#/components/responses/NotFound'
  */
@@ -111,6 +145,15 @@ router.get('/:slug', subjectOfferingController.getBySlug);
  *     responses:
  *       201:
  *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/SubjectOffering'
  *       403:
  *         $ref: '#/components/responses/Forbidden'
  */
@@ -141,11 +184,19 @@ router.post(
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             description: Partial update (slug and foreign keys are not changed here)
+ *             $ref: '#/components/schemas/SubjectOffering'
  *     responses:
  *       200:
  *         description: Updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/SubjectOffering'
  *       403:
  *         $ref: '#/components/responses/Forbidden'
  *       404:

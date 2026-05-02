@@ -19,23 +19,19 @@ const router = Router();
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: true
- *                 message:
- *                   type: string
- *                   example: Health check successful
- *                 data:
- *                   type: object
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
  *                   properties:
- *                     status:
- *                       type: string
- *                       example: healthy
- *                     timestamp:
- *                       type: string
- *                       format: date-time
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         status:
+ *                           type: string
+ *                           example: healthy
+ *                         timestamp:
+ *                           type: string
+ *                           format: date-time
  *       503:
  *         $ref: '#/components/responses/InternalServerError'
  */
@@ -58,28 +54,27 @@ router.get('/health', healthController.healthCheck);
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   example: true
- *                 data:
- *                   type: object
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
  *                   properties:
- *                     status:
- *                       type: string
- *                       example: healthy
- *                     database:
- *                       type: string
- *                       example: connected
- *                     memory:
+ *                     data:
  *                       type: object
  *                       properties:
- *                         rss: { type: string, example: "120 MB" }
- *                         heapTotal: { type: string, example: "80 MB" }
- *                     uptime:
- *                       type: number
- *                       example: 3600
+ *                         status:
+ *                           type: string
+ *                           example: healthy
+ *                         database:
+ *                           type: string
+ *                           example: connected
+ *                         memory:
+ *                           type: object
+ *                           properties:
+ *                             rss: { type: string, example: "120 MB" }
+ *                             heapTotal: { type: string, example: "80 MB" }
+ *                         uptime:
+ *                           type: number
+ *                           example: 3600
  *       503:
  *         description: System degradation detected (e.g., database disconnected)
  *         content:

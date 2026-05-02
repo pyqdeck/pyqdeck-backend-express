@@ -32,6 +32,22 @@ router.use(requireAuthentication);
  *     responses:
  *       200:
  *         description: List of bookmarks
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Bookmark'
+ *                         pagination:
+ *                           $ref: '#/components/schemas/Pagination'
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  */
@@ -51,15 +67,24 @@ router.get('/', paginate(), bookmarkController.listMine);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required: [targetId, targetType]
- *             properties:
- *               targetId: { type: string }
- *               targetType: { type: string, enum: [question, paper, solution] }
- *               note: { type: string }
+ *             $ref: '#/components/schemas/Bookmark'
  *     responses:
  *       200:
  *         description: Toggled state
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         isBookmarked:
+ *                           type: boolean
+ *                         bookmark:
+ *                           $ref: '#/components/schemas/Bookmark'
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  */

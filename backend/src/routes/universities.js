@@ -32,6 +32,22 @@ const updateUniversitySchema = universityZodSchema.partial();
  *     responses:
  *       200:
  *         description: List of universities
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/University'
+ *                         pagination:
+ *                           $ref: '#/components/schemas/Pagination'
  */
 router.get('/', paginate(), universityController.list);
 
@@ -50,8 +66,17 @@ router.get('/', paginate(), universityController.list);
  *     responses:
  *       200:
  *         description: University details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/University'
  *       404:
- *         description: Not found
+ *         $ref: '#/components/responses/NotFound'
  */
 router.get('/:slug', universityController.getBySlug);
 
@@ -73,8 +98,17 @@ router.get('/:slug', universityController.getBySlug);
  *     responses:
  *       201:
  *         description: University created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/University'
  *       403:
- *         description: Forbidden
+ *         $ref: '#/components/responses/Forbidden'
  */
 router.post(
   '/',
@@ -102,10 +136,19 @@ router.post(
  *       content:
  *         application/json:
  *           schema:
- *             type: object
+ *             $ref: '#/components/schemas/University'
  *     responses:
  *       200:
  *         description: Updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/University'
  *       403:
  *         $ref: '#/components/responses/Forbidden'
  *       404:

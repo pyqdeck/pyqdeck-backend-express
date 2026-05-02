@@ -33,6 +33,22 @@ const router = Router({ mergeParams: true }); // Access :paperId
  *     responses:
  *       200:
  *         description: Paginated questions for the paper
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Question'
+ *                         pagination:
+ *                           $ref: '#/components/schemas/Pagination'
  */
 router.get('/', paginate(), questionController.listByPaper);
 
@@ -59,6 +75,15 @@ router.get('/', paginate(), questionController.listByPaper);
  *     responses:
  *       201:
  *         description: Question created and linked
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Question'
  *       403:
  *         $ref: '#/components/responses/Forbidden'
  */
@@ -97,6 +122,17 @@ router.post(
  *     responses:
  *       201:
  *         description: Linked
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         linked: { type: boolean }
  *       403:
  *         $ref: '#/components/responses/Forbidden'
  */
@@ -132,6 +168,22 @@ router.post(
  *     responses:
  *       200:
  *         description: Paginated solutions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Solution'
+ *                         pagination:
+ *                           $ref: '#/components/schemas/Pagination'
  */
 router.get(
   '/:questionId/solutions',
@@ -162,11 +214,19 @@ router.get(
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             description: Solution body without questionId or authorId (derived server-side)
+ *             $ref: '#/components/schemas/Solution'
  *     responses:
  *       201:
  *         description: Solution created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Solution'
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  */

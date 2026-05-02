@@ -39,6 +39,22 @@ const updateQuestionSchema = questionZodSchema.partial();
  *     responses:
  *       200:
  *         description: Paginated questions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Question'
+ *                         pagination:
+ *                           $ref: '#/components/schemas/Pagination'
  */
 router.get('/', paginate(), questionController.search);
 
@@ -57,6 +73,15 @@ router.get('/', paginate(), questionController.search);
  *     responses:
  *       200:
  *         description: Question
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Question'
  *       404:
  *         $ref: '#/components/responses/NotFound'
  */
@@ -77,6 +102,15 @@ router.get('/slug/:slug', questionController.getBySlug);
  *     responses:
  *       200:
  *         description: Question
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Question'
  *       404:
  *         $ref: '#/components/responses/NotFound'
  */
@@ -100,6 +134,15 @@ router.get('/:id', questionController.getById);
  *     responses:
  *       201:
  *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Question'
  *       403:
  *         $ref: '#/components/responses/Forbidden'
  */
@@ -130,11 +173,19 @@ router.post(
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             description: Partial question fields
+ *             $ref: '#/components/schemas/Question'
  *     responses:
  *       200:
  *         description: Updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Question'
  *       403:
  *         $ref: '#/components/responses/Forbidden'
  *       404:

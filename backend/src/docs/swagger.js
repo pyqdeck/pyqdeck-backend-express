@@ -139,9 +139,17 @@ Most endpoints require a valid Clerk JWT token. Include it in the header:
           type: 'object',
           properties: {
             total: { type: 'integer', example: 100 },
-            limit: { type: 'integer', example: 10 },
+            limit: { type: 'integer', example: 20 },
             page: { type: 'integer', example: 1 },
-            pages: { type: 'integer', example: 10 },
+            totalPages: { type: 'integer', example: 5 },
+          },
+        },
+        SuccessResponse: {
+          type: 'object',
+          properties: {
+            status: { type: 'string', example: 'success' },
+            message: { type: 'string', example: 'Operation successful' },
+            code: { type: 'integer', example: 200 },
           },
         },
       },

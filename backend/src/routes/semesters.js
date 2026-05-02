@@ -28,6 +28,17 @@ const updateSemesterSchema = semesterZodSchema
  *     responses:
  *       200:
  *         description: Semesters list
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/Semester'
  */
 router.get('/', semesterController.list);
 
@@ -50,6 +61,15 @@ router.get('/', semesterController.list);
  *     responses:
  *       200:
  *         description: Semester details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Semester'
  *       404:
  *         $ref: '#/components/responses/NotFound'
  */
@@ -75,15 +95,19 @@ router.get('/:number', semesterController.getByNumber);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required: [number, slug]
- *             properties:
- *               number: { type: integer, minimum: 1, maximum: 8 }
- *               slug: { type: string }
- *               title: { type: string }
+ *             $ref: '#/components/schemas/Semester'
  *     responses:
  *       201:
  *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Semester'
  *       403:
  *         $ref: '#/components/responses/Forbidden'
  */
@@ -118,14 +142,19 @@ router.post(
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               number: { type: integer, minimum: 1, maximum: 8 }
- *               slug: { type: string }
- *               title: { type: string }
+ *             $ref: '#/components/schemas/Semester'
  *     responses:
  *       200:
  *         description: Updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Semester'
  *       403:
  *         $ref: '#/components/responses/Forbidden'
  *       404:

@@ -30,6 +30,22 @@ const updateSubjectSchema = subjectZodSchema.partial();
  *     responses:
  *       200:
  *         description: List of subjects
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Subject'
+ *                         pagination:
+ *                           $ref: '#/components/schemas/Pagination'
  */
 router.get('/', paginate(), subjectController.list);
 
@@ -40,6 +56,25 @@ router.get('/', paginate(), subjectController.list);
  *     operationId: getSubjectBySlug
  *     tags: [Subjects]
  *     summary: Get a subject by slug
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Subject details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Subject'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.get('/:slug', subjectController.getBySlug);
 
@@ -52,6 +87,26 @@ router.get('/:slug', subjectController.getBySlug);
  *     summary: Create a subject (Editor / Admin only)
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Subject'
+ *     responses:
+ *       201:
+ *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Subject'
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
  */
 router.post(
   '/',
@@ -70,14 +125,34 @@ router.post(
  *     summary: Update a subject (Editor / Admin only)
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Subject'
+ *     responses:
+ *       200:
+ *         description: Updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Subject'
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
-router.patch(
-  '/:id',
-  requireAuthentication,
-  isEditor,
-  validateBody(updateSubjectSchema),
-  subjectController.update
-);
 
 /**
  * @openapi

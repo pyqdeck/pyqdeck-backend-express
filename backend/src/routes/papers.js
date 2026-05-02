@@ -41,6 +41,22 @@ const statusSchema = z.object({ status: PaperStatus });
  *     responses:
  *       200:
  *         description: Paginated list of papers
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Paper'
+ *                         pagination:
+ *                           $ref: '#/components/schemas/Pagination'
  */
 router.get('/', paginate(), paperController.list);
 
@@ -51,6 +67,25 @@ router.get('/', paginate(), paperController.list);
  *     operationId: getPaperBySlug
  *     tags: [Papers]
  *     summary: Get a paper by slug
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Paper details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Paper'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.get('/:slug', paperController.getBySlug);
 
@@ -63,6 +98,26 @@ router.get('/:slug', paperController.getBySlug);
  *     summary: Submit a new paper (Editor / Admin)
  *     security:
  *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Paper'
+ *     responses:
+ *       201:
+ *         description: Paper created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Paper'
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
  */
 router.post(
   '/',
@@ -81,6 +136,33 @@ router.post(
  *     summary: Update a paper (Editor / Admin)
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Paper'
+ *     responses:
+ *       200:
+ *         description: Paper updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Paper'
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.patch(
   '/:id',
@@ -99,6 +181,11 @@ router.patch(
  *     summary: Approve or reject a paper (Admin only)
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
  *     requestBody:
  *       required: true
  *       content:
@@ -109,6 +196,22 @@ router.patch(
  *               status:
  *                 type: string
  *                 enum: [draft, pending, approved, rejected]
+ *     responses:
+ *       200:
+ *         description: Status updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Paper'
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.patch(
   '/:id/status',
@@ -127,6 +230,18 @@ router.patch(
  *     summary: Delete a paper (Admin only)
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       204:
+ *         description: Paper deleted
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.delete('/:id', requireAuthentication, isAdmin, paperController.remove);
 

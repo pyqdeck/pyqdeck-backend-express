@@ -17,7 +17,31 @@ const router = Router();
  *         required: true
  *         schema: { type: string }
  *     responses:
- *       200: { description: Syllabus hierarchy }
+ *       200:
+ *         description: Syllabus hierarchy
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       allOf:
+ *                         - $ref: '#/components/schemas/Syllabus'
+ *                         - type: object
+ *                           properties:
+ *                             modules:
+ *                               type: array
+ *                               items:
+ *                                 allOf:
+ *                                   - $ref: '#/components/schemas/Module'
+ *                                   - type: object
+ *                                     properties:
+ *                                       topics:
+ *                                         type: array
+ *                                         items:
+ *                                           $ref: '#/components/schemas/Topic'
  */
 router.get(
   '/subject-offerings/:subjectOfferingId/syllabus',
@@ -43,7 +67,24 @@ router.get(
  *         name: limit
  *         schema: { type: integer, default: 20 }
  *     responses:
- *       200: { description: List of questions }
+ *       200:
+ *         description: List of questions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Question'
+ *                         pagination:
+ *                           $ref: '#/components/schemas/Pagination'
  */
 router.get(
   '/modules/:id/questions',
@@ -70,7 +111,24 @@ router.get(
  *         name: limit
  *         schema: { type: integer, default: 20 }
  *     responses:
- *       200: { description: List of questions }
+ *       200:
+ *         description: List of questions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Question'
+ *                         pagination:
+ *                           $ref: '#/components/schemas/Pagination'
  */
 router.get(
   '/topics/:id/questions',

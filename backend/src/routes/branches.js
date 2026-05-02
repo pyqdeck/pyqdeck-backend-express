@@ -35,6 +35,22 @@ const updateBranchSchema = branchZodSchema
  *     responses:
  *       200:
  *         description: Paginated branches
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Branch'
+ *                         pagination:
+ *                           $ref: '#/components/schemas/Pagination'
  */
 router.get('/', paginate(), branchController.list);
 
@@ -57,6 +73,15 @@ router.get('/', paginate(), branchController.list);
  *     responses:
  *       200:
  *         description: Branch details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Branch'
  *       404:
  *         $ref: '#/components/responses/NotFound'
  */
@@ -81,6 +106,24 @@ router.get('/:slug', branchController.getBySlug);
  *     responses:
  *       200:
  *         description: Course structure tree
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: array
+ *                       items:
+ *                         type: object
+ *                         properties:
+ *                           semester:
+ *                             $ref: '#/components/schemas/Semester'
+ *                           subjects:
+ *                             type: array
+ *                             items:
+ *                               $ref: '#/components/schemas/Subject'
  */
 router.get('/:id/structure', branchController.getStructure);
 
@@ -104,20 +147,19 @@ router.get('/:id/structure', branchController.getStructure);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required: [name, shortName, slug]
- *             properties:
- *               name: { type: string }
- *               shortName: { type: string }
- *               branchCode: { type: string }
- *               slug: { type: string }
- *               redirectSlugs:
- *                 type: array
- *                 items: { type: string }
- *               isActive: { type: boolean }
+ *             $ref: '#/components/schemas/Branch'
  *     responses:
  *       201:
  *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Branch'
  *       403:
  *         $ref: '#/components/responses/Forbidden'
  */
@@ -152,19 +194,19 @@ router.post(
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               name: { type: string }
- *               shortName: { type: string }
- *               branchCode: { type: string }
- *               slug: { type: string }
- *               redirectSlugs:
- *                 type: array
- *                 items: { type: string }
- *               isActive: { type: boolean }
+ *             $ref: '#/components/schemas/Branch'
  *     responses:
  *       200:
  *         description: Updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Branch'
  *       403:
  *         $ref: '#/components/responses/Forbidden'
  *       404:

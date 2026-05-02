@@ -37,6 +37,15 @@ const voteSchema = z.object({
  *     responses:
  *       200:
  *         description: Solution
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Solution'
  *       404:
  *         $ref: '#/components/responses/NotFound'
  */
@@ -61,11 +70,19 @@ router.get('/:id', solutionController.getById);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             description: Partial solution body (questionId and authorId cannot change)
+ *             $ref: '#/components/schemas/Solution'
  *     responses:
  *       200:
  *         description: Updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Solution'
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  *       404:
@@ -106,6 +123,15 @@ router.patch(
  *     responses:
  *       200:
  *         description: Status updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       $ref: '#/components/schemas/Solution'
  *       403:
  *         $ref: '#/components/responses/Forbidden'
  *       404:
@@ -147,6 +173,19 @@ router.patch(
  *     responses:
  *       200:
  *         description: Vote recorded
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         upvotes: { type: integer }
+ *                         downvotes: { type: integer }
+ *                         userVote: { type: string, enum: [up, down, none] }
  *       401:
  *         $ref: '#/components/responses/Unauthorized'
  *       404:
