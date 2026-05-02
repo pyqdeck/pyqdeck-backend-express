@@ -4,7 +4,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import Image from 'next/image';
 
 const steps = [
   {
@@ -84,7 +83,7 @@ export function HowItWorks() {
           >
             <div className="bg-primary/20 absolute -inset-4 rounded-3xl blur-3xl" />
             <div className="border-border bg-card relative overflow-hidden rounded-3xl border shadow-2xl">
-              <Image
+              <img
                 src="/images/laptop-mockup.png"
                 alt="PyqDeck Dashboard Mockup"
                 width={800}
