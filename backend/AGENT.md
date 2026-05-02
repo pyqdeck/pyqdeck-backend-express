@@ -35,7 +35,7 @@ Create a `.env` file. Required keys:
 | `RESEND_API_KEY`        | —                                   | Optional; email silently skipped if absent |
 | `MAIL_FROM`             | `noreply@example.com`               |                                            |
 | `APP_NAME`              | `Backend API`                       | Used in emails                             |
-| `APP_URL`               | `http://localhost:3000`             |                                            |
+| `APP_URL`               | `https://backend.pyqdeck.in/`       |                                            |
 | `RATE_LIMIT_WINDOW_MS`  | `900000`                            | 15 min                                     |
 | `RATE_LIMIT_MAX`        | `100`                               |                                            |
 | `DEBUG`                 | `false`                             | Enables debug logging                      |

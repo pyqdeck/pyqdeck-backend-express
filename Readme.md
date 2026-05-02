@@ -10,8 +10,9 @@ Express backend for the PYQDeck application.
 
 | Tool | Link | Description |
 | :--- | :--- | :--- |
+| **Base URL** | [backend.pyqdeck.in](https://backend.pyqdeck.in/) | Production API Environment |
 | **Public Status** | [pyqdeck.betteruptime.com](https://pyqdeck.betteruptime.com/) | 24/7 Uptime & Incident reporting |
-| **API Docs** | `/api-docs` | Interactive Swagger/OpenAPI documentation |
+| **API Docs** | [backend.pyqdeck.in/api-docs](https://backend.pyqdeck.in/api-docs) | Interactive Swagger/OpenAPI documentation |
 
 ## 🛠️ Tech Stack
 - **Runtime**: Node.js (Express)
