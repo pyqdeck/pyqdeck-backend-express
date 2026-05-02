@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "gen:api": "pnpm --prefix ../backend openapi:export && swagger-typescript-api generate -p ../backend/openapi.json -o ./src/lib -n api-generated.js --responses --axios"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
@@ -44,6 +45,7 @@
     "eslint-config-next": "16.2.4",
     "prettier": "^3.8.3",
     "prettier-plugin-tailwindcss": "^0.8.0",
+    "swagger-typescript-api": "^13.7.2",
     "tailwindcss": "^4"
   }
 }
