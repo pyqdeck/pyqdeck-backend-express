@@ -19,6 +19,7 @@ const statusSchema = z.object({ status: PaperStatus });
  * @openapi
  * /papers:
  *   get:
+ *     operationId: listPapers
  *     tags: [Papers]
  *     summary: List papers (public sees approved only)
  *     parameters:

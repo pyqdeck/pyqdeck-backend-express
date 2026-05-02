@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { Branch } from '../models/Branch.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
@@ -49,6 +50,42 @@ class BranchRepository {
     const branch = await Branch.findByIdAndDelete(id);
     if (!branch) throw new NotFoundError('Branch not found');
     return branch;
+  }
+
+  async getStructure(branchId) {
+    const results = await Branch.aggregate([
+      { $match: { _id: new mongoose.Types.ObjectId(branchId) } },
+      {
+        $lookup: {
+          from: 'semesters',
+          localField: '_id',
+          foreignField: 'branchId',
+          as: 'semesters',
+        },
+      },
+      { $unwind: { path: '$semesters', preserveNullAndEmptyArrays: true } },
+      {
+        $lookup: {
+          from: 'subjectofferings',
+          localField: 'semesters._id',
+          foreignField: 'semesterId',
+          as: 'semesters.subjects',
+        },
+      },
+      {
+        $group: {
+          _id: '$_id',
+          name: { $first: '$name' },
+          shortName: { $first: '$shortName' },
+          universityId: { $first: '$universityId' },
+          semesters: { $push: '$semesters' },
+        },
+      },
+      { $sort: { 'semesters.semesterNumber': 1 } },
+    ]);
+
+    if (!results.length) throw new NotFoundError('Branch not found');
+    return results[0];
   }
 }
 

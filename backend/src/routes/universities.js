@@ -16,6 +16,7 @@ const updateUniversitySchema = universityZodSchema.partial();
  * @openapi
  * /universities:
  *   get:
+ *     operationId: listUniversities
  *     tags: [Universities]
  *     summary: List all universities
  *     parameters:
@@ -38,6 +39,7 @@ router.get('/', paginate(), universityController.list);
  * @openapi
  * /universities/{slug}:
  *   get:
+ *     operationId: getUniversityBySlug
  *     tags: [Universities]
  *     summary: Get a university by slug
  *     parameters:
@@ -57,6 +59,7 @@ router.get('/:slug', universityController.getBySlug);
  * @openapi
  * /universities:
  *   post:
+ *     operationId: createUniversity
  *     tags: [Universities]
  *     summary: Create a university (Admin only)
  *     security:
@@ -85,10 +88,28 @@ router.post(
  * @openapi
  * /universities/{id}:
  *   patch:
+ *     operationId: updateUniversity
  *     tags: [Universities]
  *     summary: Update a university (Admin only)
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Updated
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.patch(
   '/:id',
@@ -102,10 +123,23 @@ router.patch(
  * @openapi
  * /universities/{id}:
  *   delete:
+ *     operationId: deleteUniversity
  *     tags: [Universities]
  *     summary: Delete a university (Admin only)
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Deleted
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.delete(
   '/:id',

@@ -9,6 +9,7 @@ const router = Router();
  * @openapi
  * /webhooks/clerk:
  *   post:
+ *     operationId: postClerkWebhook
  *     tags:
  *       - External Integrations
  *     summary: Clerk Webhook Handler (Users & Sessions)

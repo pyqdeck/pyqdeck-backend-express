@@ -64,6 +64,28 @@ router.get('/:slug', branchController.getBySlug);
 
 /**
  * @openapi
+ * /universities/{universityId}/branches/{id}/structure:
+ *   get:
+ *     operationId: getBranchStructure
+ *     tags: [Branches]
+ *     summary: Get full course structure (semesters and subjects) for a branch
+ *     parameters:
+ *       - in: path
+ *         name: universityId
+ *         required: true
+ *         schema: { type: string }
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Course structure tree
+ */
+router.get('/:id/structure', branchController.getStructure);
+
+/**
+ * @openapi
  * /universities/{universityId}/branches:
  *   post:
  *     operationId: createBranch

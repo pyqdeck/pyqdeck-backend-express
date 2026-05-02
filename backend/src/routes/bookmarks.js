@@ -14,14 +14,26 @@ router.use(requireAuthentication);
  * @openapi
  * /bookmarks:
  *   get:
+ *     operationId: listBookmarks
  *     tags: [Bookmarks]
  *     summary: List my bookmarks
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: type
  *         schema: { type: string, enum: [question, paper, solution] }
+ *       - in: query
+ *         name: page
+ *         schema: { type: integer, default: 1 }
+ *       - in: query
+ *         name: limit
+ *         schema: { type: integer, default: 20 }
  *     responses:
- *       200: { description: List of bookmarks }
+ *       200:
+ *         description: List of bookmarks
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
  */
 router.get('/', paginate(), bookmarkController.listMine);
 
@@ -29,8 +41,11 @@ router.get('/', paginate(), bookmarkController.listMine);
  * @openapi
  * /bookmarks/toggle:
  *   post:
+ *     operationId: toggleBookmark
  *     tags: [Bookmarks]
  *     summary: Toggle bookmark (add/remove)
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -43,7 +58,10 @@ router.get('/', paginate(), bookmarkController.listMine);
  *               targetType: { type: string, enum: [question, paper, solution] }
  *               note: { type: string }
  *     responses:
- *       200: { description: Toggled state }
+ *       200:
+ *         description: Toggled state
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
  */
 router.post(
   '/toggle',
@@ -53,12 +71,23 @@ router.post(
 
 /**
  * @openapi
- * /bookmarks/:id:
+ * /bookmarks/{id}:
  *   delete:
+ *     operationId: deleteBookmark
  *     tags: [Bookmarks]
- *     summary: Delete specific bookmark
+ *     summary: Delete a specific bookmark
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
  *     responses:
- *       204: { description: Deleted }
+ *       204:
+ *         description: Deleted
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
  */
 router.delete('/:id', bookmarkController.remove);
 

@@ -17,6 +17,10 @@ class BranchService {
     return branchRepository.findById(id);
   }
 
+  async getStructure(id) {
+    return branchRepository.getStructure(id);
+  }
+
   async create(data) {
     return branchRepository.create(data);
   }

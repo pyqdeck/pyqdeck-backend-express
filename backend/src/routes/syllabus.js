@@ -8,6 +8,7 @@ const router = Router();
  * @openapi
  * /subject-offerings/{subjectOfferingId}/syllabus:
  *   get:
+ *     operationId: getSyllabusBySubjectOffering
  *     tags: [Syllabus]
  *     summary: Get syllabus with modules and topics
  *     parameters:

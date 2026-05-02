@@ -23,6 +23,20 @@ export async function list(req, res, next) {
 }
 
 /**
+ * GET /api/v1/branches/:id/structure
+ */
+export async function getStructure(req, res, next) {
+  try {
+    const structure = await branchService.getStructure(req.params.id);
+    res.json(
+      successFormatter.formatSuccess(structure, 'Branch structure fetched')
+    );
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
  * GET /api/v1/universities/:universityId/branches/:slug
  */
 export async function getBySlug(req, res, next) {

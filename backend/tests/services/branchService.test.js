@@ -11,6 +11,7 @@ vi.mock('../../src/repositories/branchRepository.js', () => ({
     create: vi.fn(),
     update: vi.fn(),
     delete: vi.fn(),
+    getStructure: vi.fn(),
   },
 }));
 
@@ -100,6 +101,25 @@ describe('BranchService', () => {
       );
       await expect(branchService.getById('bad_id')).rejects.toThrow(
         NotFoundError
+      );
+    });
+  });
+
+  describe('getStructure', () => {
+    it('should return branch structure from repository', async () => {
+      const mockResult = { id: 'branch_1', semesters: [] };
+      branchRepository.getStructure.mockResolvedValue(mockResult);
+
+      const result = await branchService.getStructure('branch_1');
+
+      expect(branchRepository.getStructure).toHaveBeenCalledWith('branch_1');
+      expect(result).toEqual(mockResult);
+    });
+
+    it('should throw Error if repository fails', async () => {
+      branchRepository.getStructure.mockRejectedValue(new Error('err'));
+      await expect(branchService.getStructure('branch_1')).rejects.toThrow(
+        'err'
       );
     });
   });

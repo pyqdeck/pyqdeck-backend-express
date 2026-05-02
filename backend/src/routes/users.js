@@ -8,10 +8,16 @@ const router = Router();
  * @openapi
  * /users/me:
  *   get:
+ *     operationId: getCurrentUser
  *     tags: [Users]
- *     summary: Get my profile and stats
+ *     summary: Get my profile and activity stats
+ *     security:
+ *       - bearerAuth: []
  *     responses:
- *       200: { description: User data and activity stats }
+ *       200:
+ *         description: User record and bookmark/solution counts
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
  */
 router.get('/me', requireAuthentication, userController.getMe);
 

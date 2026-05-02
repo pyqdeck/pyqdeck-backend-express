@@ -14,24 +14,94 @@ const router = Router();
 const updateQuestionSchema = questionZodSchema.partial();
 
 /**
- * GET /api/v1/questions
- * Search questions with optional filters: ?type= ?difficulty= ?isVerified=
+ * @openapi
+ * /questions:
+ *   get:
+ *     operationId: searchQuestions
+ *     tags: [Questions]
+ *     summary: Search and list questions (paginated)
+ *     parameters:
+ *       - in: query
+ *         name: type
+ *         schema: { type: string }
+ *       - in: query
+ *         name: difficulty
+ *         schema: { type: string }
+ *       - in: query
+ *         name: isVerified
+ *         schema: { type: string, enum: [true, false] }
+ *       - in: query
+ *         name: page
+ *         schema: { type: integer, default: 1 }
+ *       - in: query
+ *         name: limit
+ *         schema: { type: integer, default: 20 }
+ *     responses:
+ *       200:
+ *         description: Paginated questions
  */
 router.get('/', paginate(), questionController.search);
 
 /**
- * GET /api/v1/questions/slug/:slug
+ * @openapi
+ * /questions/slug/{slug}:
+ *   get:
+ *     operationId: getQuestionBySlug
+ *     tags: [Questions]
+ *     summary: Get question by slug
+ *     parameters:
+ *       - in: path
+ *         name: slug
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Question
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.get('/slug/:slug', questionController.getBySlug);
 
 /**
- * GET /api/v1/questions/:id
+ * @openapi
+ * /questions/{id}:
+ *   get:
+ *     operationId: getQuestionById
+ *     tags: [Questions]
+ *     summary: Get question by id
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Question
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.get('/:id', questionController.getById);
 
 /**
- * POST /api/v1/questions
- * Standalone question creation. Editor / Admin only.
+ * @openapi
+ * /questions:
+ *   post:
+ *     operationId: createQuestion
+ *     tags: [Questions]
+ *     summary: Create a standalone question (Editor or Admin)
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Question'
+ *     responses:
+ *       201:
+ *         description: Created
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
  */
 router.post(
   '/',
@@ -42,8 +112,33 @@ router.post(
 );
 
 /**
- * PATCH /api/v1/questions/:id
- * Editor / Admin only
+ * @openapi
+ * /questions/{id}:
+ *   patch:
+ *     operationId: updateQuestion
+ *     tags: [Questions]
+ *     summary: Update a question (Editor or Admin)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             description: Partial question fields
+ *     responses:
+ *       200:
+ *         description: Updated
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.patch(
   '/:id',
@@ -54,8 +149,26 @@ router.patch(
 );
 
 /**
- * DELETE /api/v1/questions/:id
- * Admin only
+ * @openapi
+ * /questions/{id}:
+ *   delete:
+ *     operationId: deleteQuestion
+ *     tags: [Questions]
+ *     summary: Delete a question (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Deleted
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.delete(
   '/:id',

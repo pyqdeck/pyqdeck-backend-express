@@ -23,13 +23,53 @@ const voteSchema = z.object({
 });
 
 /**
- * GET /api/v1/solutions/:id
+ * @openapi
+ * /solutions/{id}:
+ *   get:
+ *     operationId: getSolutionById
+ *     tags: [Solutions]
+ *     summary: Get a solution by id
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Solution
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.get('/:id', solutionController.getById);
 
 /**
- * PATCH /api/v1/solutions/:id
- * Authenticated — update solution content
+ * @openapi
+ * /solutions/{id}:
+ *   patch:
+ *     operationId: updateSolution
+ *     tags: [Solutions]
+ *     summary: Update solution content (author or permitted roles)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             description: Partial solution body (questionId and authorId cannot change)
+ *     responses:
+ *       200:
+ *         description: Updated
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.patch(
   '/:id',
@@ -39,8 +79,37 @@ router.patch(
 );
 
 /**
- * PATCH /api/v1/solutions/:id/status
- * Admin only — approve or reject
+ * @openapi
+ * /solutions/{id}/status:
+ *   patch:
+ *     operationId: updateSolutionStatus
+ *     tags: [Solutions]
+ *     summary: Approve or reject a solution (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [status]
+ *             properties:
+ *               status:
+ *                 type: string
+ *                 enum: [draft, pending, approved, rejected]
+ *     responses:
+ *       200:
+ *         description: Status updated
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.patch(
   '/:id/status',
@@ -51,8 +120,37 @@ router.patch(
 );
 
 /**
- * POST /api/v1/solutions/:id/vote
- * Authenticated — upvote or downvote
+ * @openapi
+ * /solutions/{id}/vote:
+ *   post:
+ *     operationId: voteOnSolution
+ *     tags: [Solutions]
+ *     summary: Upvote or downvote a solution
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required: [type]
+ *             properties:
+ *               type:
+ *                 type: string
+ *                 enum: [up, down]
+ *     responses:
+ *       200:
+ *         description: Vote recorded
+ *       401:
+ *         $ref: '#/components/responses/Unauthorized'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.post(
   '/:id/vote',
@@ -62,8 +160,26 @@ router.post(
 );
 
 /**
- * DELETE /api/v1/solutions/:id
- * Admin only
+ * @openapi
+ * /solutions/{id}:
+ *   delete:
+ *     operationId: deleteSolution
+ *     tags: [Solutions]
+ *     summary: Delete a solution (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Deleted
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
+ *       404:
+ *         $ref: '#/components/responses/NotFound'
  */
 router.delete(
   '/:id',

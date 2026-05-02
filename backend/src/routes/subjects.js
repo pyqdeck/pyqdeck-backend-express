@@ -17,6 +17,7 @@ const updateSubjectSchema = subjectZodSchema.partial();
  * @openapi
  * /subjects:
  *   get:
+ *     operationId: listSubjects
  *     tags: [Subjects]
  *     summary: List all subjects
  *     parameters:
@@ -36,6 +37,7 @@ router.get('/', paginate(), subjectController.list);
  * @openapi
  * /subjects/{slug}:
  *   get:
+ *     operationId: getSubjectBySlug
  *     tags: [Subjects]
  *     summary: Get a subject by slug
  */
@@ -45,6 +47,7 @@ router.get('/:slug', subjectController.getBySlug);
  * @openapi
  * /subjects:
  *   post:
+ *     operationId: createSubject
  *     tags: [Subjects]
  *     summary: Create a subject (Editor / Admin only)
  *     security:
@@ -62,6 +65,7 @@ router.post(
  * @openapi
  * /subjects/{id}:
  *   patch:
+ *     operationId: updateSubject
  *     tags: [Subjects]
  *     summary: Update a subject (Editor / Admin only)
  *     security:

@@ -8,6 +8,7 @@ const router = Router();
  * @openapi
  * /health:
  *   get:
+ *     operationId: getHealth
  *     tags:
  *       - System
  *     summary: Basic health check
@@ -44,10 +45,13 @@ router.get('/health', healthController.healthCheck);
  * @openapi
  * /health/detailed:
  *   get:
+ *     operationId: getHealthDetailed
  *     tags:
  *       - System
  *     summary: Detailed system health
  *     description: Provides deep insights into system health, including database connectivity, memory usage, and process uptime.
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: All systems operational

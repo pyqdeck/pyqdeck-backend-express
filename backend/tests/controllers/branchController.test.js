@@ -10,6 +10,7 @@ vi.mock('../../src/services/branchService.js', () => ({
     create: vi.fn(),
     update: vi.fn(),
     delete: vi.fn(),
+    getStructure: vi.fn(),
   },
 }));
 
@@ -80,6 +81,28 @@ describe('branchController', () => {
     it('should call next on error', async () => {
       branchService.listByUniversity.mockRejectedValue(new Error('DB error'));
       await branchController.list(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
+    });
+  });
+
+  describe('getStructure', () => {
+    it('should return branch structure', async () => {
+      req.params.id = 'branch_1';
+      branchService.getStructure.mockResolvedValue({
+        id: 'branch_1',
+        semesters: [],
+      });
+
+      await branchController.getStructure(req, res, next);
+
+      expect(branchService.getStructure).toHaveBeenCalledWith('branch_1');
+      expect(res.json).toHaveBeenCalled();
+    });
+
+    it('should call next on error', async () => {
+      req.params.id = 'branch_1';
+      branchService.getStructure.mockRejectedValue(new Error('err'));
+      await branchController.getStructure(req, res, next);
       expect(next).toHaveBeenCalledWith(expect.any(Error));
     });
   });
