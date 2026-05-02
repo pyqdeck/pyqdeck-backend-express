@@ -27,12 +27,24 @@ Welcome to the **PYQDeck** monorepo. This repository contains both the high-perf
 
 -   `backend/`: Express API with Mongoose models, controllers, and comprehensive Vitest suites.
 -   `frontend/`: Next.js application with a type-safe SDK generated from the backend OpenAPI spec.
+-   `docs/`: Mintlify-based internal engineering documentation.
 
 ---
 
 ## 🎨 Design System & Documentation
 
-We use **Storybook** to document our UI component library in isolation. This ensures visual consistency and accessibility across the platform.
+We use **Storybook** for UI components and **Mintlify** for full engineering documentation.
+
+### Internal Engineering Docs
+
+Our internal docs site covers API references, architecture, and local development flows.
+
+-   **Live Site**: [docs.pyqdeck.in](https://docs.pyqdeck.in/)
+-   **Tech**: Mintlify with OpenAPI synchronization.
+
+### Component Library
+
+We use Storybook to document our UI component library in isolation. This ensures visual consistency and accessibility across the platform.
 
 -   **Live Preview**: [View Component Library](https://storybook.pyqdeck.in/)
 -   **Coverage**: 100% of core UI components (50+) documented with interactive stories.
