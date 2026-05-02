@@ -36,7 +36,7 @@ const mockUniversity = {
   description: 'A historic university in Mumbai.',
 };
 
-const FormWrapper = (args) => {
+const FormWrapper = ({ mockSubmitting = false, ...args }) => {
   const form = useForm({
     resolver: zodResolver(universitySchema),
     defaultValues: {
@@ -51,7 +51,16 @@ const FormWrapper = (args) => {
     },
   });
 
-  return <EditUniversityDialogView {...args} form={form} />;
+  // Override isSubmitting for visual testing
+  const proxiedForm = {
+    ...form,
+    formState: {
+      ...form.formState,
+      isSubmitting: mockSubmitting || form.formState.isSubmitting,
+    },
+  };
+
+  return <EditUniversityDialogView {...args} form={proxiedForm} />;
 };
 
 export const Default = {
@@ -60,7 +69,10 @@ export const Default = {
     university: mockUniversity,
     open: true,
     onOpenChange: fn(),
-    onSubmit: fn(),
+    onSubmit: async (data) => {
+      console.log('Update submitted:', data);
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    },
   },
 };
 
@@ -68,5 +80,6 @@ export const Submitting = {
   render: (args) => <FormWrapper {...args} />,
   args: {
     ...Default.args,
+    mockSubmitting: true,
   },
 };

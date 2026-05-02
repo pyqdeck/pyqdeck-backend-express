@@ -21,7 +21,7 @@ export default {
 };
 
 // A helper component to provide a real react-hook-form context
-const FormWrapper = (props) => {
+const FormWrapper = ({ mockSubmitting = false, ...props }) => {
   const form = useForm({
     resolver: zodResolver(universitySchema),
     defaultValues: {
@@ -33,7 +33,16 @@ const FormWrapper = (props) => {
     },
   });
 
-  return <AddUniversityDialogView {...props} form={form} />;
+  // Override isSubmitting for visual testing
+  const proxiedForm = {
+    ...form,
+    formState: {
+      ...form.formState,
+      isSubmitting: mockSubmitting || form.formState.isSubmitting,
+    },
+  };
+
+  return <AddUniversityDialogView {...props} form={proxiedForm} />;
 };
 
 export const Default = {
@@ -43,7 +52,7 @@ export const Default = {
     onOpenChange: () => {},
     onSubmit: async (data) => {
       console.log('Form submitted:', data);
-      return new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 2000));
     },
   },
 };
@@ -52,10 +61,6 @@ export const Submitting = {
   render: (args) => <FormWrapper {...args} />,
   args: {
     ...Default.args,
-    open: true,
-  },
-  parameters: {
-    // We can simulate submitting state by manually manipulating the form if needed,
-    // but the Default story already handles the async onSubmit.
+    mockSubmitting: true,
   },
 };

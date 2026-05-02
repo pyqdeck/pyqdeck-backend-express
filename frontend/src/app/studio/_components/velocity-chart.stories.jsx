@@ -1,10 +1,12 @@
 import { VelocityChartView } from './velocity-chart-view';
 
-export default {
+const meta = {
   title: 'Studio/Analytics/VelocityChart',
   component: VelocityChartView,
   tags: ['autodocs'],
 };
+
+export default meta;
 
 const mockData = [
   { date: '2024-05-01', papers: 5 },
