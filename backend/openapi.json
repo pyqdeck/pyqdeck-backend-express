@@ -12,7 +12,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000/api/v1",
+      "url": "http://localhost:5000/api/v1",
       "description": "Development server"
     }
   ],
@@ -1083,6 +1083,18 @@
             "type": "string",
             "example": "university-of-mumbai"
           },
+          "websiteUrl": {
+            "type": "string",
+            "example": "https://mu.ac.in"
+          },
+          "logo": {
+            "type": "string",
+            "example": "https://example.com/logo.png"
+          },
+          "description": {
+            "type": "string",
+            "example": "A premier institution for higher education."
+          },
           "state": {
             "type": "string",
             "example": "Maharashtra"
@@ -1458,6 +1470,89 @@
           },
           "401": {
             "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/branches": {
+      "get": {
+        "operationId": "listAllBranches",
+        "tags": [
+          "Branches"
+        ],
+        "summary": "List all branches across all universities",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "universityId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "in": "query",
+            "name": "isActive",
+            "schema": {
+              "type": "string",
+              "enum": [
+                true,
+                "all"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated branches",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "items": {
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/components/schemas/Branch"
+                              }
+                            },
+                            "pagination": {
+                              "$ref": "#/components/schemas/Pagination"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
           }
         }
       }

@@ -23,6 +23,34 @@ export async function list(req, res, next) {
 }
 
 /**
+ * GET /api/v1/branches
+ * Admin only
+ */
+export async function listAll(req, res, next) {
+  try {
+    const filter = {};
+    if (req.query.isActive !== 'all') filter.isActive = true;
+    if (req.query.universityId) filter.universityId = req.query.universityId;
+
+    const { items, total, page, limit } = await branchService.listAll(
+      filter,
+      req.pagination
+    );
+    res.json(
+      successFormatter.formatList(
+        items,
+        total,
+        page,
+        limit,
+        'All branches fetched'
+      )
+    );
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
  * GET /api/v1/branches/:id/structure
  */
 export async function getStructure(req, res, next) {

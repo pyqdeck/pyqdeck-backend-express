@@ -78,7 +78,8 @@ app.use(syncUser);
 // Routes
 app.use('/api/v1', healthRoutes);
 app.use('/api/v1/universities', universityRoutes);
-app.use('/api/v1/universities/:universityId/branches', branchRoutes);
+app.use('/api/v1/branches', branchRoutes); // Global routes
+app.use('/api/v1/universities/:universityId/branches', branchRoutes); // Nested routes
 app.use('/api/v1/branches/:branchId/semesters', semesterRoutes);
 app.use('/api/v1/subjects', subjectRoutes);
 app.use('/api/v1/subject-offerings', subjectOfferingRoutes);

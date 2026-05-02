@@ -24,6 +24,15 @@ import { z } from 'zod';
  *         slug:
  *           type: string
  *           example: university-of-mumbai
+ *         websiteUrl:
+ *           type: string
+ *           example: https://mu.ac.in
+ *         logo:
+ *           type: string
+ *           example: https://example.com/logo.png
+ *         description:
+ *           type: string
+ *           example: A premier institution for higher education.
  *         state:
  *           type: string
  *           example: Maharashtra
@@ -67,6 +76,18 @@ const universitySchema = new mongoose.Schema(
       required: true,
       unique: true,
       lowercase: true,
+      trim: true,
+    },
+    websiteUrl: {
+      type: String,
+      trim: true,
+    },
+    logo: {
+      type: String,
+      trim: true,
+    },
+    description: {
+      type: String,
       trim: true,
     },
     state: {
@@ -117,6 +138,13 @@ export const universityZodSchema = z.object({
   name: z.string().min(1, 'Name is required').max(200),
   shortName: z.string().min(1, 'Short name is required').max(20),
   slug: z.string().min(1, 'Slug is required').max(100),
+  websiteUrl: z
+    .string()
+    .url('Must be a valid URL')
+    .optional()
+    .or(z.literal('')),
+  logo: z.string().url('Must be a valid URL').optional().or(z.literal('')),
+  description: z.string().optional(),
   state: z.string().max(100).optional(),
   country: z.string().max(100).default('India'),
   redirectSlugs: z.array(z.string()).default([]),

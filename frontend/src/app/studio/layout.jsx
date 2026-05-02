@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Roboto } from 'next/font/google';
 
-import { Api } from '@/lib/api-generated';
+import { getApiServer } from '@/lib/api-server';
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
@@ -26,7 +26,7 @@ const roboto = Roboto({
 });
 
 export default async function StudioLayout({ children }) {
-  const { getToken, userId } = await auth();
+  const { userId } = await auth();
 
   if (!userId) {
     redirect('/sign-in');
@@ -34,16 +34,7 @@ export default async function StudioLayout({ children }) {
 
   let role = 'normal';
   try {
-    const api = new Api({
-      baseURL: (
-        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1'
-      ).replace(/\/+$/, ''),
-      securityWorker: async () => {
-        const token = await getToken();
-        return token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-      },
-    });
-
+    const api = await getApiServer();
     const res = await api.users.getCurrentUser();
     role = res.data.data?.user?.role || 'normal';
   } catch (error) {

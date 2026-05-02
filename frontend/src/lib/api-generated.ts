@@ -481,6 +481,12 @@ export interface University {
   shortName: string;
   /** @example "university-of-mumbai" */
   slug: string;
+  /** @example "https://mu.ac.in" */
+  websiteUrl?: string;
+  /** @example "https://example.com/logo.png" */
+  logo?: string;
+  /** @example "A premier institution for higher education." */
+  description?: string;
   /** @example "Maharashtra" */
   state?: string;
   /**
@@ -640,7 +646,7 @@ export class HttpClient<SecurityDataType = unknown> {
   }: ApiConfig<SecurityDataType> = {}) {
     this.instance = axios.create({
       ...axiosConfig,
-      baseURL: axiosConfig.baseURL || "http://localhost:3000/api/v1",
+      baseURL: axiosConfig.baseURL || "http://localhost:5000/api/v1",
     });
     this.secure = secure;
     this.format = format;
@@ -754,7 +760,7 @@ export class HttpClient<SecurityDataType = unknown> {
 /**
  * @title PYQDeck API Explorer
  * @version 1.0.0
- * @baseUrl http://localhost:3000/api/v1
+ * @baseUrl http://localhost:5000/api/v1
  * @contact PYQDeck Support <noreply@example.com> (http://localhost:3000/support)
  *
  *
@@ -909,6 +915,206 @@ export class Api<
     deleteBookmark: (id: string, params: RequestParams = {}) =>
       this.request<void, Error>({
         path: `/bookmarks/${id}`,
+        method: "DELETE",
+        secure: true,
+        ...params,
+      }),
+  };
+  branches = {
+    /**
+ * No description
+ *
+ * @tags Branches
+ * @name ListAllBranches
+ * @summary List all branches across all universities
+ * @request GET:/branches
+ * @response `200` `(SuccessResponse & {
+    data?: {
+    items?: (Branch)[],
+    pagination?: Pagination,
+
+},
+
+})` Paginated branches
+ */
+    listAllBranches: (
+      query?: {
+        universityId?: string;
+        /**
+         * @min 1
+         * @default 1
+         */
+        page?: number;
+        /**
+         * @min 1
+         * @max 100
+         * @default 20
+         */
+        limit?: number;
+        isActive?: true | "all";
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            items?: Branch[];
+            pagination?: Pagination;
+          };
+        },
+        any
+      >({
+        path: `/branches`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Semesters
+ * @name ListSemesters
+ * @summary List semesters for a branch
+ * @request GET:/branches/{branchId}/semesters
+ * @response `200` `(SuccessResponse & {
+    data?: (Semester)[],
+
+})` Semesters list
+ */
+    listSemesters: (branchId: string, params: RequestParams = {}) =>
+      this.request<
+        SuccessResponse & {
+          data?: Semester[];
+        },
+        any
+      >({
+        path: `/branches/${branchId}/semesters`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Semesters
+ * @name CreateSemester
+ * @summary Create a semester (Admin only)
+ * @request POST:/branches/{branchId}/semesters
+ * @secure
+ * @response `201` `(SuccessResponse & {
+    data?: Semester,
+
+})` Created
+ * @response `403` `Error`
+ */
+    createSemester: (
+      branchId: string,
+      data: Semester,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        SuccessResponse & {
+          data?: Semester;
+        },
+        Error
+      >({
+        path: `/branches/${branchId}/semesters`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Semesters
+ * @name GetSemesterByNumber
+ * @summary Get semester by number within a branch
+ * @request GET:/branches/{branchId}/semesters/{number}
+ * @response `200` `(SuccessResponse & {
+    data?: Semester,
+
+})` Semester details
+ * @response `404` `Error`
+ */
+    getSemesterByNumber: (
+      branchId: string,
+      number: number,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        SuccessResponse & {
+          data?: Semester;
+        },
+        Error
+      >({
+        path: `/branches/${branchId}/semesters/${number}`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Semesters
+ * @name UpdateSemester
+ * @summary Update a semester (Admin only)
+ * @request PATCH:/branches/{branchId}/semesters/{id}
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: Semester,
+
+})` Updated
+ * @response `403` `Error`
+ * @response `404` `Error`
+ */
+    updateSemester: (
+      branchId: string,
+      id: string,
+      data: Semester,
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        SuccessResponse & {
+          data?: Semester;
+        },
+        Error
+      >({
+        path: `/branches/${branchId}/semesters/${id}`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Semesters
+     * @name DeleteSemester
+     * @summary Delete a semester (Admin only)
+     * @request DELETE:/branches/{branchId}/semesters/{id}
+     * @secure
+     * @response `200` `void` Deleted
+     * @response `403` `Error`
+     * @response `404` `Error`
+     */
+    deleteSemester: (
+      branchId: string,
+      id: string,
+      params: RequestParams = {},
+    ) =>
+      this.request<void, Error>({
+        path: `/branches/${branchId}/semesters/${id}`,
         method: "DELETE",
         secure: true,
         ...params,
@@ -1981,156 +2187,6 @@ export class Api<
         method: "GET",
         query: query,
         format: "json",
-        ...params,
-      }),
-  };
-  branches = {
-    /**
- * No description
- *
- * @tags Semesters
- * @name ListSemesters
- * @summary List semesters for a branch
- * @request GET:/branches/{branchId}/semesters
- * @response `200` `(SuccessResponse & {
-    data?: (Semester)[],
-
-})` Semesters list
- */
-    listSemesters: (branchId: string, params: RequestParams = {}) =>
-      this.request<
-        SuccessResponse & {
-          data?: Semester[];
-        },
-        any
-      >({
-        path: `/branches/${branchId}/semesters`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
- * No description
- *
- * @tags Semesters
- * @name CreateSemester
- * @summary Create a semester (Admin only)
- * @request POST:/branches/{branchId}/semesters
- * @secure
- * @response `201` `(SuccessResponse & {
-    data?: Semester,
-
-})` Created
- * @response `403` `Error`
- */
-    createSemester: (
-      branchId: string,
-      data: Semester,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        SuccessResponse & {
-          data?: Semester;
-        },
-        Error
-      >({
-        path: `/branches/${branchId}/semesters`,
-        method: "POST",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
- * No description
- *
- * @tags Semesters
- * @name GetSemesterByNumber
- * @summary Get semester by number within a branch
- * @request GET:/branches/{branchId}/semesters/{number}
- * @response `200` `(SuccessResponse & {
-    data?: Semester,
-
-})` Semester details
- * @response `404` `Error`
- */
-    getSemesterByNumber: (
-      branchId: string,
-      number: number,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        SuccessResponse & {
-          data?: Semester;
-        },
-        Error
-      >({
-        path: `/branches/${branchId}/semesters/${number}`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
- * No description
- *
- * @tags Semesters
- * @name UpdateSemester
- * @summary Update a semester (Admin only)
- * @request PATCH:/branches/{branchId}/semesters/{id}
- * @secure
- * @response `200` `(SuccessResponse & {
-    data?: Semester,
-
-})` Updated
- * @response `403` `Error`
- * @response `404` `Error`
- */
-    updateSemester: (
-      branchId: string,
-      id: string,
-      data: Semester,
-      params: RequestParams = {},
-    ) =>
-      this.request<
-        SuccessResponse & {
-          data?: Semester;
-        },
-        Error
-      >({
-        path: `/branches/${branchId}/semesters/${id}`,
-        method: "PATCH",
-        body: data,
-        secure: true,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Semesters
-     * @name DeleteSemester
-     * @summary Delete a semester (Admin only)
-     * @request DELETE:/branches/{branchId}/semesters/{id}
-     * @secure
-     * @response `200` `void` Deleted
-     * @response `403` `Error`
-     * @response `404` `Error`
-     */
-    deleteSemester: (
-      branchId: string,
-      id: string,
-      params: RequestParams = {},
-    ) =>
-      this.request<void, Error>({
-        path: `/branches/${branchId}/semesters/${id}`,
-        method: "DELETE",
-        secure: true,
         ...params,
       }),
   };

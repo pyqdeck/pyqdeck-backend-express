@@ -9,6 +9,10 @@ class BranchService {
     );
   }
 
+  async listAll(filter = {}, pagination) {
+    return branchRepository.findAll(filter, pagination);
+  }
+
   async getBySlug(universityId, slug) {
     return branchRepository.findBySlug(universityId, slug);
   }

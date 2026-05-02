@@ -38,6 +38,20 @@ class BranchRepository {
     return paginate(Branch, { universityId, ...filter }, pagination);
   }
 
+  async findAll(filter = {}, pagination) {
+    // We don't use the paginate util here because we want population
+    const { page, limit, skip } = pagination;
+    const [items, total] = await Promise.all([
+      Branch.find(filter)
+        .populate('universityId', 'name shortName')
+        .skip(skip)
+        .limit(limit)
+        .sort({ name: 1 }),
+      Branch.countDocuments(filter),
+    ]);
+    return { items, total, page, limit };
+  }
+
   async update(id, data) {
     const branch = await Branch.findByIdAndUpdate(id, data, {
       returnDocument: 'after',

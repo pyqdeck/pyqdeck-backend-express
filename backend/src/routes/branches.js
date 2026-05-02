@@ -16,6 +16,43 @@ const updateBranchSchema = branchZodSchema
 
 /**
  * @openapi
+ * /branches:
+ *   get:
+ *     operationId: listAllBranches
+ *     tags: [Branches]
+ *     summary: List all branches across all universities
+ *     parameters:
+ *       - in: query
+ *         name: universityId
+ *         schema: { type: string }
+ *       - in: query
+ *         name: page
+ *         schema: { type: integer, minimum: 1, default: 1 }
+ *       - in: query
+ *         name: limit
+ *         schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+ *       - in: query
+ *         name: isActive
+ *         schema: { type: string, enum: [true, all] }
+ *     responses:
+ *       200:
+ *         description: Paginated branches
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Branch'
+ *                         pagination:
+ *                           $ref: '#/components/schemas/Pagination'
  * /universities/{universityId}/branches:
  *   get:
  *     operationId: listBranches
@@ -52,7 +89,12 @@ const updateBranchSchema = branchZodSchema
  *                         pagination:
  *                           $ref: '#/components/schemas/Pagination'
  */
-router.get('/', paginate(), branchController.list);
+router.get('/', paginate(), (req, res, next) => {
+  if (req.params.universityId) {
+    return branchController.list(req, res, next);
+  }
+  return branchController.listAll(req, res, next);
+});
 
 /**
  * @openapi

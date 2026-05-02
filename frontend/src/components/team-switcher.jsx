@@ -17,7 +17,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { BellIcon } from 'lucide-react';
 
 export function TeamSwitcher({ teams }) {
   const { isMobile } = useSidebar();
@@ -29,7 +28,7 @@ export function TeamSwitcher({ teams }) {
 
   return (
     <SidebarMenu>
-      <SidebarMenuItem className="flex items-center gap-1">
+      <SidebarMenuItem>
         <SidebarMenuButton
           size="lg"
           className="cursor-default hover:bg-transparent active:bg-transparent"
@@ -44,9 +43,6 @@ export function TeamSwitcher({ teams }) {
             </span>
           </div>
         </SidebarMenuButton>
-        <button className="text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground mr-2 rounded-lg p-2 transition-colors">
-          <BellIcon className="size-5" />
-        </button>
       </SidebarMenuItem>
     </SidebarMenu>
   );

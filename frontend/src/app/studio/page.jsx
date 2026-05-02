@@ -1,6 +1,5 @@
 import { Users, FileText, GraduationCap, Clock } from 'lucide-react';
-import { Api } from '@/lib/api-generated';
-import { auth } from '@clerk/nextjs/server';
+import { getApiServer } from '@/lib/api-server';
 
 import { VelocityChart } from './_components/velocity-chart';
 import { PopularityChart } from './_components/popularity-chart';
@@ -9,24 +8,11 @@ import { AiGenerationQueue } from './_components/ai-generation-queue';
 import { MetricCard } from './_components/metric-card';
 
 export default async function StudioPage() {
-  const { getToken } = await auth();
-
-  const api = new Api({
-    baseURL: (
-      process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1'
-    ).replace(/\/+$/, ''),
-    securityWorker: async () => {
-      const token = await getToken();
-      return token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-    },
-  });
+  const api = await getApiServer();
 
   let dashboardData = null;
   try {
-    const token = await getToken();
-    const res = await api.analytics.studioOverviewList({
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await api.analytics.studioOverviewList();
     dashboardData = res.data.data;
   } catch (error) {
     console.error(
