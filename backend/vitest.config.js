@@ -6,14 +6,15 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['./tests/setup.js'],
     include: ['tests/**/*.test.js'],
-    hookTimeout: 120000,
-    testTimeout: 120000,
     pool: 'forks',
     poolOptions: {
       forks: {
         singleFork: true,
       },
     },
+    // Increased timeouts for heavy CI/local runs
+    hookTimeout: 120000,
+    testTimeout: 120000,
     reporters: ['default', 'junit'],
     outputFile: 'test-report.junit.xml',
     coverage: {
