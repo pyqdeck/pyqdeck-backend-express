@@ -41,5 +41,12 @@ describe('searchController', () => {
       );
       expect(res.json).toHaveBeenCalled();
     });
+
+    it('should call next on error', async () => {
+      req.query.q = 'calculus';
+      searchService.unifiedSearch.mockRejectedValue(new Error('err'));
+      await searchController.unifiedSearch(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
+    });
   });
 });

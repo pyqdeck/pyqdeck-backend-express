@@ -41,6 +41,12 @@ describe('bookmarkController', () => {
       );
       expect(res.json).toHaveBeenCalled();
     });
+
+    it('should call next on error', async () => {
+      bookmarkService.listMine.mockRejectedValue(new Error('err'));
+      await bookmarkController.listMine(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
+    });
   });
 
   describe('toggle', () => {
@@ -51,6 +57,12 @@ describe('bookmarkController', () => {
       expect(bookmarkService.toggle).toHaveBeenCalledWith('user_1', req.body);
       expect(res.json).toHaveBeenCalled();
     });
+
+    it('should call next on error', async () => {
+      bookmarkService.toggle.mockRejectedValue(new Error('err'));
+      await bookmarkController.toggle(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
+    });
   });
 
   describe('remove', () => {
@@ -60,6 +72,12 @@ describe('bookmarkController', () => {
       await bookmarkController.remove(req, res, next);
       expect(bookmarkService.remove).toHaveBeenCalledWith('b1', 'user_1');
       expect(res.status).toHaveBeenCalledWith(204);
+    });
+
+    it('should call next on error', async () => {
+      bookmarkService.remove.mockRejectedValue(new Error('err'));
+      await bookmarkController.remove(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
     });
   });
 });

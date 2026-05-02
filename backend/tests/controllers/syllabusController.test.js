@@ -33,6 +33,13 @@ describe('syllabusController', () => {
       expect(syllabusService.getBySubjectOffering).toHaveBeenCalledWith('so1');
       expect(res.json).toHaveBeenCalled();
     });
+
+    it('should call next on error', async () => {
+      req.params.subjectOfferingId = 'so1';
+      syllabusService.getBySubjectOffering.mockRejectedValue(new Error('err'));
+      await syllabusController.getBySubjectOffering(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
+    });
   });
 
   describe('getModuleQuestions', () => {
@@ -46,6 +53,13 @@ describe('syllabusController', () => {
       });
       await syllabusController.getModuleQuestions(req, res, next);
       expect(res.json).toHaveBeenCalled();
+    });
+
+    it('should call next on error', async () => {
+      req.params.id = 'm1';
+      syllabusService.getModuleQuestions.mockRejectedValue(new Error('err'));
+      await syllabusController.getModuleQuestions(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
     });
   });
 });

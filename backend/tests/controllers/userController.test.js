@@ -51,5 +51,11 @@ describe('userController', () => {
         })
       );
     });
+
+    it('should call next on error', async () => {
+      bookmarkRepository.findByUser.mockRejectedValue(new Error('err'));
+      await userController.getMe(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
+    });
   });
 });

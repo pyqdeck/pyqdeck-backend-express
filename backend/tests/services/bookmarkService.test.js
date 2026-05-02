@@ -37,6 +37,15 @@ describe('BookmarkService', () => {
       expect(result.bookmarked).toBe(false);
     });
 
+    it('should throw error if repository throws non-NotFoundError', async () => {
+      const unexpectedError = new Error('DB Error');
+      bookmarkRepository.findByUserAndTarget.mockRejectedValue(unexpectedError);
+
+      await expect(
+        bookmarkService.toggle(userId, { targetId, targetType })
+      ).rejects.toThrow('DB Error');
+    });
+
     it('should create bookmark if it does not exist', async () => {
       bookmarkRepository.findByUserAndTarget.mockRejectedValue(
         new NotFoundError('Not found')
@@ -50,6 +59,25 @@ describe('BookmarkService', () => {
 
       expect(bookmarkRepository.create).toHaveBeenCalled();
       expect(result.bookmarked).toBe(true);
+    });
+  });
+
+  describe('remove', () => {
+    it('should throw NotFoundError if bookmark belongs to another user', async () => {
+      bookmarkRepository.findById.mockResolvedValue({ userId: 'other_user' });
+
+      await expect(bookmarkService.remove('b1', userId)).rejects.toThrow(
+        NotFoundError
+      );
+    });
+
+    it('should delete bookmark if it belongs to user', async () => {
+      bookmarkRepository.findById.mockResolvedValue({ userId: userId });
+      bookmarkRepository.delete.mockResolvedValue({ id: 'b1' });
+
+      await bookmarkService.remove('b1', userId);
+
+      expect(bookmarkRepository.delete).toHaveBeenCalledWith('b1');
     });
   });
 });
