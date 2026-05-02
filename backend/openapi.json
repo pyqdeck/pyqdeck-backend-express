@@ -193,11 +193,7 @@
       },
       "Bookmark": {
         "type": "object",
-        "required": [
-          "userId",
-          "targetType",
-          "targetId"
-        ],
+        "required": ["userId", "targetType", "targetId"],
         "properties": {
           "id": {
             "type": "string"
@@ -208,11 +204,7 @@
           },
           "targetType": {
             "type": "string",
-            "enum": [
-              "question",
-              "paper",
-              "solution"
-            ]
+            "enum": ["question", "paper", "solution"]
           },
           "targetId": {
             "type": "string",
@@ -234,12 +226,7 @@
       },
       "Branch": {
         "type": "object",
-        "required": [
-          "universityId",
-          "name",
-          "shortName",
-          "slug"
-        ],
+        "required": ["universityId", "name", "shortName", "slug"],
         "properties": {
           "id": {
             "type": "string"
@@ -283,12 +270,7 @@
       },
       "Module": {
         "type": "object",
-        "required": [
-          "syllabusId",
-          "moduleNumber",
-          "title",
-          "slug"
-        ],
+        "required": ["syllabusId", "moduleNumber", "title", "slug"],
         "properties": {
           "id": {
             "type": "string"
@@ -397,12 +379,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "draft",
-              "pending",
-              "approved",
-              "rejected"
-            ],
+            "enum": ["draft", "pending", "approved", "rejected"],
             "default": "pending"
           },
           "createdAt": {
@@ -417,10 +394,7 @@
       },
       "Question": {
         "type": "object",
-        "required": [
-          "text",
-          "type"
-        ],
+        "required": ["text", "type"],
         "properties": {
           "id": {
             "type": "string"
@@ -434,21 +408,11 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "mcq",
-              "short",
-              "long",
-              "numerical",
-              "coding"
-            ]
+            "enum": ["mcq", "short", "long", "numerical", "coding"]
           },
           "difficulty": {
             "type": "string",
-            "enum": [
-              "easy",
-              "medium",
-              "hard"
-            ]
+            "enum": ["easy", "medium", "hard"]
           },
           "bloomLevel": {
             "type": "string",
@@ -522,10 +486,7 @@
       },
       "QuestionPaperMap": {
         "type": "object",
-        "required": [
-          "paperId",
-          "questionId"
-        ],
+        "required": ["paperId", "questionId"],
         "properties": {
           "id": {
             "type": "string"
@@ -569,9 +530,7 @@
       },
       "QuestionSyllabusMap": {
         "type": "object",
-        "required": [
-          "questionId"
-        ],
+        "required": ["questionId"],
         "properties": {
           "id": {
             "type": "string"
@@ -596,10 +555,7 @@
           },
           "mappedBy": {
             "type": "string",
-            "enum": [
-              "manual",
-              "ai"
-            ],
+            "enum": ["manual", "ai"],
             "default": "manual"
           },
           "verified": {
@@ -618,11 +574,7 @@
       },
       "Semester": {
         "type": "object",
-        "required": [
-          "branchId",
-          "number",
-          "slug"
-        ],
+        "required": ["branchId", "number", "slug"],
         "properties": {
           "id": {
             "type": "string"
@@ -656,11 +608,7 @@
       },
       "Solution": {
         "type": "object",
-        "required": [
-          "questionId",
-          "authorId",
-          "type"
-        ],
+        "required": ["questionId", "authorId", "type"],
         "properties": {
           "id": {
             "type": "string"
@@ -675,11 +623,7 @@
           },
           "type": {
             "type": "string",
-            "enum": [
-              "teacher",
-              "student",
-              "ai"
-            ]
+            "enum": ["teacher", "student", "ai"]
           },
           "content": {
             "type": "string",
@@ -715,12 +659,7 @@
           },
           "status": {
             "type": "string",
-            "enum": [
-              "draft",
-              "pending",
-              "approved",
-              "rejected"
-            ],
+            "enum": ["draft", "pending", "approved", "rejected"],
             "default": "pending"
           },
           "createdAt": {
@@ -735,10 +674,7 @@
       },
       "Subject": {
         "type": "object",
-        "required": [
-          "name",
-          "slug"
-        ],
+        "required": ["name", "slug"],
         "properties": {
           "id": {
             "type": "string"
@@ -839,9 +775,7 @@
       },
       "Syllabus": {
         "type": "object",
-        "required": [
-          "subjectOfferingId"
-        ],
+        "required": ["subjectOfferingId"],
         "properties": {
           "id": {
             "type": "string"
@@ -869,10 +803,7 @@
       },
       "Tag": {
         "type": "object",
-        "required": [
-          "name",
-          "slug"
-        ],
+        "required": ["name", "slug"],
         "properties": {
           "id": {
             "type": "string"
@@ -909,11 +840,7 @@
       },
       "Topic": {
         "type": "object",
-        "required": [
-          "moduleId",
-          "title",
-          "slug"
-        ],
+        "required": ["moduleId", "title", "slug"],
         "properties": {
           "id": {
             "type": "string"
@@ -961,11 +888,7 @@
       },
       "University": {
         "type": "object",
-        "required": [
-          "name",
-          "shortName",
-          "slug"
-        ],
+        "required": ["name", "shortName", "slug"],
         "properties": {
           "id": {
             "type": "string"
@@ -1009,10 +932,7 @@
       },
       "Upload": {
         "type": "object",
-        "required": [
-          "url",
-          "uploadedBy"
-        ],
+        "required": ["url", "uploadedBy"],
         "properties": {
           "id": {
             "type": "string"
@@ -1049,11 +969,7 @@
       },
       "User": {
         "type": "object",
-        "required": [
-          "clerkId",
-          "name",
-          "email"
-        ],
+        "required": ["clerkId", "name", "email"],
         "properties": {
           "id": {
             "type": "string",
@@ -1089,11 +1005,7 @@
           },
           "role": {
             "type": "string",
-            "enum": [
-              "normal",
-              "admin",
-              "editor"
-            ],
+            "enum": ["normal", "admin", "editor"],
             "default": "normal",
             "description": "The role of the user"
           },
@@ -1117,9 +1029,7 @@
     "/bookmarks": {
       "get": {
         "operationId": "listBookmarks",
-        "tags": [
-          "Bookmarks"
-        ],
+        "tags": ["Bookmarks"],
         "summary": "List my bookmarks",
         "security": [
           {
@@ -1132,11 +1042,7 @@
             "name": "type",
             "schema": {
               "type": "string",
-              "enum": [
-                "question",
-                "paper",
-                "solution"
-              ]
+              "enum": ["question", "paper", "solution"]
             }
           },
           {
@@ -1169,9 +1075,7 @@
     "/bookmarks/toggle": {
       "post": {
         "operationId": "toggleBookmark",
-        "tags": [
-          "Bookmarks"
-        ],
+        "tags": ["Bookmarks"],
         "summary": "Toggle bookmark (add/remove)",
         "security": [
           {
@@ -1184,21 +1088,14 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "targetId",
-                  "targetType"
-                ],
+                "required": ["targetId", "targetType"],
                 "properties": {
                   "targetId": {
                     "type": "string"
                   },
                   "targetType": {
                     "type": "string",
-                    "enum": [
-                      "question",
-                      "paper",
-                      "solution"
-                    ]
+                    "enum": ["question", "paper", "solution"]
                   },
                   "note": {
                     "type": "string"
@@ -1221,9 +1118,7 @@
     "/bookmarks/{id}": {
       "delete": {
         "operationId": "deleteBookmark",
-        "tags": [
-          "Bookmarks"
-        ],
+        "tags": ["Bookmarks"],
         "summary": "Delete a specific bookmark",
         "security": [
           {
@@ -1253,9 +1148,7 @@
     "/universities/{universityId}/branches": {
       "get": {
         "operationId": "listBranches",
-        "tags": [
-          "Branches"
-        ],
+        "tags": ["Branches"],
         "summary": "List branches for a university",
         "parameters": [
           {
@@ -1294,9 +1187,7 @@
       },
       "post": {
         "operationId": "createBranch",
-        "tags": [
-          "Branches"
-        ],
+        "tags": ["Branches"],
         "summary": "Create a branch (Admin only)",
         "security": [
           {
@@ -1320,11 +1211,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "name",
-                  "shortName",
-                  "slug"
-                ],
+                "required": ["name", "shortName", "slug"],
                 "properties": {
                   "name": {
                     "type": "string"
@@ -1365,9 +1252,7 @@
     "/universities/{universityId}/branches/{slug}": {
       "get": {
         "operationId": "getBranchBySlug",
-        "tags": [
-          "Branches"
-        ],
+        "tags": ["Branches"],
         "summary": "Get a branch by slug under a university",
         "parameters": [
           {
@@ -1400,9 +1285,7 @@
     "/universities/{universityId}/branches/{id}/structure": {
       "get": {
         "operationId": "getBranchStructure",
-        "tags": [
-          "Branches"
-        ],
+        "tags": ["Branches"],
         "summary": "Get full course structure (semesters and subjects) for a branch",
         "parameters": [
           {
@@ -1432,9 +1315,7 @@
     "/universities/{universityId}/branches/{id}": {
       "patch": {
         "operationId": "updateBranch",
-        "tags": [
-          "Branches"
-        ],
+        "tags": ["Branches"],
         "summary": "Update a branch (Admin only)",
         "security": [
           {
@@ -1506,9 +1387,7 @@
       },
       "delete": {
         "operationId": "deleteBranch",
-        "tags": [
-          "Branches"
-        ],
+        "tags": ["Branches"],
         "summary": "Delete a branch (Admin only)",
         "security": [
           {
@@ -1549,9 +1428,7 @@
     "/health": {
       "get": {
         "operationId": "getHealth",
-        "tags": [
-          "System"
-        ],
+        "tags": ["System"],
         "summary": "Basic health check",
         "description": "Returns the operational status of the API instance. Used by load balancers and uptime monitors.",
         "responses": {
@@ -1597,9 +1474,7 @@
     "/health/detailed": {
       "get": {
         "operationId": "getHealthDetailed",
-        "tags": [
-          "System"
-        ],
+        "tags": ["System"],
         "summary": "Detailed system health",
         "description": "Provides deep insights into system health, including database connectivity, memory usage, and process uptime.",
         "security": [
@@ -1670,9 +1545,7 @@
     "/papers/{paperId}/questions": {
       "get": {
         "operationId": "listQuestionsForPaper",
-        "tags": [
-          "PaperQuestions"
-        ],
+        "tags": ["PaperQuestions"],
         "summary": "List questions linked to a paper (ordered)",
         "parameters": [
           {
@@ -1708,9 +1581,7 @@
       },
       "post": {
         "operationId": "createQuestionForPaper",
-        "tags": [
-          "PaperQuestions"
-        ],
+        "tags": ["PaperQuestions"],
         "summary": "Create a question and link it to this paper (Editor or Admin)",
         "security": [
           {
@@ -1750,9 +1621,7 @@
     "/papers/{paperId}/questions/{questionId}/link": {
       "post": {
         "operationId": "linkQuestionToPaper",
-        "tags": [
-          "PaperQuestions"
-        ],
+        "tags": ["PaperQuestions"],
         "summary": "Link an existing question to this paper (Editor or Admin)",
         "security": [
           {
@@ -1800,9 +1669,7 @@
     "/papers/{paperId}/questions/{questionId}/solutions": {
       "get": {
         "operationId": "listSolutionsForPaperQuestion",
-        "tags": [
-          "PaperQuestions"
-        ],
+        "tags": ["PaperQuestions"],
         "summary": "List solutions for a question in the context of a paper",
         "parameters": [
           {
@@ -1846,9 +1713,7 @@
       },
       "post": {
         "operationId": "createSolutionForPaperQuestion",
-        "tags": [
-          "PaperQuestions"
-        ],
+        "tags": ["PaperQuestions"],
         "summary": "Post a new solution for this question (authenticated)",
         "security": [
           {
@@ -1897,9 +1762,7 @@
     "/papers": {
       "get": {
         "operationId": "listPapers",
-        "tags": [
-          "Papers"
-        ],
+        "tags": ["Papers"],
         "summary": "List papers (public sees approved only)",
         "parameters": [
           {
@@ -1948,9 +1811,7 @@
       },
       "post": {
         "operationId": "createPaper",
-        "tags": [
-          "Papers"
-        ],
+        "tags": ["Papers"],
         "summary": "Submit a new paper (Editor / Admin)",
         "security": [
           {
@@ -1962,18 +1823,14 @@
     "/papers/{slug}": {
       "get": {
         "operationId": "getPaperBySlug",
-        "tags": [
-          "Papers"
-        ],
+        "tags": ["Papers"],
         "summary": "Get a paper by slug"
       }
     },
     "/papers/{id}": {
       "patch": {
         "operationId": "updatePaper",
-        "tags": [
-          "Papers"
-        ],
+        "tags": ["Papers"],
         "summary": "Update a paper (Editor / Admin)",
         "security": [
           {
@@ -1983,9 +1840,7 @@
       },
       "delete": {
         "operationId": "deletePaper",
-        "tags": [
-          "Papers"
-        ],
+        "tags": ["Papers"],
         "summary": "Delete a paper (Admin only)",
         "security": [
           {
@@ -1997,9 +1852,7 @@
     "/papers/{id}/status": {
       "patch": {
         "operationId": "updatePaperStatus",
-        "tags": [
-          "Papers"
-        ],
+        "tags": ["Papers"],
         "summary": "Approve or reject a paper (Admin only)",
         "security": [
           {
@@ -2015,12 +1868,7 @@
                 "properties": {
                   "status": {
                     "type": "string",
-                    "enum": [
-                      "draft",
-                      "pending",
-                      "approved",
-                      "rejected"
-                    ]
+                    "enum": ["draft", "pending", "approved", "rejected"]
                   }
                 }
               }
@@ -2032,9 +1880,7 @@
     "/questions": {
       "get": {
         "operationId": "searchQuestions",
-        "tags": [
-          "Questions"
-        ],
+        "tags": ["Questions"],
         "summary": "Search and list questions (paginated)",
         "parameters": [
           {
@@ -2056,10 +1902,7 @@
             "name": "isVerified",
             "schema": {
               "type": "string",
-              "enum": [
-                true,
-                false
-              ]
+              "enum": [true, false]
             }
           },
           {
@@ -2087,9 +1930,7 @@
       },
       "post": {
         "operationId": "createQuestion",
-        "tags": [
-          "Questions"
-        ],
+        "tags": ["Questions"],
         "summary": "Create a standalone question (Editor or Admin)",
         "security": [
           {
@@ -2119,9 +1960,7 @@
     "/questions/slug/{slug}": {
       "get": {
         "operationId": "getQuestionBySlug",
-        "tags": [
-          "Questions"
-        ],
+        "tags": ["Questions"],
         "summary": "Get question by slug",
         "parameters": [
           {
@@ -2146,9 +1985,7 @@
     "/questions/{id}": {
       "get": {
         "operationId": "getQuestionById",
-        "tags": [
-          "Questions"
-        ],
+        "tags": ["Questions"],
         "summary": "Get question by id",
         "parameters": [
           {
@@ -2171,9 +2008,7 @@
       },
       "patch": {
         "operationId": "updateQuestion",
-        "tags": [
-          "Questions"
-        ],
+        "tags": ["Questions"],
         "summary": "Update a question (Editor or Admin)",
         "security": [
           {
@@ -2215,9 +2050,7 @@
       },
       "delete": {
         "operationId": "deleteQuestion",
-        "tags": [
-          "Questions"
-        ],
+        "tags": ["Questions"],
         "summary": "Delete a question (Admin only)",
         "security": [
           {
@@ -2250,9 +2083,7 @@
     "/search": {
       "get": {
         "operationId": "unifiedSearch",
-        "tags": [
-          "Search"
-        ],
+        "tags": ["Search"],
         "summary": "Global unified search across catalog entities",
         "parameters": [
           {
@@ -2291,9 +2122,7 @@
     "/branches/{branchId}/semesters": {
       "get": {
         "operationId": "listSemesters",
-        "tags": [
-          "Semesters"
-        ],
+        "tags": ["Semesters"],
         "summary": "List semesters for a branch",
         "parameters": [
           {
@@ -2313,9 +2142,7 @@
       },
       "post": {
         "operationId": "createSemester",
-        "tags": [
-          "Semesters"
-        ],
+        "tags": ["Semesters"],
         "summary": "Create a semester (Admin only)",
         "security": [
           {
@@ -2339,10 +2166,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "number",
-                  "slug"
-                ],
+                "required": ["number", "slug"],
                 "properties": {
                   "number": {
                     "type": "integer",
@@ -2373,9 +2197,7 @@
     "/branches/{branchId}/semesters/{number}": {
       "get": {
         "operationId": "getSemesterByNumber",
-        "tags": [
-          "Semesters"
-        ],
+        "tags": ["Semesters"],
         "summary": "Get semester by number within a branch",
         "parameters": [
           {
@@ -2408,9 +2230,7 @@
     "/branches/{branchId}/semesters/{id}": {
       "patch": {
         "operationId": "updateSemester",
-        "tags": [
-          "Semesters"
-        ],
+        "tags": ["Semesters"],
         "summary": "Update a semester (Admin only)",
         "security": [
           {
@@ -2472,9 +2292,7 @@
       },
       "delete": {
         "operationId": "deleteSemester",
-        "tags": [
-          "Semesters"
-        ],
+        "tags": ["Semesters"],
         "summary": "Delete a semester (Admin only)",
         "security": [
           {
@@ -2515,9 +2333,7 @@
     "/seo/sitemap-data": {
       "get": {
         "operationId": "getSitemapData",
-        "tags": [
-          "SEO"
-        ],
+        "tags": ["SEO"],
         "summary": "Get all public URLs for sitemap generation",
         "responses": {
           "200": {
@@ -2529,9 +2345,7 @@
     "/solutions/{id}": {
       "get": {
         "operationId": "getSolutionById",
-        "tags": [
-          "Solutions"
-        ],
+        "tags": ["Solutions"],
         "summary": "Get a solution by id",
         "parameters": [
           {
@@ -2554,9 +2368,7 @@
       },
       "patch": {
         "operationId": "updateSolution",
-        "tags": [
-          "Solutions"
-        ],
+        "tags": ["Solutions"],
         "summary": "Update solution content (author or permitted roles)",
         "security": [
           {
@@ -2598,9 +2410,7 @@
       },
       "delete": {
         "operationId": "deleteSolution",
-        "tags": [
-          "Solutions"
-        ],
+        "tags": ["Solutions"],
         "summary": "Delete a solution (Admin only)",
         "security": [
           {
@@ -2633,9 +2443,7 @@
     "/solutions/{id}/status": {
       "patch": {
         "operationId": "updateSolutionStatus",
-        "tags": [
-          "Solutions"
-        ],
+        "tags": ["Solutions"],
         "summary": "Approve or reject a solution (Admin only)",
         "security": [
           {
@@ -2658,18 +2466,11 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "status"
-                ],
+                "required": ["status"],
                 "properties": {
                   "status": {
                     "type": "string",
-                    "enum": [
-                      "draft",
-                      "pending",
-                      "approved",
-                      "rejected"
-                    ]
+                    "enum": ["draft", "pending", "approved", "rejected"]
                   }
                 }
               }
@@ -2692,9 +2493,7 @@
     "/solutions/{id}/vote": {
       "post": {
         "operationId": "voteOnSolution",
-        "tags": [
-          "Solutions"
-        ],
+        "tags": ["Solutions"],
         "summary": "Upvote or downvote a solution",
         "security": [
           {
@@ -2717,16 +2516,11 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "type"
-                ],
+                "required": ["type"],
                 "properties": {
                   "type": {
                     "type": "string",
-                    "enum": [
-                      "up",
-                      "down"
-                    ]
+                    "enum": ["up", "down"]
                   }
                 }
               }
@@ -2749,9 +2543,7 @@
     "/subject-offerings": {
       "get": {
         "operationId": "listSubjectOfferings",
-        "tags": [
-          "SubjectOfferings"
-        ],
+        "tags": ["SubjectOfferings"],
         "summary": "List subject offerings (filter by university, branch, and/or semester)",
         "parameters": [
           {
@@ -2782,10 +2574,7 @@
             "name": "isActive",
             "schema": {
               "type": "string",
-              "enum": [
-                true,
-                "all"
-              ]
+              "enum": [true, "all"]
             }
           },
           {
@@ -2813,9 +2602,7 @@
       },
       "post": {
         "operationId": "createSubjectOffering",
-        "tags": [
-          "SubjectOfferings"
-        ],
+        "tags": ["SubjectOfferings"],
         "summary": "Create a subject offering (Editor or Admin)",
         "security": [
           {
@@ -2845,9 +2632,7 @@
     "/subject-offerings/id/{id}": {
       "get": {
         "operationId": "getSubjectOfferingById",
-        "tags": [
-          "SubjectOfferings"
-        ],
+        "tags": ["SubjectOfferings"],
         "summary": "Get a subject offering by id",
         "parameters": [
           {
@@ -2872,9 +2657,7 @@
     "/subject-offerings/{slug}": {
       "get": {
         "operationId": "getSubjectOfferingBySlug",
-        "tags": [
-          "SubjectOfferings"
-        ],
+        "tags": ["SubjectOfferings"],
         "summary": "Get a subject offering by slug",
         "parameters": [
           {
@@ -2899,9 +2682,7 @@
     "/subject-offerings/{id}": {
       "patch": {
         "operationId": "updateSubjectOffering",
-        "tags": [
-          "SubjectOfferings"
-        ],
+        "tags": ["SubjectOfferings"],
         "summary": "Update a subject offering (Admin only)",
         "security": [
           {
@@ -2943,9 +2724,7 @@
       },
       "delete": {
         "operationId": "deleteSubjectOffering",
-        "tags": [
-          "SubjectOfferings"
-        ],
+        "tags": ["SubjectOfferings"],
         "summary": "Delete a subject offering (Admin only)",
         "security": [
           {
@@ -2978,9 +2757,7 @@
     "/subjects": {
       "get": {
         "operationId": "listSubjects",
-        "tags": [
-          "Subjects"
-        ],
+        "tags": ["Subjects"],
         "summary": "List all subjects",
         "parameters": [
           {
@@ -3008,9 +2785,7 @@
       },
       "post": {
         "operationId": "createSubject",
-        "tags": [
-          "Subjects"
-        ],
+        "tags": ["Subjects"],
         "summary": "Create a subject (Editor / Admin only)",
         "security": [
           {
@@ -3022,18 +2797,14 @@
     "/subjects/{slug}": {
       "get": {
         "operationId": "getSubjectBySlug",
-        "tags": [
-          "Subjects"
-        ],
+        "tags": ["Subjects"],
         "summary": "Get a subject by slug"
       }
     },
     "/subjects/{id}": {
       "patch": {
         "operationId": "updateSubject",
-        "tags": [
-          "Subjects"
-        ],
+        "tags": ["Subjects"],
         "summary": "Update a subject (Editor / Admin only)",
         "security": [
           {
@@ -3043,9 +2814,7 @@
       },
       "delete": {
         "operationId": "deleteSubject",
-        "tags": [
-          "Subjects"
-        ],
+        "tags": ["Subjects"],
         "summary": "Delete a subject (Admin only)",
         "security": [
           {
@@ -3057,9 +2826,7 @@
     "/subject-offerings/{subjectOfferingId}/syllabus": {
       "get": {
         "operationId": "getSyllabusBySubjectOffering",
-        "tags": [
-          "Syllabus"
-        ],
+        "tags": ["Syllabus"],
         "summary": "Get syllabus with modules and topics",
         "parameters": [
           {
@@ -3081,9 +2848,7 @@
     "/modules/{id}/questions": {
       "get": {
         "operationId": "getModuleQuestions",
-        "tags": [
-          "Syllabus"
-        ],
+        "tags": ["Syllabus"],
         "summary": "Get questions for a module",
         "parameters": [
           {
@@ -3121,9 +2886,7 @@
     "/topics/{id}/questions": {
       "get": {
         "operationId": "getTopicQuestions",
-        "tags": [
-          "Syllabus"
-        ],
+        "tags": ["Syllabus"],
         "summary": "Get questions for a topic",
         "parameters": [
           {
@@ -3161,9 +2924,7 @@
     "/universities": {
       "get": {
         "operationId": "listUniversities",
-        "tags": [
-          "Universities"
-        ],
+        "tags": ["Universities"],
         "summary": "List all universities",
         "parameters": [
           {
@@ -3187,10 +2948,7 @@
             "name": "isActive",
             "schema": {
               "type": "string",
-              "enum": [
-                true,
-                "all"
-              ]
+              "enum": [true, "all"]
             }
           }
         ],
@@ -3202,9 +2960,7 @@
       },
       "post": {
         "operationId": "createUniversity",
-        "tags": [
-          "Universities"
-        ],
+        "tags": ["Universities"],
         "summary": "Create a university (Admin only)",
         "security": [
           {
@@ -3234,9 +2990,7 @@
     "/universities/{slug}": {
       "get": {
         "operationId": "getUniversityBySlug",
-        "tags": [
-          "Universities"
-        ],
+        "tags": ["Universities"],
         "summary": "Get a university by slug",
         "parameters": [
           {
@@ -3261,9 +3015,7 @@
     "/universities/{id}": {
       "patch": {
         "operationId": "updateUniversity",
-        "tags": [
-          "Universities"
-        ],
+        "tags": ["Universities"],
         "summary": "Update a university (Admin only)",
         "security": [
           {
@@ -3303,9 +3055,7 @@
       },
       "delete": {
         "operationId": "deleteUniversity",
-        "tags": [
-          "Universities"
-        ],
+        "tags": ["Universities"],
         "summary": "Delete a university (Admin only)",
         "security": [
           {
@@ -3338,9 +3088,7 @@
     "/users/me": {
       "get": {
         "operationId": "getCurrentUser",
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Get my profile and activity stats",
         "security": [
           {
@@ -3360,9 +3108,7 @@
     "/webhooks/clerk": {
       "post": {
         "operationId": "postClerkWebhook",
-        "tags": [
-          "External Integrations"
-        ],
+        "tags": ["External Integrations"],
         "summary": "Clerk Webhook Handler (Users & Sessions)",
         "description": "Secure endpoint for Clerk.com to send user lifecycle events (created, updated, deleted)\nand session events (created). This endpoint also enforces a \"Single Session per User\" policy.\n\n**Verification**: This endpoint verifies the [Svix Webhook Signature](https://docs.clerk.com/main-concepts/webhooks)\nto ensure requests originate from Clerk.\n",
         "security": [],
