@@ -16,6 +16,7 @@ Welcome to the **PYQDeck** monorepo. This repository contains both the high-perf
 | :--- | :--- | :--- |
 | **Backend API** | Node.js, Express, MongoDB, Clerk | [backend.pyqdeck.in](https://backend.pyqdeck.in/) |
 | **Frontend Web** | Next.js 15, Tailwind 4, shadcn/ui | [pyqdeck.in](https://pyqdeck.in/) |
+| **UI Library** | Storybook 8, Radix UI, Vite | [storybook.pyqdeck.in](https://storybook.pyqdeck.in/) |
 | **API Docs** | Swagger / OpenAPI 3.0 | [/api-docs](https://backend.pyqdeck.in/api-docs) |
 | **Status** | BetterUptime | [pyqdeck.betteruptime.com](https://pyqdeck.betteruptime.com/) |
 
@@ -25,6 +26,16 @@ Welcome to the **PYQDeck** monorepo. This repository contains both the high-perf
 
 -   `backend/`: Express API with Mongoose models, controllers, and comprehensive Vitest suites.
 -   `frontend/`: Next.js application with a type-safe SDK generated from the backend OpenAPI spec.
+
+---
+
+## 🎨 Design System & Documentation
+
+We use **Storybook** to document our UI component library in isolation. This ensures visual consistency and accessibility across the platform.
+
+-   **Live Preview**: [View Component Library](https://storybook.pyqdeck.in/)
+-   **Coverage**: 100% of core UI components (50+) documented with interactive stories.
+-   **Tech**: Radix UI primitives, Tailwind CSS 4, and Framer Motion.
 
 ---
 
