@@ -44,7 +44,6 @@
   },
   "type": "module",
   "devDependencies": {
-    "@chromatic-com/storybook": "^5.1.2",
     "@storybook/addon-a11y": "^10.3.6",
     "@storybook/addon-docs": "^10.3.6",
     "@storybook/addon-onboarding": "^10.3.6",

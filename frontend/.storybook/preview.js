@@ -1,7 +1,24 @@
 import '../src/app/globals.css';
+import { TooltipProvider } from '../src/components/ui/tooltip';
+
+// Polyfill ResizeObserver for headless tests (Carousel, Chart)
+if (typeof window !== 'undefined' && !window.ResizeObserver) {
+  window.ResizeObserver = class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  };
+}
 
 /** @type { import('@storybook/nextjs-vite').Preview } */
 const preview = {
+  decorators: [
+    (Story) => (
+      <TooltipProvider>
+        <Story />
+      </TooltipProvider>
+    ),
+  ],
   parameters: {
     controls: {
       matchers: {

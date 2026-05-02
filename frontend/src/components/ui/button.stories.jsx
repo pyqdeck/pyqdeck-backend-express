@@ -48,7 +48,9 @@ export const Outline = {
 export const Ghost = {
   args: {
     children: 'Ghost',
-    variant: 'ghost',
+    variant: 'destructive',
+    size: 'lg',
+    asChild: {},
   },
 };
 
