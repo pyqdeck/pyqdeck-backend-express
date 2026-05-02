@@ -89,3 +89,7 @@ pnpm build  # Verify Next.js build & type-safety
 ---
 
 © 2026 PYQDeck Team. Built with ❤️ for students.
+
+## 📜 License
+
+This project is proprietary and confidential. All rights reserved. No part of this software may be used, modified, or distributed without the express written permission of the copyright holder.

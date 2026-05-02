@@ -1,3 +1,13 @@
+/**
+ * PyqDeck - Next-Generation Exam Learning Platform
+ *
+ * @copyright (c) 2026 PyqDeck. All rights reserved.
+ * @license Proprietary
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited.
+ * Written by the PyqDeck Team <admin@pyqdeck.in>
+ */
+
 'use client';
 
 import React from 'react';

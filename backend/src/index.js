@@ -1,3 +1,13 @@
+/**
+ * PyqDeck - Next-Generation Exam Learning Platform
+ *
+ * @copyright (c) 2026 PyqDeck. All rights reserved.
+ * @license Proprietary
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited.
+ * Written by the PyqDeck Team <admin@pyqdeck.in>
+ */
+
 import * as Sentry from '@sentry/node';
 import { nodeProfilingIntegration } from '@sentry/profiling-node';
 import app from './app.js';
