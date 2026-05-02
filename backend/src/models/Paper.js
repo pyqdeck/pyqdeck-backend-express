@@ -16,36 +16,46 @@ import { z } from 'zod';
  *       properties:
  *         id:
  *           type: string
+ *           example: 65a12345b67890cdef333333
  *         subjectOfferingId:
  *           type: string
  *           description: Reference to SubjectOffering
+ *           example: 60d0fe4f5311236168a109cb
  *         title:
  *           type: string
+ *           example: "Data Structures End Semester Exam Nov 2023"
  *         examYear:
  *           type: integer
+ *           example: 2023
  *         examType:
  *           type: string
  *           enum: [regular, re-exam, supplementary, end-sem, internal]
+ *           example: end-sem
  *         session:
  *           type: string
  *           example: Nov-Dec
  *         regulation:
  *           type: string
+ *           example: "R2019"
  *         duration:
  *           type: integer
  *           description: Duration in minutes
+ *           example: 180
  *         maxMarks:
  *           type: number
+ *           example: 80
  *         slug:
  *           type: string
- *           example: compiler-design-2021-regular
+ *           example: dsa-end-sem-nov-2023
  *         uploadedBy:
  *           type: string
  *           description: Reference to User
+ *           example: 65b98765a43210fedcba9876
  *         status:
  *           type: string
  *           enum: [draft, pending, approved, rejected]
  *           default: pending
+ *           example: approved
  *         createdAt:
  *           type: string
  *           format: date-time

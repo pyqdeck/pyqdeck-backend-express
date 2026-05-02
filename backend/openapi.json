@@ -375,17 +375,21 @@
         ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "65a12345b67890cdef333333"
           },
           "subjectOfferingId": {
             "type": "string",
-            "description": "Reference to SubjectOffering"
+            "description": "Reference to SubjectOffering",
+            "example": "60d0fe4f5311236168a109cb"
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "example": "Data Structures End Semester Exam Nov 2023"
           },
           "examYear": {
-            "type": "integer"
+            "type": "integer",
+            "example": 2023
           },
           "examType": {
             "type": "string",
@@ -395,29 +399,34 @@
               "supplementary",
               "end-sem",
               "internal"
-            ]
+            ],
+            "example": "end-sem"
           },
           "session": {
             "type": "string",
             "example": "Nov-Dec"
           },
           "regulation": {
-            "type": "string"
+            "type": "string",
+            "example": "R2019"
           },
           "duration": {
             "type": "integer",
-            "description": "Duration in minutes"
+            "description": "Duration in minutes",
+            "example": 180
           },
           "maxMarks": {
-            "type": "number"
+            "type": "number",
+            "example": 80
           },
           "slug": {
             "type": "string",
-            "example": "compiler-design-2021-regular"
+            "example": "dsa-end-sem-nov-2023"
           },
           "uploadedBy": {
             "type": "string",
-            "description": "Reference to User"
+            "description": "Reference to User",
+            "example": "65b98765a43210fedcba9876"
           },
           "status": {
             "type": "string",
@@ -427,7 +436,8 @@
               "approved",
               "rejected"
             ],
-            "default": "pending"
+            "default": "pending",
+            "example": "approved"
           },
           "createdAt": {
             "type": "string",
@@ -711,15 +721,18 @@
         ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "65a12345b67890cdef444444"
           },
           "questionId": {
             "type": "string",
-            "description": "Reference to Question"
+            "description": "Reference to Question",
+            "example": "65a12345b67890cdef123456"
           },
           "authorId": {
             "type": "string",
-            "description": "Reference to User"
+            "description": "Reference to User",
+            "example": "65b98765a43210fedcba9876"
           },
           "type": {
             "type": "string",
@@ -727,39 +740,51 @@
               "teacher",
               "student",
               "ai"
-            ]
+            ],
+            "example": "ai"
           },
           "content": {
             "type": "string",
-            "description": "Plain text solution"
+            "description": "Plain text solution",
+            "example": "The solution to this problem involves applying the first law of thermodynamics..."
           },
           "latexContent": {
             "type": "string",
-            "description": "LaTeX-formatted solution"
+            "description": "LaTeX-formatted solution",
+            "example": "E = mc^2"
           },
           "images": {
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "example": [
+              "https://example.com/solution-diagram.png"
+            ]
           },
           "videoLinks": {
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "example": [
+              "https://youtube.com/watch?v=123"
+            ]
           },
           "upvotes": {
             "type": "integer",
-            "default": 0
+            "default": 0,
+            "example": 42
           },
           "downvotes": {
             "type": "integer",
-            "default": 0
+            "default": 0,
+            "example": 2
           },
           "isVerified": {
             "type": "boolean",
-            "default": false
+            "default": false,
+            "example": true
           },
           "status": {
             "type": "string",
@@ -769,7 +794,8 @@
               "approved",
               "rejected"
             ],
-            "default": "pending"
+            "default": "pending",
+            "example": "approved"
           },
           "createdAt": {
             "type": "string",
@@ -789,36 +815,48 @@
         ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "65a12345b67890cdef222222"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Data Structures and Algorithms"
           },
           "shortName": {
-            "type": "string"
+            "type": "string",
+            "example": "DSA"
           },
           "subjectCode": {
-            "type": "string"
+            "type": "string",
+            "example": "CS301"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "example": "Fundamental study of data organization and algorithm complexity."
           },
           "credits": {
-            "type": "number"
+            "type": "number",
+            "example": 4
           },
           "slug": {
-            "type": "string"
+            "type": "string",
+            "example": "data-structures-and-algorithms"
           },
           "redirectSlugs": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Old slugs that 301-redirect to the current slug"
+            "description": "Old slugs that 301-redirect to the current slug",
+            "example": [
+              "dsa-old",
+              "algo-ds"
+            ]
           },
           "isActive": {
             "type": "boolean",
-            "default": true
+            "default": true,
+            "example": true
           },
           "createdAt": {
             "type": "string",
@@ -1116,35 +1154,42 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "The auto-generated id of the user"
+            "description": "The auto-generated id of the user",
+            "example": "65b98765a43210fedcba9876"
           },
           "clerkId": {
             "type": "string",
-            "description": "The unique ID from Clerk authentication"
+            "description": "The unique ID from Clerk authentication",
+            "example": "user_2N9Wv7N0u8M6X1Y2Z3A4B5C6"
           },
           "name": {
             "type": "string",
-            "description": "The name of the user"
+            "description": "The name of the user",
+            "example": "John Doe"
           },
           "email": {
             "type": "string",
             "format": "email",
-            "description": "The email of the user"
+            "description": "The email of the user",
+            "example": "john.doe@example.com"
           },
           "universityId": {
             "type": "string",
             "nullable": true,
-            "description": "Reference to University"
+            "description": "Reference to University",
+            "example": "60d0fe4f5311236168a109ca"
           },
           "branchId": {
             "type": "string",
             "nullable": true,
-            "description": "Reference to Branch"
+            "description": "Reference to Branch",
+            "example": "65a12345b67890cdef111111"
           },
           "semesterId": {
             "type": "string",
             "nullable": true,
-            "description": "Reference to Semester"
+            "description": "Reference to Semester",
+            "example": "65a12345b67890cdef112233"
           },
           "role": {
             "type": "string",
@@ -1154,11 +1199,13 @@
               "editor"
             ],
             "default": "normal",
-            "description": "The role of the user"
+            "description": "The role of the user",
+            "example": "normal"
           },
           "isActive": {
             "type": "boolean",
-            "default": true
+            "default": true,
+            "example": true
           },
           "createdAt": {
             "type": "string",

@@ -15,36 +15,45 @@ import { z } from 'zod';
  *         id:
  *           type: string
  *           description: The auto-generated id of the user
+ *           example: 65b98765a43210fedcba9876
  *         clerkId:
  *           type: string
  *           description: The unique ID from Clerk authentication
+ *           example: user_2N9Wv7N0u8M6X1Y2Z3A4B5C6
  *         name:
  *           type: string
  *           description: The name of the user
+ *           example: "John Doe"
  *         email:
  *           type: string
  *           format: email
  *           description: The email of the user
+ *           example: "john.doe@example.com"
  *         universityId:
  *           type: string
  *           nullable: true
  *           description: Reference to University
+ *           example: 60d0fe4f5311236168a109ca
  *         branchId:
  *           type: string
  *           nullable: true
  *           description: Reference to Branch
+ *           example: 65a12345b67890cdef111111
  *         semesterId:
  *           type: string
  *           nullable: true
  *           description: Reference to Semester
+ *           example: 65a12345b67890cdef112233
  *         role:
  *           type: string
  *           enum: [normal, admin, editor]
  *           default: normal
  *           description: The role of the user
+ *           example: normal
  *         isActive:
  *           type: boolean
  *           default: true
+ *           example: true
  *         createdAt:
  *           type: string
  *           format: date-time

@@ -14,42 +14,54 @@ import { z } from 'zod';
  *       properties:
  *         id:
  *           type: string
+ *           example: 65a12345b67890cdef444444
  *         questionId:
  *           type: string
  *           description: Reference to Question
+ *           example: 65a12345b67890cdef123456
  *         authorId:
  *           type: string
  *           description: Reference to User
+ *           example: 65b98765a43210fedcba9876
  *         type:
  *           type: string
  *           enum: [teacher, student, ai]
+ *           example: ai
  *         content:
  *           type: string
  *           description: Plain text solution
+ *           example: "The solution to this problem involves applying the first law of thermodynamics..."
  *         latexContent:
  *           type: string
  *           description: LaTeX-formatted solution
+ *           example: "E = mc^2"
  *         images:
  *           type: array
  *           items:
  *             type: string
+ *           example: ["https://example.com/solution-diagram.png"]
  *         videoLinks:
  *           type: array
  *           items:
  *             type: string
+ *           example: ["https://youtube.com/watch?v=123"]
  *         upvotes:
  *           type: integer
  *           default: 0
+ *           example: 42
  *         downvotes:
  *           type: integer
  *           default: 0
+ *           example: 2
  *         isVerified:
  *           type: boolean
  *           default: false
+ *           example: true
  *         status:
  *           type: string
  *           enum: [draft, pending, approved, rejected]
  *           default: pending
+ *           example: approved
  *         createdAt:
  *           type: string
  *           format: date-time

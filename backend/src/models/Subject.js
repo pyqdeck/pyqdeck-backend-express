@@ -13,26 +13,35 @@ import { z } from 'zod';
  *       properties:
  *         id:
  *           type: string
+ *           example: 65a12345b67890cdef222222
  *         name:
  *           type: string
+ *           example: "Data Structures and Algorithms"
  *         shortName:
  *           type: string
+ *           example: "DSA"
  *         subjectCode:
  *           type: string
+ *           example: "CS301"
  *         description:
  *           type: string
+ *           example: "Fundamental study of data organization and algorithm complexity."
  *         credits:
  *           type: number
+ *           example: 4
  *         slug:
  *           type: string
+ *           example: "data-structures-and-algorithms"
  *         redirectSlugs:
  *           type: array
  *           items:
  *             type: string
  *           description: Old slugs that 301-redirect to the current slug
+ *           example: ["dsa-old", "algo-ds"]
  *         isActive:
  *           type: boolean
  *           default: true
+ *           example: true
  *         createdAt:
  *           type: string
  *           format: date-time
