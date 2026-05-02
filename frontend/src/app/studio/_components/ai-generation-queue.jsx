@@ -28,7 +28,7 @@ export function AiGenerationQueue({ questions }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex h-[150px] items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
+          <div className="text-muted-foreground flex h-[150px] items-center justify-center rounded-lg border border-dashed text-sm">
             No questions in queue.
           </div>
         </CardContent>
@@ -65,18 +65,22 @@ export function AiGenerationQueue({ questions }) {
           <TableBody>
             {questions.map((question) => (
               <TableRow key={question._id}>
-                <TableCell className="font-medium font-mono text-xs text-muted-foreground">
+                <TableCell className="text-muted-foreground font-mono text-xs font-medium">
                   {question._id.substring(0, 8)}...
                 </TableCell>
                 <TableCell>
-                  <div className="flex gap-1 flex-wrap">
+                  <div className="flex flex-wrap gap-1">
                     {(question.tags || []).slice(0, 2).map((tag, i) => (
-                      <Badge key={i} variant="secondary" className="text-[10px]">
+                      <Badge
+                        key={i}
+                        variant="secondary"
+                        className="text-[10px]"
+                      >
                         {tag}
                       </Badge>
                     ))}
                     {(question.tags || []).length > 2 && (
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-muted-foreground text-xs">
                         +{(question.tags || []).length - 2}
                       </span>
                     )}
@@ -84,7 +88,11 @@ export function AiGenerationQueue({ questions }) {
                 </TableCell>
                 <TableCell>{question.marks || '-'}</TableCell>
                 <TableCell className="text-right">
-                  <Button variant="ghost" size="sm" className="gap-2 text-indigo-600 hover:text-indigo-700 hover:bg-indigo-100 dark:hover:bg-indigo-900/30">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="gap-2 text-indigo-600 hover:bg-indigo-100 hover:text-indigo-700 dark:hover:bg-indigo-900/30"
+                  >
                     <Sparkles className="h-4 w-4" />
                     Generate
                   </Button>

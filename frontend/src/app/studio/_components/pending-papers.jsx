@@ -29,8 +29,8 @@ export function PendingPapers({ papers }) {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex h-[150px] items-center justify-center rounded-lg border border-dashed text-sm text-muted-foreground">
-            No pending papers. You're all caught up! 🎉
+          <div className="text-muted-foreground flex h-[150px] items-center justify-center rounded-lg border border-dashed text-sm">
+            No pending papers. You&apos;re all caught up! 🎉
           </div>
         </CardContent>
       </Card>
@@ -59,7 +59,7 @@ export function PendingPapers({ papers }) {
           <TableBody>
             {papers.map((paper) => (
               <TableRow key={paper._id}>
-                <TableCell className="font-medium max-w-[200px] truncate">
+                <TableCell className="max-w-[200px] truncate font-medium">
                   {paper.title || 'Untitled Paper'}
                 </TableCell>
                 <TableCell>
@@ -71,7 +71,10 @@ export function PendingPapers({ papers }) {
                   {new Date(paper.createdAt).toLocaleDateString()}
                 </TableCell>
                 <TableCell>
-                  <Badge variant="warning" className="bg-amber-100 text-amber-800 hover:bg-amber-100 dark:bg-amber-900/30 dark:text-amber-500">
+                  <Badge
+                    variant="warning"
+                    className="bg-amber-100 text-amber-800 hover:bg-amber-100 dark:bg-amber-900/30 dark:text-amber-500"
+                  >
                     Pending
                   </Badge>
                 </TableCell>
@@ -83,11 +86,21 @@ export function PendingPapers({ papers }) {
                         <span className="sr-only">Review</span>
                       </Link>
                     </Button>
-                    <Button variant="ghost" size="icon" className="text-green-600 hover:text-green-700 hover:bg-green-100 dark:hover:bg-green-900/30" title="Quick Approve">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-green-600 hover:bg-green-100 hover:text-green-700 dark:hover:bg-green-900/30"
+                      title="Quick Approve"
+                    >
                       <CheckCircle className="h-4 w-4" />
                       <span className="sr-only">Approve</span>
                     </Button>
-                    <Button variant="ghost" size="icon" className="text-red-600 hover:text-red-700 hover:bg-red-100 dark:hover:bg-red-900/30" title="Quick Reject">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-red-600 hover:bg-red-100 hover:text-red-700 dark:hover:bg-red-900/30"
+                      title="Quick Reject"
+                    >
                       <XCircle className="h-4 w-4" />
                       <span className="sr-only">Reject</span>
                     </Button>
