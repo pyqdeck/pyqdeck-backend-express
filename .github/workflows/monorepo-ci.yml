@@ -101,7 +101,15 @@ jobs:
             exit 1
           fi
 
-      - name: Upload Coverage
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: backend/coverage/lcov.info
+          flags: backend
+          name: pyqdeck-backend
+
+      - name: Upload Coverage Artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
