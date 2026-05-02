@@ -14,18 +14,23 @@ import { z } from 'zod';
  *       properties:
  *         id:
  *           type: string
+ *           example: 65a12345b67890cdef666666
  *         userId:
  *           type: string
  *           description: Reference to User
+ *           example: 65b98765a43210fedcba9876
  *         targetType:
  *           type: string
  *           enum: [question, paper, solution]
+ *           example: question
  *         targetId:
  *           type: string
  *           description: ID of the bookmarked document
+ *           example: 65a12345b67890cdef123456
  *         note:
  *           type: string
  *           description: Optional personal note on the bookmark
+ *           example: "Important question for finals!"
  *         createdAt:
  *           type: string
  *           format: date-time

@@ -213,11 +213,13 @@
         ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "65a12345b67890cdef666666"
           },
           "userId": {
             "type": "string",
-            "description": "Reference to User"
+            "description": "Reference to User",
+            "example": "65b98765a43210fedcba9876"
           },
           "targetType": {
             "type": "string",
@@ -225,15 +227,18 @@
               "question",
               "paper",
               "solution"
-            ]
+            ],
+            "example": "question"
           },
           "targetId": {
             "type": "string",
-            "description": "ID of the bookmarked document"
+            "description": "ID of the bookmarked document",
+            "example": "65a12345b67890cdef123456"
           },
           "note": {
             "type": "string",
-            "description": "Optional personal note on the bookmark"
+            "description": "Optional personal note on the bookmark",
+            "example": "Important question for finals!"
           },
           "createdAt": {
             "type": "string",
@@ -683,16 +688,19 @@
         ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "65a12345b67890cdef112233"
           },
           "branchId": {
             "type": "string",
-            "description": "Reference to Branch"
+            "description": "Reference to Branch",
+            "example": "65a12345b67890cdef111111"
           },
           "number": {
             "type": "integer",
             "minimum": 1,
-            "maximum": 8
+            "maximum": 8,
+            "example": 5
           },
           "slug": {
             "type": "string",
@@ -879,27 +887,32 @@
         ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "65a12345b67890cdef111222"
           },
           "universityId": {
             "type": "string",
-            "description": "Reference to University"
+            "description": "Reference to University",
+            "example": "60d0fe4f5311236168a109ca"
           },
           "branchId": {
             "type": "string",
-            "description": "Reference to Branch"
+            "description": "Reference to Branch",
+            "example": "65a12345b67890cdef111111"
           },
           "semesterId": {
             "type": "string",
-            "description": "Reference to Semester"
+            "description": "Reference to Semester",
+            "example": "65a12345b67890cdef112233"
           },
           "subjectId": {
             "type": "string",
-            "description": "Reference to Subject"
+            "description": "Reference to Subject",
+            "example": "65a12345b67890cdef222222"
           },
           "regulation": {
             "type": "string",
-            "example": "2022"
+            "example": "R2022"
           },
           "academicYear": {
             "type": "string",
@@ -907,11 +920,12 @@
           },
           "slug": {
             "type": "string",
-            "example": "beu-it-sem5-compiler-design-2022"
+            "example": "mu-it-sem5-dsa-r2022"
           },
           "isActive": {
             "type": "boolean",
-            "default": true
+            "default": true,
+            "example": true
           },
           "createdAt": {
             "type": "string",

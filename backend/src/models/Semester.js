@@ -14,13 +14,16 @@ import { z } from 'zod';
  *       properties:
  *         id:
  *           type: string
+ *           example: 65a12345b67890cdef112233
  *         branchId:
  *           type: string
  *           description: Reference to Branch
+ *           example: 65a12345b67890cdef111111
  *         number:
  *           type: integer
  *           minimum: 1
  *           maximum: 8
+ *           example: 5
  *         slug:
  *           type: string
  *           example: semester-5

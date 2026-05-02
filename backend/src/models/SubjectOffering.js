@@ -16,30 +16,36 @@ import { z } from 'zod';
  *       properties:
  *         id:
  *           type: string
+ *           example: 65a12345b67890cdef111222
  *         universityId:
  *           type: string
  *           description: Reference to University
+ *           example: 60d0fe4f5311236168a109ca
  *         branchId:
  *           type: string
  *           description: Reference to Branch
+ *           example: 65a12345b67890cdef111111
  *         semesterId:
  *           type: string
  *           description: Reference to Semester
+ *           example: 65a12345b67890cdef112233
  *         subjectId:
  *           type: string
  *           description: Reference to Subject
+ *           example: 65a12345b67890cdef222222
  *         regulation:
  *           type: string
- *           example: '2022'
+ *           example: 'R2022'
  *         academicYear:
  *           type: string
  *           example: '2023-24'
  *         slug:
  *           type: string
- *           example: beu-it-sem5-compiler-design-2022
+ *           example: mu-it-sem5-dsa-r2022
  *         isActive:
  *           type: boolean
  *           default: true
+ *           example: true
  *         createdAt:
  *           type: string
  *           format: date-time
