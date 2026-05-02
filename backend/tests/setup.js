@@ -28,7 +28,7 @@ vi.mock('@clerk/express', () => ({
     req.auth = { userId: 'test_user_123' };
     next();
   },
-  getAuth: () => ({ userId: 'test_user_123' }),
+  getAuth: vi.fn((req) => req.auth || { userId: 'test_user_123' }),
   clerkClient: {
     users: {
       getUser: vi.fn().mockResolvedValue({

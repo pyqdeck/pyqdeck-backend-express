@@ -10,6 +10,37 @@ vi.mock('@clerk/express', () => ({
       getUser: vi.fn(),
     },
   },
+  getAuth: (req) => req.auth || { userId: 'user_123' },
+}));
+
+vi.mock('https', () => ({
+  default: {
+    request: vi.fn((options, cb) => {
+      const isFail = options.path.includes('fail');
+      const res = {
+        statusCode: isFail ? 500 : 200,
+        on: vi.fn((event, handler) => {
+          if (event === 'data' && !isFail) {
+            const email = options.path.includes('no-email')
+              ? []
+              : [{ id: 'email_1', email_address: 'test@example.com' }];
+            handler(
+              JSON.stringify({
+                id: 'user_123',
+                first_name: 'Test',
+                last_name: 'User',
+                email_addresses: email,
+                primary_email_address_id: email.length ? 'email_1' : null,
+              })
+            );
+          }
+          if (event === 'end') handler();
+        }),
+      };
+      cb(res);
+      return { on: vi.fn(), end: vi.fn() };
+    }),
+  },
 }));
 
 vi.mock('../../src/repositories/userRepository.js', () => ({
@@ -41,13 +72,8 @@ describe('syncUser Middleware Edge Cases', () => {
   });
 
   it('should handle case where Clerk user has no email', async () => {
+    req = { auth: { userId: 'user_no-email' } };
     userRepository.findByClerkId.mockRejectedValue(new NotFoundError());
-    clerkClient.users.getUser.mockResolvedValue({
-      id: 'user_123',
-      emailAddresses: [],
-      firstName: 'No',
-      lastName: 'Email',
-    });
     userRepository.create.mockResolvedValue({ id: 'new_1' });
 
     await syncUser(req, res, next);
@@ -55,14 +81,15 @@ describe('syncUser Middleware Edge Cases', () => {
     expect(userRepository.create).toHaveBeenCalledWith(
       expect.objectContaining({
         email: undefined,
-        name: 'No Email',
+        name: 'Test User',
       })
     );
   });
 
   it('should handle complete failure in sync logic', async () => {
+    req = { auth: { userId: 'user_fail' } };
     userRepository.findByClerkId.mockRejectedValue(new NotFoundError());
-    clerkClient.users.getUser.mockRejectedValue(new Error('Clerk API Down'));
+    // The https mock should be updated to return 500 for 'user_fail'
 
     await syncUser(req, res, next);
 

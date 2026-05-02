@@ -17,6 +17,34 @@ vi.mock('../../src/repositories/userRepository.js', () => ({
   },
 }));
 
+vi.mock('https', () => ({
+  default: {
+    request: vi.fn((options, cb) => {
+      const res = {
+        statusCode: 200,
+        on: vi.fn((event, handler) => {
+          if (event === 'data') {
+            handler(
+              JSON.stringify({
+                id: 'clerk_123',
+                first_name: 'New',
+                last_name: 'User',
+                email_addresses: [
+                  { id: 'email_1', email_address: 'new@example.com' },
+                ],
+                primary_email_address_id: 'email_1',
+              })
+            );
+          }
+          if (event === 'end') handler();
+        }),
+      };
+      cb(res);
+      return { on: vi.fn(), end: vi.fn() };
+    }),
+  },
+}));
+
 describe('SyncUser Middleware', () => {
   let app;
 
@@ -71,6 +99,9 @@ describe('SyncUser Middleware', () => {
   });
 
   it('should continue if userId is missing', async () => {
+    const { getAuth } = await import('@clerk/express');
+    getAuth.mockReturnValueOnce({});
+
     const authLessApp = express();
     authLessApp.use(syncUser);
     authLessApp.get('/test', (req, res) => {

@@ -9,6 +9,11 @@
  */
 
 import express from 'express';
+import dns from 'dns';
+
+// Fix Node 20 native fetch bugs with IPv6 / external APIs
+dns.setDefaultResultOrder('ipv4first');
+
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';

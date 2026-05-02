@@ -11,9 +11,9 @@ describe('Health Check API', () => {
     expect(response.body.data.status).toBe('healthy');
   });
 
-  it('GET /api/v1/health/detailed should return 403 for unauthenticated requests', async () => {
+  it('GET /api/v1/health/detailed should return 401 for unauthenticated requests', async () => {
     // This endpoint is admin-only — unauthenticated callers should be rejected
     const response = await request(app).get('/api/v1/health/detailed');
-    expect(response.status).toBe(403);
+    expect(response.status).toBe(401);
   });
 });
