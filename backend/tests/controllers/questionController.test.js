@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as questionController from '../../src/controllers/questionController.js';
 import questionService from '../../src/services/questionService.js';
-import { NotFoundError } from '../../src/utils/errors/index.js';
+
 
 vi.mock('../../src/services/questionService.js', () => ({
   default: {

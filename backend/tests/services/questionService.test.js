@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { questionService } from '../../src/services/questionService.js';
 import questionRepository from '../../src/repositories/questionRepository.js';
 import questionPaperMapRepository from '../../src/repositories/questionPaperMapRepository.js';
-import { NotFoundError } from '../../src/utils/errors/index.js';
+
 
 vi.mock('../../src/repositories/questionRepository.js', () => ({
   default: {

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { solutionService } from '../../src/services/solutionService.js';
 import solutionRepository from '../../src/repositories/solutionRepository.js';
-import { NotFoundError } from '../../src/utils/errors/index.js';
+
 
 vi.mock('../../src/repositories/solutionRepository.js', () => ({
   default: {

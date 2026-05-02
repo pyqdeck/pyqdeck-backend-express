@@ -3,7 +3,6 @@ import {
   requireAuthentication,
   isAdmin,
 } from '../middlewares/auth.middleware.js';
-import { paginate } from '../middlewares/pagination.middleware.js';
 import { validateBody } from '../middlewares/validationMiddleware.js';
 import { solutionZodSchema, SolutionStatus } from '../models/Solution.js';
 import * as solutionController from '../controllers/solutionController.js';
