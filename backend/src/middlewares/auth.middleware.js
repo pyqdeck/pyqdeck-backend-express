@@ -24,7 +24,8 @@ export function requireAuthentication(req, res, next) {
 export const authorize = (allowedRoles = []) => {
   return (req, res, next) => {
     // 1. Check if user is authenticated (Clerk middleware should handle this, but double check)
-    if (!req.auth || !req.auth.userId) {
+    const { userId } = getAuth(req);
+    if (!userId) {
       return next(new UnauthorizedError('Authentication required'));
     }
 

@@ -35,6 +35,7 @@ import userRoutes from './routes/users.js';
 import searchRoutes from './routes/search.js';
 import syllabusRoutes from './routes/syllabus.js';
 import seoRoutes from './routes/seo.js';
+import analyticsRoutes from './routes/analytics.js';
 import { syncUser } from './middlewares/syncUser.middleware.js';
 import errorHandler from './middlewares/errorHandler.js';
 import * as Sentry from '@sentry/node';
@@ -90,6 +91,7 @@ app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/search', searchRoutes);
 app.use('/api/v1', syllabusRoutes);
 app.use('/api/v1/seo', seoRoutes);
+app.use('/api/v1/analytics', analyticsRoutes);
 app.use(
   '/api/v1/uploadthing',
   createRouteHandler({

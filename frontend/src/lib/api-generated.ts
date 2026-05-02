@@ -640,7 +640,7 @@ export class HttpClient<SecurityDataType = unknown> {
   }: ApiConfig<SecurityDataType> = {}) {
     this.instance = axios.create({
       ...axiosConfig,
-      baseURL: axiosConfig.baseURL || "http://localhost:3000/api/v1",
+      baseURL: axiosConfig.baseURL || "http://localhost:5000/api/v1",
     });
     this.secure = secure;
     this.format = format;
@@ -754,7 +754,7 @@ export class HttpClient<SecurityDataType = unknown> {
 /**
  * @title PYQDeck API Explorer
  * @version 1.0.0
- * @baseUrl http://localhost:3000/api/v1
+ * @baseUrl http://localhost:5000/api/v1
  * @contact PYQDeck Support <noreply@example.com> (http://localhost:3000/support)
  *
  *
@@ -773,6 +773,45 @@ export class HttpClient<SecurityDataType = unknown> {
 export class Api<
   SecurityDataType extends unknown,
 > extends HttpClient<SecurityDataType> {
+  analytics = {
+    /**
+ * @description Aggregates total users, papers, questions, pending queues, and chart data for the Admin Studio.
+ *
+ * @tags Analytics
+ * @name StudioOverviewList
+ * @summary Get studio dashboard overview metrics
+ * @request GET:/analytics/studio-overview
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: {
+    metrics?: object,
+    charts?: object,
+    queues?: object,
+
+},
+
+})` Studio overview retrieved successfully
+ * @response `401` `Error`
+ * @response `403` `Error`
+ */
+    studioOverviewList: (params: RequestParams = {}) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            metrics?: object;
+            charts?: object;
+            queues?: object;
+          };
+        },
+        Error
+      >({
+        path: `/analytics/studio-overview`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+  };
   bookmarks = {
     /**
  * No description

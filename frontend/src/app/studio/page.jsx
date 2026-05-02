@@ -1,7 +1,58 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, FileText, Database, CheckCircle } from 'lucide-react';
+import {
+  Users,
+  FileText,
+  Database,
+  CheckCircle,
+  GraduationCap,
+} from 'lucide-react';
+import { Api } from '@/lib/api-generated';
+import { auth } from '@clerk/nextjs/server';
 
-export default function StudioPage() {
+import { VelocityChart } from './_components/velocity-chart';
+import { PopularityChart } from './_components/popularity-chart';
+
+export default async function StudioPage() {
+  const { getToken } = await auth();
+
+  const api = new Api({
+    baseURL: (
+      process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1'
+    ).replace(/\/+$/, ''),
+    securityWorker: async () => {
+      const token = await getToken();
+      return token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+    },
+  });
+
+  let dashboardData = null;
+  try {
+    const token = await getToken();
+    const res = await api.analytics.studioOverviewList({
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    dashboardData = res.data.data;
+  } catch (error) {
+    console.error(
+      'Failed to fetch studio overview data:',
+      error?.message || error
+    );
+  }
+
+  // Fallback values if API fails
+  const metrics = dashboardData?.metrics || {
+    users: 0,
+    papers: { total: 0, pending: 0 },
+    questions: 0,
+    solutions: 0,
+    academics: { universities: 0, branches: 0 },
+  };
+
+  const charts = dashboardData?.charts || {
+    contentVelocity: [],
+    subjectPopularity: [],
+  };
+
   return (
     <div className="flex flex-col gap-6 p-4">
       <div>
@@ -19,35 +70,40 @@ export default function StudioPage() {
             <Users className="text-muted-foreground h-4 w-4" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1,234</div>
-            <p className="text-muted-foreground mt-1 text-xs">
-              +12% from last month
-            </p>
+            <div className="text-2xl font-bold">
+              {metrics.users.toLocaleString()}
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Papers Uploaded
+              Papers & Questions
             </CardTitle>
             <FileText className="text-muted-foreground h-4 w-4" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">432</div>
-            <p className="text-muted-foreground mt-1 text-xs">+49 this week</p>
+            <div className="text-2xl font-bold">
+              {metrics.papers.total.toLocaleString()}
+            </div>
+            <p className="text-muted-foreground mt-1 text-xs">
+              Contains {metrics.questions.toLocaleString()} questions
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Questions</CardTitle>
-            <Database className="text-muted-foreground h-4 w-4" />
+            <CardTitle className="text-sm font-medium">Academics</CardTitle>
+            <GraduationCap className="text-muted-foreground h-4 w-4" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">8,523</div>
+            <div className="text-2xl font-bold">
+              {metrics.academics.universities.toLocaleString()}
+            </div>
             <p className="text-muted-foreground mt-1 text-xs">
-              +1,032 this month
+              Supporting {metrics.academics.branches.toLocaleString()} branches
             </p>
           </CardContent>
         </Card>
@@ -55,17 +111,24 @@ export default function StudioPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Pending Approvals
+              Pending Reviews
             </CardTitle>
             <CheckCircle className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-amber-500">12</div>
+            <div className="text-2xl font-bold text-amber-500">
+              {metrics.papers.pending.toLocaleString()}
+            </div>
             <p className="text-muted-foreground mt-1 text-xs">
-              Requires your attention
+              Papers require your attention
             </p>
           </CardContent>
         </Card>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2">
+        <VelocityChart data={charts.contentVelocity} />
+        <PopularityChart data={charts.subjectPopularity} />
       </div>
     </div>
   );

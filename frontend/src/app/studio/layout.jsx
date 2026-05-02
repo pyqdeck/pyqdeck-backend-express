@@ -1,7 +1,5 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
-import { Api } from '@/lib/api-generated';
-
 import { AppSidebar } from '@/components/app-sidebar';
 import {
   SidebarInset,
@@ -18,6 +16,8 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 
+import { Api } from '@/lib/api-generated';
+
 export default async function StudioLayout({ children }) {
   const { getToken, userId } = await auth();
 
@@ -27,20 +27,18 @@ export default async function StudioLayout({ children }) {
 
   let role = 'normal';
   try {
-    const token = await getToken();
-    const apiUrl = (
-      process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1'
-    ).replace(/\/+$/, '');
-
-    const res = await fetch(`${apiUrl}/users/me`, {
-      headers: { Authorization: `Bearer ${token}` },
-      cache: 'no-store',
+    const api = new Api({
+      baseURL: (
+        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1'
+      ).replace(/\/+$/, ''),
+      securityWorker: async () => {
+        const token = await getToken();
+        return token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+      },
     });
 
-    if (res.ok) {
-      const data = await res.json();
-      role = data?.data?.user?.role || 'normal';
-    }
+    const res = await api.users.getCurrentUser();
+    role = res.data.data?.user?.role || 'normal';
   } catch (error) {
     console.error(
       'Failed to fetch user role from backend:',
