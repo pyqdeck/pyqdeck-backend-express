@@ -3,15 +3,18 @@
 import * as React from 'react';
 import { useUser } from '@clerk/nextjs';
 
-import { NavMain } from '@/components/nav-main';
-import { NavProjects } from '@/components/nav-projects';
 import { NavUser } from '@/components/nav-user';
 import { TeamSwitcher } from '@/components/team-switcher';
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
   SidebarRail,
 } from '@/components/ui/sidebar';
 import {
@@ -27,16 +30,9 @@ import {
 
 import { Skeleton } from '@/components/ui/skeleton';
 
-// PyqDeck Admin/Editor data structure
+// PyqDeck Admin/Editor navigation data
 const navData = {
-  teams: [
-    {
-      name: 'PyqDeck Admin',
-      logo: <GraduationCapIcon />,
-      plan: 'Management',
-    },
-  ],
-  navMain: [
+  platform: [
     {
       title: 'Overview',
       url: '/studio',
@@ -44,72 +40,72 @@ const navData = {
       isActive: true,
     },
     {
-      title: 'Dashboard',
-      url: '/studio/dashboard',
-      icon: <LayoutDashboardIcon />,
-    },
-    {
       title: 'Analytics',
       url: '/studio/analytics',
       icon: <LibraryIcon />,
     },
+  ],
+  academics: [
     {
-      title: 'Academics',
-      url: '/studio/academics',
+      title: 'Universities',
+      url: '/studio/universities',
       icon: <BuildingIcon />,
-      items: [
-        {
-          title: 'Universities',
-          url: '/studio/universities',
-        },
-        {
-          title: 'Branches',
-          url: '/studio/branches',
-        },
-      ],
     },
     {
-      title: 'Content',
-      url: '/studio/content',
+      title: 'Branches',
+      url: '/studio/branches',
+      icon: <GraduationCapIcon />,
+    },
+    {
+      title: 'Semesters',
+      url: '/studio/semesters',
+      icon: <Settings2Icon />,
+    },
+  ],
+  content: [
+    {
+      title: 'Subjects',
+      url: '/studio/subjects',
       icon: <BookOpenIcon />,
-      items: [
-        {
-          title: 'Subjects',
-          url: '/studio/subjects',
-        },
-        {
-          title: 'Papers',
-          url: '/studio/papers',
-        },
-      ],
+    },
+    {
+      title: 'Subject Offerings',
+      url: '/studio/offerings',
+      icon: <LibraryIcon />,
+    },
+    {
+      title: 'Syllabus Builder',
+      url: '/studio/syllabus',
+      icon: <FileTextIcon />,
+    },
+  ],
+  moderation: [
+    {
+      title: 'Pending Papers',
+      url: '/studio/moderation',
+      icon: <FileTextIcon />,
+    },
+    {
+      title: 'AI Extraction',
+      url: '/studio/extraction',
+      icon: <Settings2Icon />,
+    },
+    {
+      title: 'Solutions',
+      url: '/studio/solutions',
+      icon: <BookOpenIcon />,
+    },
+  ],
+  security: [
+    {
+      title: 'User List',
+      url: '/studio/users',
+      icon: <UsersIcon />,
     },
     {
       title: 'Settings',
       url: '/studio/settings',
       icon: <Settings2Icon />,
-      items: [
-        {
-          title: 'General',
-          url: '/studio/settings/general',
-        },
-      ],
-    },
-  ],
-  projects: [
-    {
-      name: 'Upload Paper',
-      url: '/studio/upload',
-      icon: <FileTextIcon />,
-    },
-    {
-      name: 'Subject Offerings',
-      url: '/studio/subject-offerings',
-      icon: <LibraryIcon />,
-    },
-    {
-      name: 'Manage Users',
-      url: '/studio/users',
-      icon: <UsersIcon />,
     },
   ],
 };
@@ -137,8 +133,85 @@ export function AppSidebar({ userRole, ...props }) {
         <TeamSwitcher teams={teams} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={navData.navMain} />
-        <NavProjects projects={navData.projects} />
+        <SidebarGroup>
+          <SidebarGroupLabel>Platform</SidebarGroupLabel>
+          <SidebarMenu>
+            {navData.platform.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild tooltip={item.title}>
+                  <a href={item.url}>
+                    {item.icon}
+                    <span>{item.title}</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Academics</SidebarGroupLabel>
+          <SidebarMenu>
+            {navData.academics.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild tooltip={item.title}>
+                  <a href={item.url}>
+                    {item.icon}
+                    <span>{item.title}</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Content Management</SidebarGroupLabel>
+          <SidebarMenu>
+            {navData.content.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild tooltip={item.title}>
+                  <a href={item.url}>
+                    {item.icon}
+                    <span>{item.title}</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Moderation Queue</SidebarGroupLabel>
+          <SidebarMenu>
+            {navData.moderation.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild tooltip={item.title}>
+                  <a href={item.url}>
+                    {item.icon}
+                    <span>{item.title}</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Security</SidebarGroupLabel>
+          <SidebarMenu>
+            {navData.security.map((item) => (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton asChild tooltip={item.title}>
+                  <a href={item.url}>
+                    {item.icon}
+                    <span>{item.title}</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
         {!isLoaded ? (
