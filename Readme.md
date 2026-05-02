@@ -3,6 +3,8 @@
 [![CI/CD Status](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/monorepo-ci.yml/badge.svg)](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/monorepo-ci.yml)
 [![Code Coverage](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express/branch/main/graph/badge.svg)](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express)
 [![Security Scan](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/codeql-analysis.yml)
+[![Lighthouse Perf](https://img.shields.io/badge/Lighthouse-90%2B-brightgreen.svg)](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/lighthouse.yml)
+[![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
 
 Welcome to the **PYQDeck** monorepo. This repository contains both the high-performance Express backend and the modern Next.js frontend for the PYQDeck platform—a centralized hub for university question papers and solutions.
 
