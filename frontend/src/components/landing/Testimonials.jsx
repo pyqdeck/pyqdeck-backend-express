@@ -60,7 +60,7 @@ export function Testimonials() {
                     ))}
                   </div>
                   <p className="text-foreground mb-4 text-sm leading-relaxed">
-                    "{t.quote}"
+                    &quot;{t.quote}&quot;
                   </p>
                   <div>
                     <p className="text-sm font-semibold">{t.name}</p>
