@@ -15,7 +15,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { Bell } from 'lucide-react';
 import { Roboto } from 'next/font/google';
 
 import { Api } from '@/lib/api-generated';
@@ -61,7 +60,7 @@ export default async function StudioLayout({ children }) {
 
   return (
     <SidebarProvider className={roboto.className}>
-      <AppSidebar />
+      <AppSidebar userRole={role} />
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2 px-4">
@@ -81,11 +80,6 @@ export default async function StudioLayout({ children }) {
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
-          </div>
-          <div className="ml-auto flex items-center gap-4 px-4">
-            <button className="text-muted-foreground hover:text-foreground p-2 transition-colors">
-              <Bell className="h-5 w-5" />
-            </button>
           </div>
         </header>
         <main className="p-4 pt-0">{children}</main>

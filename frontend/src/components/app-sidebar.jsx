@@ -114,19 +114,27 @@ const navData = {
   ],
 };
 
-export function AppSidebar({ ...props }) {
+export function AppSidebar({ userRole, ...props }) {
   const { user, isLoaded } = useUser();
 
   const userData = {
-    name: user?.fullName || 'Admin User',
+    name: user?.fullName || 'User',
     email: user?.primaryEmailAddress?.emailAddress || 'admin@pyqdeck.in',
     avatar: user?.imageUrl || '',
   };
 
+  const teams = [
+    {
+      name: 'PyqDeck Admin',
+      logo: <GraduationCapIcon />,
+      plan: (userRole || 'Editor').toUpperCase(),
+    },
+  ];
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={navData.teams} />
+        <TeamSwitcher teams={teams} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={navData.navMain} />
