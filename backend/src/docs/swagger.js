@@ -29,7 +29,7 @@ Most endpoints require a valid Clerk JWT token. Include it in the header:
       contact: {
         name: 'PYQDeck Support',
         url: `${config.appUrl}/support`,
-        email: 'support@pyqdeck.in',
+        email: 'noreply@example.com',
       },
     },
     servers: [

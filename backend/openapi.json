@@ -7,7 +7,7 @@
     "contact": {
       "name": "PYQDeck Support",
       "url": "http://localhost:3000/support",
-      "email": "support@pyqdeck.in"
+      "email": "noreply@example.com"
     }
   },
   "servers": [
