@@ -172,7 +172,7 @@ export function AddUniversityDialogView({
                     className="border-2 focus-visible:ring-0"
                   />
                   <FieldDescription>
-                    Public URL for the institution's official logo.
+                    Public URL for the institution&apos;s official logo.
                   </FieldDescription>
                   <FieldError errors={[fieldState.error]} />
                 </Field>

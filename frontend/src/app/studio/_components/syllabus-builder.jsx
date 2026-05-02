@@ -184,7 +184,7 @@ export function SyllabusBuilder({
             <AlertDialogDescription className="font-roboto">
               This will permanently delete the module{' '}
               <span className="text-foreground font-roboto font-bold">
-                "{deletingModule?.title}"
+                &quot;{deletingModule?.title}&quot;
               </span>{' '}
               and all its associated topics. This action cannot be undone.
             </AlertDialogDescription>
@@ -215,7 +215,7 @@ export function SyllabusBuilder({
             <AlertDialogDescription className="font-roboto">
               Are you sure you want to remove the topic{' '}
               <span className="text-foreground font-roboto font-bold">
-                "{deletingTopic?.title}"
+                &quot;{deletingTopic?.title}&quot;
               </span>{' '}
               from this module?
             </AlertDialogDescription>
@@ -453,8 +453,8 @@ export function SyllabusBuilder({
                             {(mod.topics || []).length === 0 ? (
                               <div className="bg-muted/5 flex items-center justify-center rounded-lg border-2 border-dashed py-8">
                                 <span className="font-roboto text-muted-foreground text-xs italic">
-                                  No topics defined yet. Click "Add Topic" to
-                                  begin.
+                                  No topics defined yet. Click &quot;Add
+                                  Topic&quot; to begin.
                                 </span>
                               </div>
                             ) : (

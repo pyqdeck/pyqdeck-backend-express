@@ -5,21 +5,15 @@ import { EditUniversityDialog } from './edit-university-dialog';
 import { DeleteUniversityDialog } from './delete-university-dialog';
 import { UniversitiesTableView } from './universities-table-view';
 
-export function UniversitiesTable({ initialUniversities, pagination }) {
-  const [universities, setUniversities] = React.useState(initialUniversities);
+export function UniversitiesTable({ initialUniversities = [], pagination }) {
   const [search, setSearch] = React.useState('');
-
-  // Sync state with props when server refreshes
-  React.useEffect(() => {
-    setUniversities(initialUniversities);
-  }, [initialUniversities]);
 
   // Dialog States
   const [editOpen, setEditOpen] = React.useState(false);
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const [selectedUniversity, setSelectedUniversity] = React.useState(null);
 
-  const filteredUniversities = universities.filter(
+  const filteredUniversities = initialUniversities.filter(
     (uni) =>
       uni.name.toLowerCase().includes(search.toLowerCase()) ||
       uni.shortName.toLowerCase().includes(search.toLowerCase())
