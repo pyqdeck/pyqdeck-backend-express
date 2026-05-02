@@ -24,10 +24,10 @@ export function Header() {
           href="/"
           className="group flex items-center gap-2 transition-transform hover:scale-[1.02] active:scale-95"
         >
-          <div className="bg-primary text-primary-foreground flex size-9 items-center justify-center rounded-xl font-bold shadow-sm transition-all group-hover:shadow-md">
+          <div className="bg-primary text-primary-foreground flex size-9 items-center justify-center rounded-lg font-bold shadow-sm transition-all group-hover:shadow-md">
             PQ
           </div>
-          <span className="text-xl font-bold tracking-tight">PYQDeck</span>
+          <span className="text-xl font-bold tracking-tight">PyqDeck</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -99,7 +99,7 @@ export function Header() {
                   <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-lg font-bold">
                     PQ
                   </div>
-                  <span className="text-lg font-bold">PYQDeck</span>
+                  <span className="text-lg font-bold">PyqDeck</span>
                 </Link>
 
                 {navLinks.map((link) => (
