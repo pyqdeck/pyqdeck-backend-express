@@ -6,17 +6,20 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['./tests/setup.js'],
     include: ['tests/**/*.test.js'],
+    
+    // Vitest 4: pool options moved to top-level under test
     pool: 'forks',
-    poolOptions: {
-      forks: {
-        singleFork: true,
-      },
+    forks: {
+      singleFork: true,
     },
+    
     // Increased timeouts for heavy CI/local runs
     hookTimeout: 120000,
     testTimeout: 120000,
+    
     reporters: ['default', 'junit'],
     outputFile: 'test-report.junit.xml',
+    
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json-summary', 'json', 'html', 'lcov'],
@@ -26,6 +29,13 @@ export default defineConfig({
         branches: 70,
         statements: 80,
       },
+      exclude: [
+        'node_modules/',
+        'tests/',
+        'src/config/',
+        'src/utils/logger/',
+        'src/utils/index.js'
+      ],
     },
   },
 });

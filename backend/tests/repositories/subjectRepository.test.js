@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, beforeAll } from 'vitest';
 import { subjectRepository } from '../../src/repositories/subjectRepository.js';
 import { Subject } from '../../src/models/Subject.js';
 import { NotFoundError, ConflictError } from '../../src/utils/errors/index.js';
@@ -9,6 +9,10 @@ describe('SubjectRepository', () => {
     slug: 'maths-1',
     subjectCode: 'MA101',
   };
+
+  beforeAll(async () => {
+    await Subject.syncIndexes();
+  });
 
   beforeEach(async () => {
     await Subject.deleteMany({});
