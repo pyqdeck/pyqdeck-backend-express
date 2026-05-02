@@ -24,7 +24,30 @@ class SemesterRepository {
   }
 
   async findByBranchId(branchId) {
-    return Semester.find({ branchId }).sort({ number: 1 });
+    return Semester.find({ branchId })
+      .populate({
+        path: 'branchId',
+        populate: { path: 'universityId', select: 'name shortName slug' },
+      })
+      .sort({ number: 1 });
+  }
+
+  async findAll(query = {}, pagination = { skip: 0, limit: 10 }) {
+    const filters = {};
+    if (query.branchId) filters.branchId = query.branchId;
+
+    const items = await Semester.find(filters)
+      .populate({
+        path: 'branchId',
+        populate: { path: 'universityId', select: 'name shortName slug' },
+      })
+      .sort({ branchId: 1, number: 1 })
+      .skip(pagination.skip)
+      .limit(pagination.limit);
+
+    const total = await Semester.countDocuments(filters);
+
+    return { items, total };
   }
 
   async findByBranchAndNumber(branchId, number) {

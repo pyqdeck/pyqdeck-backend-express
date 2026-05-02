@@ -68,12 +68,50 @@ class SyllabusRepository {
           as: 'modules.topics',
         },
       },
+      // Transform topic _id to id
+      {
+        $addFields: {
+          'modules.topics': {
+            $map: {
+              input: '$modules.topics',
+              as: 'topic',
+              in: {
+                $mergeObjects: [
+                  '$$topic',
+                  { id: { $toString: '$$topic._id' } },
+                ],
+              },
+            },
+          },
+        },
+      },
+      // Transform module _id to id
+      {
+        $addFields: {
+          'modules.id': { $toString: '$modules._id' },
+        },
+      },
       {
         $group: {
           _id: '$_id',
           subjectOfferingId: { $first: '$subjectOfferingId' },
           description: { $first: '$description' },
           modules: { $push: '$modules' },
+        },
+      },
+      // Transform syllabus _id to id and clean up empty modules
+      {
+        $project: {
+          id: { $toString: '$_id' },
+          subjectOfferingId: 1,
+          description: 1,
+          modules: {
+            $filter: {
+              input: '$modules',
+              as: 'mod',
+              cond: { $gt: [{ $type: '$$mod._id' }, 'missing'] },
+            },
+          },
         },
       },
     ]);

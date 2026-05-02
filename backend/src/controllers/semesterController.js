@@ -2,12 +2,31 @@ import semesterService from '../services/semesterService.js';
 import { successFormatter } from '../utils/index.js';
 
 /**
+ * GET /api/v1/semesters (Global)
  * GET /api/v1/branches/:branchId/semesters
  */
 export async function list(req, res, next) {
   try {
-    const semesters = await semesterService.listByBranch(req.params.branchId);
-    res.json(successFormatter.formatSuccess(semesters, 'Semesters fetched'));
+    const branchId = req.params.branchId || req.query.branchId;
+    const { skip, limit, page } = req.pagination;
+
+    const query = {};
+    if (branchId && branchId !== 'all') query.branchId = branchId;
+
+    const { items, total } = await semesterService.listAll(query, {
+      skip,
+      limit,
+    });
+
+    res.json(
+      successFormatter.formatList(
+        items,
+        total,
+        page,
+        limit,
+        'Semesters fetched'
+      )
+    );
   } catch (error) {
     next(error);
   }

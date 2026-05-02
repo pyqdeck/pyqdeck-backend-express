@@ -33,7 +33,77 @@ class SubjectRepository {
   }
 
   async findAll(filter = {}, pagination) {
-    return paginate(Subject, filter, pagination);
+    const { page = 1, limit = 20 } = pagination || {};
+    const skip = (page - 1) * limit;
+
+    const aggregate = [
+      { $match: filter },
+      // Lookup subject offerings for this subject
+      {
+        $lookup: {
+          from: 'subjectofferings',
+          localField: '_id',
+          foreignField: 'subjectId',
+          as: 'offerings',
+        },
+      },
+      // Lookup syllabuses for those offerings
+      {
+        $lookup: {
+          from: 'syllabuses',
+          localField: 'offerings._id',
+          foreignField: 'subjectOfferingId',
+          as: 'syllabuses',
+        },
+      },
+      // Lookup modules for those syllabuses
+      {
+        $lookup: {
+          from: 'modules',
+          localField: 'syllabuses._id',
+          foreignField: 'syllabusId',
+          as: 'allModules',
+        },
+      },
+      // Create a dummy 'units' array with the length of unique modules to satisfy the frontend
+      {
+        $addFields: {
+          id: { $toString: '$_id' },
+          units: {
+            $map: {
+              input: { $range: [0, { $size: '$allModules' }] },
+              as: 'i',
+              in: {},
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          offerings: 0,
+          syllabi: 0,
+          allModules: 0,
+        },
+      },
+      { $sort: { createdAt: -1 } },
+      { $skip: skip },
+      { $limit: limit },
+    ];
+
+    const [items, totalCount] = await Promise.all([
+      Subject.aggregate(aggregate),
+      Subject.countDocuments(filter),
+    ]);
+
+    return {
+      items,
+      pagination: {
+        total: totalCount,
+        limit,
+        page,
+        pages: Math.ceil(totalCount / limit),
+      },
+    };
   }
 
   async update(id, data) {

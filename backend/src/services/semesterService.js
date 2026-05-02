@@ -5,6 +5,10 @@ class SemesterService {
     return semesterRepository.findByBranchId(branchId);
   }
 
+  async listAll(query, pagination) {
+    return semesterRepository.findAll(query, pagination);
+  }
+
   async getById(id) {
     return semesterRepository.findById(id);
   }

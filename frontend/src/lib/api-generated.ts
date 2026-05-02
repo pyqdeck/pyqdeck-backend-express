@@ -2817,7 +2817,107 @@ export class Api<
         ...params,
       }),
   };
+  syllabus = {
+    /**
+     * No description
+     *
+     * @tags Syllabus
+     * @name CreateSyllabus
+     * @summary Initialize a new syllabus
+     * @request POST:/syllabus
+     * @secure
+     * @response `201` `SuccessResponse` Syllabus initialized
+     */
+    createSyllabus: (data: Syllabus, params: RequestParams = {}) =>
+      this.request<SuccessResponse, any>({
+        path: `/syllabus`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Syllabus
+     * @name UpdateSyllabus
+     * @summary Update syllabus metadata
+     * @request PATCH:/syllabus/{id}
+     * @secure
+     * @response `200` `void` Syllabus updated
+     */
+    updateSyllabus: (id: string, data: Syllabus, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/syllabus/${id}`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+  };
   modules = {
+    /**
+     * No description
+     *
+     * @tags Syllabus
+     * @name CreateModule
+     * @summary Add a module to a syllabus
+     * @request POST:/modules
+     * @secure
+     * @response `201` `void` Module created
+     */
+    createModule: (data: Module, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/modules`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Syllabus
+     * @name UpdateModule
+     * @summary Update a module
+     * @request PATCH:/modules/{id}
+     * @secure
+     * @response `200` `void` Module updated
+     */
+    updateModule: (id: string, data: Module, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/modules/${id}`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Syllabus
+     * @name DeleteModule
+     * @summary Delete a module
+     * @request DELETE:/modules/{id}
+     * @secure
+     * @response `204` `void` Module deleted
+     */
+    deleteModule: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/modules/${id}`,
+        method: "DELETE",
+        secure: true,
+        ...params,
+      }),
+
     /**
  * No description
  *
@@ -2861,6 +2961,64 @@ export class Api<
       }),
   };
   topics = {
+    /**
+     * No description
+     *
+     * @tags Syllabus
+     * @name CreateTopic
+     * @summary Add a topic to a module
+     * @request POST:/topics
+     * @secure
+     * @response `201` `void` Topic created
+     */
+    createTopic: (data: Topic, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/topics`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Syllabus
+     * @name UpdateTopic
+     * @summary Update a topic
+     * @request PATCH:/topics/{id}
+     * @secure
+     * @response `200` `void` Topic updated
+     */
+    updateTopic: (id: string, data: Topic, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/topics/${id}`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Syllabus
+     * @name DeleteTopic
+     * @summary Delete a topic
+     * @request DELETE:/topics/{id}
+     * @secure
+     * @response `204` `void` Topic deleted
+     */
+    deleteTopic: (id: string, params: RequestParams = {}) =>
+      this.request<void, any>({
+        path: `/topics/${id}`,
+        method: "DELETE",
+        secure: true,
+        ...params,
+      }),
+
     /**
  * No description
  *

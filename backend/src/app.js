@@ -80,7 +80,8 @@ app.use('/api/v1', healthRoutes);
 app.use('/api/v1/universities', universityRoutes);
 app.use('/api/v1/branches', branchRoutes); // Global routes
 app.use('/api/v1/universities/:universityId/branches', branchRoutes); // Nested routes
-app.use('/api/v1/branches/:branchId/semesters', semesterRoutes);
+app.use('/api/v1/semesters', semesterRoutes); // Global routes
+app.use('/api/v1/branches/:branchId/semesters', semesterRoutes); // Nested routes
 app.use('/api/v1/subjects', subjectRoutes);
 app.use('/api/v1/subject-offerings', subjectOfferingRoutes);
 app.use('/api/v1/questions', questionRoutes);

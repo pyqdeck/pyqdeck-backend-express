@@ -47,9 +47,20 @@ export async function list(req, res, next) {
       );
     }
 
-    res
-      .status(400)
-      .json({ status: 'error', message: 'semesterId query param is required' });
+    // Fall back to general list if no specific hierarchy filters
+    const { items, total, page, limit } = await subjectOfferingService.list(
+      { universityId, branchId, semesterId },
+      req.pagination
+    );
+    return res.json(
+      successFormatter.formatList(
+        items,
+        total,
+        page,
+        limit,
+        'Subject offerings fetched'
+      )
+    );
   } catch (error) {
     next(error);
   }

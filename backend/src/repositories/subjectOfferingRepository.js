@@ -31,7 +31,20 @@ class SubjectOfferingRepository {
   }
 
   async findBySemesterId(semesterId, pagination, filter = {}) {
-    return paginate(SubjectOffering, { semesterId, ...filter }, pagination);
+    const result = await paginate(
+      SubjectOffering,
+      { semesterId, ...filter },
+      pagination
+    );
+
+    result.items = await SubjectOffering.populate(result.items, [
+      { path: 'universityId', select: 'name shortName' },
+      { path: 'branchId', select: 'name shortName universityId' },
+      { path: 'semesterId', select: 'number' },
+      { path: 'subjectId', select: 'name subjectCode slug' },
+    ]);
+
+    return result;
   }
 
   async findByUniversityBranchSemester(
@@ -41,11 +54,22 @@ class SubjectOfferingRepository {
     pagination,
     filter = {}
   ) {
-    return paginate(
-      SubjectOffering,
-      { universityId, branchId, semesterId, ...filter },
-      pagination
-    );
+    const query = { ...filter };
+    if (universityId) query.universityId = universityId;
+    if (branchId) query.branchId = branchId;
+    if (semesterId) query.semesterId = semesterId;
+
+    const result = await paginate(SubjectOffering, query, pagination);
+
+    // Populate relations to show names and metadata in the UI
+    result.items = await SubjectOffering.populate(result.items, [
+      { path: 'universityId', select: 'name shortName' },
+      { path: 'branchId', select: 'name shortName universityId' },
+      { path: 'semesterId', select: 'number' },
+      { path: 'subjectId', select: 'name subjectCode slug' },
+    ]);
+
+    return result;
   }
 
   async update(id, data) {

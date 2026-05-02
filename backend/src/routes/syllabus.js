@@ -1,6 +1,15 @@
 import { Router } from 'express';
 import * as syllabusController from '../controllers/syllabusController.js';
 import { paginate } from '../middlewares/pagination.middleware.js';
+import {
+  requireAuthentication,
+  isEditor,
+  isAdmin,
+} from '../middlewares/auth.middleware.js';
+import { validateBody } from '../middlewares/validationMiddleware.js';
+import { syllabusZodSchema } from '../models/Syllabus.js';
+import { moduleZodSchema } from '../models/Module.js';
+import { topicZodSchema } from '../models/Topic.js';
 
 const router = Router();
 
@@ -43,11 +52,241 @@ const router = Router();
  *                                         items:
  *                                           $ref: '#/components/schemas/Topic'
  */
+
+/**
+ * @openapi
+ * /syllabus:
+ *   post:
+ *     operationId: createSyllabus
+ *     tags: [Syllabus]
+ *     summary: Initialize a new syllabus
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema: { $ref: '#/components/schemas/Syllabus' }
+ *     responses:
+ *       201:
+ *         description: Syllabus initialized
+ *         content:
+ *           application/json:
+ *             schema: { $ref: '#/components/schemas/SuccessResponse' }
+ */
+router.post(
+  '/syllabus',
+  requireAuthentication,
+  isEditor,
+  validateBody(syllabusZodSchema),
+  syllabusController.createSyllabus
+);
+
 router.get(
   '/subject-offerings/:subjectOfferingId/syllabus',
   syllabusController.getBySubjectOffering
 );
 
+/**
+ * @openapi
+ * /syllabus/{id}:
+ *   patch:
+ *     operationId: updateSyllabus
+ *     tags: [Syllabus]
+ *     summary: Update syllabus metadata
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema: { $ref: '#/components/schemas/Syllabus' }
+ *     responses:
+ *       200:
+ *         description: Syllabus updated
+ */
+router.patch(
+  '/syllabus/:id',
+  requireAuthentication,
+  isEditor,
+  validateBody(syllabusZodSchema.partial()),
+  syllabusController.updateSyllabus
+);
+
+// Module Routes
+/**
+ * @openapi
+ * /modules:
+ *   post:
+ *     operationId: createModule
+ *     tags: [Syllabus]
+ *     summary: Add a module to a syllabus
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema: { $ref: '#/components/schemas/Module' }
+ *     responses:
+ *       201:
+ *         description: Module created
+ */
+router.post(
+  '/modules',
+  requireAuthentication,
+  isEditor,
+  validateBody(moduleZodSchema),
+  syllabusController.createModule
+);
+
+router.get('/modules', paginate(), syllabusController.listModules);
+
+/**
+ * @openapi
+ * /modules/{id}:
+ *   patch:
+ *     operationId: updateModule
+ *     tags: [Syllabus]
+ *     summary: Update a module
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema: { $ref: '#/components/schemas/Module' }
+ *     responses:
+ *       200:
+ *         description: Module updated
+ */
+router.patch(
+  '/modules/:id',
+  requireAuthentication,
+  isEditor,
+  validateBody(moduleZodSchema.partial()),
+  syllabusController.updateModule
+);
+
+/**
+ * @openapi
+ * /modules/{id}:
+ *   delete:
+ *     operationId: deleteModule
+ *     tags: [Syllabus]
+ *     summary: Delete a module
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       204:
+ *         description: Module deleted
+ */
+router.delete(
+  '/modules/:id',
+  requireAuthentication,
+  isAdmin,
+  syllabusController.deleteModule
+);
+
+// Topic Routes
+/**
+ * @openapi
+ * /topics:
+ *   post:
+ *     operationId: createTopic
+ *     tags: [Syllabus]
+ *     summary: Add a topic to a module
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema: { $ref: '#/components/schemas/Topic' }
+ *     responses:
+ *       201:
+ *         description: Topic created
+ */
+router.post(
+  '/topics',
+  requireAuthentication,
+  isEditor,
+  validateBody(topicZodSchema),
+  syllabusController.createTopic
+);
+
+/**
+ * @openapi
+ * /topics/{id}:
+ *   patch:
+ *     operationId: updateTopic
+ *     tags: [Syllabus]
+ *     summary: Update a topic
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema: { $ref: '#/components/schemas/Topic' }
+ *     responses:
+ *       200:
+ *         description: Topic updated
+ */
+router.patch(
+  '/topics/:id',
+  requireAuthentication,
+  isEditor,
+  validateBody(topicZodSchema.partial()),
+  syllabusController.updateTopic
+);
+
+/**
+ * @openapi
+ * /topics/{id}:
+ *   delete:
+ *     operationId: deleteTopic
+ *     tags: [Syllabus]
+ *     summary: Delete a topic
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: string }
+ *     responses:
+ *       204:
+ *         description: Topic deleted
+ */
+router.delete(
+  '/topics/:id',
+  requireAuthentication,
+  isAdmin,
+  syllabusController.deleteTopic
+);
+
+// Question Mappings
 /**
  * @openapi
  * /modules/{id}/questions:

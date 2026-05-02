@@ -4,6 +4,7 @@ import {
   isAdmin,
 } from '../middlewares/auth.middleware.js';
 import { validateBody } from '../middlewares/validationMiddleware.js';
+import { paginate } from '../middlewares/pagination.middleware.js';
 import { semesterZodSchema } from '../models/Semester.js';
 import * as semesterController from '../controllers/semesterController.js';
 
@@ -15,6 +16,40 @@ const updateSemesterSchema = semesterZodSchema
 
 /**
  * @openapi
+ * /semesters:
+ *   get:
+ *     operationId: listAllSemesters
+ *     tags: [Semesters]
+ *     summary: List all semesters across all branches
+ *     parameters:
+ *       - in: query
+ *         name: branchId
+ *         schema: { type: string }
+ *       - in: query
+ *         name: page
+ *         schema: { type: integer, minimum: 1, default: 1 }
+ *       - in: query
+ *         name: limit
+ *         schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+ *     responses:
+ *       200:
+ *         description: Semesters list
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Semester'
+ *                         pagination:
+ *                           $ref: '#/components/schemas/Pagination'
  * /branches/{branchId}/semesters:
  *   get:
  *     operationId: listSemesters
@@ -36,11 +71,16 @@ const updateSemesterSchema = semesterZodSchema
  *                 - type: object
  *                   properties:
  *                     data:
- *                       type: array
- *                       items:
- *                         $ref: '#/components/schemas/Semester'
+ *                       type: object
+ *                       properties:
+ *                         items:
+ *                           type: array
+ *                           items:
+ *                             $ref: '#/components/schemas/Semester'
+ *                         pagination:
+ *                           $ref: '#/components/schemas/Pagination'
  */
-router.get('/', semesterController.list);
+router.get('/', paginate(), semesterController.list);
 
 /**
  * @openapi
