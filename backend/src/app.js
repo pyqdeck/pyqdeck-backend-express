@@ -9,6 +9,9 @@ import webhookRoutes from './routes/webhook.js';
 import universityRoutes from './routes/universities.js';
 import subjectRoutes from './routes/subjects.js';
 import paperRoutes from './routes/papers.js';
+import branchRoutes from './routes/branches.js';
+import semesterRoutes from './routes/semesters.js';
+import subjectOfferingRoutes from './routes/subjectOfferings.js';
 import { syncUser } from './middlewares/syncUser.middleware.js';
 import errorHandler from './middlewares/errorHandler.js';
 import * as Sentry from '@sentry/node';
@@ -47,7 +50,10 @@ app.use(syncUser);
 // Routes
 app.use('/api/v1', healthRoutes);
 app.use('/api/v1/universities', universityRoutes);
+app.use('/api/v1/universities/:universityId/branches', branchRoutes);
+app.use('/api/v1/branches/:branchId/semesters', semesterRoutes);
 app.use('/api/v1/subjects', subjectRoutes);
+app.use('/api/v1/subject-offerings', subjectOfferingRoutes);
 app.use('/api/v1/papers', paperRoutes);
 app.use(
   '/api/v1/uploadthing',
