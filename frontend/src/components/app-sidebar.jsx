@@ -25,6 +25,8 @@ import {
   LayoutDashboardIcon,
 } from 'lucide-react';
 
+import { Skeleton } from '@/components/ui/skeleton';
+
 // PyqDeck Admin/Editor data structure
 const navData = {
   teams: [
@@ -125,7 +127,7 @@ const navData = {
 };
 
 export function AppSidebar({ ...props }) {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
 
   const userData = {
     name: user?.fullName || 'Admin User',
@@ -143,7 +145,17 @@ export function AppSidebar({ ...props }) {
         <NavProjects projects={navData.projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={userData} />
+        {!isLoaded ? (
+          <div className="flex items-center gap-3 p-2">
+            <Skeleton className="h-8 w-8 rounded-lg" />
+            <div className="flex flex-col gap-1 overflow-hidden">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-3 w-32" />
+            </div>
+          </div>
+        ) : (
+          <NavUser user={userData} />
+        )}
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
