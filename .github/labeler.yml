@@ -1,0 +1,16 @@
+# Labels for backend changes
+"area:backend":
+  - "backend/**/*"
+
+# Labels for frontend changes
+"area:frontend":
+  - "frontend/**/*"
+
+# Labels for CI/CD or GitHub Actions
+"area:ci":
+  - ".github/**/*"
+
+# Labels for documentation changes
+"area:docs":
+  - "**/*.md"
+  - "LICENSE"

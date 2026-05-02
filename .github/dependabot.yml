@@ -15,3 +15,11 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "chore(actions)"
+
+  # Enable npm dependency updates for the frontend
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "chore(deps-frontend)"

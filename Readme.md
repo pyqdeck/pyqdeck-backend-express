@@ -1,40 +1,91 @@
-# PYQDeck Backend
+# 🎓 PYQDeck Monorepo
 
-![Build Status](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/ci.yml/badge.svg)
-[![codecov](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express/branch/main/graph/badge.svg)](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express)
-![Security Scan](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/codeql-analysis.yml/badge.svg)
+[![CI/CD Status](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/monorepo-ci.yml/badge.svg)](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/monorepo-ci.yml)
+[![Code Coverage](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express/branch/main/graph/badge.svg)](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express)
+[![Security Scan](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/codeql-analysis.yml)
 
-Express backend for the PYQDeck application.
+Welcome to the **PYQDeck** monorepo. This repository contains both the high-performance Express backend and the modern Next.js frontend for the PYQDeck platform—a centralized hub for university question papers and solutions.
+
+---
 
 ## 🚀 Mission Control
 
-| Tool | Link | Description |
+| Component | Tech Stack | Production URL |
 | :--- | :--- | :--- |
-| **Base URL** | [backend.pyqdeck.in](https://backend.pyqdeck.in/) | Production API Environment |
-| **Public Status** | [pyqdeck.betteruptime.com](https://pyqdeck.betteruptime.com/) | 24/7 Uptime & Incident reporting |
-| **API Docs** | [backend.pyqdeck.in/api-docs](https://backend.pyqdeck.in/api-docs) | Interactive Swagger/OpenAPI documentation |
+| **Backend API** | Node.js, Express, MongoDB, Clerk | [backend.pyqdeck.in](https://backend.pyqdeck.in/) |
+| **Frontend Web** | Next.js 15, Tailwind 4, shadcn/ui | [pyqdeck.in](https://pyqdeck.in/) |
+| **API Docs** | Swagger / OpenAPI 3.0 | [/api-docs](https://backend.pyqdeck.in/api-docs) |
+| **Status** | BetterUptime | [pyqdeck.betteruptime.com](https://pyqdeck.betteruptime.com/) |
 
-## 🛠️ Tech Stack
-- **Runtime**: Node.js (Express)
-- **Database**: MongoDB (Mongoose)
-- **Auth**: Clerk
-- **CI/CD**: GitHub Actions + Docker + CodeQL + Codecov
+---
 
-## 💻 Development
+## 📂 Project Structure
 
+-   `backend/`: Express API with Mongoose models, controllers, and comprehensive Vitest suites.
+-   `frontend/`: Next.js application with a type-safe SDK generated from the backend OpenAPI spec.
+
+---
+
+## 💻 Local Development
+
+### Prerequisites
+-   Node.js (v20+)
+-   pnpm (v10+)
+-   MongoDB (Local instance or Atlas)
+
+### 1. Backend Setup
 ```bash
 cd backend
 pnpm install
-pnpm dev # Status monitor available at /api/v1/status
+cp .env.example .env # Configure your Clerk and MongoDB keys
+pnpm dev
 ```
+
+### 2. Frontend Setup
+```bash
+cd frontend
+pnpm install
+cp .env.example .env.local
+pnpm run gen:api # Generates the type-safe API SDK from backend
+pnpm dev
+```
+
+---
+
+## 🛡️ CI/CD & API Safety
+
+We use a **Unified Monorepo Pipeline** that guarantees stability across the stack:
+
+1.  **API Contract Safety**: Every PR verifies that `backend/openapi.json` is in sync with the code. If you modify an API route or model, you must run `pnpm run openapi:export` in the backend.
+2.  **SDK Validation**: The frontend SDK is regenerated in CI. If a backend change breaks the frontend types, the build will fail immediately.
+3.  **Docker Health Check**: Automated builds of the backend Docker image to ensure deployment readiness.
+4.  **Sequential Deploys**: Deployment to Render and Vercel triggers only after all quality checks (Lint, Test, Build) pass for both projects.
+
+---
 
 ## 🧪 Quality & Testing
 
+### Backend
 ```bash
-pnpm test          # Run all tests
-pnpm test:coverage # Generate coverage report (Threshold: 80%)
+cd backend
+pnpm test          # Run Vitest suites
+pnpm test:coverage # Generate coverage (Target: 80%+)
 ```
 
-## 📊 Coverage Visualization
+### Frontend
+```bash
+cd frontend
+pnpm lint   # Run ESLint
+pnpm build  # Verify Next.js build & type-safety
+```
 
-![Codecov Sunburst](https://codecov.io/gh/pyqdeck/pyqdeck-backend-express/graphs/sunburst.svg?token=3RQZRCU6QZ)
+---
+
+## 📊 Performance & Security
+-   **Security**: Automated CodeQL scanning and dependency auditing.
+-   **Load Testing**: Performance baselines tracked via k6 (see `backend/tests/load`).
+-   **Observability**: Integrated with Sentry and Logtail for production monitoring.
+
+---
+
+© 2026 PYQDeck Team. Built with ❤️ for students.

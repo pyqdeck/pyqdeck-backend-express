@@ -6,6 +6,15 @@ on:
   pull_request:
     branches: [main]
 
+# Prevent redundant builds on the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   # --- Stage 1: Quality & Linting ---
   quality:
