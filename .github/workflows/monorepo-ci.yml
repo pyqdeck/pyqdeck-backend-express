@@ -152,7 +152,9 @@ jobs:
           cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Install dependencies
-        run: pnpm install
+        run: |
+          pnpm install
+          cd ../backend && pnpm install
 
       - name: Validate SDK Generation
         run: pnpm run gen:api
