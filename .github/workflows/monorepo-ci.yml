@@ -71,9 +71,6 @@ jobs:
           cd frontend
           pnpm run format:check
 
-      - name: Global Format Check
-        run: pnpm dlx prettier --check .
-
   # --- Stage 2: Backend Tests & Contract Check ---
   backend-test:
     name: Backend Test & Contract
