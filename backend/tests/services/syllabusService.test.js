@@ -28,12 +28,16 @@ describe('SyllabusService', () => {
       const mockTopic = { id: 't1' };
 
       syllabusRepository.findBySubjectOffering.mockResolvedValue(mockSyllabus);
-      moduleRepository.findBySyllabus.mockResolvedValue({ items: [mockModule] });
+      moduleRepository.findBySyllabus.mockResolvedValue({
+        items: [mockModule],
+      });
       topicRepository.findByModule.mockResolvedValue({ items: [mockTopic] });
 
       const result = await syllabusService.getBySubjectOffering('so1');
 
-      expect(syllabusRepository.findBySubjectOffering).toHaveBeenCalledWith('so1');
+      expect(syllabusRepository.findBySubjectOffering).toHaveBeenCalledWith(
+        'so1'
+      );
       expect(result.modules[0].topics).toContain(mockTopic);
     });
   });
@@ -41,7 +45,10 @@ describe('SyllabusService', () => {
   describe('getModuleQuestions', () => {
     it('should call mapping repository', async () => {
       await syllabusService.getModuleQuestions('m1', { page: 1 });
-      expect(questionSyllabusMapRepository.findByModule).toHaveBeenCalledWith('m1', { page: 1 });
+      expect(questionSyllabusMapRepository.findByModule).toHaveBeenCalledWith(
+        'm1',
+        { page: 1 }
+      );
     });
   });
 });

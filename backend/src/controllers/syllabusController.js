@@ -6,7 +6,9 @@ import { successFormatter } from '../utils/index.js';
  */
 export async function getBySubjectOffering(req, res, next) {
   try {
-    const syllabus = await syllabusService.getBySubjectOffering(req.params.subjectOfferingId);
+    const syllabus = await syllabusService.getBySubjectOffering(
+      req.params.subjectOfferingId
+    );
     res.json(successFormatter.formatSuccess(syllabus, 'Syllabus fetched'));
   } catch (error) {
     next(error);
@@ -18,11 +20,17 @@ export async function getBySubjectOffering(req, res, next) {
  */
 export async function getModuleQuestions(req, res, next) {
   try {
-    const { items, total, page, limit } = await syllabusService.getModuleQuestions(
-      req.params.id,
-      req.pagination
+    const { items, total, page, limit } =
+      await syllabusService.getModuleQuestions(req.params.id, req.pagination);
+    res.json(
+      successFormatter.formatList(
+        items,
+        total,
+        page,
+        limit,
+        'Module questions fetched'
+      )
     );
-    res.json(successFormatter.formatList(items, total, page, limit, 'Module questions fetched'));
   } catch (error) {
     next(error);
   }
@@ -33,11 +41,17 @@ export async function getModuleQuestions(req, res, next) {
  */
 export async function getTopicQuestions(req, res, next) {
   try {
-    const { items, total, page, limit } = await syllabusService.getTopicQuestions(
-      req.params.id,
-      req.pagination
+    const { items, total, page, limit } =
+      await syllabusService.getTopicQuestions(req.params.id, req.pagination);
+    res.json(
+      successFormatter.formatList(
+        items,
+        total,
+        page,
+        limit,
+        'Topic questions fetched'
+      )
     );
-    res.json(successFormatter.formatList(items, total, page, limit, 'Topic questions fetched'));
   } catch (error) {
     next(error);
   }

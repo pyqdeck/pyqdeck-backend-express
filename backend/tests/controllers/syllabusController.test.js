@@ -38,7 +38,12 @@ describe('syllabusController', () => {
   describe('getModuleQuestions', () => {
     it('should return paginated questions', async () => {
       req.params.id = 'm1';
-      syllabusService.getModuleQuestions.mockResolvedValue({ items: [], total: 0, page: 1, limit: 10 });
+      syllabusService.getModuleQuestions.mockResolvedValue({
+        items: [],
+        total: 0,
+        page: 1,
+        limit: 10,
+      });
       await syllabusController.getModuleQuestions(req, res, next);
       expect(res.json).toHaveBeenCalled();
     });
