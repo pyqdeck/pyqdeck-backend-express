@@ -53,6 +53,90 @@ class QuestionRepository {
     if (!question) throw new NotFoundError('Question not found');
     return question;
   }
+
+  async findWithContext(filter = {}, pagination = {}) {
+    const { page = 1, limit = 10 } = pagination;
+    const skip = (page - 1) * limit;
+
+    const pipeline = [
+      { $match: filter },
+      { $sort: { createdAt: -1 } },
+      { $skip: skip },
+      { $limit: limit },
+      // Join Paper info
+      {
+        $lookup: {
+          from: 'questionpapermaps',
+          localField: '_id',
+          foreignField: 'questionId',
+          as: 'paperMappings',
+        },
+      },
+      {
+        $lookup: {
+          from: 'papers',
+          localField: 'paperMappings.paperId',
+          foreignField: '_id',
+          as: 'papers',
+        },
+      },
+      // Join Topic info
+      {
+        $lookup: {
+          from: 'questionsyllabusmaps',
+          localField: '_id',
+          foreignField: 'questionId',
+          as: 'syllabusMappings',
+        },
+      },
+      {
+        $lookup: {
+          from: 'topics',
+          localField: 'syllabusMappings.topicId',
+          foreignField: '_id',
+          as: 'topics',
+        },
+      },
+      // Cleanup
+      {
+        $project: {
+          text: 1,
+          type: 1,
+          difficulty: 1,
+          marks: 1,
+          createdAt: 1,
+          slug: 1,
+          paperContext: {
+            $map: {
+              input: '$papers',
+              as: 'p',
+              in: {
+                title: '$$p.title',
+                year: '$$p.examYear',
+                exam: '$$p.exam',
+              },
+            },
+          },
+          topicContext: {
+            $map: {
+              input: '$topics',
+              as: 't',
+              in: {
+                name: '$$t.name',
+              },
+            },
+          },
+        },
+      },
+    ];
+
+    const [items, total] = await Promise.all([
+      Question.aggregate(pipeline),
+      Question.countDocuments(filter),
+    ]);
+
+    return { items, total, page, limit };
+  }
 }
 
 export const questionRepository = new QuestionRepository();

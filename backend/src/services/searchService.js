@@ -8,7 +8,7 @@ class SearchService {
 
     // Run searches in parallel
     const [questions, subjects, papers] = await Promise.all([
-      questionRepository.findAll({ text: searchRegex }, pagination),
+      questionRepository.findWithContext({ text: searchRegex }, pagination),
       subjectRepository.findAll(
         {
           $or: [{ name: searchRegex }, { subjectCode: searchRegex }],

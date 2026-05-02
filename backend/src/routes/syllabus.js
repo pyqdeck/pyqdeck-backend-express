@@ -28,6 +28,7 @@ router.get(
  * @openapi
  * /modules/{id}/questions:
  *   get:
+ *     operationId: getModuleQuestions
  *     tags: [Syllabus]
  *     summary: Get questions for a module
  *     parameters:
@@ -48,6 +49,7 @@ router.get(
  * @openapi
  * /topics/{id}/questions:
  *   get:
+ *     operationId: getTopicQuestions
  *     tags: [Syllabus]
  *     summary: Get questions for a topic
  *     parameters:

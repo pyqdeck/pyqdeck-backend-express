@@ -48,6 +48,7 @@ router.get('/', paginate(), paperController.list);
  * @openapi
  * /papers/{slug}:
  *   get:
+ *     operationId: getPaperBySlug
  *     tags: [Papers]
  *     summary: Get a paper by slug
  */
@@ -57,6 +58,7 @@ router.get('/:slug', paperController.getBySlug);
  * @openapi
  * /papers:
  *   post:
+ *     operationId: createPaper
  *     tags: [Papers]
  *     summary: Submit a new paper (Editor / Admin)
  *     security:
@@ -74,6 +76,7 @@ router.post(
  * @openapi
  * /papers/{id}:
  *   patch:
+ *     operationId: updatePaper
  *     tags: [Papers]
  *     summary: Update a paper (Editor / Admin)
  *     security:
@@ -91,6 +94,7 @@ router.patch(
  * @openapi
  * /papers/{id}/status:
  *   patch:
+ *     operationId: updatePaperStatus
  *     tags: [Papers]
  *     summary: Approve or reject a paper (Admin only)
  *     security:
@@ -118,6 +122,7 @@ router.patch(
  * @openapi
  * /papers/{id}:
  *   delete:
+ *     operationId: deletePaper
  *     tags: [Papers]
  *     summary: Delete a paper (Admin only)
  *     security:

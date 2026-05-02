@@ -83,6 +83,7 @@ router.patch(
  * @openapi
  * /subjects/{id}:
  *   delete:
+ *     operationId: deleteSubject
  *     tags: [Subjects]
  *     summary: Delete a subject (Admin only)
  *     security:

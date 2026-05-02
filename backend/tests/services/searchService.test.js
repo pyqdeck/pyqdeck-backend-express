@@ -5,7 +5,7 @@ import subjectRepository from '../../src/repositories/subjectRepository.js';
 import paperRepository from '../../src/repositories/paperRepository.js';
 
 vi.mock('../../src/repositories/questionRepository.js', () => ({
-  default: { findAll: vi.fn() },
+  default: { findAll: vi.fn(), findWithContext: vi.fn() },
 }));
 vi.mock('../../src/repositories/subjectRepository.js', () => ({
   default: { findAll: vi.fn() },
@@ -17,14 +17,17 @@ vi.mock('../../src/repositories/paperRepository.js', () => ({
 describe('SearchService', () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it('should run unified search across repositories', async () => {
-    questionRepository.findAll.mockResolvedValue({ items: ['q1'], total: 1 });
+  it('should run unified search across repositories with context', async () => {
+    questionRepository.findWithContext.mockResolvedValue({
+      items: ['q1'],
+      total: 1,
+    });
     subjectRepository.findAll.mockResolvedValue({ items: ['s1'], total: 1 });
     paperRepository.findAll.mockResolvedValue({ items: ['p1'], total: 1 });
 
     const results = await searchService.unifiedSearch('test', { limit: 10 });
 
-    expect(questionRepository.findAll).toHaveBeenCalled();
+    expect(questionRepository.findWithContext).toHaveBeenCalled();
     expect(subjectRepository.findAll).toHaveBeenCalled();
     expect(paperRepository.findAll).toHaveBeenCalled();
     expect(results.totalQuestions).toBe(1);
