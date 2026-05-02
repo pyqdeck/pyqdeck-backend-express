@@ -3,8 +3,14 @@ name: Performance & Load Test
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/load-test.yml'
   pull_request:
     branches: [ main ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/load-test.yml'
 
 jobs:
   k6_load_test:
