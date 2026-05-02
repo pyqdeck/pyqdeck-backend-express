@@ -1,0 +1,154 @@
+name: Monorepo CI/CD
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # --- Stage 1: Quality & Linting ---
+  quality:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install Root Dependencies
+        run: pnpm install
+
+      - name: Backend Lint
+        run: pnpm --prefix backend run lint
+
+      - name: Frontend Lint
+        run: pnpm --prefix frontend run lint
+
+      - name: Format Check
+        run: pnpm dlx prettier --check .
+
+  # --- Stage 2: Backend Tests & Contract Check ---
+  backend-test:
+    name: Backend Test & Contract
+    needs: quality
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Cache MongoDB binaries
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/mongodb-binaries
+          key: ${{ runner.os }}-mongodb-binaries
+          restore-keys: |
+            ${{ runner.os }}-mongodb-binaries
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run Tests with Coverage
+        run: pnpm run test:coverage
+        env:
+          CLERK_PUBLISHABLE_KEY: ${{ secrets.CLERK_PUBLISHABLE_KEY || 'pk_test_Y2xlcmsuZXhhbXBsZS5jb20k' }}
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY || 'sk_test_1234567890' }}
+          WEBHOOK_SECRET: ${{ secrets.CLERK_WEBHOOK_SECRET || 'whsec_test_1234567890' }}
+
+      - name: Verify API Contract (openapi.json)
+        run: |
+          pnpm run openapi:export
+          if [ -n "$(git diff --name-only openapi.json)" ]; then
+            echo "❌ API Contract is out of sync! Please run 'pnpm run openapi:export' locally and commit the changes."
+            git diff openapi.json
+            exit 1
+          fi
+
+      - name: Upload Coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: backend/coverage/
+
+  # --- Stage 3: Frontend Build & SDK Validation ---
+  frontend-build:
+    name: Frontend Build & SDK
+    needs: backend-test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Validate SDK Generation
+        run: pnpm run gen:api
+
+      - name: Build Project
+        run: pnpm run build
+        env:
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || 'pk_test_Y2xlcmsuZXhhbXBsZS5jb20k' }}
+          NEXT_PUBLIC_API_URL: https://backend.pyqdeck.in/api/v1
+
+  # --- Stage 4: Docker Build Check ---
+  docker-build:
+    name: Docker Build Check
+    needs: backend-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          push: false
+          tags: pyqdeck-backend:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # --- Stage 5: Deployment ---
+  deploy:
+    name: Deploy
+    needs: [backend-test, frontend-build, docker-build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Backend to Render
+        run: |
+          if [ -n "${{ secrets.RENDER_DEPLOY_HOOK }}" ]; then
+            curl -s -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+          else
+            echo "Skipping Render deploy: RENDER_DEPLOY_HOOK not set."
+          fi
+
+      # Note: Vercel usually handles its own deploys via GitHub integration.
+      # If you use the Vercel CLI, you would add those steps here.
+      - name: Frontend Deployment Info
+        run: echo "Frontend deployment triggered via Vercel GitHub integration."
