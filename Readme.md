@@ -18,6 +18,7 @@ Welcome to the **PYQDeck** monorepo. This repository contains both the high-perf
 | **Frontend Web** | Next.js 15, Tailwind 4, shadcn/ui | [pyqdeck.in](https://pyqdeck.in/) |
 | **UI Library** | Storybook 8, Radix UI, Vite | [storybook.pyqdeck.in](https://storybook.pyqdeck.in/) |
 | **API Docs** | Swagger / OpenAPI 3.0 | [/api-docs](https://backend.pyqdeck.in/api-docs) |
+| **Engineering Docs** | Mintlify | [pyqdeck.mintlify.app](https://pyqdeck.mintlify.app/) |
 | **Status** | BetterUptime | [pyqdeck.betteruptime.com](https://pyqdeck.betteruptime.com/) |
 
 ---
