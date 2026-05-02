@@ -4,12 +4,18 @@ import express from 'express';
 import * as webhookController from '../../src/controllers/webhookController.js';
 import { rateLimiter } from '../../src/middlewares/rateLimiter.middleware.js';
 
-const { mockVerify, mockUserService } = vi.hoisted(() => ({
+const { mockVerify, mockUserService, mockClerkClient } = vi.hoisted(() => ({
   mockVerify: vi.fn(),
   mockUserService: {
     handleUserCreated: vi.fn(),
     handleUserUpdated: vi.fn(),
     handleUserDeleted: vi.fn(),
+  },
+  mockClerkClient: {
+    sessions: {
+      getSessionList: vi.fn(),
+      revokeSession: vi.fn(),
+    },
   },
 }));
 
@@ -29,6 +35,10 @@ vi.mock('../../src/services/userService.js', () => ({
 vi.mock('../../src/middlewares/rateLimiter.middleware.js', () => ({
   rateLimiter: vi.fn(() => (req, res, next) => next()),
   default: vi.fn(() => (req, res, next) => next()),
+}));
+
+vi.mock('@clerk/express', () => ({
+  clerkClient: mockClerkClient,
 }));
 
 describe('WebhookController', () => {
@@ -118,5 +128,44 @@ describe('WebhookController', () => {
 
     expect(response.status).toBe(200);
     expect(response.body.received).toBe(true);
+  });
+
+  it('should revoke old sessions on session.created event', async () => {
+    const userId = 'user_1';
+    const currentSessionId = 'sess_new';
+    const eventData = { user_id: userId, id: currentSessionId };
+
+    mockVerify.mockReturnValue({
+      type: 'session.created',
+      data: eventData,
+    });
+
+    mockClerkClient.sessions.getSessionList.mockResolvedValue({
+      data: [
+        { id: 'sess_old_1', status: 'active' },
+        { id: 'sess_old_2', status: 'active' },
+        { id: 'sess_new', status: 'active' },
+        { id: 'sess_other', status: 'expired' },
+      ],
+    });
+
+    const response = await request(app)
+      .post('/webhook')
+      .send(JSON.stringify({ type: 'session.created', data: eventData }));
+
+    expect(response.status).toBe(200);
+    expect(mockClerkClient.sessions.getSessionList).toHaveBeenCalledWith({
+      userId,
+    });
+    expect(mockClerkClient.sessions.revokeSession).toHaveBeenCalledTimes(2);
+    expect(mockClerkClient.sessions.revokeSession).toHaveBeenCalledWith(
+      'sess_old_1'
+    );
+    expect(mockClerkClient.sessions.revokeSession).toHaveBeenCalledWith(
+      'sess_old_2'
+    );
+    expect(mockClerkClient.sessions.revokeSession).not.toHaveBeenCalledWith(
+      'sess_new'
+    );
   });
 });
