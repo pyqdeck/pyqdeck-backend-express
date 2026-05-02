@@ -20,17 +20,23 @@ jobs:
         with:
           node-version: 20
           cache: 'pnpm'
+          cache-dependency-path: |
+            backend/pnpm-lock.yaml
+            frontend/pnpm-lock.yaml
 
-      - name: Install Root Dependencies
-        run: pnpm install
+      - name: Backend - Install & Lint
+        run: |
+          cd backend
+          pnpm install
+          pnpm run lint
 
-      - name: Backend Lint
-        run: pnpm --prefix backend run lint
+      - name: Frontend - Install & Lint
+        run: |
+          cd frontend
+          pnpm install
+          pnpm run lint
 
-      - name: Frontend Lint
-        run: pnpm --prefix frontend run lint
-
-      - name: Format Check
+      - name: Global Format Check
         run: pnpm dlx prettier --check .
 
   # --- Stage 2: Backend Tests & Contract Check ---
@@ -50,6 +56,7 @@ jobs:
         with:
           node-version: 20
           cache: 'pnpm'
+          cache-dependency-path: backend/pnpm-lock.yaml
 
       - name: Cache MongoDB binaries
         uses: actions/cache@v4
@@ -102,6 +109,7 @@ jobs:
         with:
           node-version: 20
           cache: 'pnpm'
+          cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install
