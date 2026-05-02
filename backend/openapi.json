@@ -82,1055 +82,55 @@
       "description": "Global search"
     }
   ],
-  "components": {
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "bearerFormat": "JWT"
-      }
-    },
-    "responses": {
-      "BadRequest": {
-        "description": "The request was invalid or could not be understood.",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        }
-      },
-      "Unauthorized": {
-        "description": "Authentication is required and has failed or has not yet been provided.",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        }
-      },
-      "Forbidden": {
-        "description": "The server understood the request but refuses to authorize it.",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        }
-      },
-      "NotFound": {
-        "description": "The requested resource could not be found.",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        }
-      },
-      "TooManyRequests": {
-        "description": "The user has sent too many requests in a given amount of time.",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        }
-      },
-      "InternalServerError": {
-        "description": "An unexpected error occurred on the server.",
-        "content": {
-          "application/json": {
-            "schema": {
-              "$ref": "#/components/schemas/Error"
-            }
-          }
-        }
-      }
-    },
-    "schemas": {
-      "Error": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "example": "error"
-          },
-          "message": {
-            "type": "string",
-            "example": "Detailed error message here"
-          },
-          "code": {
-            "type": "integer",
-            "example": 400
-          }
-        }
-      },
-      "Pagination": {
-        "type": "object",
-        "properties": {
-          "total": {
-            "type": "integer",
-            "example": 100
-          },
-          "limit": {
-            "type": "integer",
-            "example": 20
-          },
-          "page": {
-            "type": "integer",
-            "example": 1
-          },
-          "totalPages": {
-            "type": "integer",
-            "example": 5
-          }
-        }
-      },
-      "SuccessResponse": {
-        "type": "object",
-        "properties": {
-          "status": {
-            "type": "string",
-            "example": "success"
-          },
-          "message": {
-            "type": "string",
-            "example": "Operation successful"
-          },
-          "code": {
-            "type": "integer",
-            "example": 200
-          }
-        }
-      },
-      "Bookmark": {
-        "type": "object",
-        "required": [
-          "userId",
-          "targetType",
-          "targetId"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "userId": {
-            "type": "string",
-            "description": "Reference to User"
-          },
-          "targetType": {
-            "type": "string",
-            "enum": [
-              "question",
-              "paper",
-              "solution"
-            ]
-          },
-          "targetId": {
-            "type": "string",
-            "description": "ID of the bookmarked document"
-          },
-          "note": {
-            "type": "string",
-            "description": "Optional personal note on the bookmark"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "Branch": {
-        "type": "object",
-        "required": [
-          "universityId",
-          "name",
-          "shortName",
-          "slug"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "universityId": {
-            "type": "string",
-            "description": "Reference to University"
-          },
-          "name": {
-            "type": "string"
-          },
-          "shortName": {
-            "type": "string"
-          },
-          "branchCode": {
-            "type": "string"
-          },
-          "slug": {
-            "type": "string"
-          },
-          "redirectSlugs": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Old slugs that 301-redirect to the current slug"
-          },
-          "isActive": {
-            "type": "boolean",
-            "default": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "Module": {
-        "type": "object",
-        "required": [
-          "syllabusId",
-          "moduleNumber",
-          "title",
-          "slug"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "syllabusId": {
-            "type": "string",
-            "description": "Reference to Syllabus"
-          },
-          "moduleNumber": {
-            "type": "integer",
-            "minimum": 1
-          },
-          "title": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "weightage": {
-            "type": "number",
-            "description": "Percentage weightage in the exam"
-          },
-          "coMapping": {
-            "type": "string",
-            "description": "Course outcome mapping (e.g. CO1, CO2)"
-          },
-          "slug": {
-            "type": "string",
-            "example": "lexical-analysis"
-          },
-          "redirectSlugs": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Old slugs that 301-redirect to the current slug"
-          },
-          "order": {
-            "type": "integer",
-            "default": 0
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "Paper": {
-        "type": "object",
-        "required": [
-          "subjectOfferingId",
-          "title",
-          "examYear",
-          "examType",
-          "slug"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "subjectOfferingId": {
-            "type": "string",
-            "description": "Reference to SubjectOffering"
-          },
-          "title": {
-            "type": "string"
-          },
-          "examYear": {
-            "type": "integer"
-          },
-          "examType": {
-            "type": "string",
-            "enum": [
-              "regular",
-              "re-exam",
-              "supplementary",
-              "end-sem",
-              "internal"
-            ]
-          },
-          "session": {
-            "type": "string",
-            "example": "Nov-Dec"
-          },
-          "regulation": {
-            "type": "string"
-          },
-          "duration": {
-            "type": "integer",
-            "description": "Duration in minutes"
-          },
-          "maxMarks": {
-            "type": "number"
-          },
-          "slug": {
-            "type": "string",
-            "example": "compiler-design-2021-regular"
-          },
-          "uploadedBy": {
-            "type": "string",
-            "description": "Reference to User"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "draft",
-              "pending",
-              "approved",
-              "rejected"
-            ],
-            "default": "pending"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "Question": {
-        "type": "object",
-        "required": [
-          "text",
-          "type"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "text": {
-            "type": "string"
-          },
-          "normalizedText": {
-            "type": "string",
-            "description": "Cleaned text used for deduplication and search"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "mcq",
-              "short",
-              "long",
-              "numerical",
-              "coding"
-            ]
-          },
-          "difficulty": {
-            "type": "string",
-            "enum": [
-              "easy",
-              "medium",
-              "hard"
-            ]
-          },
-          "bloomLevel": {
-            "type": "string",
-            "enum": [
-              "remember",
-              "understand",
-              "apply",
-              "analyze",
-              "evaluate",
-              "create"
-            ]
-          },
-          "marks": {
-            "type": "number"
-          },
-          "estimatedTime": {
-            "type": "integer",
-            "description": "Estimated solving time in minutes"
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "References to Tag documents"
-          },
-          "images": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "equations": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "LaTeX equation strings"
-          },
-          "codeSnippets": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "slug": {
-            "type": "string",
-            "example": "explain-lexical-analyzer-compiler-design"
-          },
-          "language": {
-            "type": "string",
-            "default": "en"
-          },
-          "createdBy": {
-            "type": "string",
-            "description": "Reference to User"
-          },
-          "isVerified": {
-            "type": "boolean",
-            "default": false
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "QuestionPaperMap": {
-        "type": "object",
-        "required": [
-          "paperId",
-          "questionId"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "paperId": {
-            "type": "string",
-            "description": "Reference to Paper"
-          },
-          "questionId": {
-            "type": "string",
-            "description": "Reference to Question"
-          },
-          "section": {
-            "type": "string",
-            "example": "A"
-          },
-          "questionNumber": {
-            "type": "integer"
-          },
-          "marks": {
-            "type": "number",
-            "description": "Marks as it appears in this specific paper (may differ from question default)"
-          },
-          "order": {
-            "type": "integer",
-            "default": 0
-          },
-          "compulsory": {
-            "type": "boolean",
-            "default": false
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "QuestionSyllabusMap": {
-        "type": "object",
-        "required": [
-          "questionId"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "questionId": {
-            "type": "string",
-            "description": "Reference to Question"
-          },
-          "moduleId": {
-            "type": "string",
-            "description": "Reference to Module"
-          },
-          "topicId": {
-            "type": "string",
-            "description": "Reference to Topic"
-          },
-          "confidenceScore": {
-            "type": "number",
-            "minimum": 0,
-            "maximum": 1,
-            "description": "AI or manual confidence score for this mapping"
-          },
-          "mappedBy": {
-            "type": "string",
-            "enum": [
-              "manual",
-              "ai"
-            ],
-            "default": "manual"
-          },
-          "verified": {
-            "type": "boolean",
-            "default": false
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "Semester": {
-        "type": "object",
-        "required": [
-          "branchId",
-          "number",
-          "slug"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "branchId": {
-            "type": "string",
-            "description": "Reference to Branch"
-          },
-          "number": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 8
-          },
-          "slug": {
-            "type": "string",
-            "example": "semester-5"
-          },
-          "title": {
-            "type": "string",
-            "example": "Semester 5"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "Solution": {
-        "type": "object",
-        "required": [
-          "questionId",
-          "authorId",
-          "type"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "questionId": {
-            "type": "string",
-            "description": "Reference to Question"
-          },
-          "authorId": {
-            "type": "string",
-            "description": "Reference to User"
-          },
-          "type": {
-            "type": "string",
-            "enum": [
-              "teacher",
-              "student",
-              "ai"
-            ]
-          },
-          "content": {
-            "type": "string",
-            "description": "Plain text solution"
-          },
-          "latexContent": {
-            "type": "string",
-            "description": "LaTeX-formatted solution"
-          },
-          "images": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "videoLinks": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "upvotes": {
-            "type": "integer",
-            "default": 0
-          },
-          "downvotes": {
-            "type": "integer",
-            "default": 0
-          },
-          "isVerified": {
-            "type": "boolean",
-            "default": false
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "draft",
-              "pending",
-              "approved",
-              "rejected"
-            ],
-            "default": "pending"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "Subject": {
-        "type": "object",
-        "required": [
-          "name",
-          "slug"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "shortName": {
-            "type": "string"
-          },
-          "subjectCode": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "credits": {
-            "type": "number"
-          },
-          "slug": {
-            "type": "string"
-          },
-          "redirectSlugs": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Old slugs that 301-redirect to the current slug"
-          },
-          "isActive": {
-            "type": "boolean",
-            "default": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "SubjectOffering": {
-        "type": "object",
-        "required": [
-          "universityId",
-          "branchId",
-          "semesterId",
-          "subjectId",
-          "slug"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "universityId": {
-            "type": "string",
-            "description": "Reference to University"
-          },
-          "branchId": {
-            "type": "string",
-            "description": "Reference to Branch"
-          },
-          "semesterId": {
-            "type": "string",
-            "description": "Reference to Semester"
-          },
-          "subjectId": {
-            "type": "string",
-            "description": "Reference to Subject"
-          },
-          "regulation": {
-            "type": "string",
-            "example": "2022"
-          },
-          "academicYear": {
-            "type": "string",
-            "example": "2023-24"
-          },
-          "slug": {
-            "type": "string",
-            "example": "beu-it-sem5-compiler-design-2022"
-          },
-          "isActive": {
-            "type": "boolean",
-            "default": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "Syllabus": {
-        "type": "object",
-        "required": [
-          "subjectOfferingId"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "subjectOfferingId": {
-            "type": "string",
-            "description": "Reference to SubjectOffering (one-to-one)"
-          },
-          "description": {
-            "type": "string"
-          },
-          "isActive": {
-            "type": "boolean",
-            "default": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "Tag": {
-        "type": "object",
-        "required": [
-          "name",
-          "slug"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "slug": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "redirectSlugs": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Old slugs that 301-redirect to the current slug"
-          },
-          "usageCount": {
-            "type": "integer",
-            "default": 0
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "Topic": {
-        "type": "object",
-        "required": [
-          "moduleId",
-          "title",
-          "slug"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "moduleId": {
-            "type": "string",
-            "description": "Reference to Module"
-          },
-          "title": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "slug": {
-            "type": "string",
-            "example": "lexical-analyzer"
-          },
-          "redirectSlugs": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Old slugs that 301-redirect to the current slug"
-          },
-          "keywords": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "order": {
-            "type": "integer",
-            "default": 0
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "University": {
-        "type": "object",
-        "required": [
-          "name",
-          "shortName",
-          "slug"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "shortName": {
-            "type": "string"
-          },
-          "slug": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string",
-            "default": "India"
-          },
-          "redirectSlugs": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Old slugs that 301-redirect to the current slug"
-          },
-          "isActive": {
-            "type": "boolean",
-            "default": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "Upload": {
-        "type": "object",
-        "required": [
-          "url",
-          "uploadedBy"
-        ],
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string",
-            "format": "uri"
-          },
-          "publicId": {
-            "type": "string",
-            "description": "Provider-specific identifier (Cloudinary/S3 key)"
-          },
-          "mimeType": {
-            "type": "string",
-            "example": "application/pdf"
-          },
-          "size": {
-            "type": "integer",
-            "description": "File size in bytes"
-          },
-          "uploadedBy": {
-            "type": "string",
-            "description": "Reference to User"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "User": {
-        "type": "object",
-        "required": [
-          "clerkId",
-          "name",
-          "email"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "The auto-generated id of the user"
-          },
-          "clerkId": {
-            "type": "string",
-            "description": "The unique ID from Clerk authentication"
-          },
-          "name": {
-            "type": "string",
-            "description": "The name of the user"
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "description": "The email of the user"
-          },
-          "universityId": {
-            "type": "string",
-            "nullable": true,
-            "description": "Reference to University"
-          },
-          "branchId": {
-            "type": "string",
-            "nullable": true,
-            "description": "Reference to Branch"
-          },
-          "semesterId": {
-            "type": "string",
-            "nullable": true,
-            "description": "Reference to Semester"
-          },
-          "role": {
-            "type": "string",
-            "enum": [
-              "normal",
-              "admin",
-              "editor"
-            ],
-            "default": "normal",
-            "description": "The role of the user"
-          },
-          "isActive": {
-            "type": "boolean",
-            "default": true
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      }
-    }
-  },
   "paths": {
+    "/health": {
+      "get": {
+        "operationId": "getHealth",
+        "tags": [
+          "System"
+        ],
+        "summary": "Basic health check",
+        "description": "Returns the operational status of the API instance.",
+        "responses": {
+          "200": {
+            "description": "API is operational",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health/detailed": {
+      "get": {
+        "operationId": "getHealthDetailed",
+        "tags": [
+          "System"
+        ],
+        "summary": "Detailed system health",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All systems operational",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuccessResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/bookmarks": {
       "get": {
         "operationId": "listBookmarks",
@@ -1665,129 +665,6 @@
           },
           "404": {
             "$ref": "#/components/responses/NotFound"
-          }
-        }
-      }
-    },
-    "/health": {
-      "get": {
-        "operationId": "getHealth",
-        "tags": [
-          "System"
-        ],
-        "summary": "Basic health check",
-        "description": "Returns the operational status of the API instance. Used by load balancers and uptime monitors.",
-        "responses": {
-          "200": {
-            "description": "API is operational",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/SuccessResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "object",
-                          "properties": {
-                            "status": {
-                              "type": "string",
-                              "example": "healthy"
-                            },
-                            "timestamp": {
-                              "type": "string",
-                              "format": "date-time"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "503": {
-            "$ref": "#/components/responses/InternalServerError"
-          }
-        }
-      }
-    },
-    "/health/detailed": {
-      "get": {
-        "operationId": "getHealthDetailed",
-        "tags": [
-          "System"
-        ],
-        "summary": "Detailed system health",
-        "description": "Provides deep insights into system health, including database connectivity, memory usage, and process uptime.",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "All systems operational",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/SuccessResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "object",
-                          "properties": {
-                            "status": {
-                              "type": "string",
-                              "example": "healthy"
-                            },
-                            "database": {
-                              "type": "string",
-                              "example": "connected"
-                            },
-                            "memory": {
-                              "type": "object",
-                              "properties": {
-                                "rss": {
-                                  "type": "string",
-                                  "example": "120 MB"
-                                },
-                                "heapTotal": {
-                                  "type": "string",
-                                  "example": "80 MB"
-                                }
-                              }
-                            },
-                            "uptime": {
-                              "type": "number",
-                              "example": 3600
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "System degradation detected (e.g., database disconnected)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
           }
         }
       }
@@ -4719,6 +3596,1054 @@
           },
           "429": {
             "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "The request was invalid or could not be understood.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Authentication is required and has failed or has not yet been provided.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "The server understood the request but refuses to authorize it.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "The requested resource could not be found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "TooManyRequests": {
+        "description": "The user has sent too many requests in a given amount of time.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "An unexpected error occurred on the server.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "message": {
+            "type": "string",
+            "example": "Detailed error message here"
+          },
+          "code": {
+            "type": "integer",
+            "example": 400
+          }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "example": 100
+          },
+          "limit": {
+            "type": "integer",
+            "example": 20
+          },
+          "page": {
+            "type": "integer",
+            "example": 1
+          },
+          "totalPages": {
+            "type": "integer",
+            "example": 5
+          }
+        }
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "message": {
+            "type": "string",
+            "example": "Operation successful"
+          },
+          "code": {
+            "type": "integer",
+            "example": 200
+          }
+        }
+      },
+      "Bookmark": {
+        "type": "object",
+        "required": [
+          "userId",
+          "targetType",
+          "targetId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string",
+            "description": "Reference to User"
+          },
+          "targetType": {
+            "type": "string",
+            "enum": [
+              "question",
+              "paper",
+              "solution"
+            ]
+          },
+          "targetId": {
+            "type": "string",
+            "description": "ID of the bookmarked document"
+          },
+          "note": {
+            "type": "string",
+            "description": "Optional personal note on the bookmark"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Branch": {
+        "type": "object",
+        "required": [
+          "universityId",
+          "name",
+          "shortName",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "universityId": {
+            "type": "string",
+            "description": "Reference to University"
+          },
+          "name": {
+            "type": "string"
+          },
+          "shortName": {
+            "type": "string"
+          },
+          "branchCode": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "redirectSlugs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Old slugs that 301-redirect to the current slug"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Module": {
+        "type": "object",
+        "required": [
+          "syllabusId",
+          "moduleNumber",
+          "title",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "syllabusId": {
+            "type": "string",
+            "description": "Reference to Syllabus"
+          },
+          "moduleNumber": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "weightage": {
+            "type": "number",
+            "description": "Percentage weightage in the exam"
+          },
+          "coMapping": {
+            "type": "string",
+            "description": "Course outcome mapping (e.g. CO1, CO2)"
+          },
+          "slug": {
+            "type": "string",
+            "example": "lexical-analysis"
+          },
+          "redirectSlugs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Old slugs that 301-redirect to the current slug"
+          },
+          "order": {
+            "type": "integer",
+            "default": 0
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Paper": {
+        "type": "object",
+        "required": [
+          "subjectOfferingId",
+          "title",
+          "examYear",
+          "examType",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "subjectOfferingId": {
+            "type": "string",
+            "description": "Reference to SubjectOffering"
+          },
+          "title": {
+            "type": "string"
+          },
+          "examYear": {
+            "type": "integer"
+          },
+          "examType": {
+            "type": "string",
+            "enum": [
+              "regular",
+              "re-exam",
+              "supplementary",
+              "end-sem",
+              "internal"
+            ]
+          },
+          "session": {
+            "type": "string",
+            "example": "Nov-Dec"
+          },
+          "regulation": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "integer",
+            "description": "Duration in minutes"
+          },
+          "maxMarks": {
+            "type": "number"
+          },
+          "slug": {
+            "type": "string",
+            "example": "compiler-design-2021-regular"
+          },
+          "uploadedBy": {
+            "type": "string",
+            "description": "Reference to User"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "pending",
+              "approved",
+              "rejected"
+            ],
+            "default": "pending"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Question": {
+        "type": "object",
+        "required": [
+          "text",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "normalizedText": {
+            "type": "string",
+            "description": "Cleaned text used for deduplication and search"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "mcq",
+              "short",
+              "long",
+              "numerical",
+              "coding"
+            ]
+          },
+          "difficulty": {
+            "type": "string",
+            "enum": [
+              "easy",
+              "medium",
+              "hard"
+            ]
+          },
+          "bloomLevel": {
+            "type": "string",
+            "enum": [
+              "remember",
+              "understand",
+              "apply",
+              "analyze",
+              "evaluate",
+              "create"
+            ]
+          },
+          "marks": {
+            "type": "number"
+          },
+          "estimatedTime": {
+            "type": "integer",
+            "description": "Estimated solving time in minutes"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "References to Tag documents"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "equations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "LaTeX equation strings"
+          },
+          "codeSnippets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "slug": {
+            "type": "string",
+            "example": "explain-lexical-analyzer-compiler-design"
+          },
+          "language": {
+            "type": "string",
+            "default": "en"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "Reference to User"
+          },
+          "isVerified": {
+            "type": "boolean",
+            "default": false
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "QuestionPaperMap": {
+        "type": "object",
+        "required": [
+          "paperId",
+          "questionId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "paperId": {
+            "type": "string",
+            "description": "Reference to Paper"
+          },
+          "questionId": {
+            "type": "string",
+            "description": "Reference to Question"
+          },
+          "section": {
+            "type": "string",
+            "example": "A"
+          },
+          "questionNumber": {
+            "type": "integer"
+          },
+          "marks": {
+            "type": "number",
+            "description": "Marks as it appears in this specific paper (may differ from question default)"
+          },
+          "order": {
+            "type": "integer",
+            "default": 0
+          },
+          "compulsory": {
+            "type": "boolean",
+            "default": false
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "QuestionSyllabusMap": {
+        "type": "object",
+        "required": [
+          "questionId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "questionId": {
+            "type": "string",
+            "description": "Reference to Question"
+          },
+          "moduleId": {
+            "type": "string",
+            "description": "Reference to Module"
+          },
+          "topicId": {
+            "type": "string",
+            "description": "Reference to Topic"
+          },
+          "confidenceScore": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "AI or manual confidence score for this mapping"
+          },
+          "mappedBy": {
+            "type": "string",
+            "enum": [
+              "manual",
+              "ai"
+            ],
+            "default": "manual"
+          },
+          "verified": {
+            "type": "boolean",
+            "default": false
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Semester": {
+        "type": "object",
+        "required": [
+          "branchId",
+          "number",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "branchId": {
+            "type": "string",
+            "description": "Reference to Branch"
+          },
+          "number": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 8
+          },
+          "slug": {
+            "type": "string",
+            "example": "semester-5"
+          },
+          "title": {
+            "type": "string",
+            "example": "Semester 5"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Solution": {
+        "type": "object",
+        "required": [
+          "questionId",
+          "authorId",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "questionId": {
+            "type": "string",
+            "description": "Reference to Question"
+          },
+          "authorId": {
+            "type": "string",
+            "description": "Reference to User"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "teacher",
+              "student",
+              "ai"
+            ]
+          },
+          "content": {
+            "type": "string",
+            "description": "Plain text solution"
+          },
+          "latexContent": {
+            "type": "string",
+            "description": "LaTeX-formatted solution"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "videoLinks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "upvotes": {
+            "type": "integer",
+            "default": 0
+          },
+          "downvotes": {
+            "type": "integer",
+            "default": 0
+          },
+          "isVerified": {
+            "type": "boolean",
+            "default": false
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "pending",
+              "approved",
+              "rejected"
+            ],
+            "default": "pending"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Subject": {
+        "type": "object",
+        "required": [
+          "name",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "shortName": {
+            "type": "string"
+          },
+          "subjectCode": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "credits": {
+            "type": "number"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "redirectSlugs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Old slugs that 301-redirect to the current slug"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SubjectOffering": {
+        "type": "object",
+        "required": [
+          "universityId",
+          "branchId",
+          "semesterId",
+          "subjectId",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "universityId": {
+            "type": "string",
+            "description": "Reference to University"
+          },
+          "branchId": {
+            "type": "string",
+            "description": "Reference to Branch"
+          },
+          "semesterId": {
+            "type": "string",
+            "description": "Reference to Semester"
+          },
+          "subjectId": {
+            "type": "string",
+            "description": "Reference to Subject"
+          },
+          "regulation": {
+            "type": "string",
+            "example": "2022"
+          },
+          "academicYear": {
+            "type": "string",
+            "example": "2023-24"
+          },
+          "slug": {
+            "type": "string",
+            "example": "beu-it-sem5-compiler-design-2022"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Syllabus": {
+        "type": "object",
+        "required": [
+          "subjectOfferingId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "subjectOfferingId": {
+            "type": "string",
+            "description": "Reference to SubjectOffering (one-to-one)"
+          },
+          "description": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Tag": {
+        "type": "object",
+        "required": [
+          "name",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "redirectSlugs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Old slugs that 301-redirect to the current slug"
+          },
+          "usageCount": {
+            "type": "integer",
+            "default": 0
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Topic": {
+        "type": "object",
+        "required": [
+          "moduleId",
+          "title",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "moduleId": {
+            "type": "string",
+            "description": "Reference to Module"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string",
+            "example": "lexical-analyzer"
+          },
+          "redirectSlugs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Old slugs that 301-redirect to the current slug"
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "order": {
+            "type": "integer",
+            "default": 0
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "University": {
+        "type": "object",
+        "required": [
+          "name",
+          "shortName",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "shortName": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string",
+            "default": "India"
+          },
+          "redirectSlugs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Old slugs that 301-redirect to the current slug"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Upload": {
+        "type": "object",
+        "required": [
+          "url",
+          "uploadedBy"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "publicId": {
+            "type": "string",
+            "description": "Provider-specific identifier (Cloudinary/S3 key)"
+          },
+          "mimeType": {
+            "type": "string",
+            "example": "application/pdf"
+          },
+          "size": {
+            "type": "integer",
+            "description": "File size in bytes"
+          },
+          "uploadedBy": {
+            "type": "string",
+            "description": "Reference to User"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "clerkId",
+          "name",
+          "email"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The auto-generated id of the user"
+          },
+          "clerkId": {
+            "type": "string",
+            "description": "The unique ID from Clerk authentication"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the user"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email of the user"
+          },
+          "universityId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Reference to University"
+          },
+          "branchId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Reference to Branch"
+          },
+          "semesterId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Reference to Semester"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "admin",
+              "editor"
+            ],
+            "default": "normal",
+            "description": "The role of the user"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       }

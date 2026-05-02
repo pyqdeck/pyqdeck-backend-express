@@ -5,12 +5,11 @@ import { isAdmin } from '../middlewares/auth.middleware.js';
 const router = Router();
 
 /**
- * @openapi
+ * @swagger
  * /health:
  *   get:
  *     operationId: getHealth
- *     tags:
- *       - System
+ *     tags: [System]
  *     summary: Basic health check
  *     description: Returns the operational status of the API instance. Used by load balancers and uptime monitors.
  *     responses:
@@ -38,12 +37,11 @@ const router = Router();
 router.get('/health', healthController.healthCheck);
 
 /**
- * @openapi
+ * @swagger
  * /health/detailed:
  *   get:
  *     operationId: getHealthDetailed
- *     tags:
- *       - System
+ *     tags: [System]
  *     summary: Detailed system health
  *     description: Provides deep insights into system health, including database connectivity, memory usage, and process uptime.
  *     security:

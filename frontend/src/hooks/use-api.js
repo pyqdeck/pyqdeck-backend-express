@@ -12,7 +12,7 @@ export function useApi() {
   const api = useMemo(() => {
     return new Api({
       baseURL:
-        process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1',
+        process.env.NEXT_PUBLIC_API_URL || 'https://backend.pyqdeck.in/api/v1',
       securityWorker: async () => {
         const token = await getToken();
         if (!token) return {};

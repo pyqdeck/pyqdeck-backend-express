@@ -1,5 +1,9 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import config from '../config/index.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const options = {
   definition: {
@@ -65,6 +69,44 @@ Most endpoints require a valid Clerk JWT token. Include it in the header:
       { name: 'Users', description: 'Current user profile' },
       { name: 'Search', description: 'Global search' },
     ],
+    paths: {
+      '/health': {
+        get: {
+          operationId: 'getHealth',
+          tags: ['System'],
+          summary: 'Basic health check',
+          description: 'Returns the operational status of the API instance.',
+          responses: {
+            200: {
+              description: 'API is operational',
+              content: {
+                'application/json': {
+                  schema: { $ref: '#/components/schemas/SuccessResponse' },
+                },
+              },
+            },
+          },
+        },
+      },
+      '/health/detailed': {
+        get: {
+          operationId: 'getHealthDetailed',
+          tags: ['System'],
+          summary: 'Detailed system health',
+          security: [{ bearerAuth: [] }],
+          responses: {
+            200: {
+              description: 'All systems operational',
+              content: {
+                'application/json': {
+                  schema: { $ref: '#/components/schemas/SuccessResponse' },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
     components: {
       securitySchemes: {
         bearerAuth: {
@@ -156,7 +198,17 @@ Most endpoints require a valid Clerk JWT token. Include it in the header:
     },
   },
   // Paths to files containing OpenAPI definitions
-  apis: ['./src/routes/*.js', './src/models/*.js'],
+  apis: [
+    path.resolve(__dirname, '../routes/*.js'),
+    path.resolve(__dirname, '../models/*.js'),
+  ],
 };
 
-export const swaggerSpec = swaggerJsdoc(options);
+const spec = swaggerJsdoc(options);
+
+// Manually merge custom paths to prevent them from being overwritten by the scanner
+if (options.definition.paths) {
+  spec.paths = { ...spec.paths, ...options.definition.paths };
+}
+
+export const swaggerSpec = spec;

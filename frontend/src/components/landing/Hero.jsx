@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { useApi } from '@/hooks/use-api';
 import {
   ArrowRight,
   Bookmark,
@@ -31,8 +32,24 @@ import { cn } from '@/lib/utils';
 import { GoogleIcon } from '@/components/icons';
 
 export function Hero() {
+  const api = useApi();
   const [isCopied, setIsCopied] = useState(false);
   const [isSolved, setIsSolved] = useState(false);
+
+  useEffect(() => {
+    // Perform health check
+    api
+      .request({
+        path: '/health',
+        method: 'GET',
+      })
+      .then((res) => {
+        console.log('Backend Status:', res.data.status);
+      })
+      .catch((err) => {
+        console.error('Health Check Error:', err);
+      });
+  }, [api]);
 
   const fadeUp = {
     hidden: { opacity: 0, y: 24 },

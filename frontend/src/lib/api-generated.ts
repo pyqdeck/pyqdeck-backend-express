@@ -606,6 +606,43 @@ export class HttpClient<SecurityDataType = unknown> {
 export class Api<
   SecurityDataType extends unknown,
 > extends HttpClient<SecurityDataType> {
+  health = {
+    /**
+     * @description Returns the operational status of the API instance.
+     *
+     * @tags System
+     * @name GetHealth
+     * @summary Basic health check
+     * @request GET:/health
+     * @response `200` `SuccessResponse` API is operational
+     */
+    getHealth: (params: RequestParams = {}) =>
+      this.request<SuccessResponse, any>({
+        path: `/health`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags System
+     * @name GetHealthDetailed
+     * @summary Detailed system health
+     * @request GET:/health/detailed
+     * @secure
+     * @response `200` `SuccessResponse` All systems operational
+     */
+    getHealthDetailed: (params: RequestParams = {}) =>
+      this.request<SuccessResponse, any>({
+        path: `/health/detailed`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params,
+      }),
+  };
   bookmarks = {
     /**
  * No description
@@ -1068,100 +1105,6 @@ export class Api<
         path: `/universities/${id}`,
         method: 'DELETE',
         secure: true,
-        ...params,
-      }),
-  };
-  health = {
-    /**
- * @description Returns the operational status of the API instance. Used by load balancers and uptime monitors.
- *
- * @tags System
- * @name GetHealth
- * @summary Basic health check
- * @request GET:/health
- * @response `200` `(SuccessResponse & {
-    data?: {
-  /** @example "healthy" *\/
-    status?: string,
-  /** @format date-time *\/
-    timestamp?: string,
-
-},
-
-})` API is operational
- * @response `503` `Error`
- */
-    getHealth: (params: RequestParams = {}) =>
-      this.request<
-        SuccessResponse & {
-          data?: {
-            /** @example "healthy" */
-            status?: string;
-            /** @format date-time */
-            timestamp?: string;
-          };
-        },
-        Error
-      >({
-        path: `/health`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
- * @description Provides deep insights into system health, including database connectivity, memory usage, and process uptime.
- *
- * @tags System
- * @name GetHealthDetailed
- * @summary Detailed system health
- * @request GET:/health/detailed
- * @secure
- * @response `200` `(SuccessResponse & {
-    data?: {
-  /** @example "healthy" *\/
-    status?: string,
-  /** @example "connected" *\/
-    database?: string,
-    memory?: {
-  /** @example "120 MB" *\/
-    rss?: string,
-  /** @example "80 MB" *\/
-    heapTotal?: string,
-
-},
-  /** @example 3600 *\/
-    uptime?: number,
-
-},
-
-})` All systems operational
- * @response `503` `Error` System degradation detected (e.g., database disconnected)
- */
-    getHealthDetailed: (params: RequestParams = {}) =>
-      this.request<
-        SuccessResponse & {
-          data?: {
-            /** @example "healthy" */
-            status?: string;
-            /** @example "connected" */
-            database?: string;
-            memory?: {
-              /** @example "120 MB" */
-              rss?: string;
-              /** @example "80 MB" */
-              heapTotal?: string;
-            };
-            /** @example 3600 */
-            uptime?: number;
-          };
-        },
-        Error
-      >({
-        path: `/health/detailed`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
         ...params,
       }),
   };
