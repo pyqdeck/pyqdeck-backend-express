@@ -2,9 +2,9 @@ name: Monorepo CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   # --- Stage 1: Quality & Linting ---
@@ -19,7 +19,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
           cache-dependency-path: |
             backend/pnpm-lock.yaml
             frontend/pnpm-lock.yaml
@@ -36,8 +36,15 @@ jobs:
           pnpm install
           pnpm run lint
 
-      - name: Global Format Check
-        run: pnpm dlx prettier --check .
+      - name: Backend Format Check
+        run: |
+          cd backend
+          pnpm run format:check || pnpm dlx prettier --check .
+
+      - name: Frontend Format Check
+        run: |
+          cd frontend
+          pnpm run format:check
 
   # --- Stage 2: Backend Tests & Contract Check ---
   backend-test:
@@ -55,7 +62,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
           cache-dependency-path: backend/pnpm-lock.yaml
 
       - name: Cache MongoDB binaries
@@ -108,7 +115,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
           cache-dependency-path: frontend/pnpm-lock.yaml
 
       - name: Install dependencies

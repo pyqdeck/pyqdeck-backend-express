@@ -1,0 +1,28 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.*
+
+# Build outputs
+.next
+dist
+build
+out
+
+# Coverage
+coverage
+backend/coverage
+frontend/coverage
+
+# Internal Agent Skills (Should not be linted/formatted)
+.agents
+
+# OpenApi Spec
+openapi.json
+backend/openapi.json
+
+# IDE and System files
+.vscode
+.idea
+.DS_Store
+*.log
