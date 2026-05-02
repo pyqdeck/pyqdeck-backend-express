@@ -43,7 +43,7 @@ export interface Bookmark {
   id?: string;
   /** Reference to User */
   userId: string;
-  targetType: 'question' | 'paper' | 'solution';
+  targetType: "question" | "paper" | "solution";
   /** ID of the bookmarked document */
   targetId: string;
   /** Optional personal note on the bookmark */
@@ -111,24 +111,42 @@ export interface Module {
 }
 
 export interface Paper {
+  /** @example "65a12345b67890cdef333333" */
   id?: string;
-  /** Reference to SubjectOffering */
+  /**
+   * Reference to SubjectOffering
+   * @example "60d0fe4f5311236168a109cb"
+   */
   subjectOfferingId: string;
+  /** @example "Data Structures End Semester Exam Nov 2023" */
   title: string;
+  /** @example 2023 */
   examYear: number;
-  examType: 'regular' | 're-exam' | 'supplementary' | 'end-sem' | 'internal';
+  /** @example "end-sem" */
+  examType: "regular" | "re-exam" | "supplementary" | "end-sem" | "internal";
   /** @example "Nov-Dec" */
   session?: string;
+  /** @example "R2019" */
   regulation?: string;
-  /** Duration in minutes */
+  /**
+   * Duration in minutes
+   * @example 180
+   */
   duration?: number;
+  /** @example 80 */
   maxMarks?: number;
-  /** @example "compiler-design-2021-regular" */
+  /** @example "dsa-end-sem-nov-2023" */
   slug: string;
-  /** Reference to User */
+  /**
+   * Reference to User
+   * @example "65b98765a43210fedcba9876"
+   */
   uploadedBy?: string;
-  /** @default "pending" */
-  status?: 'draft' | 'pending' | 'approved' | 'rejected';
+  /**
+   * @default "pending"
+   * @example "approved"
+   */
+  status?: "draft" | "pending" | "approved" | "rejected";
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -146,17 +164,17 @@ export interface Question {
    */
   normalizedText?: string;
   /** @example "long" */
-  type: 'mcq' | 'short' | 'long' | 'numerical' | 'coding';
+  type: "mcq" | "short" | "long" | "numerical" | "coding";
   /** @example "medium" */
-  difficulty?: 'easy' | 'medium' | 'hard';
+  difficulty?: "easy" | "medium" | "hard";
   /** @example "understand" */
   bloomLevel?:
-    | 'remember'
-    | 'understand'
-    | 'apply'
-    | 'analyze'
-    | 'evaluate'
-    | 'create';
+    | "remember"
+    | "understand"
+    | "apply"
+    | "analyze"
+    | "evaluate"
+    | "create";
   /** @example 10 */
   marks?: number;
   /**
@@ -237,7 +255,7 @@ export interface QuestionSyllabusMap {
    */
   confidenceScore?: number;
   /** @default "manual" */
-  mappedBy?: 'manual' | 'ai';
+  mappedBy?: "manual" | "ai";
   /** @default false */
   verified?: boolean;
   /** @format date-time */
@@ -266,26 +284,54 @@ export interface Semester {
 }
 
 export interface Solution {
+  /** @example "65a12345b67890cdef444444" */
   id?: string;
-  /** Reference to Question */
+  /**
+   * Reference to Question
+   * @example "65a12345b67890cdef123456"
+   */
   questionId: string;
-  /** Reference to User */
+  /**
+   * Reference to User
+   * @example "65b98765a43210fedcba9876"
+   */
   authorId: string;
-  type: 'teacher' | 'student' | 'ai';
-  /** Plain text solution */
+  /** @example "ai" */
+  type: "teacher" | "student" | "ai";
+  /**
+   * Plain text solution
+   * @example "The solution to this problem involves applying the first law of thermodynamics..."
+   */
   content?: string;
-  /** LaTeX-formatted solution */
+  /**
+   * LaTeX-formatted solution
+   * @example "E = mc^2"
+   */
   latexContent?: string;
+  /** @example ["https://example.com/solution-diagram.png"] */
   images?: string[];
+  /** @example ["https://youtube.com/watch?v=123"] */
   videoLinks?: string[];
-  /** @default 0 */
+  /**
+   * @default 0
+   * @example 42
+   */
   upvotes?: number;
-  /** @default 0 */
+  /**
+   * @default 0
+   * @example 2
+   */
   downvotes?: number;
-  /** @default false */
+  /**
+   * @default false
+   * @example true
+   */
   isVerified?: boolean;
-  /** @default "pending" */
-  status?: 'draft' | 'pending' | 'approved' | 'rejected';
+  /**
+   * @default "pending"
+   * @example "approved"
+   */
+  status?: "draft" | "pending" | "approved" | "rejected";
   /** @format date-time */
   createdAt?: string;
   /** @format date-time */
@@ -293,16 +339,29 @@ export interface Solution {
 }
 
 export interface Subject {
+  /** @example "65a12345b67890cdef222222" */
   id?: string;
+  /** @example "Data Structures and Algorithms" */
   name: string;
+  /** @example "DSA" */
   shortName?: string;
+  /** @example "CS301" */
   subjectCode?: string;
+  /** @example "Fundamental study of data organization and algorithm complexity." */
   description?: string;
+  /** @example 4 */
   credits?: number;
+  /** @example "data-structures-and-algorithms" */
   slug: string;
-  /** Old slugs that 301-redirect to the current slug */
+  /**
+   * Old slugs that 301-redirect to the current slug
+   * @example ["dsa-old","algo-ds"]
+   */
   redirectSlugs?: string[];
-  /** @default true */
+  /**
+   * @default true
+   * @example true
+   */
   isActive?: boolean;
   /** @format date-time */
   createdAt?: string;
@@ -432,29 +491,52 @@ export interface Upload {
 }
 
 export interface User {
-  /** The auto-generated id of the user */
+  /**
+   * The auto-generated id of the user
+   * @example "65b98765a43210fedcba9876"
+   */
   id?: string;
-  /** The unique ID from Clerk authentication */
+  /**
+   * The unique ID from Clerk authentication
+   * @example "user_2N9Wv7N0u8M6X1Y2Z3A4B5C6"
+   */
   clerkId: string;
-  /** The name of the user */
+  /**
+   * The name of the user
+   * @example "John Doe"
+   */
   name: string;
   /**
    * The email of the user
    * @format email
+   * @example "john.doe@example.com"
    */
   email: string;
-  /** Reference to University */
+  /**
+   * Reference to University
+   * @example "60d0fe4f5311236168a109ca"
+   */
   universityId?: string | null;
-  /** Reference to Branch */
+  /**
+   * Reference to Branch
+   * @example "65a12345b67890cdef111111"
+   */
   branchId?: string | null;
-  /** Reference to Semester */
+  /**
+   * Reference to Semester
+   * @example "65a12345b67890cdef112233"
+   */
   semesterId?: string | null;
   /**
    * The role of the user
    * @default "normal"
+   * @example "normal"
    */
-  role?: 'normal' | 'admin' | 'editor';
-  /** @default true */
+  role?: "normal" | "admin" | "editor";
+  /**
+   * @default true
+   * @example true
+   */
   isActive?: boolean;
   /** @format date-time */
   createdAt?: string;
@@ -468,15 +550,13 @@ import type {
   AxiosResponse,
   HeadersDefaults,
   ResponseType,
-} from 'axios';
-import axios from 'axios';
+} from "axios";
+import axios from "axios";
 
 export type QueryParamsType = Record<string | number, any>;
 
-export interface FullRequestParams extends Omit<
-  AxiosRequestConfig,
-  'data' | 'params' | 'url' | 'responseType'
-> {
+export interface FullRequestParams
+  extends Omit<AxiosRequestConfig, "data" | "params" | "url" | "responseType"> {
   /** set parameter to `true` for call `securityWorker` for this request */
   secure?: boolean;
   /** request path */
@@ -493,32 +573,30 @@ export interface FullRequestParams extends Omit<
 
 export type RequestParams = Omit<
   FullRequestParams,
-  'body' | 'method' | 'query' | 'path'
+  "body" | "method" | "query" | "path"
 >;
 
-export interface ApiConfig<SecurityDataType = unknown> extends Omit<
-  AxiosRequestConfig,
-  'data' | 'cancelToken'
-> {
+export interface ApiConfig<SecurityDataType = unknown>
+  extends Omit<AxiosRequestConfig, "data" | "cancelToken"> {
   securityWorker?: (
-    securityData: SecurityDataType | null
+    securityData: SecurityDataType | null,
   ) => Promise<AxiosRequestConfig | void> | AxiosRequestConfig | void;
   secure?: boolean;
   format?: ResponseType;
 }
 
 export enum ContentType {
-  Json = 'application/json',
-  JsonApi = 'application/vnd.api+json',
-  FormData = 'multipart/form-data',
-  UrlEncoded = 'application/x-www-form-urlencoded',
-  Text = 'text/plain',
+  Json = "application/json",
+  JsonApi = "application/vnd.api+json",
+  FormData = "multipart/form-data",
+  UrlEncoded = "application/x-www-form-urlencoded",
+  Text = "text/plain",
 }
 
 export class HttpClient<SecurityDataType = unknown> {
   public instance: AxiosInstance;
   private securityData: SecurityDataType | null = null;
-  private securityWorker?: ApiConfig<SecurityDataType>['securityWorker'];
+  private securityWorker?: ApiConfig<SecurityDataType>["securityWorker"];
   private secure?: boolean;
   private format?: ResponseType;
 
@@ -530,7 +608,7 @@ export class HttpClient<SecurityDataType = unknown> {
   }: ApiConfig<SecurityDataType> = {}) {
     this.instance = axios.create({
       ...axiosConfig,
-      baseURL: axiosConfig.baseURL || 'http://localhost:3000/api/v1',
+      baseURL: axiosConfig.baseURL || "http://localhost:3000/api/v1",
     });
     this.secure = secure;
     this.format = format;
@@ -543,7 +621,7 @@ export class HttpClient<SecurityDataType = unknown> {
 
   protected mergeRequestParams(
     params1: AxiosRequestConfig,
-    params2?: AxiosRequestConfig
+    params2?: AxiosRequestConfig,
   ): AxiosRequestConfig {
     const method = params1.method || (params2 && params2.method);
 
@@ -564,7 +642,7 @@ export class HttpClient<SecurityDataType = unknown> {
   }
 
   protected stringifyFormItem(formItem: unknown) {
-    if (typeof formItem === 'object' && formItem !== null) {
+    if (typeof formItem === "object" && formItem !== null) {
       return JSON.stringify(formItem);
     } else {
       return `${formItem}`;
@@ -584,7 +662,7 @@ export class HttpClient<SecurityDataType = unknown> {
         const isFileType = formItem instanceof Blob || formItem instanceof File;
         formData.append(
           key,
-          isFileType ? formItem : this.stringifyFormItem(formItem)
+          isFileType ? formItem : this.stringifyFormItem(formItem),
         );
       }
 
@@ -602,7 +680,7 @@ export class HttpClient<SecurityDataType = unknown> {
     ...params
   }: FullRequestParams): Promise<AxiosResponse<T>> => {
     const secureParams =
-      ((typeof secure === 'boolean' ? secure : this.secure) &&
+      ((typeof secure === "boolean" ? secure : this.secure) &&
         this.securityWorker &&
         (await this.securityWorker(this.securityData))) ||
       {};
@@ -613,7 +691,7 @@ export class HttpClient<SecurityDataType = unknown> {
       type === ContentType.FormData &&
       body &&
       body !== null &&
-      typeof body === 'object'
+      typeof body === "object"
     ) {
       body = this.createFormData(body as Record<string, unknown>);
     }
@@ -622,7 +700,7 @@ export class HttpClient<SecurityDataType = unknown> {
       type === ContentType.Text &&
       body &&
       body !== null &&
-      typeof body !== 'string'
+      typeof body !== "string"
     ) {
       body = JSON.stringify(body);
     }
@@ -631,7 +709,7 @@ export class HttpClient<SecurityDataType = unknown> {
       ...requestParams,
       headers: {
         ...(requestParams.headers || {}),
-        ...(type ? { 'Content-Type': type } : {}),
+        ...(type ? { "Content-Type": type } : {}),
       },
       params: query,
       responseType: responseFormat,
@@ -684,13 +762,13 @@ export class Api<
  */
     listBookmarks: (
       query?: {
-        type?: 'question' | 'paper' | 'solution';
+        type?: "question" | "paper" | "solution";
         /** @default 1 */
         page?: number;
         /** @default 20 */
         limit?: number;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -702,10 +780,10 @@ export class Api<
         Error
       >({
         path: `/bookmarks`,
-        method: 'GET',
+        method: "GET",
         query: query,
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -738,11 +816,11 @@ export class Api<
         Error
       >({
         path: `/bookmarks/toggle`,
-        method: 'POST',
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -760,7 +838,7 @@ export class Api<
     deleteBookmark: (id: string, params: RequestParams = {}) =>
       this.request<void, Error>({
         path: `/bookmarks/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
         secure: true,
         ...params,
       }),
@@ -797,7 +875,7 @@ export class Api<
          */
         limit?: number;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -809,9 +887,9 @@ export class Api<
         any
       >({
         path: `/universities/${universityId}/branches`,
-        method: 'GET',
+        method: "GET",
         query: query,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -832,7 +910,7 @@ export class Api<
     createBranch: (
       universityId: string,
       data: Branch,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -841,11 +919,11 @@ export class Api<
         Error
       >({
         path: `/universities/${universityId}/branches`,
-        method: 'POST',
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -865,7 +943,7 @@ export class Api<
     getBranchBySlug: (
       universityId: string,
       slug: string,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -874,8 +952,8 @@ export class Api<
         Error
       >({
         path: `/universities/${universityId}/branches/${slug}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -898,7 +976,7 @@ export class Api<
     getBranchStructure: (
       universityId: string,
       id: string,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -910,8 +988,8 @@ export class Api<
         any
       >({
         path: `/universities/${universityId}/branches/${id}/structure`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -934,7 +1012,7 @@ export class Api<
       universityId: string,
       id: string,
       data: Branch,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -943,11 +1021,11 @@ export class Api<
         Error
       >({
         path: `/universities/${universityId}/branches/${id}`,
-        method: 'PATCH',
+        method: "PATCH",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -966,11 +1044,11 @@ export class Api<
     deleteBranch: (
       universityId: string,
       id: string,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, Error>({
         path: `/universities/${universityId}/branches/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
         secure: true,
         ...params,
       }),
@@ -997,9 +1075,9 @@ export class Api<
         page?: number;
         /** @default 20 */
         limit?: number;
-        isActive?: true | 'all';
+        isActive?: true | "all";
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -1011,9 +1089,9 @@ export class Api<
         any
       >({
         path: `/universities`,
-        method: 'GET',
+        method: "GET",
         query: query,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1039,11 +1117,11 @@ export class Api<
         Error
       >({
         path: `/universities`,
-        method: 'POST',
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1068,8 +1146,8 @@ export class Api<
         Error
       >({
         path: `/universities/${slug}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1091,7 +1169,7 @@ export class Api<
     updateUniversity: (
       id: string,
       data: University,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -1100,11 +1178,11 @@ export class Api<
         Error
       >({
         path: `/universities/${id}`,
-        method: 'PATCH',
+        method: "PATCH",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1123,7 +1201,7 @@ export class Api<
     deleteUniversity: (id: string, params: RequestParams = {}) =>
       this.request<void, Error>({
         path: `/universities/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
         secure: true,
         ...params,
       }),
@@ -1161,8 +1239,8 @@ export class Api<
         Error
       >({
         path: `/health`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1216,9 +1294,9 @@ export class Api<
         Error
       >({
         path: `/health/detailed`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
   };
@@ -1247,7 +1325,7 @@ export class Api<
         /** @default 20 */
         limit?: number;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -1259,9 +1337,9 @@ export class Api<
         any
       >({
         path: `/papers/${paperId}/questions`,
-        method: 'GET',
+        method: "GET",
         query: query,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1282,7 +1360,7 @@ export class Api<
     createQuestionForPaper: (
       paperId: string,
       data: Question,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -1291,11 +1369,11 @@ export class Api<
         Error
       >({
         path: `/papers/${paperId}/questions`,
-        method: 'POST',
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1320,7 +1398,7 @@ export class Api<
       paperId: string,
       questionId: string,
       data: object,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -1331,11 +1409,11 @@ export class Api<
         Error
       >({
         path: `/papers/${paperId}/questions/${questionId}/link`,
-        method: 'POST',
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1364,7 +1442,7 @@ export class Api<
         /** @default 20 */
         limit?: number;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -1376,9 +1454,9 @@ export class Api<
         any
       >({
         path: `/papers/${paperId}/questions/${questionId}/solutions`,
-        method: 'GET',
+        method: "GET",
         query: query,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1400,7 +1478,7 @@ export class Api<
       paperId: string,
       questionId: string,
       data: Solution,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -1409,11 +1487,11 @@ export class Api<
         Error
       >({
         path: `/papers/${paperId}/questions/${questionId}/solutions`,
-        method: 'POST',
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1443,7 +1521,7 @@ export class Api<
         /** @default 20 */
         limit?: number;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -1455,9 +1533,9 @@ export class Api<
         any
       >({
         path: `/papers`,
-        method: 'GET',
+        method: "GET",
         query: query,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1483,11 +1561,11 @@ export class Api<
         Error
       >({
         path: `/papers`,
-        method: 'POST',
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1512,8 +1590,8 @@ export class Api<
         Error
       >({
         path: `/papers/${slug}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1540,11 +1618,11 @@ export class Api<
         Error
       >({
         path: `/papers/${id}`,
-        method: 'PATCH',
+        method: "PATCH",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1563,7 +1641,7 @@ export class Api<
     deletePaper: (id: string, params: RequestParams = {}) =>
       this.request<void, Error>({
         path: `/papers/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
         secure: true,
         ...params,
       }),
@@ -1586,9 +1664,9 @@ export class Api<
     updatePaperStatus: (
       id: string,
       data: {
-        status?: 'draft' | 'pending' | 'approved' | 'rejected';
+        status?: "draft" | "pending" | "approved" | "rejected";
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -1597,11 +1675,11 @@ export class Api<
         Error
       >({
         path: `/papers/${id}/status`,
-        method: 'PATCH',
+        method: "PATCH",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
   };
@@ -1632,7 +1710,7 @@ export class Api<
         /** @default 20 */
         limit?: number;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -1644,9 +1722,9 @@ export class Api<
         any
       >({
         path: `/questions`,
-        method: 'GET',
+        method: "GET",
         query: query,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1672,11 +1750,11 @@ export class Api<
         Error
       >({
         path: `/questions`,
-        method: 'POST',
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1701,8 +1779,8 @@ export class Api<
         Error
       >({
         path: `/questions/slug/${slug}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1727,8 +1805,8 @@ export class Api<
         Error
       >({
         path: `/questions/${id}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1755,11 +1833,11 @@ export class Api<
         Error
       >({
         path: `/questions/${id}`,
-        method: 'PATCH',
+        method: "PATCH",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1778,7 +1856,7 @@ export class Api<
     deleteQuestion: (id: string, params: RequestParams = {}) =>
       this.request<void, Error>({
         path: `/questions/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
         secure: true,
         ...params,
       }),
@@ -1813,7 +1891,7 @@ export class Api<
         /** @default 20 */
         limit?: number;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -1829,9 +1907,9 @@ export class Api<
         any
       >({
         path: `/search`,
-        method: 'GET',
+        method: "GET",
         query: query,
-        format: 'json',
+        format: "json",
         ...params,
       }),
   };
@@ -1856,8 +1934,8 @@ export class Api<
         any
       >({
         path: `/branches/${branchId}/semesters`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1878,7 +1956,7 @@ export class Api<
     createSemester: (
       branchId: string,
       data: Semester,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -1887,11 +1965,11 @@ export class Api<
         Error
       >({
         path: `/branches/${branchId}/semesters`,
-        method: 'POST',
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1911,7 +1989,7 @@ export class Api<
     getSemesterByNumber: (
       branchId: string,
       number: number,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -1920,8 +1998,8 @@ export class Api<
         Error
       >({
         path: `/branches/${branchId}/semesters/${number}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -1944,7 +2022,7 @@ export class Api<
       branchId: string,
       id: string,
       data: Semester,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -1953,11 +2031,11 @@ export class Api<
         Error
       >({
         path: `/branches/${branchId}/semesters/${id}`,
-        method: 'PATCH',
+        method: "PATCH",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -1976,11 +2054,11 @@ export class Api<
     deleteSemester: (
       branchId: string,
       id: string,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<void, Error>({
         path: `/branches/${branchId}/semesters/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
         secure: true,
         ...params,
       }),
@@ -2017,8 +2095,8 @@ export class Api<
         any
       >({
         path: `/seo/sitemap-data`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
   };
@@ -2044,8 +2122,8 @@ export class Api<
         Error
       >({
         path: `/solutions/${id}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -2072,11 +2150,11 @@ export class Api<
         Error
       >({
         path: `/solutions/${id}`,
-        method: 'PATCH',
+        method: "PATCH",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -2095,7 +2173,7 @@ export class Api<
     deleteSolution: (id: string, params: RequestParams = {}) =>
       this.request<void, Error>({
         path: `/solutions/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
         secure: true,
         ...params,
       }),
@@ -2118,9 +2196,9 @@ export class Api<
     updateSolutionStatus: (
       id: string,
       data: {
-        status: 'draft' | 'pending' | 'approved' | 'rejected';
+        status: "draft" | "pending" | "approved" | "rejected";
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -2129,11 +2207,11 @@ export class Api<
         Error
       >({
         path: `/solutions/${id}/status`,
-        method: 'PATCH',
+        method: "PATCH",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -2160,26 +2238,26 @@ export class Api<
     voteOnSolution: (
       id: string,
       data: {
-        type: 'up' | 'down';
+        type: "up" | "down";
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
           data?: {
             upvotes?: number;
             downvotes?: number;
-            userVote?: 'up' | 'down' | 'none';
+            userVote?: "up" | "down" | "none";
           };
         },
         Error
       >({
         path: `/solutions/${id}/vote`,
-        method: 'POST',
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
   };
@@ -2207,13 +2285,13 @@ export class Api<
         branchId?: string;
         /** If alone, returns offerings for that semester */
         semesterId?: string;
-        isActive?: true | 'all';
+        isActive?: true | "all";
         /** @default 1 */
         page?: number;
         /** @default 20 */
         limit?: number;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -2225,9 +2303,9 @@ export class Api<
         any
       >({
         path: `/subject-offerings`,
-        method: 'GET',
+        method: "GET",
         query: query,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -2247,7 +2325,7 @@ export class Api<
  */
     createSubjectOffering: (
       data: SubjectOffering,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -2256,11 +2334,11 @@ export class Api<
         Error
       >({
         path: `/subject-offerings`,
-        method: 'POST',
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -2285,8 +2363,8 @@ export class Api<
         Error
       >({
         path: `/subject-offerings/id/${id}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -2311,8 +2389,8 @@ export class Api<
         Error
       >({
         path: `/subject-offerings/${slug}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -2334,7 +2412,7 @@ export class Api<
     updateSubjectOffering: (
       id: string,
       data: SubjectOffering,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -2343,11 +2421,11 @@ export class Api<
         Error
       >({
         path: `/subject-offerings/${id}`,
-        method: 'PATCH',
+        method: "PATCH",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -2366,7 +2444,7 @@ export class Api<
     deleteSubjectOffering: (id: string, params: RequestParams = {}) =>
       this.request<void, Error>({
         path: `/subject-offerings/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
         secure: true,
         ...params,
       }),
@@ -2391,7 +2469,7 @@ export class Api<
  */
     getSyllabusBySubjectOffering: (
       subjectOfferingId: string,
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -2404,8 +2482,8 @@ export class Api<
         any
       >({
         path: `/subject-offerings/${subjectOfferingId}/syllabus`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
   };
@@ -2433,7 +2511,7 @@ export class Api<
         /** @default 20 */
         limit?: number;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -2445,9 +2523,9 @@ export class Api<
         any
       >({
         path: `/subjects`,
-        method: 'GET',
+        method: "GET",
         query: query,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -2473,11 +2551,11 @@ export class Api<
         Error
       >({
         path: `/subjects`,
-        method: 'POST',
+        method: "POST",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -2502,8 +2580,8 @@ export class Api<
         Error
       >({
         path: `/subjects/${slug}`,
-        method: 'GET',
-        format: 'json',
+        method: "GET",
+        format: "json",
         ...params,
       }),
 
@@ -2530,11 +2608,11 @@ export class Api<
         Error
       >({
         path: `/subjects/${id}`,
-        method: 'PATCH',
+        method: "PATCH",
         body: data,
         secure: true,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
 
@@ -2550,7 +2628,7 @@ export class Api<
     deleteSubject: (id: string, params: RequestParams = {}) =>
       this.request<any, any>({
         path: `/subjects/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
         secure: true,
         ...params,
       }),
@@ -2580,7 +2658,7 @@ export class Api<
         /** @default 20 */
         limit?: number;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -2592,9 +2670,9 @@ export class Api<
         any
       >({
         path: `/modules/${id}/questions`,
-        method: 'GET',
+        method: "GET",
         query: query,
-        format: 'json',
+        format: "json",
         ...params,
       }),
   };
@@ -2623,7 +2701,7 @@ export class Api<
         /** @default 20 */
         limit?: number;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         SuccessResponse & {
@@ -2635,9 +2713,9 @@ export class Api<
         any
       >({
         path: `/topics/${id}/questions`,
-        method: 'GET',
+        method: "GET",
         query: query,
-        format: 'json',
+        format: "json",
         ...params,
       }),
   };
@@ -2678,9 +2756,9 @@ export class Api<
         Error
       >({
         path: `/users/me`,
-        method: 'GET',
+        method: "GET",
         secure: true,
-        format: 'json',
+        format: "json",
         ...params,
       }),
   };
@@ -2708,7 +2786,7 @@ export class Api<
         /** @example "user.created" */
         type?: string;
       },
-      params: RequestParams = {}
+      params: RequestParams = {},
     ) =>
       this.request<
         {
@@ -2718,10 +2796,10 @@ export class Api<
         Error
       >({
         path: `/webhooks/clerk`,
-        method: 'POST',
+        method: "POST",
         body: data,
         type: ContentType.Json,
-        format: 'json',
+        format: "json",
         ...params,
       }),
   };

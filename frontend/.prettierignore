@@ -5,3 +5,4 @@ build
 pnpm-lock.yaml
 .env
 public
+src/lib/api-generated.ts
