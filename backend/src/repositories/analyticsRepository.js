@@ -4,6 +4,8 @@ import { Question } from '../models/Question.js';
 import { Solution } from '../models/Solution.js';
 import { University } from '../models/University.js';
 import { Branch } from '../models/Branch.js';
+import { SubjectOffering } from '../models/SubjectOffering.js';
+import { Subject } from '../models/Subject.js';
 
 class AnalyticsRepository {
   /**

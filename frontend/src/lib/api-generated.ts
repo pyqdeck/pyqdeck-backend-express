@@ -646,7 +646,7 @@ export class HttpClient<SecurityDataType = unknown> {
   }: ApiConfig<SecurityDataType> = {}) {
     this.instance = axios.create({
       ...axiosConfig,
-      baseURL: axiosConfig.baseURL || "http://localhost:5000/api/v1",
+      baseURL: axiosConfig.baseURL || "http://localhost:3000/api/v1",
     });
     this.secure = secure;
     this.format = format;
@@ -760,7 +760,7 @@ export class HttpClient<SecurityDataType = unknown> {
 /**
  * @title PYQDeck API Explorer
  * @version 1.0.0
- * @baseUrl http://localhost:5000/api/v1
+ * @baseUrl http://localhost:3000/api/v1
  * @contact PYQDeck Support <noreply@example.com> (http://localhost:3000/support)
  *
  *

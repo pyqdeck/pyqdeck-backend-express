@@ -5,7 +5,7 @@ import { NotFoundError } from '../../src/utils/errors/index.js';
 
 vi.mock('../../src/services/semesterService.js', () => ({
   default: {
-    listByBranch: vi.fn(),
+    listAll: vi.fn(),
     getByBranchAndNumber: vi.fn(),
     create: vi.fn(),
     update: vi.fn(),
@@ -29,7 +29,7 @@ describe('semesterController', () => {
       query: {},
       params: { branchId: 'branch_1' },
       body: {},
-      pagination: { page: 1, limit: 10 },
+      pagination: { page: 1, limit: 10, skip: 0 },
     };
     res = {
       json: vi.fn().mockReturnThis(),
@@ -42,18 +42,24 @@ describe('semesterController', () => {
 
   describe('list', () => {
     it('should return all semesters for a branch', async () => {
-      semesterService.listByBranch.mockResolvedValue([sampleSemester]);
+      semesterService.listAll.mockResolvedValue({
+        items: [sampleSemester],
+        total: 1,
+      });
 
       await semesterController.list(req, res, next);
 
-      expect(semesterService.listByBranch).toHaveBeenCalledWith('branch_1');
+      expect(semesterService.listAll).toHaveBeenCalledWith(
+        { branchId: 'branch_1' },
+        { skip: 0, limit: 10 }
+      );
       expect(res.json).toHaveBeenCalledWith(
         expect.objectContaining({ status: 'success' })
       );
     });
 
     it('should call next on error', async () => {
-      semesterService.listByBranch.mockRejectedValue(new Error('DB error'));
+      semesterService.listAll.mockRejectedValue(new Error('DB error'));
       await semesterController.list(req, res, next);
       expect(next).toHaveBeenCalledWith(expect.any(Error));
     });

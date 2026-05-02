@@ -1,4 +1,8 @@
 import { SubjectOffering } from '../models/SubjectOffering.js';
+import { University } from '../models/University.js';
+import { Branch } from '../models/Branch.js';
+import { Semester } from '../models/Semester.js';
+import { Subject } from '../models/Subject.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
 

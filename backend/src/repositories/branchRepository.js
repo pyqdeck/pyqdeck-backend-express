@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { Branch } from '../models/Branch.js';
+import { University } from '../models/University.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
 
