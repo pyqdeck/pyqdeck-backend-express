@@ -35,7 +35,10 @@ export async function handleClerkWebhook(req, res, next) {
         break;
       case 'session.created': {
         const { user_id: userId, id: currentSessionId } = event.data;
-        logger.info('Revoking old sessions for user', { userId, currentSessionId });
+        logger.info('Revoking old sessions for user', {
+          userId,
+          currentSessionId,
+        });
         const { data: sessions } = await clerkClient.sessions.getSessionList({
           userId,
         });

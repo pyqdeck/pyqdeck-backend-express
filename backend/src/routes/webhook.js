@@ -13,7 +13,7 @@ const router = Router();
  *       - External Integrations
  *     summary: Clerk Webhook Handler (Users & Sessions)
  *     description: |
- *       Secure endpoint for Clerk.com to send user lifecycle events (created, updated, deleted) 
+ *       Secure endpoint for Clerk.com to send user lifecycle events (created, updated, deleted)
  *       and session events (created). This endpoint also enforces a "Single Session per User" policy.
  *
  *       **Verification**: This endpoint verifies the [Svix Webhook Signature](https://docs.clerk.com/main-concepts/webhooks)
