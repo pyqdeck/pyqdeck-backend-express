@@ -1,16 +1,21 @@
 # Labels for backend changes
 "area:backend":
-  - "backend/**/*"
+  - changed-files:
+      - any-glob-to-any-file: "backend/**/*"
 
 # Labels for frontend changes
 "area:frontend":
-  - "frontend/**/*"
+  - changed-files:
+      - any-glob-to-any-file: "frontend/**/*"
 
 # Labels for CI/CD or GitHub Actions
 "area:ci":
-  - ".github/**/*"
+  - changed-files:
+      - any-glob-to-any-file: ".github/**/*"
 
 # Labels for documentation changes
 "area:docs":
-  - "**/*.md"
-  - "LICENSE"
+  - changed-files:
+      - any-glob-to-any-file:
+          - "**/*.md"
+          - "LICENSE"
