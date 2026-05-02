@@ -40,13 +40,24 @@ export interface SuccessResponse {
 }
 
 export interface Bookmark {
+  /** @example "65a12345b67890cdef666666" */
   id?: string;
-  /** Reference to User */
+  /**
+   * Reference to User
+   * @example "65b98765a43210fedcba9876"
+   */
   userId: string;
+  /** @example "question" */
   targetType: "question" | "paper" | "solution";
-  /** ID of the bookmarked document */
+  /**
+   * ID of the bookmarked document
+   * @example "65a12345b67890cdef123456"
+   */
   targetId: string;
-  /** Optional personal note on the bookmark */
+  /**
+   * Optional personal note on the bookmark
+   * @example "Important question for finals!"
+   */
   note?: string;
   /** @format date-time */
   createdAt?: string;
@@ -265,12 +276,17 @@ export interface QuestionSyllabusMap {
 }
 
 export interface Semester {
+  /** @example "65a12345b67890cdef112233" */
   id?: string;
-  /** Reference to Branch */
+  /**
+   * Reference to Branch
+   * @example "65a12345b67890cdef111111"
+   */
   branchId: string;
   /**
    * @min 1
    * @max 8
+   * @example 5
    */
   number: number;
   /** @example "semester-5" */
@@ -370,22 +386,38 @@ export interface Subject {
 }
 
 export interface SubjectOffering {
+  /** @example "65a12345b67890cdef111222" */
   id?: string;
-  /** Reference to University */
+  /**
+   * Reference to University
+   * @example "60d0fe4f5311236168a109ca"
+   */
   universityId: string;
-  /** Reference to Branch */
+  /**
+   * Reference to Branch
+   * @example "65a12345b67890cdef111111"
+   */
   branchId: string;
-  /** Reference to Semester */
+  /**
+   * Reference to Semester
+   * @example "65a12345b67890cdef112233"
+   */
   semesterId: string;
-  /** Reference to Subject */
+  /**
+   * Reference to Subject
+   * @example "65a12345b67890cdef222222"
+   */
   subjectId: string;
-  /** @example "2022" */
+  /** @example "R2022" */
   regulation?: string;
   /** @example "2023-24" */
   academicYear?: string;
-  /** @example "beu-it-sem5-compiler-design-2022" */
+  /** @example "mu-it-sem5-dsa-r2022" */
   slug: string;
-  /** @default true */
+  /**
+   * @default true
+   * @example true
+   */
   isActive?: boolean;
   /** @format date-time */
   createdAt?: string;
