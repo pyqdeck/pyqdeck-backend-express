@@ -11,6 +11,8 @@ import { auth } from '@clerk/nextjs/server';
 
 import { VelocityChart } from './_components/velocity-chart';
 import { PopularityChart } from './_components/popularity-chart';
+import { PendingPapers } from './_components/pending-papers';
+import { AiGenerationQueue } from './_components/ai-generation-queue';
 
 export default async function StudioPage() {
   const { getToken } = await auth();
@@ -51,6 +53,11 @@ export default async function StudioPage() {
   const charts = dashboardData?.charts || {
     contentVelocity: [],
     subjectPopularity: [],
+  };
+
+  const queues = dashboardData?.queues || {
+    pendingPapers: [],
+    aiGeneration: [],
   };
 
   return (
@@ -129,6 +136,11 @@ export default async function StudioPage() {
       <div className="grid gap-4 md:grid-cols-2">
         <VelocityChart data={charts.contentVelocity} />
         <PopularityChart data={charts.subjectPopularity} />
+      </div>
+
+      <div className="grid gap-4 xl:grid-cols-2">
+        <PendingPapers papers={queues.pendingPapers} />
+        <AiGenerationQueue questions={queues.aiGeneration} />
       </div>
     </div>
   );

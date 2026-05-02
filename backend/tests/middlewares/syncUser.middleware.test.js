@@ -3,7 +3,16 @@ import request from 'supertest';
 import express from 'express';
 import { syncUser } from '../../src/middlewares/syncUser.middleware.js';
 import userRepository from '../../src/repositories/userRepository.js';
-import { clerkClient } from '@clerk/express';
+import { clerkClient, getAuth } from '@clerk/express';
+
+vi.mock('@clerk/express', () => ({
+  getAuth: vi.fn(),
+  clerkClient: {
+    users: {
+      getUser: vi.fn(),
+    },
+  },
+}));
 import { NotFoundError } from '../../src/utils/errors/index.js';
 
 vi.mock('../../src/repositories/userRepository.js', () => ({
@@ -51,11 +60,7 @@ describe('SyncUser Middleware', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     app = express();
-    // Simulate auth middleware attaching req.auth
-    app.use((req, res, next) => {
-      req.auth = { userId: 'clerk_123' };
-      next();
-    });
+    vi.mocked(getAuth).mockReturnValue({ userId: 'clerk_123' });
     app.use(syncUser);
     app.get('/test', (req, res) => {
       res.json({ user: req.dbUser });
@@ -99,8 +104,7 @@ describe('SyncUser Middleware', () => {
   });
 
   it('should continue if userId is missing', async () => {
-    const { getAuth } = await import('@clerk/express');
-    getAuth.mockReturnValueOnce({});
+    vi.mocked(getAuth).mockReturnValueOnce({});
 
     const authLessApp = express();
     authLessApp.use(syncUser);
