@@ -115,7 +115,7 @@ export function HeroContent() {
       >
         <Button
           size="lg"
-          className="bg-primary text-primary-foreground shadow-primary/25 hover:shadow-primary/40 h-12 w-full gap-2 rounded-full px-8 text-base font-semibold shadow-lg transition-all sm:w-auto"
+          className="bg-primary text-primary-foreground shadow-primary/25 hover:shadow-primary/40 h-12 w-full gap-2 rounded-full px-8 text-base font-semibold transition-all sm:w-auto"
           asChild
         >
           <Link href="/sign-up">

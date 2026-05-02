@@ -39,70 +39,58 @@ const navData = {
   navMain: [
     {
       title: 'Overview',
-      url: '/dashboard/admin',
+      url: '/studio',
       icon: <LayoutDashboardIcon />,
       isActive: true,
-      items: [
-        {
-          title: 'Dashboard',
-          url: '/dashboard/admin',
-        },
-        {
-          title: 'Analytics',
-          url: '/dashboard/admin/analytics',
-        },
-      ],
+    },
+    {
+      title: 'Dashboard',
+      url: '/studio/dashboard',
+      icon: <LayoutDashboardIcon />,
+    },
+    {
+      title: 'Analytics',
+      url: '/studio/analytics',
+      icon: <LibraryIcon />,
     },
     {
       title: 'Academics',
-      url: '/dashboard/admin/academics',
+      url: '/studio/academics',
       icon: <BuildingIcon />,
       items: [
         {
           title: 'Universities',
-          url: '/dashboard/admin/universities',
+          url: '/studio/universities',
         },
         {
           title: 'Branches',
-          url: '/dashboard/admin/branches',
-        },
-        {
-          title: 'Semesters',
-          url: '/dashboard/admin/semesters',
+          url: '/studio/branches',
         },
       ],
     },
     {
       title: 'Content',
-      url: '/dashboard/admin/content',
+      url: '/studio/content',
       icon: <BookOpenIcon />,
       items: [
         {
           title: 'Subjects',
-          url: '/dashboard/admin/subjects',
+          url: '/studio/subjects',
         },
         {
           title: 'Papers',
-          url: '/dashboard/admin/papers',
-        },
-        {
-          title: 'Questions',
-          url: '/dashboard/admin/questions',
+          url: '/studio/papers',
         },
       ],
     },
     {
       title: 'Settings',
-      url: '/dashboard/admin/settings',
+      url: '/studio/settings',
       icon: <Settings2Icon />,
       items: [
         {
           title: 'General',
-          url: '/dashboard/admin/settings/general',
-        },
-        {
-          title: 'Users & Roles',
-          url: '/dashboard/admin/settings/users',
+          url: '/studio/settings/general',
         },
       ],
     },
@@ -110,17 +98,17 @@ const navData = {
   projects: [
     {
       name: 'Upload Paper',
-      url: '/dashboard/admin/papers/upload',
+      url: '/studio/upload',
       icon: <FileTextIcon />,
     },
     {
       name: 'Subject Offerings',
-      url: '/dashboard/admin/subject-offerings',
+      url: '/studio/subject-offerings',
       icon: <LibraryIcon />,
     },
     {
       name: 'Manage Users',
-      url: '/dashboard/admin/users',
+      url: '/studio/users',
       icon: <UsersIcon />,
     },
   ],

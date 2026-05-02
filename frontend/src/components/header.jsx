@@ -24,7 +24,7 @@ export function Header() {
           href="/"
           className="group flex items-center gap-2 transition-transform hover:scale-[1.02] active:scale-95"
         >
-          <div className="bg-primary text-primary-foreground flex size-9 items-center justify-center rounded-lg font-bold shadow-sm transition-all group-hover:shadow-md">
+          <div className="bg-primary text-primary-foreground flex size-9 items-center justify-center rounded-lg font-bold transition-all group-hover:shadow-md">
             PQ
           </div>
           <span className="text-xl font-bold tracking-tight">PyqDeck</span>
@@ -55,7 +55,7 @@ export function Header() {
                 </Button>
               </SignInButton>
               <SignUpButton mode="modal">
-                <Button className="rounded-full px-6 shadow-sm transition-all hover:shadow-md">
+                <Button className="rounded-full px-6 transition-all hover:shadow-md">
                   Get Started
                 </Button>
               </SignUpButton>

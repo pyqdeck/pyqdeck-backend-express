@@ -106,7 +106,7 @@ export function HowItWorks() {
               className="flex gap-5"
             >
               <div className="flex-shrink-0">
-                <div className="flex size-10 items-center justify-center rounded-full bg-white text-sm font-bold text-black shadow-lg">
+                <div className="flex size-10 items-center justify-center rounded-full bg-white text-sm font-bold text-black">
                   {step.number}
                 </div>
               </div>

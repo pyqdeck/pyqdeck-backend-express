@@ -33,7 +33,7 @@ export function FinalCTA() {
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Button
             size="lg"
-            className="bg-primary text-primary-foreground shadow-primary/25 hover:shadow-primary/40 h-12 gap-2 rounded-full px-10 text-base font-semibold shadow-lg"
+            className="bg-primary text-primary-foreground shadow-primary/25 hover:shadow-primary/40 h-12 gap-2 rounded-full px-10 text-base font-semibold"
             asChild
           >
             <Link href="/sign-up">

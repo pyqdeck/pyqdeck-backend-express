@@ -12,7 +12,7 @@ export function Footer() {
         <div className="mb-8 flex flex-col items-center justify-between gap-6 sm:flex-row">
           {/* Brand */}
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-lg text-xs font-extrabold shadow-sm">
+            <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-lg text-xs font-extrabold">
               PQ
             </div>
             <span className="text-lg font-bold">PyqDeck</span>

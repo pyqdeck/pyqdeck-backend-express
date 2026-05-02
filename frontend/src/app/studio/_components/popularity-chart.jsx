@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Pie, PieChart, Cell } from 'recharts';
+import { ChartPie, FileStack } from 'lucide-react';
 
 import {
   Card,
@@ -15,6 +16,13 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyMedia,
+} from '@/components/ui/empty';
 
 export function PopularityChart({ data }) {
   const chartData = React.useMemo(() => {
@@ -39,15 +47,35 @@ export function PopularityChart({ data }) {
   }, [chartData]);
 
   return (
-    <Card className="flex h-full flex-col">
-      <CardHeader className="items-center pb-0">
-        <CardTitle>Subject Popularity</CardTitle>
-        <CardDescription>Most uploaded subjects overall</CardDescription>
+    <Card className="flex h-full flex-col shadow-none">
+      <CardHeader className="flex flex-row items-center gap-3 pb-2">
+        <div className="rounded-full bg-purple-100 p-2 dark:bg-purple-900/30">
+          <ChartPie className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+        </div>
+        <div>
+          <CardTitle>Subject Popularity</CardTitle>
+          <CardDescription>Most uploaded subjects overall</CardDescription>
+        </div>
       </CardHeader>
       <CardContent className="mt-4 flex-1 pb-0">
         {chartData.length === 0 ? (
-          <div className="text-muted-foreground flex h-[250px] items-center justify-center text-sm">
-            No papers uploaded yet
+          <div className="flex h-[250px] items-center justify-center">
+            <Empty className="border-none shadow-none">
+              <EmptyMedia
+                variant="icon"
+                className="rounded-full bg-slate-50 dark:bg-slate-900/50"
+              >
+                <FileStack className="text-muted-foreground/50 h-6 w-6" />
+              </EmptyMedia>
+              <EmptyHeader>
+                <EmptyTitle className="text-base">
+                  No papers uploaded yet
+                </EmptyTitle>
+                <EmptyDescription>
+                  Upload papers to see subject popularity
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           </div>
         ) : (
           <ChartContainer

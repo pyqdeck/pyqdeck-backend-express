@@ -16,20 +16,59 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Bot, Sparkles } from 'lucide-react';
+import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyMedia,
+} from '@/components/ui/empty';
 
 export function AiGenerationQueue({ questions }) {
-  if (!questions || questions.length === 0) {
-    return (
-      <Card>
-        <CardHeader>
+  const header = (
+    <CardHeader className="flex flex-row items-center justify-between pb-2">
+      <div className="flex items-center gap-3">
+        <div className="rounded-full bg-purple-100 p-2 dark:bg-purple-900/30">
+          <Bot className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+        </div>
+        <div>
           <CardTitle>AI Solution Generator</CardTitle>
           <CardDescription>
             Questions requiring automated AI solutions
           </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="text-muted-foreground flex h-[150px] items-center justify-center rounded-lg border border-dashed text-sm">
-            No questions in queue.
+        </div>
+      </div>
+      {questions && questions.length > 0 && (
+        <Button variant="outline" size="sm" className="gap-2">
+          <Bot className="h-4 w-4" />
+          Auto Generate All
+        </Button>
+      )}
+    </CardHeader>
+  );
+
+  if (!questions || questions.length === 0) {
+    return (
+      <Card className="shadow-none">
+        {header}
+        <CardContent className="pt-6">
+          <div className="flex h-[200px] items-center justify-center">
+            <Empty className="border-none shadow-none">
+              <EmptyMedia
+                variant="icon"
+                className="rounded-full bg-slate-50 dark:bg-slate-900/50"
+              >
+                <Bot className="text-muted-foreground/50 h-6 w-6" />
+              </EmptyMedia>
+              <EmptyHeader>
+                <EmptyTitle className="text-base">
+                  No questions in queue
+                </EmptyTitle>
+                <EmptyDescription>
+                  Questions requiring AI solutions will appear here
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           </div>
         </CardContent>
       </Card>
@@ -37,21 +76,8 @@ export function AiGenerationQueue({ questions }) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle>AI Solution Generator</CardTitle>
-            <CardDescription>
-              Questions requiring automated AI solutions
-            </CardDescription>
-          </div>
-          <Button variant="outline" size="sm" className="gap-2">
-            <Bot className="h-4 w-4" />
-            Auto Generate All
-          </Button>
-        </div>
-      </CardHeader>
+    <Card className="shadow-none">
+      {header}
       <CardContent>
         <Table>
           <TableHeader>

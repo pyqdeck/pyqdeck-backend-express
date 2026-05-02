@@ -105,7 +105,7 @@ export function Features() {
             viewport={{ once: true }}
             transition={{ delay: i * 0.08 }}
           >
-            <Card className="group h-full border transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+            <Card className="group h-full border transition-all duration-300 hover:-translate-y-1">
               <CardHeader>
                 <div
                   className={cn(

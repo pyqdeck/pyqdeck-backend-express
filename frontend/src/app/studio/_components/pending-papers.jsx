@@ -15,22 +15,53 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, CheckCircle, XCircle } from 'lucide-react';
+import { ExternalLink, CheckCircle, XCircle, Clock } from 'lucide-react';
 import Link from 'next/link';
+import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyMedia,
+} from '@/components/ui/empty';
 
 export function PendingPapers({ papers }) {
+  const header = (
+    <CardHeader className="flex flex-row items-center gap-3 pb-2">
+      <div className="rounded-full bg-orange-100 p-2 dark:bg-orange-900/30">
+        <Clock className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+      </div>
+      <div>
+        <CardTitle>Moderation Queue</CardTitle>
+        <CardDescription>
+          Recent paper uploads awaiting approval
+        </CardDescription>
+      </div>
+    </CardHeader>
+  );
+
   if (!papers || papers.length === 0) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Moderation Queue</CardTitle>
-          <CardDescription>
-            Recent paper uploads awaiting approval
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="text-muted-foreground flex h-[150px] items-center justify-center rounded-lg border border-dashed text-sm">
-            No pending papers. You&apos;re all caught up! 🎉
+      <Card className="shadow-none">
+        {header}
+        <CardContent className="pt-6">
+          <div className="flex h-[200px] items-center justify-center">
+            <Empty className="border-none shadow-none">
+              <EmptyMedia
+                variant="icon"
+                className="rounded-full bg-slate-50 dark:bg-slate-900/50"
+              >
+                <Clock className="text-muted-foreground/50 h-6 w-6" />
+              </EmptyMedia>
+              <EmptyHeader>
+                <EmptyTitle className="text-base">
+                  Moderation Queue Clear
+                </EmptyTitle>
+                <EmptyDescription>
+                  You&apos;re all caught up! No papers awaiting review. 🎉
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           </div>
         </CardContent>
       </Card>
@@ -38,13 +69,8 @@ export function PendingPapers({ papers }) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Moderation Queue</CardTitle>
-        <CardDescription>
-          Recent paper uploads awaiting approval
-        </CardDescription>
-      </CardHeader>
+    <Card className="shadow-none">
+      {header}
       <CardContent>
         <Table>
           <TableHeader>

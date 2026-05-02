@@ -66,7 +66,7 @@ export function HeroVisual() {
     >
       <div className="relative flex w-full max-w-[460px] flex-col gap-5">
         {/* Top card (peek behind) */}
-        <div className="border-border bg-background/40 origin-bottom translate-y-3 scale-[0.93] transform rounded-[2rem] border p-5 opacity-40 shadow-sm backdrop-blur-sm select-none">
+        <div className="border-border bg-background/40 origin-bottom translate-y-3 scale-[0.93] transform rounded-[2rem] border p-5 opacity-40 backdrop-blur-sm select-none">
           <div className="mb-3 flex items-center gap-2">
             <Badge variant="teal">2020</Badge>
             <Badge variant="purple">Q1a</Badge>
