@@ -755,7 +755,7 @@ export class HttpClient<SecurityDataType = unknown> {
  * @title PYQDeck API Explorer
  * @version 1.0.0
  * @baseUrl http://localhost:3000/api/v1
- * @contact PYQDeck Support <onboarding@resend.dev> (http://localhost:3000/support)
+ * @contact PYQDeck Support <noreply@example.com> (http://localhost:3000/support)
  *
  *
  * Welcome to the official **PYQDeck API Documentation**.
