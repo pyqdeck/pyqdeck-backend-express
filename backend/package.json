@@ -14,7 +14,8 @@
     "lint:fix": "eslint . --fix",
     "test:load": "k6 run tests/load/smoke.js",
     "test:stress": "k6 run tests/load/stress.js",
-    "admin": "node scripts/admin.js"
+    "admin": "node scripts/admin.js",
+    "openapi:export": "node --input-type=module -e \"import { writeFileSync } from 'node:fs'; import { swaggerSpec } from './src/docs/swagger.js'; writeFileSync('openapi.json', JSON.stringify(swaggerSpec, null, 2)); console.log('Wrote openapi.json');\""
   },
   "type": "module",
   "keywords": [],

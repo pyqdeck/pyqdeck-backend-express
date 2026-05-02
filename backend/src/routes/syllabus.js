@@ -36,6 +36,12 @@ router.get(
  *         name: id
  *         required: true
  *         schema: { type: string }
+ *       - in: query
+ *         name: page
+ *         schema: { type: integer, default: 1 }
+ *       - in: query
+ *         name: limit
+ *         schema: { type: integer, default: 20 }
  *     responses:
  *       200: { description: List of questions }
  */
@@ -57,6 +63,12 @@ router.get(
  *         name: id
  *         required: true
  *         schema: { type: string }
+ *       - in: query
+ *         name: page
+ *         schema: { type: integer, default: 1 }
+ *       - in: query
+ *         name: limit
+ *         schema: { type: integer, default: 20 }
  *     responses:
  *       200: { description: List of questions }
  */
