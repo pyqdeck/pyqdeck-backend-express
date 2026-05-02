@@ -1,140 +1,64 @@
 ---
-title: Local Development Setup
-description: 'Complete guide to setting up the PyqDeck monorepo for local development'
+title: Development Guide
+description: 'How to develop, test, and build the PyqDeck platform'
 ---
 
 ## Prerequisites
 
-Before you begin, ensure you have the following installed:
+Ensure you have the following installed on your machine:
+- **Node.js**: v20 or higher
+- **pnpm**: v10 or higher
+- **MongoDB**: A local instance or an Atlas connection string
 
-- **Node.js** >= 20 (we recommend using `nvm` or `fnm`)
-- **pnpm** >= 10 (`corepack enable` or `npm install -g pnpm`)
-- **MongoDB** (local instance or MongoDB Atlas)
-- **Git**
+## Local Setup
 
-## 1. Clone the Repository
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/pyqdeck/pyqdeck-backend-express.git
+   cd pyqdeck-backend-express
+   ```
 
-```bash
-git clone https://github.com/pyqdeck/pyqdeck-backend-express.git
-cd pyqdeck-backend-express
-```
+2. **Install dependencies**:
+   Run this from the root to install all workspace dependencies:
+   ```bash
+   pnpm install
+   ```
 
-## 2. Install Dependencies
+3. **Configure Environment Variables**:
+   Create `.env` files in both `backend/` and `frontend/` using the provided `.env.example` templates.
 
-This is a pnpm monorepo. Install all dependencies from the root:
+## Running the Platform
 
-```bash
-pnpm install
-```
+We use a monorepo structure, but you can run components individually using the following commands:
 
-This will install dependencies for both `backend/` and `frontend/` packages.
-
-## 3. Backend Setup
-
-### Environment Variables
-
-Copy the example environment file and configure it:
-
-```bash
-cp backend/.env.example backend/.env
-```
-
-Key environment variables:
-
-| Variable | Description | Example |
-|---|---|---|
-| `MONGODB_URI` | MongoDB connection string | `mongodb://localhost:27017/pyqdeck` |
-| `CLERK_PUBLISHABLE_KEY` | Clerk publishable key | `pk_test_...` |
-| `CLERK_SECRET_KEY` | Clerk secret key | `sk_test_...` |
-| `CLERK_WEBHOOK_SECRET` | Svix webhook secret for Clerk | `whsec_...` |
-| `RESEND_API_KEY` | Resend email API key | `re_...` |
-| `UPLOADTHING_TOKEN` | UploadThing file storage token | `ut_...` |
-| `SENTRY_DSN` | Sentry error tracking DSN | `https://...` |
-| `LOGTAIL_SOURCE_TOKEN` | Better Stack logging token | `...` |
-
-For local development, you can get test keys from:
-- **Clerk**: [dashboard.clerk.com](https://dashboard.clerk.com) (create a new app)
-- **Resend**: [resend.com](https://resend.com) (free tier available)
-- **UploadThing**: [uploadthing.com](https://uploadthing.com) (free tier available)
-
-### Start the Backend
-
+### Backend (API)
 ```bash
 cd backend
 pnpm dev
 ```
+The API will be available at `http://localhost:5000`. Swagger documentation is at `/api-docs`.
 
-The backend will start on `http://localhost:3000` with hot-reload enabled via `--watch`.
-
-## 4. Frontend Setup
-
-### Environment Variables
-
-Create a `.env.local` file in the frontend directory:
-
-```bash
-cat > frontend/.env.local << EOF
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_your_key_here
-NEXT_PUBLIC_API_URL=http://localhost:3000/api/v1
-EOF
-```
-
-| Variable | Description |
-|---|---|
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Must match the backend's Clerk project |
-| `NEXT_PUBLIC_API_URL` | Backend API URL (defaults to production if not set) |
-
-### Start the Frontend
-
+### Frontend (Web)
 ```bash
 cd frontend
 pnpm dev
 ```
+The web app will be available at `http://localhost:3000`.
 
-The frontend will start on `http://localhost:3001` (or next available port).
-
-## 5. Generate the API SDK
-
-The frontend uses a generated API client from the backend's OpenAPI spec. This is automated via:
-
+### Storybook (UI Components)
 ```bash
 cd frontend
-pnpm gen:api
+pnpm run storybook
 ```
+View the component library at `http://localhost:6006`.
 
-This script:
-1. Exports the OpenAPI spec from the backend (`backend/openapi.json`)
-2. Generates a typed TypeScript client using `swagger-typescript-api`
-3. Outputs to `frontend/src/lib/api-generated.ts`
+## Key Workflows
 
-**Important**: Never manually edit `api-generated.ts`. Always regenerate via `gen:api` after backend changes.
+### 🔄 API & SDK Sync
+We use a type-safe SDK for frontend-backend communication. If you change a backend route or model:
+1. Run `pnpm run openapi:export` in the `backend/` folder.
+2. Run `pnpm run gen:api` in the `frontend/` folder.
 
-## 6. Verify the Setup
-
-1. **Health Check**: Visit `http://localhost:3000/api/v1/health`
-2. **Frontend**: Visit `http://localhost:3001`
-3. **Storybook**: Run `pnpm storybook` in the frontend to view components at `http://localhost:6006`
-
-## Common Issues
-
-### MongoDB Connection Failed
-
-- Ensure MongoDB is running: `mongod --version`
-- For local MongoDB: `mongod --dbpath /data/db`
-- Or use MongoDB Atlas for a cloud database
-
-### Clerk Webhook Errors
-
-The backend needs to receive Clerk webhooks for user synchronization. For local development:
-- Use the [Clerk CLI](https://clerk.com/docs/webhooks/sync-data#use-the-clerk-webhook-local-development-server) to forward webhooks
-- Or skip webhook setup if you only need read-only API access
-
-### Port Conflicts
-
-If port 3000 is occupied, change the `PORT` variable in `backend/.env`. Update `NEXT_PUBLIC_API_URL` accordingly.
-
-## Next Steps
-
-- Read about [the SDK flow](/development/sdk-flow) to understand how the API client works
-- Explore the [monorepo architecture](/architecture/monorepo)
-- Review our [testing standards](/development/testing)
+### 🧪 Testing
+- **Backend**: Run `pnpm test` in the `backend/` folder to execute Vitest suites.
+- **Frontend**: Run `pnpm lint` to check for code quality issues.

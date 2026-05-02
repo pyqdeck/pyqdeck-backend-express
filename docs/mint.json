@@ -46,16 +46,31 @@
       ]
     },
     {
+      "group": "Development",
+      "pages": [
+        "development/sdk-flow",
+        "development/testing"
+      ]
+    },
+    {
       "group": "Architecture",
       "pages": [
         "architecture/monorepo",
-        "architecture/auth-flow"
+        "architecture/auth-flow",
+        "architecture/data-pipeline"
       ]
     },
     {
       "group": "API Reference",
       "pages": [
         "api-reference/overview"
+      ]
+    },
+    {
+      "group": "Infrastructure",
+      "pages": [
+        "infrastructure/deployment",
+        "infrastructure/monitoring"
       ]
     }
   ],
