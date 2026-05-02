@@ -16,7 +16,7 @@ const universitySchema = z.object({
 });
 
 export default {
-  title: 'Studio/Universities/EditUniversityDialogView',
+  title: 'Studio/Academics/EditUniversityDialogView',
   component: EditUniversityDialogView,
   tags: ['autodocs'],
   parameters: {
@@ -56,6 +56,7 @@ const FormWrapper = ({ mockSubmitting = false, ...args }) => {
     ...form,
     formState: {
       ...form.formState,
+      errors: form.formState.errors,
       isSubmitting: mockSubmitting || form.formState.isSubmitting,
     },
   };

@@ -979,14 +979,21 @@ export class Api<
  * @summary List semesters for a branch
  * @request GET:/branches/{branchId}/semesters
  * @response `200` `(SuccessResponse & {
-    data?: (Semester)[],
+    data?: {
+    items?: (Semester)[],
+    pagination?: Pagination,
+
+},
 
 })` Semesters list
  */
     listSemesters: (branchId: string, params: RequestParams = {}) =>
       this.request<
         SuccessResponse & {
-          data?: Semester[];
+          data?: {
+            items?: Semester[];
+            pagination?: Pagination;
+          };
         },
         any
       >({
@@ -2184,6 +2191,56 @@ export class Api<
         any
       >({
         path: `/search`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+  };
+  semesters = {
+    /**
+ * No description
+ *
+ * @tags Semesters
+ * @name ListAllSemesters
+ * @summary List all semesters across all branches
+ * @request GET:/semesters
+ * @response `200` `(SuccessResponse & {
+    data?: {
+    items?: (Semester)[],
+    pagination?: Pagination,
+
+},
+
+})` Semesters list
+ */
+    listAllSemesters: (
+      query?: {
+        branchId?: string;
+        /**
+         * @min 1
+         * @default 1
+         */
+        page?: number;
+        /**
+         * @min 1
+         * @max 100
+         * @default 20
+         */
+        limit?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            items?: Semester[];
+            pagination?: Pagination;
+          };
+        },
+        any
+      >({
+        path: `/semesters`,
         method: "GET",
         query: query,
         format: "json",

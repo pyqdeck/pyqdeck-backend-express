@@ -2,7 +2,7 @@ import { UniversitiesTableView } from './universities-table-view';
 import { fn } from '@storybook/test';
 
 export default {
-  title: 'Studio/Universities/UniversitiesTableView',
+  title: 'Studio/Academics/UniversitiesTableView',
   component: UniversitiesTableView,
   tags: ['autodocs'],
   args: {

@@ -12,7 +12,7 @@ const universitySchema = z.object({
 });
 
 export default {
-  title: 'Studio/Universities/AddUniversityDialogView',
+  title: 'Studio/Academics/AddUniversityDialogView',
   component: AddUniversityDialogView,
   parameters: {
     layout: 'centered',
@@ -38,6 +38,7 @@ const FormWrapper = ({ mockSubmitting = false, ...props }) => {
     ...form,
     formState: {
       ...form.formState,
+      errors: form.formState.errors,
       isSubmitting: mockSubmitting || form.formState.isSubmitting,
     },
   };

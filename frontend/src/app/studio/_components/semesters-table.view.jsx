@@ -1,15 +1,13 @@
-'use client';
-
-import * as React from 'react';
 import {
   MoreVertical,
   Edit2,
-  ExternalLink,
   Trash2,
-  Search,
+  Building2,
   GraduationCap,
-  Layers,
+  BookOpen,
+  Search,
 } from 'lucide-react';
+import Link from 'next/link';
 import {
   Table,
   TableBody,
@@ -26,10 +24,6 @@ import {
   CardDescription,
   CardFooter,
 } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import {
   Pagination,
   PaginationContent,
@@ -39,6 +33,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,10 +42,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import Link from 'next/link';
+import { Input } from '@/components/ui/input';
 
-export function UniversitiesTableView({
-  universities,
+export function SemestersTableView({
+  semesters = [],
   pagination,
   search,
   onSearchChange,
@@ -62,21 +57,20 @@ export function UniversitiesTableView({
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="font-roboto text-xl">
-              Institution Database
+            <CardTitle className="font-roboto text-foreground text-xl">
+              Semester Configuration
             </CardTitle>
             <CardDescription className="font-roboto">
-              Total {pagination?.total || universities.length} universities
-              registered.
+              Organize academic periods and content delivery schedules.
             </CardDescription>
           </div>
           <div className="relative w-72">
             <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
             <Input
-              placeholder="Search universities..."
+              placeholder="Search semesters..."
               className="font-roboto border-2 pl-9 focus-visible:ring-0"
               value={search}
-              onChange={(e) => onSearchChange(e.target.value)}
+              onChange={(e) => onSearchChange?.(e.target.value)}
             />
           </div>
         </div>
@@ -85,78 +79,82 @@ export function UniversitiesTableView({
         <Table>
           <TableHeader>
             <TableRow className="border-b-2 hover:bg-transparent">
-              <TableHead className="text-foreground font-roboto w-[400px] font-bold">
-                Institution
+              <TableHead className="font-roboto text-foreground w-[200px] font-bold tracking-wider uppercase">
+                Semester
               </TableHead>
-              <TableHead className="text-foreground font-roboto font-bold">
-                State
+              <TableHead className="font-roboto text-foreground font-bold tracking-wider uppercase">
+                Title / Label
               </TableHead>
-              <TableHead className="text-foreground font-roboto font-bold">
-                Country
+              <TableHead className="font-roboto text-foreground font-bold tracking-wider uppercase">
+                Branch
               </TableHead>
-              <TableHead className="text-foreground font-roboto font-bold">
-                Status
+              <TableHead className="font-roboto text-foreground font-bold tracking-wider uppercase">
+                URL Path
               </TableHead>
-              <TableHead className="text-foreground font-roboto w-[100px] text-right font-bold">
+              <TableHead className="font-roboto text-foreground w-[100px] text-right font-bold tracking-wider uppercase">
                 Actions
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {universities.length === 0 ? (
+            {semesters.length === 0 ? (
               <TableRow>
                 <TableCell
                   colSpan={5}
-                  className="text-muted-foreground font-roboto h-48 text-center italic"
+                  className="font-roboto text-muted-foreground h-48 text-center italic"
                 >
                   {search
-                    ? 'No universities match your search.'
-                    : 'No universities found. Add your first institution to get started!'}
+                    ? 'No semesters match your search criteria.'
+                    : 'Select a branch to view or manage its semesters.'}
                 </TableCell>
               </TableRow>
             ) : (
-              universities.map((uni) => (
-                <TableRow key={uni.id} className="group border-b">
+              semesters.map((sem) => (
+                <TableRow
+                  key={sem.id}
+                  className="group hover:bg-muted/30 border-b transition-colors"
+                >
                   <TableCell className="py-4">
-                    <div className="flex items-center gap-4">
-                      <Avatar className="border-muted bg-muted/50 h-12 w-12 rounded-lg border-2">
-                        <AvatarImage src={uni.logo} alt={uni.name} />
-                        <AvatarFallback className="rounded-lg">
-                          {uni.name.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex flex-col">
-                        <span className="text-foreground group-hover:text-primary font-roboto flex cursor-pointer items-center gap-1 font-bold transition-colors">
-                          {uni.name}
-                          <ExternalLink className="h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100" />
-                        </span>
-                        <span className="text-muted-foreground font-roboto text-xs lowercase">
-                          /{uni.slug}
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-blue-200 bg-blue-50 text-blue-600 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-400">
+                        <span className="font-roboto text-sm font-bold">
+                          {sem.number}
                         </span>
                       </div>
+                      <span className="font-roboto text-foreground group-hover:text-primary font-bold transition-colors">
+                        Semester {sem.number}
+                      </span>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="text-foreground font-roboto text-sm font-medium">
-                      {uni.state || 'N/A'}
+                    <span className="font-roboto text-muted-foreground text-sm italic">
+                      {sem.title || `Standard Semester ${sem.number}`}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-2">
+                        <GraduationCap className="text-muted-foreground h-4 w-4" />
+                        <span className="font-roboto text-sm font-medium">
+                          {sem?.branchId?.name || 'Unknown Branch'}
+                        </span>
+                      </div>
+                      {sem?.branchId?.universityId &&
+                        typeof sem.branchId.universityId === 'object' && (
+                          <div className="mt-0.5 flex items-center gap-2">
+                            <Building2 className="text-muted-foreground/60 h-3 w-3" />
+                            <span className="font-roboto text-muted-foreground text-[10px] tracking-wider uppercase">
+                              {sem.branchId.universityId?.shortName ||
+                                'Institution'}
+                            </span>
+                          </div>
+                        )}
                     </div>
                   </TableCell>
                   <TableCell>
-                    <div className="text-muted-foreground font-roboto flex items-center gap-2 text-sm">
-                      {uni.country || 'India'}
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge
-                      variant={uni.isActive !== false ? 'default' : 'secondary'}
-                      className={`font-roboto rounded-full px-2.5 py-0.5 font-semibold ${
-                        uni.isActive !== false
-                          ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400'
-                          : 'bg-muted text-muted-foreground'
-                      }`}
-                    >
-                      {uni.isActive !== false ? 'Active' : 'Inactive'}
-                    </Badge>
+                    <code className="bg-muted font-roboto text-muted-foreground rounded px-1.5 py-0.5 text-xs font-bold">
+                      /{sem.slug}
+                    </code>
                   </TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
@@ -165,7 +163,6 @@ export function UniversitiesTableView({
                           variant="ghost"
                           className="hover:bg-muted/50 h-9 w-9 border-2 p-0 transition-colors"
                         >
-                          <span className="sr-only">Open menu</span>
                           <MoreVertical className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
@@ -174,66 +171,37 @@ export function UniversitiesTableView({
                         className="font-roboto w-56 border-2 p-2 shadow-none"
                       >
                         <DropdownMenuLabel className="text-muted-foreground px-2 py-1.5 text-xs font-semibold tracking-wider uppercase">
-                          Management
+                          Semester Actions
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator className="my-1 border-b" />
                         <DropdownMenuItem
                           className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
-                          onClick={() => onEdit(uni)}
+                          onClick={() => onEdit?.(sem)}
                         >
                           <Edit2 className="text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors" />
-                          <span className="font-medium">Edit University</span>
+                          <span className="font-medium">Update Settings</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           asChild
                           className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
                         >
                           <Link
-                            href={uni.websiteUrl || '#'}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            href={`/studio/subjects?semesterId=${sem.id}`}
                             className="flex w-full items-center"
                           >
-                            <ExternalLink className="text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors" />
-                            <span className="font-medium">Visit Website</span>
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator className="my-1 border-b" />
-                        <DropdownMenuItem
-                          asChild
-                          className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
-                        >
-                          <Link
-                            href={`/studio/branches?universityId=${uni.id}`}
-                            className="flex w-full items-center"
-                          >
-                            <Layers className="text-muted-foreground mr-3 h-4 w-4 transition-colors group-hover:text-indigo-600" />
-                            <span className="font-medium text-indigo-600">
-                              View Branches
-                            </span>
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          asChild
-                          className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
-                        >
-                          <Link
-                            href={`/studio/semesters?universityId=${uni.id}`}
-                            className="flex w-full items-center"
-                          >
-                            <GraduationCap className="text-muted-foreground mr-3 h-4 w-4 transition-colors group-hover:text-amber-600" />
-                            <span className="font-medium text-amber-600">
-                              View Semesters
+                            <BookOpen className="text-muted-foreground mr-3 h-4 w-4 transition-colors group-hover:text-emerald-600" />
+                            <span className="font-medium text-emerald-600">
+                              View Subjects
                             </span>
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator className="my-1 border-b" />
                         <DropdownMenuItem
                           className="text-destructive focus:text-destructive focus:bg-destructive/5 group cursor-pointer rounded-md py-2.5"
-                          onClick={() => onDelete(uni)}
+                          onClick={() => onDelete?.(sem)}
                         >
                           <Trash2 className="text-destructive/70 group-hover:text-destructive mr-3 h-4 w-4 transition-colors" />
-                          <span className="font-bold">Delete Institution</span>
+                          <span className="font-bold">Delete Semester</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -265,7 +233,6 @@ export function UniversitiesTableView({
 
               {[...Array(pagination.pages)].map((_, i) => {
                 const pageNumber = i + 1;
-                // Show current page, first, last, and neighbors
                 if (
                   pageNumber === 1 ||
                   pageNumber === pagination.pages ||
@@ -284,7 +251,6 @@ export function UniversitiesTableView({
                     </PaginationItem>
                   );
                 }
-
                 if (
                   pageNumber === pagination.current - 2 ||
                   pageNumber === pagination.current + 2
@@ -295,7 +261,6 @@ export function UniversitiesTableView({
                     </PaginationItem>
                   );
                 }
-
                 return null;
               })}
 

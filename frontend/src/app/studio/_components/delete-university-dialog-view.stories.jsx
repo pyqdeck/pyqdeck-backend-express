@@ -2,7 +2,7 @@ import { DeleteUniversityDialogView } from './delete-university-dialog-view';
 import { fn } from '@storybook/test';
 
 export default {
-  title: 'Studio/Universities/DeleteUniversityDialogView',
+  title: 'Studio/Academics/DeleteUniversityDialogView',
   component: DeleteUniversityDialogView,
   tags: ['autodocs'],
   args: {
