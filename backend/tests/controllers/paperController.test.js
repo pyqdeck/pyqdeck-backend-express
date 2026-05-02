@@ -1,0 +1,314 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import * as paperController from '../../src/controllers/paperController.js';
+import paperService from '../../src/services/paperService.js';
+import { NotFoundError } from '../../src/utils/errors/index.js';
+
+vi.mock('../../src/services/paperService.js', () => ({
+  default: {
+    list: vi.fn(),
+    getBySlug: vi.fn(),
+    getById: vi.fn(),
+    create: vi.fn(),
+    update: vi.fn(),
+    updateStatus: vi.fn(),
+    delete: vi.fn(),
+  },
+}));
+
+describe('paperController', () => {
+  let req, res, next;
+
+  const samplePaper = {
+    _id: 'paper_1',
+    title: 'CS 2023 End Sem',
+    slug: 'cs-2023-end-sem',
+    examYear: 2023,
+    status: 'approved',
+  };
+
+  beforeEach(() => {
+    req = {
+      query: {},
+      params: {},
+      body: {},
+      dbUser: null,
+      pagination: { page: 1, limit: 10 },
+    };
+    res = {
+      json: vi.fn().mockReturnThis(),
+      status: vi.fn().mockReturnThis(),
+      send: vi.fn().mockReturnThis(),
+    };
+    next = vi.fn();
+    vi.clearAllMocks();
+  });
+
+  // ─── list ────────────────────────────────────────────────────────────────────
+
+  describe('list', () => {
+    it('should set status:approved for non-admin users', async () => {
+      req.dbUser = { role: 'normal' };
+      paperService.list.mockResolvedValue({
+        items: [samplePaper],
+        total: 1,
+        page: 1,
+        limit: 10,
+      });
+
+      await paperController.list(req, res, next);
+
+      expect(paperService.list).toHaveBeenCalledWith(
+        expect.objectContaining({ status: 'approved' }),
+        req.pagination
+      );
+    });
+
+    it('should NOT set status filter for admin users', async () => {
+      req.dbUser = { role: 'admin' };
+      paperService.list.mockResolvedValue({
+        items: [samplePaper],
+        total: 1,
+        page: 1,
+        limit: 10,
+      });
+
+      await paperController.list(req, res, next);
+
+      const callArg = paperService.list.mock.calls[0][0];
+      expect(callArg).not.toHaveProperty('status');
+    });
+
+    it('should apply examYear filter from query', async () => {
+      req.dbUser = { role: 'admin' };
+      req.query.examYear = '2023';
+      paperService.list.mockResolvedValue({
+        items: [],
+        total: 0,
+        page: 1,
+        limit: 10,
+      });
+
+      await paperController.list(req, res, next);
+
+      expect(paperService.list).toHaveBeenCalledWith(
+        expect.objectContaining({ examYear: 2023 }),
+        req.pagination
+      );
+    });
+
+    it('should apply examType filter from query', async () => {
+      req.dbUser = { role: 'admin' };
+      req.query.examType = 'endSem';
+      paperService.list.mockResolvedValue({
+        items: [],
+        total: 0,
+        page: 1,
+        limit: 10,
+      });
+
+      await paperController.list(req, res, next);
+
+      expect(paperService.list).toHaveBeenCalledWith(
+        expect.objectContaining({ examType: 'endSem' }),
+        req.pagination
+      );
+    });
+
+    it('should apply subjectOfferingId filter from query', async () => {
+      req.dbUser = { role: 'admin' };
+      req.query.subjectOfferingId = 'so_123';
+      paperService.list.mockResolvedValue({
+        items: [],
+        total: 0,
+        page: 1,
+        limit: 10,
+      });
+
+      await paperController.list(req, res, next);
+
+      expect(paperService.list).toHaveBeenCalledWith(
+        expect.objectContaining({ subjectOfferingId: 'so_123' }),
+        req.pagination
+      );
+    });
+
+    it('should handle unauthenticated user (null dbUser)', async () => {
+      req.dbUser = null;
+      paperService.list.mockResolvedValue({
+        items: [],
+        total: 0,
+        page: 1,
+        limit: 10,
+      });
+
+      await paperController.list(req, res, next);
+
+      expect(paperService.list).toHaveBeenCalledWith(
+        expect.objectContaining({ status: 'approved' }),
+        req.pagination
+      );
+    });
+
+    it('should call next on error', async () => {
+      paperService.list.mockRejectedValue(new Error('DB error'));
+      await paperController.list(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
+    });
+  });
+
+  // ─── getBySlug ───────────────────────────────────────────────────────────────
+
+  describe('getBySlug', () => {
+    it('should return paper by slug', async () => {
+      req.params.slug = 'cs-2023-end-sem';
+      paperService.getBySlug.mockResolvedValue(samplePaper);
+
+      await paperController.getBySlug(req, res, next);
+
+      expect(paperService.getBySlug).toHaveBeenCalledWith('cs-2023-end-sem');
+      expect(res.json).toHaveBeenCalledWith(
+        expect.objectContaining({ status: 'success' })
+      );
+    });
+
+    it('should call next with NotFoundError if not found', async () => {
+      req.params.slug = 'unknown';
+      paperService.getBySlug.mockRejectedValue(
+        new NotFoundError('Paper not found')
+      );
+
+      await paperController.getBySlug(req, res, next);
+
+      expect(next).toHaveBeenCalledWith(expect.any(NotFoundError));
+    });
+  });
+
+  // ─── create ──────────────────────────────────────────────────────────────────
+
+  describe('create', () => {
+    it('should create paper with editor user and return 201', async () => {
+      req.dbUser = { _id: 'user_1', role: 'editor' };
+      req.body = { title: 'CS 2023', slug: 'cs-2023' };
+      paperService.create.mockResolvedValue(samplePaper);
+
+      await paperController.create(req, res, next);
+
+      expect(paperService.create).toHaveBeenCalledWith(req.body, 'user_1');
+      expect(res.status).toHaveBeenCalledWith(201);
+    });
+
+    it('should pass undefined uploadedBy when dbUser is null', async () => {
+      req.dbUser = null;
+      req.body = { title: 'CS 2023' };
+      paperService.create.mockResolvedValue(samplePaper);
+
+      await paperController.create(req, res, next);
+
+      expect(paperService.create).toHaveBeenCalledWith(req.body, undefined);
+    });
+
+    it('should call next on error', async () => {
+      paperService.create.mockRejectedValue(new Error('Conflict'));
+      await paperController.create(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
+    });
+  });
+
+  // ─── update ──────────────────────────────────────────────────────────────────
+
+  describe('update', () => {
+    it('should update paper and return 200', async () => {
+      req.params.id = 'paper_1';
+      req.body = { title: 'Updated Title' };
+      paperService.update.mockResolvedValue({
+        ...samplePaper,
+        title: 'Updated Title',
+      });
+
+      await paperController.update(req, res, next);
+
+      expect(paperService.update).toHaveBeenCalledWith('paper_1', {
+        title: 'Updated Title',
+      });
+      expect(res.json).toHaveBeenCalledWith(
+        expect.objectContaining({ status: 'success' })
+      );
+    });
+
+    it('should call next on error', async () => {
+      paperService.update.mockRejectedValue(new NotFoundError('Not found'));
+      await paperController.update(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(NotFoundError));
+    });
+  });
+
+  // ─── updateStatus ─────────────────────────────────────────────────────────────
+
+  describe('updateStatus', () => {
+    it('should approve a paper', async () => {
+      req.params.id = 'paper_1';
+      req.body = { status: 'approved' };
+      paperService.updateStatus.mockResolvedValue({
+        ...samplePaper,
+        status: 'approved',
+      });
+
+      await paperController.updateStatus(req, res, next);
+
+      expect(paperService.updateStatus).toHaveBeenCalledWith(
+        'paper_1',
+        'approved'
+      );
+      expect(res.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Paper status set to approved',
+        })
+      );
+    });
+
+    it('should reject a paper', async () => {
+      req.params.id = 'paper_1';
+      req.body = { status: 'rejected' };
+      paperService.updateStatus.mockResolvedValue({
+        ...samplePaper,
+        status: 'rejected',
+      });
+
+      await paperController.updateStatus(req, res, next);
+
+      expect(res.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          message: 'Paper status set to rejected',
+        })
+      );
+    });
+
+    it('should call next on error', async () => {
+      paperService.updateStatus.mockRejectedValue(
+        new NotFoundError('Not found')
+      );
+      await paperController.updateStatus(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(NotFoundError));
+    });
+  });
+
+  // ─── remove ──────────────────────────────────────────────────────────────────
+
+  describe('remove', () => {
+    it('should delete paper and return 204', async () => {
+      req.params.id = 'paper_1';
+      paperService.delete.mockResolvedValue(samplePaper);
+
+      await paperController.remove(req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(204);
+      expect(res.send).toHaveBeenCalled();
+    });
+
+    it('should call next on error', async () => {
+      paperService.delete.mockRejectedValue(new NotFoundError('Not found'));
+      await paperController.remove(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(NotFoundError));
+    });
+  });
+});
