@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { Solution } from '../models/Solution.js';
 import { NotFoundError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
@@ -58,6 +59,59 @@ class SolutionRepository {
     const solution = await Solution.findByIdAndDelete(id);
     if (!solution) throw new NotFoundError('Solution not found');
     return solution;
+  }
+
+  async findWithAuthor(questionId, pagination = {}, filter = {}) {
+    const { page = 1, limit = 10 } = pagination;
+    const skip = (page - 1) * limit;
+
+    const pipeline = [
+      {
+        $match: {
+          questionId: new mongoose.Types.ObjectId(questionId),
+          ...filter,
+        },
+      },
+      { $sort: { upvotes: -1 } },
+      { $skip: skip },
+      { $limit: limit },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'authorId',
+          foreignField: '_id',
+          as: 'author',
+        },
+      },
+      { $unwind: { path: '$author', preserveNullAndEmptyArrays: true } },
+      {
+        $project: {
+          questionId: 1,
+          type: 1,
+          content: 1,
+          latexContent: 1,
+          images: 1,
+          videoLinks: 1,
+          upvotes: 1,
+          downvotes: 1,
+          isVerified: 1,
+          status: 1,
+          createdAt: 1,
+          author: {
+            name: 1,
+            email: 1,
+            role: 1,
+          },
+        },
+      },
+    ];
+
+    const [items, total] = await Promise.all([
+      Solution.aggregate(pipeline),
+      Solution.countDocuments({ questionId, ...filter }),
+    ]);
+
+    return { items, total, page, limit };
   }
 
   async deleteByQuestion(questionId) {

@@ -7,7 +7,7 @@ class SolutionService {
    */
   async listByQuestion(questionId, pagination, isAdmin = false) {
     const filter = isAdmin ? {} : { status: 'approved' };
-    return solutionRepository.findByQuestion(questionId, pagination, filter);
+    return solutionRepository.findWithAuthor(questionId, pagination, filter);
   }
 
   async listByAuthor(authorId, pagination) {

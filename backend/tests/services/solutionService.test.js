@@ -5,6 +5,7 @@ import solutionRepository from '../../src/repositories/solutionRepository.js';
 vi.mock('../../src/repositories/solutionRepository.js', () => ({
   default: {
     findByQuestion: vi.fn(),
+    findWithAuthor: vi.fn(),
     findByAuthor: vi.fn(),
     findById: vi.fn(),
     create: vi.fn(),
@@ -27,20 +28,20 @@ describe('SolutionService', () => {
   beforeEach(() => vi.clearAllMocks());
 
   describe('listByQuestion', () => {
-    it('should filter by status:approved for non-admins', async () => {
-      solutionRepository.findByQuestion.mockResolvedValue({ items: [] });
+    it('should filter by status:approved for non-admins and use aggregation', async () => {
+      solutionRepository.findWithAuthor.mockResolvedValue({ items: [] });
       await solutionService.listByQuestion('q_1', { page: 1 }, false);
-      expect(solutionRepository.findByQuestion).toHaveBeenCalledWith(
+      expect(solutionRepository.findWithAuthor).toHaveBeenCalledWith(
         'q_1',
         { page: 1 },
         { status: 'approved' }
       );
     });
 
-    it('should NOT filter by status for admins', async () => {
-      solutionRepository.findByQuestion.mockResolvedValue({ items: [] });
+    it('should NOT filter by status for admins and use aggregation', async () => {
+      solutionRepository.findWithAuthor.mockResolvedValue({ items: [] });
       await solutionService.listByQuestion('q_1', { page: 1 }, true);
-      expect(solutionRepository.findByQuestion).toHaveBeenCalledWith(
+      expect(solutionRepository.findWithAuthor).toHaveBeenCalledWith(
         'q_1',
         { page: 1 },
         {}
