@@ -11,15 +11,13 @@ import * as subjectOfferingController from '../controllers/subjectOfferingContro
 
 const router = Router();
 
-const updateSchema = subjectOfferingZodSchema
-  .partial()
-  .omit({
-    slug: true,
-    universityId: true,
-    branchId: true,
-    semesterId: true,
-    subjectId: true,
-  });
+const updateSchema = subjectOfferingZodSchema.partial().omit({
+  slug: true,
+  universityId: true,
+  branchId: true,
+  semesterId: true,
+  subjectId: true,
+});
 
 /**
  * GET /api/v1/subject-offerings
