@@ -25,7 +25,7 @@ export default async function StudioLayout({ children }) {
     redirect('/sign-in');
   }
 
-  let role = 'student';
+  let role = 'normal';
   try {
     const token = await getToken();
     const apiUrl = (
@@ -39,7 +39,7 @@ export default async function StudioLayout({ children }) {
 
     if (res.ok) {
       const data = await res.json();
-      role = data?.data?.user?.role || 'student';
+      role = data?.data?.user?.role || 'normal';
     }
   } catch (error) {
     console.error(
@@ -71,7 +71,7 @@ export default async function StudioLayout({ children }) {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Admin Mode</BreadcrumbPage>
+                  <BreadcrumbPage>Overview</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
