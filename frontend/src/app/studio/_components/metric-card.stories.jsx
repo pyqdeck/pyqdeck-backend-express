@@ -1,9 +1,9 @@
-import { MetricCard } from './metric-card';
+import { MetricCardView } from './metric-card-view';
 import { Users, FileText, GraduationCap, Clock } from 'lucide-react';
 
 export default {
-  title: 'Studio/MetricCard',
-  component: MetricCard,
+  title: 'Studio/Shared/MetricCard',
+  component: MetricCardView,
   tags: ['autodocs'],
 };
 

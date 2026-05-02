@@ -1,8 +1,8 @@
-import { PopularityChart } from './popularity-chart';
+import { PopularityChartView } from './popularity-chart-view';
 
 export default {
-  title: 'Studio/PopularityChart',
-  component: PopularityChart,
+  title: 'Studio/Analytics/PopularityChart',
+  component: PopularityChartView,
   tags: ['autodocs'],
 };
 

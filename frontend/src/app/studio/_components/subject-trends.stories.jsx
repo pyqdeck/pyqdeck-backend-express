@@ -1,8 +1,8 @@
-import { SubjectTrends } from './subject-trends';
+import { SubjectTrendsView } from './subject-trends-view';
 
 export default {
   title: 'Studio/Analytics/SubjectTrends',
-  component: SubjectTrends,
+  component: SubjectTrendsView,
   tags: ['autodocs'],
 };
 

@@ -1,8 +1,8 @@
-import { CoverageRadar } from './coverage-radar';
+import { CoverageRadarView } from './coverage-radar-view';
 
 export default {
   title: 'Studio/Analytics/CoverageRadar',
-  component: CoverageRadar,
+  component: CoverageRadarView,
   tags: ['autodocs'],
 };
 

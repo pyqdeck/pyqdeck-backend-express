@@ -1,8 +1,8 @@
-import { VelocityChart } from './velocity-chart';
+import { VelocityChartView } from './velocity-chart-view';
 
 export default {
-  title: 'Studio/VelocityChart',
-  component: VelocityChart,
+  title: 'Studio/Analytics/VelocityChart',
+  component: VelocityChartView,
   tags: ['autodocs'],
 };
 

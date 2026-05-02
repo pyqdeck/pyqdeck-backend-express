@@ -1,8 +1,8 @@
-import { AiGenerationQueue } from './ai-generation-queue';
+import { AiGenerationQueueView } from './ai-generation-queue-view';
 
 export default {
-  title: 'Studio/AiGenerationQueue',
-  component: AiGenerationQueue,
+  title: 'Studio/Queues/AiGenerationQueue',
+  component: AiGenerationQueueView,
   tags: ['autodocs'],
 };
 

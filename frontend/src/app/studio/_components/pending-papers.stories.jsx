@@ -1,8 +1,8 @@
-import { PendingPapers } from './pending-papers';
+import { PendingPapersView } from './pending-papers-view';
 
 export default {
-  title: 'Studio/PendingPapers',
-  component: PendingPapers,
+  title: 'Studio/Queues/PendingPapers',
+  component: PendingPapersView,
   tags: ['autodocs'],
 };
 

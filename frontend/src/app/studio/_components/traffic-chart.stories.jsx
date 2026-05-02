@@ -1,8 +1,8 @@
-import { TrafficChart } from './traffic-chart';
+import { TrafficChartView } from './traffic-chart-view';
 
 export default {
   title: 'Studio/Analytics/TrafficChart',
-  component: TrafficChart,
+  component: TrafficChartView,
   tags: ['autodocs'],
 };
 

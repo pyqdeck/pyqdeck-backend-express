@@ -1,8 +1,8 @@
-import { SearchGaps } from './search-gaps';
+import { SearchGapsView } from './search-gaps-view';
 
 export default {
   title: 'Studio/Analytics/SearchGaps',
-  component: SearchGaps,
+  component: SearchGapsView,
   tags: ['autodocs'],
 };
 
