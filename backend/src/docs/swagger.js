@@ -32,7 +32,7 @@ Most endpoints require a valid Clerk JWT token. Include it in the header:
         description: 'Development server',
       },
       {
-        url: 'https://api.pyqdeck.in/api/v1',
+        url: 'https://backend.pyqdeck.in/api/v1',
         description: 'Production server',
       },
     ],

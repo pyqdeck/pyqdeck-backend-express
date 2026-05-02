@@ -2,6 +2,10 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import mongoose from 'mongoose';
 import { questionRepository } from '../../src/repositories/questionRepository.js';
 import { Question } from '../../src/models/Question.js';
+import { Paper } from '../../src/models/Paper.js';
+import { QuestionPaperMap } from '../../src/models/QuestionPaperMap.js';
+import { QuestionSyllabusMap } from '../../src/models/QuestionSyllabusMap.js';
+import { Topic } from '../../src/models/Topic.js';
 import { NotFoundError, ConflictError } from '../../src/utils/errors/index.js';
 
 describe('QuestionRepository', () => {
@@ -13,6 +17,10 @@ describe('QuestionRepository', () => {
 
   beforeEach(async () => {
     await Question.deleteMany({});
+    await Paper.deleteMany({});
+    await QuestionPaperMap.deleteMany({});
+    await QuestionSyllabusMap.deleteMany({});
+    await Topic.deleteMany({});
   });
 
   describe('create', () => {
@@ -89,6 +97,45 @@ describe('QuestionRepository', () => {
       await expect(questionRepository.findById(created.id)).rejects.toThrow(
         NotFoundError
       );
+    });
+  });
+
+  describe('findWithContext', () => {
+    it('should return question with paper and topic context', async () => {
+      const q = await questionRepository.create(questionData);
+
+      const paper = await Paper.create({
+        title: 'Exam 2023',
+        examYear: 2023,
+        examType: 'regular',
+        slug: 'exam-2023',
+        subjectOfferingId: new mongoose.Types.ObjectId(),
+      });
+
+      await QuestionPaperMap.create({
+        questionId: q._id,
+        paperId: paper._id,
+      });
+
+      const topic = await Topic.create({
+        title: 'Compiler Intro',
+        slug: 'compiler-intro',
+        moduleId: new mongoose.Types.ObjectId(),
+      });
+
+      await QuestionSyllabusMap.create({
+        questionId: q._id,
+        topicId: topic._id,
+      });
+
+      const result = await questionRepository.findWithContext({ _id: q._id });
+
+      expect(result.items).toHaveLength(1);
+      const item = result.items[0];
+      expect(item.paperContext).toHaveLength(1);
+      expect(item.paperContext[0].title).toBe('Exam 2023');
+      expect(item.topicContext).toHaveLength(1);
+      expect(item.topicContext[0].name).toBe('Compiler Intro');
     });
   });
 });

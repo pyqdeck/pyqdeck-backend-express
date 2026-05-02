@@ -81,7 +81,7 @@ class BranchRepository {
           semesters: { $push: '$semesters' },
         },
       },
-      { $sort: { 'semesters.semesterNumber': 1 } },
+      { $sort: { 'semesters.number': 1 } },
     ]);
 
     if (!results.length) throw new NotFoundError('Branch not found');

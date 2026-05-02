@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import mongoose from 'mongoose';
 import { solutionRepository } from '../../src/repositories/solutionRepository.js';
 import { Solution } from '../../src/models/Solution.js';
+import { User } from '../../src/models/User.js';
 import { NotFoundError } from '../../src/utils/errors/index.js';
 
 describe('SolutionRepository', () => {
@@ -16,6 +17,7 @@ describe('SolutionRepository', () => {
 
   beforeEach(async () => {
     await Solution.deleteMany({});
+    await User.deleteMany({});
   });
 
   describe('create', () => {
@@ -112,6 +114,31 @@ describe('SolutionRepository', () => {
         limit: 10,
       });
       expect(result.items).toHaveLength(0);
+    });
+  });
+
+  describe('findWithAuthor', () => {
+    it('should return solutions with author info', async () => {
+      const user = await User.create({
+        clerkId: 'user_1',
+        name: 'John Doe',
+        email: 'john@example.com',
+      });
+
+      await solutionRepository.create({
+        ...solutionData,
+        authorId: user._id,
+        status: 'approved',
+      });
+
+      const result = await solutionRepository.findWithAuthor(questionId, {
+        page: 1,
+        limit: 10,
+      });
+
+      expect(result.items).toHaveLength(1);
+      expect(result.items[0].author.name).toBe('John Doe');
+      expect(result.items[0].author.email).toBe('john@example.com');
     });
   });
 });

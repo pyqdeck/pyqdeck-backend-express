@@ -2,6 +2,8 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import mongoose from 'mongoose';
 import { syllabusRepository } from '../../src/repositories/syllabusRepository.js';
 import { Syllabus } from '../../src/models/Syllabus.js';
+import { Module } from '../../src/models/Module.js';
+import { Topic } from '../../src/models/Topic.js';
 import { NotFoundError, ConflictError } from '../../src/utils/errors/index.js';
 
 describe('SyllabusRepository', () => {
@@ -13,6 +15,8 @@ describe('SyllabusRepository', () => {
 
   beforeEach(async () => {
     await Syllabus.deleteMany({});
+    await Module.deleteMany({});
+    await Topic.deleteMany({});
   });
 
   describe('create', () => {
@@ -95,6 +99,33 @@ describe('SyllabusRepository', () => {
       await expect(syllabusRepository.delete(nonExistentId)).rejects.toThrow(
         NotFoundError
       );
+    });
+  });
+
+  describe('getHierarchy', () => {
+    it('should return nested syllabus hierarchy', async () => {
+      const syllabus = await syllabusRepository.create(syllabusData);
+
+      const module = await Module.create({
+        syllabusId: syllabus._id,
+        moduleNumber: 1,
+        title: 'Module 1',
+        slug: 'module-1',
+      });
+
+      await Topic.create({
+        moduleId: module._id,
+        title: 'Topic 1',
+        slug: 'topic-1',
+      });
+
+      const hierarchy =
+        await syllabusRepository.getHierarchy(subjectOfferingId);
+
+      expect(hierarchy.modules).toHaveLength(1);
+      expect(hierarchy.modules[0].title).toBe('Module 1');
+      expect(hierarchy.modules[0].topics).toHaveLength(1);
+      expect(hierarchy.modules[0].topics[0].title).toBe('Topic 1');
     });
   });
 });

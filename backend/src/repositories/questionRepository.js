@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { Question } from '../models/Question.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
@@ -58,8 +59,13 @@ class QuestionRepository {
     const { page = 1, limit = 10 } = pagination;
     const skip = (page - 1) * limit;
 
+    const matchFilter = { ...filter };
+    if (matchFilter._id && mongoose.Types.ObjectId.isValid(matchFilter._id)) {
+      matchFilter._id = new mongoose.Types.ObjectId(matchFilter._id);
+    }
+
     const pipeline = [
-      { $match: filter },
+      { $match: matchFilter },
       { $sort: { createdAt: -1 } },
       { $skip: skip },
       { $limit: limit },
@@ -74,10 +80,10 @@ class QuestionRepository {
       },
       {
         $lookup: {
-          from: 'papers',
+          from: 'paper',
           localField: 'paperMappings.paperId',
           foreignField: '_id',
-          as: 'papers',
+          as: 'paperContext',
         },
       },
       // Join Topic info
@@ -108,7 +114,7 @@ class QuestionRepository {
           slug: 1,
           paperContext: {
             $map: {
-              input: '$papers',
+              input: '$paperContext',
               as: 'p',
               in: {
                 title: '$$p.title',
@@ -122,7 +128,7 @@ class QuestionRepository {
               input: '$topics',
               as: 't',
               in: {
-                name: '$$t.name',
+                name: '$$t.title',
               },
             },
           },

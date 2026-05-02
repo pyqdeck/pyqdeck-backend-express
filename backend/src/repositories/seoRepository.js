@@ -18,7 +18,7 @@ class SeoRepository {
    * Fetches all public slugs for papers
    */
   async getAllPaperSlugs() {
-    return Paper.find({ status: 'published' })
+    return Paper.find({ status: 'approved' })
       .select('slug updatedAt')
       .sort({ updatedAt: -1 })
       .lean();

@@ -2,6 +2,9 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import mongoose from 'mongoose';
 import { branchRepository } from '../../src/repositories/branchRepository.js';
 import { Branch } from '../../src/models/Branch.js';
+import { Semester } from '../../src/models/Semester.js';
+import { SubjectOffering } from '../../src/models/SubjectOffering.js';
+import { Subject } from '../../src/models/Subject.js';
 import { NotFoundError, ConflictError } from '../../src/utils/errors/index.js';
 
 describe('BranchRepository', () => {
@@ -15,6 +18,9 @@ describe('BranchRepository', () => {
 
   beforeEach(async () => {
     await Branch.deleteMany({});
+    await Semester.deleteMany({});
+    await SubjectOffering.deleteMany({});
+    await Subject.deleteMany({});
   });
 
   describe('create', () => {
@@ -77,6 +83,41 @@ describe('BranchRepository', () => {
       await expect(branchRepository.findById(created.id)).rejects.toThrow(
         NotFoundError
       );
+    });
+  });
+
+  describe('getStructure', () => {
+    it('should return nested structure for a branch', async () => {
+      const branch = await branchRepository.create(branchData);
+
+      const semester = await Semester.create({
+        branchId: branch._id,
+        number: 1,
+        slug: 'semester-1',
+        title: 'Semester 1',
+      });
+
+      const subject = await Subject.create({
+        name: 'Calculus',
+        subjectCode: 'MATH101',
+        slug: 'calculus',
+      });
+
+      await SubjectOffering.create({
+        universityId,
+        branchId: branch._id,
+        semesterId: semester._id,
+        subjectId: subject._id,
+        regulation: '2023',
+        slug: 'calculus-cse-sem1',
+      });
+
+      const structure = await branchRepository.getStructure(branch._id);
+
+      expect(structure.semesters).toHaveLength(1);
+      expect(structure.semesters[0].number).toBe(1);
+      expect(structure.semesters[0].subjects).toHaveLength(1);
+      expect(structure.semesters[0].subjects[0].regulation).toBe('2023');
     });
   });
 });

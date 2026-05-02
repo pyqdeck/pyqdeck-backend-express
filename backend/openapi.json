@@ -1,0 +1,3449 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "PYQDeck API Explorer",
+    "version": "1.0.0",
+    "description": "\nWelcome to the official **PYQDeck API Documentation**.\n\nThis API powers the PYQDeck platform, enabling users to access, bookmark, and study Previous Year Questions (PYQs) efficiently.\n\n### 🔑 Authentication\nMost endpoints require a valid Clerk JWT token. Include it in the header:\n`Authorization: Bearer <your_clerk_token>`\n\n### 📊 Rate Limiting\n- **Standard API**: 100 requests per 15 minutes.\n- **Webhooks**: 50 requests per 15 minutes.\n",
+    "contact": {
+      "name": "PYQDeck Support",
+      "url": "https://pyqdeck.in/support",
+      "email": "support@pyqdeck.in"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api/v1",
+      "description": "Development server"
+    },
+    {
+      "url": "https://backend.pyqdeck.in/api/v1",
+      "description": "Production server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "System",
+      "description": "Health and operational status"
+    },
+    {
+      "name": "External Integrations",
+      "description": "Webhooks and third-party callbacks"
+    },
+    {
+      "name": "Universities",
+      "description": "University directory"
+    },
+    {
+      "name": "Branches",
+      "description": "Branches under a university"
+    },
+    {
+      "name": "Semesters",
+      "description": "Semesters under a branch"
+    },
+    {
+      "name": "Subjects",
+      "description": "Academic subjects"
+    },
+    {
+      "name": "SubjectOfferings",
+      "description": "Subject instances per term (slugs, syllabus links)"
+    },
+    {
+      "name": "Syllabus",
+      "description": "Modules, topics, and syllabus-scoped questions"
+    },
+    {
+      "name": "Questions",
+      "description": "Question bank and search"
+    },
+    {
+      "name": "Papers",
+      "description": "Exam papers"
+    },
+    {
+      "name": "PaperQuestions",
+      "description": "Questions linked to a paper"
+    },
+    {
+      "name": "Solutions",
+      "description": "User solutions, votes, moderation"
+    },
+    {
+      "name": "Bookmarks",
+      "description": "Saved questions, papers, and solutions"
+    },
+    {
+      "name": "Users",
+      "description": "Current user profile"
+    },
+    {
+      "name": "Search",
+      "description": "Global search"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "The request was invalid or could not be understood.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Authentication is required and has failed or has not yet been provided.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "The server understood the request but refuses to authorize it.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "The requested resource could not be found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "TooManyRequests": {
+        "description": "The user has sent too many requests in a given amount of time.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "An unexpected error occurred on the server.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "message": {
+            "type": "string",
+            "example": "Detailed error message here"
+          },
+          "code": {
+            "type": "integer",
+            "example": 400
+          }
+        }
+      },
+      "Pagination": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "integer",
+            "example": 100
+          },
+          "limit": {
+            "type": "integer",
+            "example": 10
+          },
+          "page": {
+            "type": "integer",
+            "example": 1
+          },
+          "pages": {
+            "type": "integer",
+            "example": 10
+          }
+        }
+      },
+      "Bookmark": {
+        "type": "object",
+        "required": [
+          "userId",
+          "targetType",
+          "targetId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string",
+            "description": "Reference to User"
+          },
+          "targetType": {
+            "type": "string",
+            "enum": [
+              "question",
+              "paper",
+              "solution"
+            ]
+          },
+          "targetId": {
+            "type": "string",
+            "description": "ID of the bookmarked document"
+          },
+          "note": {
+            "type": "string",
+            "description": "Optional personal note on the bookmark"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Branch": {
+        "type": "object",
+        "required": [
+          "universityId",
+          "name",
+          "shortName",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "universityId": {
+            "type": "string",
+            "description": "Reference to University"
+          },
+          "name": {
+            "type": "string"
+          },
+          "shortName": {
+            "type": "string"
+          },
+          "branchCode": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "redirectSlugs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Old slugs that 301-redirect to the current slug"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Module": {
+        "type": "object",
+        "required": [
+          "syllabusId",
+          "moduleNumber",
+          "title",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "syllabusId": {
+            "type": "string",
+            "description": "Reference to Syllabus"
+          },
+          "moduleNumber": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "weightage": {
+            "type": "number",
+            "description": "Percentage weightage in the exam"
+          },
+          "coMapping": {
+            "type": "string",
+            "description": "Course outcome mapping (e.g. CO1, CO2)"
+          },
+          "slug": {
+            "type": "string",
+            "example": "lexical-analysis"
+          },
+          "redirectSlugs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Old slugs that 301-redirect to the current slug"
+          },
+          "order": {
+            "type": "integer",
+            "default": 0
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Paper": {
+        "type": "object",
+        "required": [
+          "subjectOfferingId",
+          "title",
+          "examYear",
+          "examType",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "subjectOfferingId": {
+            "type": "string",
+            "description": "Reference to SubjectOffering"
+          },
+          "title": {
+            "type": "string"
+          },
+          "examYear": {
+            "type": "integer"
+          },
+          "examType": {
+            "type": "string",
+            "enum": [
+              "regular",
+              "re-exam",
+              "supplementary",
+              "end-sem",
+              "internal"
+            ]
+          },
+          "session": {
+            "type": "string",
+            "example": "Nov-Dec"
+          },
+          "regulation": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "integer",
+            "description": "Duration in minutes"
+          },
+          "maxMarks": {
+            "type": "number"
+          },
+          "slug": {
+            "type": "string",
+            "example": "compiler-design-2021-regular"
+          },
+          "uploadedBy": {
+            "type": "string",
+            "description": "Reference to User"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "pending",
+              "approved",
+              "rejected"
+            ],
+            "default": "pending"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Question": {
+        "type": "object",
+        "required": [
+          "text",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "normalizedText": {
+            "type": "string",
+            "description": "Cleaned text used for deduplication and search"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "mcq",
+              "short",
+              "long",
+              "numerical",
+              "coding"
+            ]
+          },
+          "difficulty": {
+            "type": "string",
+            "enum": [
+              "easy",
+              "medium",
+              "hard"
+            ]
+          },
+          "bloomLevel": {
+            "type": "string",
+            "enum": [
+              "remember",
+              "understand",
+              "apply",
+              "analyze",
+              "evaluate",
+              "create"
+            ]
+          },
+          "marks": {
+            "type": "number"
+          },
+          "estimatedTime": {
+            "type": "integer",
+            "description": "Estimated solving time in minutes"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "References to Tag documents"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "equations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "LaTeX equation strings"
+          },
+          "codeSnippets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "slug": {
+            "type": "string",
+            "example": "explain-lexical-analyzer-compiler-design"
+          },
+          "language": {
+            "type": "string",
+            "default": "en"
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "Reference to User"
+          },
+          "isVerified": {
+            "type": "boolean",
+            "default": false
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "QuestionPaperMap": {
+        "type": "object",
+        "required": [
+          "paperId",
+          "questionId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "paperId": {
+            "type": "string",
+            "description": "Reference to Paper"
+          },
+          "questionId": {
+            "type": "string",
+            "description": "Reference to Question"
+          },
+          "section": {
+            "type": "string",
+            "example": "A"
+          },
+          "questionNumber": {
+            "type": "integer"
+          },
+          "marks": {
+            "type": "number",
+            "description": "Marks as it appears in this specific paper (may differ from question default)"
+          },
+          "order": {
+            "type": "integer",
+            "default": 0
+          },
+          "compulsory": {
+            "type": "boolean",
+            "default": false
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "QuestionSyllabusMap": {
+        "type": "object",
+        "required": [
+          "questionId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "questionId": {
+            "type": "string",
+            "description": "Reference to Question"
+          },
+          "moduleId": {
+            "type": "string",
+            "description": "Reference to Module"
+          },
+          "topicId": {
+            "type": "string",
+            "description": "Reference to Topic"
+          },
+          "confidenceScore": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "AI or manual confidence score for this mapping"
+          },
+          "mappedBy": {
+            "type": "string",
+            "enum": [
+              "manual",
+              "ai"
+            ],
+            "default": "manual"
+          },
+          "verified": {
+            "type": "boolean",
+            "default": false
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Semester": {
+        "type": "object",
+        "required": [
+          "branchId",
+          "number",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "branchId": {
+            "type": "string",
+            "description": "Reference to Branch"
+          },
+          "number": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 8
+          },
+          "slug": {
+            "type": "string",
+            "example": "semester-5"
+          },
+          "title": {
+            "type": "string",
+            "example": "Semester 5"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Solution": {
+        "type": "object",
+        "required": [
+          "questionId",
+          "authorId",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "questionId": {
+            "type": "string",
+            "description": "Reference to Question"
+          },
+          "authorId": {
+            "type": "string",
+            "description": "Reference to User"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "teacher",
+              "student",
+              "ai"
+            ]
+          },
+          "content": {
+            "type": "string",
+            "description": "Plain text solution"
+          },
+          "latexContent": {
+            "type": "string",
+            "description": "LaTeX-formatted solution"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "videoLinks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "upvotes": {
+            "type": "integer",
+            "default": 0
+          },
+          "downvotes": {
+            "type": "integer",
+            "default": 0
+          },
+          "isVerified": {
+            "type": "boolean",
+            "default": false
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "pending",
+              "approved",
+              "rejected"
+            ],
+            "default": "pending"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Subject": {
+        "type": "object",
+        "required": [
+          "name",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "shortName": {
+            "type": "string"
+          },
+          "subjectCode": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "credits": {
+            "type": "number"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "redirectSlugs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Old slugs that 301-redirect to the current slug"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SubjectOffering": {
+        "type": "object",
+        "required": [
+          "universityId",
+          "branchId",
+          "semesterId",
+          "subjectId",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "universityId": {
+            "type": "string",
+            "description": "Reference to University"
+          },
+          "branchId": {
+            "type": "string",
+            "description": "Reference to Branch"
+          },
+          "semesterId": {
+            "type": "string",
+            "description": "Reference to Semester"
+          },
+          "subjectId": {
+            "type": "string",
+            "description": "Reference to Subject"
+          },
+          "regulation": {
+            "type": "string",
+            "example": "2022"
+          },
+          "academicYear": {
+            "type": "string",
+            "example": "2023-24"
+          },
+          "slug": {
+            "type": "string",
+            "example": "beu-it-sem5-compiler-design-2022"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Syllabus": {
+        "type": "object",
+        "required": [
+          "subjectOfferingId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "subjectOfferingId": {
+            "type": "string",
+            "description": "Reference to SubjectOffering (one-to-one)"
+          },
+          "description": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Tag": {
+        "type": "object",
+        "required": [
+          "name",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "redirectSlugs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Old slugs that 301-redirect to the current slug"
+          },
+          "usageCount": {
+            "type": "integer",
+            "default": 0
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Topic": {
+        "type": "object",
+        "required": [
+          "moduleId",
+          "title",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "moduleId": {
+            "type": "string",
+            "description": "Reference to Module"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string",
+            "example": "lexical-analyzer"
+          },
+          "redirectSlugs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Old slugs that 301-redirect to the current slug"
+          },
+          "keywords": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "order": {
+            "type": "integer",
+            "default": 0
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "University": {
+        "type": "object",
+        "required": [
+          "name",
+          "shortName",
+          "slug"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "shortName": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string",
+            "default": "India"
+          },
+          "redirectSlugs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Old slugs that 301-redirect to the current slug"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Upload": {
+        "type": "object",
+        "required": [
+          "url",
+          "uploadedBy"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "publicId": {
+            "type": "string",
+            "description": "Provider-specific identifier (Cloudinary/S3 key)"
+          },
+          "mimeType": {
+            "type": "string",
+            "example": "application/pdf"
+          },
+          "size": {
+            "type": "integer",
+            "description": "File size in bytes"
+          },
+          "uploadedBy": {
+            "type": "string",
+            "description": "Reference to User"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "required": [
+          "clerkId",
+          "name",
+          "email"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The auto-generated id of the user"
+          },
+          "clerkId": {
+            "type": "string",
+            "description": "The unique ID from Clerk authentication"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the user"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The email of the user"
+          },
+          "universityId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Reference to University"
+          },
+          "branchId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Reference to Branch"
+          },
+          "semesterId": {
+            "type": "string",
+            "nullable": true,
+            "description": "Reference to Semester"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "normal",
+              "admin",
+              "editor"
+            ],
+            "default": "normal",
+            "description": "The role of the user"
+          },
+          "isActive": {
+            "type": "boolean",
+            "default": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/bookmarks": {
+      "get": {
+        "operationId": "listBookmarks",
+        "tags": [
+          "Bookmarks"
+        ],
+        "summary": "List my bookmarks",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "question",
+                "paper",
+                "solution"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of bookmarks"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/bookmarks/toggle": {
+      "post": {
+        "operationId": "toggleBookmark",
+        "tags": [
+          "Bookmarks"
+        ],
+        "summary": "Toggle bookmark (add/remove)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "targetId",
+                  "targetType"
+                ],
+                "properties": {
+                  "targetId": {
+                    "type": "string"
+                  },
+                  "targetType": {
+                    "type": "string",
+                    "enum": [
+                      "question",
+                      "paper",
+                      "solution"
+                    ]
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Toggled state"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/bookmarks/{id}": {
+      "delete": {
+        "operationId": "deleteBookmark",
+        "tags": [
+          "Bookmarks"
+        ],
+        "summary": "Delete a specific bookmark",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/universities/{universityId}/branches": {
+      "get": {
+        "operationId": "listBranches",
+        "tags": [
+          "Branches"
+        ],
+        "summary": "List branches for a university",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "universityId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated branches"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createBranch",
+        "tags": [
+          "Branches"
+        ],
+        "summary": "Create a branch (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "universityId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Branch payload (universityId is taken from the URL path)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "shortName",
+                  "slug"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "shortName": {
+                    "type": "string"
+                  },
+                  "branchCode": {
+                    "type": "string"
+                  },
+                  "slug": {
+                    "type": "string"
+                  },
+                  "redirectSlugs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "isActive": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/universities/{universityId}/branches/{slug}": {
+      "get": {
+        "operationId": "getBranchBySlug",
+        "tags": [
+          "Branches"
+        ],
+        "summary": "Get a branch by slug under a university",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "universityId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Branch details"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/universities/{universityId}/branches/{id}/structure": {
+      "get": {
+        "operationId": "getBranchStructure",
+        "tags": [
+          "Branches"
+        ],
+        "summary": "Get full course structure (semesters and subjects) for a branch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "universityId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Course structure tree"
+          }
+        }
+      }
+    },
+    "/universities/{universityId}/branches/{id}": {
+      "patch": {
+        "operationId": "updateBranch",
+        "tags": [
+          "Branches"
+        ],
+        "summary": "Update a branch (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "universityId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "shortName": {
+                    "type": "string"
+                  },
+                  "branchCode": {
+                    "type": "string"
+                  },
+                  "slug": {
+                    "type": "string"
+                  },
+                  "redirectSlugs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "isActive": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteBranch",
+        "tags": [
+          "Branches"
+        ],
+        "summary": "Delete a branch (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "universityId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "getHealth",
+        "tags": [
+          "System"
+        ],
+        "summary": "Basic health check",
+        "description": "Returns the operational status of the API instance. Used by load balancers and uptime monitors.",
+        "responses": {
+          "200": {
+            "description": "API is operational",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Health check successful"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "example": "healthy"
+                        },
+                        "timestamp": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/health/detailed": {
+      "get": {
+        "operationId": "getHealthDetailed",
+        "tags": [
+          "System"
+        ],
+        "summary": "Detailed system health",
+        "description": "Provides deep insights into system health, including database connectivity, memory usage, and process uptime.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All systems operational",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "example": "healthy"
+                        },
+                        "database": {
+                          "type": "string",
+                          "example": "connected"
+                        },
+                        "memory": {
+                          "type": "object",
+                          "properties": {
+                            "rss": {
+                              "type": "string",
+                              "example": "120 MB"
+                            },
+                            "heapTotal": {
+                              "type": "string",
+                              "example": "80 MB"
+                            }
+                          }
+                        },
+                        "uptime": {
+                          "type": "number",
+                          "example": 3600
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "System degradation detected (e.g., database disconnected)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/papers/{paperId}/questions": {
+      "get": {
+        "operationId": "listQuestionsForPaper",
+        "tags": [
+          "PaperQuestions"
+        ],
+        "summary": "List questions linked to a paper (ordered)",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "paperId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated questions for the paper"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createQuestionForPaper",
+        "tags": [
+          "PaperQuestions"
+        ],
+        "summary": "Create a question and link it to this paper (Editor or Admin)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "paperId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Question"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Question created and linked"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/papers/{paperId}/questions/{questionId}/link": {
+      "post": {
+        "operationId": "linkQuestionToPaper",
+        "tags": [
+          "PaperQuestions"
+        ],
+        "summary": "Link an existing question to this paper (Editor or Admin)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "paperId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "questionId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Optional ordering/metadata for the paper–question mapping"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Linked"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/papers/{paperId}/questions/{questionId}/solutions": {
+      "get": {
+        "operationId": "listSolutionsForPaperQuestion",
+        "tags": [
+          "PaperQuestions"
+        ],
+        "summary": "List solutions for a question in the context of a paper",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "paperId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "questionId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated solutions"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createSolutionForPaperQuestion",
+        "tags": [
+          "PaperQuestions"
+        ],
+        "summary": "Post a new solution for this question (authenticated)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "paperId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "questionId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Solution body without questionId or authorId (derived server-side)"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Solution created"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/papers": {
+      "get": {
+        "operationId": "listPapers",
+        "tags": [
+          "Papers"
+        ],
+        "summary": "List papers (public sees approved only)",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "examYear",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "examType",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "subjectOfferingId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated list of papers"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createPaper",
+        "tags": [
+          "Papers"
+        ],
+        "summary": "Submit a new paper (Editor / Admin)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/papers/{slug}": {
+      "get": {
+        "operationId": "getPaperBySlug",
+        "tags": [
+          "Papers"
+        ],
+        "summary": "Get a paper by slug"
+      }
+    },
+    "/papers/{id}": {
+      "patch": {
+        "operationId": "updatePaper",
+        "tags": [
+          "Papers"
+        ],
+        "summary": "Update a paper (Editor / Admin)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "deletePaper",
+        "tags": [
+          "Papers"
+        ],
+        "summary": "Delete a paper (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/papers/{id}/status": {
+      "patch": {
+        "operationId": "updatePaperStatus",
+        "tags": [
+          "Papers"
+        ],
+        "summary": "Approve or reject a paper (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "draft",
+                      "pending",
+                      "approved",
+                      "rejected"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/questions": {
+      "get": {
+        "operationId": "searchQuestions",
+        "tags": [
+          "Questions"
+        ],
+        "summary": "Search and list questions (paginated)",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "difficulty",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "isVerified",
+            "schema": {
+              "type": "string",
+              "enum": [
+                true,
+                false
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated questions"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createQuestion",
+        "tags": [
+          "Questions"
+        ],
+        "summary": "Create a standalone question (Editor or Admin)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Question"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/questions/slug/{slug}": {
+      "get": {
+        "operationId": "getQuestionBySlug",
+        "tags": [
+          "Questions"
+        ],
+        "summary": "Get question by slug",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Question"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/questions/{id}": {
+      "get": {
+        "operationId": "getQuestionById",
+        "tags": [
+          "Questions"
+        ],
+        "summary": "Get question by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Question"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateQuestion",
+        "tags": [
+          "Questions"
+        ],
+        "summary": "Update a question (Editor or Admin)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Partial question fields"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteQuestion",
+        "tags": [
+          "Questions"
+        ],
+        "summary": "Delete a question (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "operationId": "unifiedSearch",
+        "tags": [
+          "Search"
+        ],
+        "summary": "Global unified search across catalog entities",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search text (empty returns no-result payload)"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Aggregated search results"
+          }
+        }
+      }
+    },
+    "/branches/{branchId}/semesters": {
+      "get": {
+        "operationId": "listSemesters",
+        "tags": [
+          "Semesters"
+        ],
+        "summary": "List semesters for a branch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "branchId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Semesters list"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createSemester",
+        "tags": [
+          "Semesters"
+        ],
+        "summary": "Create a semester (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "branchId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Payload without branchId (from URL path)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "number",
+                  "slug"
+                ],
+                "properties": {
+                  "number": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 8
+                  },
+                  "slug": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/branches/{branchId}/semesters/{number}": {
+      "get": {
+        "operationId": "getSemesterByNumber",
+        "tags": [
+          "Semesters"
+        ],
+        "summary": "Get semester by number within a branch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "branchId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "number",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Semester details"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/branches/{branchId}/semesters/{id}": {
+      "patch": {
+        "operationId": "updateSemester",
+        "tags": [
+          "Semesters"
+        ],
+        "summary": "Update a semester (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "branchId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "number": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 8
+                  },
+                  "slug": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteSemester",
+        "tags": [
+          "Semesters"
+        ],
+        "summary": "Delete a semester (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "branchId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/seo/sitemap-data": {
+      "get": {
+        "operationId": "getSitemapData",
+        "tags": [
+          "SEO"
+        ],
+        "summary": "Get all public URLs for sitemap generation",
+        "responses": {
+          "200": {
+            "description": "List of public URLs"
+          }
+        }
+      }
+    },
+    "/solutions/{id}": {
+      "get": {
+        "operationId": "getSolutionById",
+        "tags": [
+          "Solutions"
+        ],
+        "summary": "Get a solution by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Solution"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateSolution",
+        "tags": [
+          "Solutions"
+        ],
+        "summary": "Update solution content (author or permitted roles)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Partial solution body (questionId and authorId cannot change)"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteSolution",
+        "tags": [
+          "Solutions"
+        ],
+        "summary": "Delete a solution (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/solutions/{id}/status": {
+      "patch": {
+        "operationId": "updateSolutionStatus",
+        "tags": [
+          "Solutions"
+        ],
+        "summary": "Approve or reject a solution (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "draft",
+                      "pending",
+                      "approved",
+                      "rejected"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Status updated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/solutions/{id}/vote": {
+      "post": {
+        "operationId": "voteOnSolution",
+        "tags": [
+          "Solutions"
+        ],
+        "summary": "Upvote or downvote a solution",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "type"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "up",
+                      "down"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vote recorded"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/subject-offerings": {
+      "get": {
+        "operationId": "listSubjectOfferings",
+        "tags": [
+          "SubjectOfferings"
+        ],
+        "summary": "List subject offerings (filter by university, branch, and/or semester)",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "universityId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Use with branchId and semesterId for the preferred filter"
+          },
+          {
+            "in": "query",
+            "name": "branchId",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "semesterId",
+            "schema": {
+              "type": "string"
+            },
+            "description": "If alone, returns offerings for that semester"
+          },
+          {
+            "in": "query",
+            "name": "isActive",
+            "schema": {
+              "type": "string",
+              "enum": [
+                true,
+                "all"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated subject offerings"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createSubjectOffering",
+        "tags": [
+          "SubjectOfferings"
+        ],
+        "summary": "Create a subject offering (Editor or Admin)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubjectOffering"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/subject-offerings/id/{id}": {
+      "get": {
+        "operationId": "getSubjectOfferingById",
+        "tags": [
+          "SubjectOfferings"
+        ],
+        "summary": "Get a subject offering by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subject offering"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/subject-offerings/{slug}": {
+      "get": {
+        "operationId": "getSubjectOfferingBySlug",
+        "tags": [
+          "SubjectOfferings"
+        ],
+        "summary": "Get a subject offering by slug",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Subject offering"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/subject-offerings/{id}": {
+      "patch": {
+        "operationId": "updateSubjectOffering",
+        "tags": [
+          "SubjectOfferings"
+        ],
+        "summary": "Update a subject offering (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "description": "Partial update (slug and foreign keys are not changed here)"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteSubjectOffering",
+        "tags": [
+          "SubjectOfferings"
+        ],
+        "summary": "Delete a subject offering (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/subjects": {
+      "get": {
+        "operationId": "listSubjects",
+        "tags": [
+          "Subjects"
+        ],
+        "summary": "List all subjects",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of subjects"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createSubject",
+        "tags": [
+          "Subjects"
+        ],
+        "summary": "Create a subject (Editor / Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/subjects/{slug}": {
+      "get": {
+        "operationId": "getSubjectBySlug",
+        "tags": [
+          "Subjects"
+        ],
+        "summary": "Get a subject by slug"
+      }
+    },
+    "/subjects/{id}": {
+      "patch": {
+        "operationId": "updateSubject",
+        "tags": [
+          "Subjects"
+        ],
+        "summary": "Update a subject (Editor / Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "deleteSubject",
+        "tags": [
+          "Subjects"
+        ],
+        "summary": "Delete a subject (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/subject-offerings/{subjectOfferingId}/syllabus": {
+      "get": {
+        "operationId": "getSyllabusBySubjectOffering",
+        "tags": [
+          "Syllabus"
+        ],
+        "summary": "Get syllabus with modules and topics",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "subjectOfferingId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Syllabus hierarchy"
+          }
+        }
+      }
+    },
+    "/modules/{id}/questions": {
+      "get": {
+        "operationId": "getModuleQuestions",
+        "tags": [
+          "Syllabus"
+        ],
+        "summary": "Get questions for a module",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of questions"
+          }
+        }
+      }
+    },
+    "/topics/{id}/questions": {
+      "get": {
+        "operationId": "getTopicQuestions",
+        "tags": [
+          "Syllabus"
+        ],
+        "summary": "Get questions for a topic",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of questions"
+          }
+        }
+      }
+    },
+    "/universities": {
+      "get": {
+        "operationId": "listUniversities",
+        "tags": [
+          "Universities"
+        ],
+        "summary": "List all universities",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            }
+          },
+          {
+            "in": "query",
+            "name": "isActive",
+            "schema": {
+              "type": "string",
+              "enum": [
+                true,
+                "all"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of universities"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createUniversity",
+        "tags": [
+          "Universities"
+        ],
+        "summary": "Create a university (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/University"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "University created"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/universities/{slug}": {
+      "get": {
+        "operationId": "getUniversityBySlug",
+        "tags": [
+          "Universities"
+        ],
+        "summary": "Get a university by slug",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "slug",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "University details"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
+      }
+    },
+    "/universities/{id}": {
+      "patch": {
+        "operationId": "updateUniversity",
+        "tags": [
+          "Universities"
+        ],
+        "summary": "Update a university (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteUniversity",
+        "tags": [
+          "Universities"
+        ],
+        "summary": "Delete a university (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "operationId": "getCurrentUser",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get my profile and activity stats",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User record and bookmark/solution counts"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/webhooks/clerk": {
+      "post": {
+        "operationId": "postClerkWebhook",
+        "tags": [
+          "External Integrations"
+        ],
+        "summary": "Clerk Webhook Handler (Users & Sessions)",
+        "description": "Secure endpoint for Clerk.com to send user lifecycle events (created, updated, deleted)\nand session events (created). This endpoint also enforces a \"Single Session per User\" policy.\n\n**Verification**: This endpoint verifies the [Svix Webhook Signature](https://docs.clerk.com/main-concepts/webhooks)\nto ensure requests originate from Clerk.\n",
+        "security": [],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "svix-id",
+            "description": "Unique webhook event ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "svix-timestamp",
+            "description": "Unix timestamp of the event",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "svix-signature",
+            "description": "HMAC-SHA256 signature",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Clerk Webhook Event Object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object"
+                  },
+                  "object": {
+                    "type": "string",
+                    "example": "event"
+                  },
+                  "type": {
+                    "type": "string",
+                    "example": "user.created"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event acknowledged and processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "received": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    }
+  }
+}
