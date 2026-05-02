@@ -182,14 +182,25 @@ async function manageUsersInteractive() {
 async function showStats() {
   await withDb(async (spinner) => {
     spinner.start('Calculating stats...');
-    const [userCount, paperCount, questionCount, uniCount, subjectCount] =
-      await Promise.all([
-        User.countDocuments(),
-        Paper.countDocuments(),
-        Question.countDocuments(),
-        University.countDocuments(),
-        Subject.countDocuments(),
-      ]);
+    const [
+      userCount,
+      paperCount,
+      questionCount,
+      uniCount,
+      subjectCount,
+      syllabusCount,
+      moduleCount,
+      topicCount,
+    ] = await Promise.all([
+      User.countDocuments(),
+      Paper.countDocuments(),
+      Question.countDocuments(),
+      University.countDocuments(),
+      Subject.countDocuments(),
+      Syllabus.countDocuments(),
+      Module.countDocuments(),
+      Topic.countDocuments(),
+    ]);
     spinner.stop();
 
     const table = new Table({
@@ -201,6 +212,9 @@ async function showStats() {
       ['Users', userCount],
       ['Universities', uniCount],
       ['Subjects', subjectCount],
+      ['Syllabuses', syllabusCount],
+      ['Modules', moduleCount],
+      ['Topics', topicCount],
       ['Papers', paperCount],
       ['Questions', questionCount]
     );
@@ -455,8 +469,8 @@ async function showInsights() {
     } else if (report === 'top_bookmarked') {
       // --- Report 4: Papers sorted by how many times they are bookmarked ---
       const results = await Bookmark.aggregate([
-        { $match: { resourceType: 'Paper' } },
-        { $group: { _id: '$resourceId', bookmarks: { $sum: 1 } } },
+        { $match: { targetType: 'paper' } },
+        { $group: { _id: '$targetId', bookmarks: { $sum: 1 } } },
         { $sort: { bookmarks: -1 } },
         { $limit: 5 },
         {
