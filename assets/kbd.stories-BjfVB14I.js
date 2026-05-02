@@ -1,8 +1,0 @@
-import{n as e}from"./chunk-BEldbCjX.js";import{Lr as t,o as n,s as r}from"./iframe-BzLYIvcx.js";function i({className:e,...t}){return(0,o.jsx)(`kbd`,{"data-slot":`kbd`,className:n(`bg-muted text-muted-foreground in-data-[slot=tooltip-content]:bg-background/20 in-data-[slot=tooltip-content]:text-background dark:in-data-[slot=tooltip-content]:bg-background/10 pointer-events-none inline-flex h-5 w-fit min-w-5 items-center justify-center gap-1 rounded-sm px-1 font-sans text-xs font-medium select-none [&_svg:not([class*='size-'])]:size-3`,e),...t})}function a({className:e,...t}){return(0,o.jsx)(`kbd`,{"data-slot":`kbd-group`,className:n(`inline-flex items-center gap-1`,e),...t})}var o,s=e((()=>{o=t(),r(),i.__docgenInfo={description:``,methods:[],displayName:`Kbd`},a.__docgenInfo={description:``,methods:[],displayName:`KbdGroup`}})),c,l,u,d,f;e((()=>{c=t(),s(),l={title:`UI/Kbd`,component:i,tags:[`autodocs`]},u={render:()=>(0,c.jsx)(i,{children:`⌘`})},d={render:()=>(0,c.jsxs)(a,{children:[(0,c.jsx)(i,{children:`⌘`}),(0,c.jsx)(i,{children:`K`})]})},u.parameters={...u.parameters,docs:{...u.parameters?.docs,source:{originalSource:`{
-  render: () => <Kbd>⌘</Kbd>
-}`,...u.parameters?.docs?.source}}},d.parameters={...d.parameters,docs:{...d.parameters?.docs,source:{originalSource:`{
-  render: () => <KbdGroup>
-      <Kbd>⌘</Kbd>
-      <Kbd>K</Kbd>
-    </KbdGroup>
-}`,...d.parameters?.docs?.source}}},f=[`Default`,`Combination`]}))();export{d as Combination,u as Default,f as __namedExportsOrder,l as default};
