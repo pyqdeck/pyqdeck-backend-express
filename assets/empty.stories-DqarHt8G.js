@@ -1,0 +1,16 @@
+import{n as e}from"./chunk-BEldbCjX.js";import{Lr as t,o as n,s as r}from"./iframe-BzLYIvcx.js";import{h as i,t as a}from"./lucide-react-Di0yrQBx.js";import{n as o,t as s}from"./dist-Xvo9kkiU.js";import{r as c,t as l}from"./button-B8CLU6L2.js";function u({className:e,...t}){return(0,g.jsx)(`div`,{"data-slot":`empty`,className:n(`flex w-full min-w-0 flex-1 flex-col items-center justify-center gap-4 rounded-xl border-dashed p-6 text-center text-balance`,e),...t})}function d({className:e,...t}){return(0,g.jsx)(`div`,{"data-slot":`empty-header`,className:n(`flex max-w-sm flex-col items-center gap-2`,e),...t})}function f({className:e,variant:t=`default`,...r}){return(0,g.jsx)(`div`,{"data-slot":`empty-icon`,"data-variant":t,className:n(_({variant:t,className:e})),...r})}function p({className:e,...t}){return(0,g.jsx)(`div`,{"data-slot":`empty-title`,className:n(`font-heading text-sm font-medium tracking-tight`,e),...t})}function m({className:e,...t}){return(0,g.jsx)(`div`,{"data-slot":`empty-description`,className:n(`text-muted-foreground [&>a:hover]:text-primary text-sm/relaxed [&>a]:underline [&>a]:underline-offset-4`,e),...t})}function h({className:e,...t}){return(0,g.jsx)(`div`,{"data-slot":`empty-content`,className:n(`flex w-full max-w-sm min-w-0 flex-col items-center gap-2.5 text-sm text-balance`,e),...t})}var g,_,v=e((()=>{g=t(),o(),r(),_=s(`mb-2 flex shrink-0 items-center justify-center [&_svg]:pointer-events-none [&_svg]:shrink-0`,{variants:{variant:{default:`bg-transparent`,icon:`flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted text-foreground [&_svg:not([class*='size-'])]:size-4`}},defaultVariants:{variant:`default`}}),u.__docgenInfo={description:``,methods:[],displayName:`Empty`},d.__docgenInfo={description:``,methods:[],displayName:`EmptyHeader`},p.__docgenInfo={description:``,methods:[],displayName:`EmptyTitle`},m.__docgenInfo={description:``,methods:[],displayName:`EmptyDescription`},h.__docgenInfo={description:``,methods:[],displayName:`EmptyContent`},f.__docgenInfo={description:``,methods:[],displayName:`EmptyMedia`,props:{variant:{defaultValue:{value:`'default'`,computed:!1},required:!1}}}})),y,b,x,S;e((()=>{y=t(),v(),a(),c(),b={title:`UI/Empty`,component:u,tags:[`autodocs`]},x={render:()=>(0,y.jsxs)(u,{children:[(0,y.jsxs)(d,{children:[(0,y.jsx)(f,{variant:`icon`,children:(0,y.jsx)(i,{})}),(0,y.jsx)(p,{children:`No projects found`}),(0,y.jsx)(m,{children:`Get started by creating a new project.`})]}),(0,y.jsx)(h,{children:(0,y.jsx)(l,{children:`Create project`})})]})},x.parameters={...x.parameters,docs:{...x.parameters?.docs,source:{originalSource:`{
+  render: () => <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <PackageOpen />
+        </EmptyMedia>
+        <EmptyTitle>No projects found</EmptyTitle>
+        <EmptyDescription>
+          Get started by creating a new project.
+        </EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
+        <Button>Create project</Button>
+      </EmptyContent>
+    </Empty>
+}`,...x.parameters?.docs?.source}}},S=[`Default`]}))();export{x as Default,S as __namedExportsOrder,b as default};
