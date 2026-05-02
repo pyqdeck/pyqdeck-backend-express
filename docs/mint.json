@@ -1,0 +1,65 @@
+{
+  "name": "PyqDeck Docs",
+  "logo": {
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
+  },
+  "favicon": "/favicon.png",
+  "colors": {
+    "primary": "#3B82F6",
+    "light": "#60A5FA",
+    "dark": "#1D4ED8"
+  },
+  "topbarLinks": [
+    {
+      "name": "Support",
+      "url": "mailto:admin@pyqdeck.in"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Go to App",
+    "url": "https://pyqdeck.in"
+  },
+  "anchors": [
+    {
+      "name": "API Reference",
+      "icon": "rectangle-terminal",
+      "url": "api-reference"
+    },
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/pyqdeck/pyqdeck-backend-express"
+    },
+    {
+      "name": "Storybook",
+      "icon": "book-open",
+      "url": "https://storybook.pyqdeck.in"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Getting Started",
+      "pages": [
+        "introduction",
+        "development"
+      ]
+    },
+    {
+      "group": "Architecture",
+      "pages": [
+        "architecture/monorepo",
+        "architecture/auth-flow"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        "api-reference/overview"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "github": "https://github.com/pyqdeck/pyqdeck-backend-express"
+  }
+}

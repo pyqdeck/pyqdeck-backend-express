@@ -62,30 +62,21 @@ export function HeroContent() {
         className="text-muted-foreground mx-auto mb-8 max-w-xl text-lg leading-relaxed sm:text-xl lg:mx-0"
       >
         Access thousands of previous year question papers and solutions,
-        organized by university, branch, semester, and subject — all in
-        one place.
+        organized by university, branch, semester, and subject — all in one
+        place.
       </motion.p>
 
       {/* Social proof row */}
-      <motion.div
-        variants={fadeUp}
-        className="mb-8 flex items-center gap-3"
-      >
+      <motion.div variants={fadeUp} className="mb-8 flex items-center gap-3">
         <AvatarGroup>
           <Avatar>
-            <AvatarImage
-              src="https://github.com/shadcn.png"
-              alt="Student"
-            />
+            <AvatarImage src="https://github.com/shadcn.png" alt="Student" />
             <AvatarFallback className="bg-primary text-primary-foreground">
               A
             </AvatarFallback>
           </Avatar>
           <Avatar>
-            <AvatarImage
-              src="https://github.com/maxleiter.png"
-              alt="Student"
-            />
+            <AvatarImage src="https://github.com/maxleiter.png" alt="Student" />
             <AvatarFallback className="bg-info text-info-foreground">
               R
             </AvatarFallback>
@@ -106,10 +97,7 @@ export function HeroContent() {
         <div className="flex items-center gap-1.5">
           <div className="flex">
             {[...Array(5)].map((_, i) => (
-              <Star
-                key={i}
-                className="fill-warning text-warning size-3.5"
-              />
+              <Star key={i} className="fill-warning text-warning size-3.5" />
             ))}
           </div>
           <span className="text-muted-foreground text-sm">
@@ -157,19 +145,17 @@ export function HeroContent() {
         variants={fadeUp}
         className="mt-6 flex flex-wrap items-center justify-center gap-4 lg:justify-start"
       >
-        {[
-          'No credit card required',
-          'Always free',
-          'Verified papers',
-        ].map((text) => (
-          <span
-            key={text}
-            className="text-muted-foreground flex items-center gap-1.5 text-xs"
-          >
-            <CheckCircle2 className="text-success size-3.5" />
-            {text}
-          </span>
-        ))}
+        {['No credit card required', 'Always free', 'Verified papers'].map(
+          (text) => (
+            <span
+              key={text}
+              className="text-muted-foreground flex items-center gap-1.5 text-xs"
+            >
+              <CheckCircle2 className="text-success size-3.5" />
+              {text}
+            </span>
+          )
+        )}
       </motion.div>
     </motion.div>
   );

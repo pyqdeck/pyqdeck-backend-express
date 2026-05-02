@@ -1,0 +1,190 @@
+---
+title: API Reference Overview
+description: 'Explore PyqDeck REST API endpoints'
+---
+
+## Base URL
+
+```
+https://backend.pyqdeck.in/api/v1
+```
+
+For local development:
+
+```
+http://localhost:3000/api/v1
+```
+
+## Authentication
+
+Most endpoints require authentication via **Clerk JWT tokens**:
+
+```http
+GET /api/v1/users/me
+Authorization: Bearer <clerk_jwt_token>
+```
+
+The token is automatically injected by the `useApi()` hook in the frontend.
+
+## API Contract
+
+All endpoints are defined in our **OpenAPI 3.0** specification. The spec lives at `backend/openapi.json` and is automatically synced to the frontend SDK.
+
+## Endpoint Groups
+
+### Health
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/health` | Simple health check |
+| `GET` | `/health/detailed` | Detailed health with DB status |
+
+### Universities & Academics
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/universities` | List all universities |
+| `GET` | `/universities/:id/branches` | Get branches for a university |
+| `GET` | `/branches/:id/semesters` | Get semesters for a branch |
+| `GET` | `/subjects` | List subjects |
+| `GET` | `/subject-offerings` | List subject offerings |
+
+### Content
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/papers` | List exam papers |
+| `GET` | `/papers/:id/questions` | Get questions for a paper |
+| `GET` | `/questions` | List questions |
+| `GET` | `/solutions` | List solutions |
+| `GET` | `/search` | Full-text search |
+
+### User Features
+
+| Method | Path | Description | Auth Required |
+|---|---|---|---|
+| `GET` | `/bookmarks` | Get user bookmarks | Yes |
+| `POST` | `/bookmarks` | Create bookmark | Yes |
+| `DELETE` | `/bookmarks/:id` | Delete bookmark | Yes |
+| `GET` | `/users/me` | Get current user | Yes |
+
+### Syllabus
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/syllabus/modules` | List modules |
+| `GET` | `/syllabus/topics` | List topics |
+
+### Uploads
+
+| Method | Path | Description |
+|---|---|---|
+| `POST` | `/uploadthing` | Upload files (via UploadThing) |
+
+### SEO
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/seo/sitemap-data` | Get sitemap data |
+
+### Webhooks
+
+| Method | Path | Description |
+|---|---|---|
+| `POST` | `/webhooks/clerk` | Clerk webhook endpoint |
+
+## Interactive Playground
+
+The full interactive API playground is available via our OpenAPI integration. Each endpoint includes:
+- Request/response schemas
+- Example requests
+- Try-it-out functionality
+
+## Error Handling
+
+All errors follow a consistent format:
+
+```json
+{
+  "success": false,
+  "error": {
+    "message": "Resource not found",
+    "code": "NOT_FOUND"
+  }
+}
+```
+
+### Common Error Codes
+
+| Code | HTTP Status | Description |
+|---|---|---|
+| `VALIDATION_ERROR` | 400 | Request validation failed |
+| `UNAUTHORIZED` | 401 | Missing or invalid auth token |
+| `FORBIDDEN` | 403 | Insufficient permissions |
+| `NOT_FOUND` | 404 | Resource not found |
+| `INTERNAL_ERROR` | 500 | Internal server error |
+
+## Rate Limiting
+
+API endpoints are rate-limited:
+
+- **Window**: 15 minutes (`900000ms`)
+- **Max requests**: 100 per window
+
+Rate limit headers are included in responses:
+
+```http
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1620000000
+```
+
+## Pagination
+
+List endpoints support pagination:
+
+```http
+GET /api/v1/papers?page=1&limit=20
+```
+
+Response includes pagination metadata:
+
+```json
+{
+  "success": true,
+  "data": [...],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 150,
+    "totalPages": 8
+  }
+}
+```
+
+## SDK Usage
+
+In the frontend, use the generated SDK via `useApi()`:
+
+```javascript
+import { useApi } from '@/hooks/use-api';
+
+const api = useApi();
+
+// Get papers
+const { data: papers } = await api.papers.getPapers();
+
+// Get questions for a paper
+const { data: questions } = await api.papers.getPaperQuestions(paperId);
+
+// Create bookmark
+const { data: bookmark } = await api.bookmarks.createBookmark({ questionId });
+```
+
+The SDK provides full TypeScript types for all requests and responses.
+
+## Next Steps
+
+- Learn about [the SDK flow](/development/sdk-flow)
+- Review [testing standards](/development/testing)
+- Explore the [monorepo architecture](/architecture/monorepo)

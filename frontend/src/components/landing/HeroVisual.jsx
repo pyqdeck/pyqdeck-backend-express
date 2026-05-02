@@ -2,14 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  Bookmark,
-  Bot,
-  Copy,
-  Database,
-  Share2,
-  Check,
-} from 'lucide-react';
+import { Bookmark, Bot, Copy, Database, Share2, Check } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -124,8 +117,8 @@ export function HeroVisual() {
 
           {/* Question */}
           <h3 className="text-foreground mb-8 text-lg leading-snug font-bold tracking-tight sm:text-xl">
-            Define multiplexer and realize a three-input AND gate using a
-            4x1 multiplexer.
+            Define multiplexer and realize a three-input AND gate using a 4x1
+            multiplexer.
           </h3>
 
           {/* Action row */}
