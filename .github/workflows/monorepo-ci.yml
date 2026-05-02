@@ -13,12 +13,28 @@ concurrency:
 
 permissions:
   contents: read
-  pull-requests: read
+  pull-requests: write
+  security-events: write
 
 jobs:
+  # --- Stage 0: Security Audit ---
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - name: Backend Audit
+        run: cd backend && pnpm audit --prod
+      - name: Frontend Audit
+        run: cd frontend && pnpm audit --prod
+
   # --- Stage 1: Quality & Linting ---
   quality:
     name: Lint & Format
+    needs: security
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -54,6 +70,9 @@ jobs:
         run: |
           cd frontend
           pnpm run format:check
+
+      - name: Global Format Check
+        run: pnpm dlx prettier --check .
 
   # --- Stage 2: Backend Tests & Contract Check ---
   backend-test:
