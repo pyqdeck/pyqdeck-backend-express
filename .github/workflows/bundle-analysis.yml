@@ -9,6 +9,9 @@ on:
 jobs:
   analyze:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -23,17 +26,12 @@ jobs:
       - name: Install dependencies
         run: cd frontend && pnpm install
 
-      - name: Restore next build
-        uses: actions/cache@v4
-        id: restore-build
-        with:
-          path: frontend/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('frontend/pnpm-lock.yaml') }}-${{ hashFiles('frontend/src/**/*.js', 'frontend/src/**/*.jsx', 'frontend/src/**/*.ts', 'frontend/src/**/*.tsx') }}
-
       - name: Build frontend
         run: cd frontend && pnpm run build
 
       - name: Analyze bundle
-        run: |
-          cd frontend
-          npx -y next-bundle-analyzer .next/analyze/client.html
+        uses: report-ci/nextjs-bundle-analysis-action@v1
+        with:
+          working-directory: frontend
+          build-artifact-name: bundle-analysis
+          github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -30,10 +30,18 @@ jobs:
           NEXT_PUBLIC_API_URL: http://localhost:3000/api/v1
 
       - name: Run Lighthouse CI
-        run: |
-          cd frontend
-          pnpm dlx @lhci/cli@0.13.x collect
-          pnpm dlx @lhci/cli@0.13.x assert
-          pnpm dlx @lhci/cli@0.13.x upload
+        uses: treosh/lighthouse-ci-action@v12
+        with:
+          uploadTargets: temporary-public-storage
+          temporaryPublicStorage: true
+          configPath: ./frontend/lighthouserc.json
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      - name: Format Lighthouse Score
+        id: format_score
+        run: |
+          # This is a simplified example of how we could parse the results
+          # In a real scenario, the treosh action above already provides a status check.
+          # For a custom comment, we can use the output from the action.
+          echo "Lighthouse audit completed!"
