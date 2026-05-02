@@ -9,7 +9,6 @@
  */
 
 import { ClerkProvider } from '@/components/clerk-provider';
-import { Header } from '@/components/header';
 import { ThemeProvider } from '@/components/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Geist, Geist_Mono } from 'next/font/google';
@@ -30,6 +29,8 @@ export const metadata = {
   description: 'Next-generation learning platform',
 };
 
+import { MainLayoutWrapper } from '@/components/main-layout-wrapper';
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
@@ -44,8 +45,7 @@ export default function RootLayout({ children }) {
         >
           <ClerkProvider>
             <TooltipProvider>
-              <Header />
-              <main className="flex-1 pt-16">{children}</main>
+              <MainLayoutWrapper>{children}</MainLayoutWrapper>
             </TooltipProvider>
           </ClerkProvider>
         </ThemeProvider>
