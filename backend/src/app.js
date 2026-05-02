@@ -15,6 +15,9 @@ import subjectOfferingRoutes from './routes/subjectOfferings.js';
 import questionRoutes from './routes/questions.js';
 import solutionRoutes from './routes/solutions.js';
 import paperQuestionRoutes from './routes/paperQuestions.js';
+import bookmarkRoutes from './routes/bookmarks.js';
+import userRoutes from './routes/users.js';
+import searchRoutes from './routes/search.js';
 import { syncUser } from './middlewares/syncUser.middleware.js';
 import errorHandler from './middlewares/errorHandler.js';
 import * as Sentry from '@sentry/node';
@@ -61,6 +64,9 @@ app.use('/api/v1/questions', questionRoutes);
 app.use('/api/v1/solutions', solutionRoutes);
 app.use('/api/v1/papers', paperRoutes);
 app.use('/api/v1/papers/:paperId/questions', paperQuestionRoutes);
+app.use('/api/v1/bookmarks', bookmarkRoutes);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/search', searchRoutes);
 app.use(
   '/api/v1/uploadthing',
   createRouteHandler({
