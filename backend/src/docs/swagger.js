@@ -21,23 +21,24 @@ Most endpoints require a valid Clerk JWT token. Include it in the header:
 \`Authorization: Bearer <your_clerk_token>\`
 
 ### 📊 Rate Limiting
-- **Standard API**: 100 requests per 15 minutes.
+- **Standard API**: ${config.rateLimit.max} requests per ${
+        config.rateLimit.windowMs / 60000
+      } minutes.
 - **Webhooks**: 50 requests per 15 minutes.
 `,
       contact: {
         name: 'PYQDeck Support',
-        url: 'https://pyqdeck.in/support',
-        email: 'support@pyqdeck.in',
+        url: `${config.appUrl}/support`,
+        email: config.mail.from,
       },
     },
     servers: [
       {
-        url: `http://localhost:${config.port || 3000}/api/v1`,
-        description: 'Development server',
-      },
-      {
-        url: 'https://backend.pyqdeck.in/api/v1',
-        description: 'Production server',
+        url: config.apiUrl,
+        description:
+          config.nodeEnv === 'production'
+            ? 'Production server'
+            : 'Development server',
       },
     ],
     tags: [
@@ -69,44 +70,6 @@ Most endpoints require a valid Clerk JWT token. Include it in the header:
       { name: 'Users', description: 'Current user profile' },
       { name: 'Search', description: 'Global search' },
     ],
-    paths: {
-      '/health': {
-        get: {
-          operationId: 'getHealth',
-          tags: ['System'],
-          summary: 'Basic health check',
-          description: 'Returns the operational status of the API instance.',
-          responses: {
-            200: {
-              description: 'API is operational',
-              content: {
-                'application/json': {
-                  schema: { $ref: '#/components/schemas/SuccessResponse' },
-                },
-              },
-            },
-          },
-        },
-      },
-      '/health/detailed': {
-        get: {
-          operationId: 'getHealthDetailed',
-          tags: ['System'],
-          summary: 'Detailed system health',
-          security: [{ bearerAuth: [] }],
-          responses: {
-            200: {
-              description: 'All systems operational',
-              content: {
-                'application/json': {
-                  schema: { $ref: '#/components/schemas/SuccessResponse' },
-                },
-              },
-            },
-          },
-        },
-      },
-    },
     components: {
       securitySchemes: {
         bearerAuth: {
@@ -205,10 +168,5 @@ Most endpoints require a valid Clerk JWT token. Include it in the header:
 };
 
 const spec = swaggerJsdoc(options);
-
-// Manually merge custom paths to prevent them from being overwritten by the scanner
-if (options.definition.paths) {
-  spec.paths = { ...spec.paths, ...options.definition.paths };
-}
 
 export const swaggerSpec = spec;

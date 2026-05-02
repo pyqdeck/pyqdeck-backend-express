@@ -15,25 +15,33 @@ import { z } from 'zod';
  *       properties:
  *         id:
  *           type: string
+ *           example: 65a12345b67890cdef111111
  *         universityId:
  *           type: string
  *           description: Reference to University
+ *           example: 60d0fe4f5311236168a109ca
  *         name:
  *           type: string
+ *           example: Computer Engineering
  *         shortName:
  *           type: string
+ *           example: COMP
  *         branchCode:
  *           type: string
+ *           example: "07"
  *         slug:
  *           type: string
+ *           example: computer-engineering
  *         redirectSlugs:
  *           type: array
  *           items:
  *             type: string
  *           description: Old slugs that 301-redirect to the current slug
+ *           example: ["cse", "it"]
  *         isActive:
  *           type: boolean
  *           default: true
+ *           example: true
  *         createdAt:
  *           type: string
  *           format: date-time

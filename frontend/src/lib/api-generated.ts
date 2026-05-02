@@ -55,16 +55,30 @@ export interface Bookmark {
 }
 
 export interface Branch {
+  /** @example "65a12345b67890cdef111111" */
   id?: string;
-  /** Reference to University */
+  /**
+   * Reference to University
+   * @example "60d0fe4f5311236168a109ca"
+   */
   universityId: string;
+  /** @example "Computer Engineering" */
   name: string;
+  /** @example "COMP" */
   shortName: string;
+  /** @example "07" */
   branchCode?: string;
+  /** @example "computer-engineering" */
   slug: string;
-  /** Old slugs that 301-redirect to the current slug */
+  /**
+   * Old slugs that 301-redirect to the current slug
+   * @example ["cse","it"]
+   */
   redirectSlugs?: string[];
-  /** @default true */
+  /**
+   * @default true
+   * @example true
+   */
   isActive?: boolean;
   /** @format date-time */
   createdAt?: string;
@@ -122,12 +136,20 @@ export interface Paper {
 }
 
 export interface Question {
+  /** @example "65a12345b67890cdef123456" */
   id?: string;
+  /** @example "Explain the architecture of a compiler in detail." */
   text: string;
-  /** Cleaned text used for deduplication and search */
+  /**
+   * Cleaned text used for deduplication and search
+   * @example "explain the architecture of a compiler in detail"
+   */
   normalizedText?: string;
+  /** @example "long" */
   type: 'mcq' | 'short' | 'long' | 'numerical' | 'coding';
+  /** @example "medium" */
   difficulty?: 'easy' | 'medium' | 'hard';
+  /** @example "understand" */
   bloomLevel?:
     | 'remember'
     | 'understand'
@@ -135,22 +157,43 @@ export interface Question {
     | 'analyze'
     | 'evaluate'
     | 'create';
+  /** @example 10 */
   marks?: number;
-  /** Estimated solving time in minutes */
+  /**
+   * Estimated solving time in minutes
+   * @example 15
+   */
   estimatedTime?: number;
-  /** References to Tag documents */
+  /**
+   * References to Tag documents
+   * @example ["compiler-design","architecture"]
+   */
   tags?: string[];
+  /** @example ["https://example.com/compiler-diagram.png"] */
   images?: string[];
-  /** LaTeX equation strings */
+  /**
+   * LaTeX equation strings
+   * @example ["E = mc^2"]
+   */
   equations?: string[];
+  /** @example ["void main() { printf(\"Hello\"); }"] */
   codeSnippets?: string[];
-  /** @example "explain-lexical-analyzer-compiler-design" */
+  /** @example "explain-compiler-architecture" */
   slug?: string;
-  /** @default "en" */
+  /**
+   * @default "en"
+   * @example "en"
+   */
   language?: string;
-  /** Reference to User */
+  /**
+   * Reference to User
+   * @example "65b98765a43210fedcba9876"
+   */
   createdBy?: string;
-  /** @default false */
+  /**
+   * @default false
+   * @example true
+   */
   isVerified?: boolean;
   /** @format date-time */
   createdAt?: string;
@@ -339,16 +382,30 @@ export interface Topic {
 }
 
 export interface University {
+  /** @example "60d0fe4f5311236168a109ca" */
   id?: string;
+  /** @example "University of Mumbai" */
   name: string;
+  /** @example "MU" */
   shortName: string;
+  /** @example "university-of-mumbai" */
   slug: string;
+  /** @example "Maharashtra" */
   state?: string;
-  /** @default "India" */
+  /**
+   * @default "India"
+   * @example "India"
+   */
   country?: string;
-  /** Old slugs that 301-redirect to the current slug */
+  /**
+   * Old slugs that 301-redirect to the current slug
+   * @example ["bom-uni","mumbai-university"]
+   */
   redirectSlugs?: string[];
-  /** @default true */
+  /**
+   * @default true
+   * @example true
+   */
   isActive?: boolean;
   /** @format date-time */
   createdAt?: string;
@@ -588,7 +645,7 @@ export class HttpClient<SecurityDataType = unknown> {
  * @title PYQDeck API Explorer
  * @version 1.0.0
  * @baseUrl http://localhost:3000/api/v1
- * @contact PYQDeck Support <support@pyqdeck.in> (https://pyqdeck.in/support)
+ * @contact PYQDeck Support <onboarding@resend.dev> (http://localhost:3000/support)
  *
  *
  * Welcome to the official **PYQDeck API Documentation**.
@@ -606,43 +663,6 @@ export class HttpClient<SecurityDataType = unknown> {
 export class Api<
   SecurityDataType extends unknown,
 > extends HttpClient<SecurityDataType> {
-  health = {
-    /**
-     * @description Returns the operational status of the API instance.
-     *
-     * @tags System
-     * @name GetHealth
-     * @summary Basic health check
-     * @request GET:/health
-     * @response `200` `SuccessResponse` API is operational
-     */
-    getHealth: (params: RequestParams = {}) =>
-      this.request<SuccessResponse, any>({
-        path: `/health`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags System
-     * @name GetHealthDetailed
-     * @summary Detailed system health
-     * @request GET:/health/detailed
-     * @secure
-     * @response `200` `SuccessResponse` All systems operational
-     */
-    getHealthDetailed: (params: RequestParams = {}) =>
-      this.request<SuccessResponse, any>({
-        path: `/health/detailed`,
-        method: 'GET',
-        secure: true,
-        format: 'json',
-        ...params,
-      }),
-  };
   bookmarks = {
     /**
  * No description
@@ -1105,6 +1125,100 @@ export class Api<
         path: `/universities/${id}`,
         method: 'DELETE',
         secure: true,
+        ...params,
+      }),
+  };
+  health = {
+    /**
+ * @description Returns the operational status of the API instance. Used by load balancers and uptime monitors.
+ *
+ * @tags System
+ * @name GetHealth
+ * @summary Basic health check
+ * @request GET:/health
+ * @response `200` `(SuccessResponse & {
+    data?: {
+  /** @example "healthy" *\/
+    status?: string,
+  /** @format date-time *\/
+    timestamp?: string,
+
+},
+
+})` API is operational
+ * @response `503` `Error`
+ */
+    getHealth: (params: RequestParams = {}) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            /** @example "healthy" */
+            status?: string;
+            /** @format date-time */
+            timestamp?: string;
+          };
+        },
+        Error
+      >({
+        path: `/health`,
+        method: 'GET',
+        format: 'json',
+        ...params,
+      }),
+
+    /**
+ * @description Provides deep insights into system health, including database connectivity, memory usage, and process uptime.
+ *
+ * @tags System
+ * @name GetHealthDetailed
+ * @summary Detailed system health
+ * @request GET:/health/detailed
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: {
+  /** @example "healthy" *\/
+    status?: string,
+  /** @example "connected" *\/
+    database?: string,
+    memory?: {
+  /** @example "120 MB" *\/
+    rss?: string,
+  /** @example "80 MB" *\/
+    heapTotal?: string,
+
+},
+  /** @example 3600 *\/
+    uptime?: number,
+
+},
+
+})` All systems operational
+ * @response `503` `Error` System degradation detected (e.g., database disconnected)
+ */
+    getHealthDetailed: (params: RequestParams = {}) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            /** @example "healthy" */
+            status?: string;
+            /** @example "connected" */
+            database?: string;
+            memory?: {
+              /** @example "120 MB" */
+              rss?: string;
+              /** @example "80 MB" */
+              heapTotal?: string;
+            };
+            /** @example 3600 */
+            uptime?: number;
+          };
+        },
+        Error
+      >({
+        path: `/health/detailed`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
         ...params,
       }),
   };

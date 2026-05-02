@@ -18,6 +18,8 @@ const config = {
     windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS || '900000', 10),
     max: parseInt(process.env.RATE_LIMIT_MAX || '100', 10),
   },
+  appUrl: process.env.APP_URL || 'http://localhost:3000',
+  apiUrl: process.env.API_URL || `http://localhost:${process.env.PORT || 3000}/api/v1`,
   uploadthingToken: process.env.UPLOADTHING_TOKEN,
 };
 

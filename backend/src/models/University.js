@@ -14,25 +14,33 @@ import { z } from 'zod';
  *       properties:
  *         id:
  *           type: string
+ *           example: 60d0fe4f5311236168a109ca
  *         name:
  *           type: string
+ *           example: University of Mumbai
  *         shortName:
  *           type: string
+ *           example: MU
  *         slug:
  *           type: string
+ *           example: university-of-mumbai
  *         state:
  *           type: string
+ *           example: Maharashtra
  *         country:
  *           type: string
  *           default: India
+ *           example: India
  *         redirectSlugs:
  *           type: array
  *           items:
  *             type: string
  *           description: Old slugs that 301-redirect to the current slug
+ *           example: ["bom-uni", "mumbai-university"]
  *         isActive:
  *           type: boolean
  *           default: true
+ *           example: true
  *         createdAt:
  *           type: string
  *           format: date-time

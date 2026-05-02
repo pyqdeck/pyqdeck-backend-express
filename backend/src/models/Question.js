@@ -13,55 +13,70 @@ import { z } from 'zod';
  *       properties:
  *         id:
  *           type: string
+ *           example: 65a12345b67890cdef123456
  *         text:
  *           type: string
+ *           example: "Explain the architecture of a compiler in detail."
  *         normalizedText:
  *           type: string
  *           description: Cleaned text used for deduplication and search
+ *           example: "explain the architecture of a compiler in detail"
  *         type:
  *           type: string
  *           enum: [mcq, short, long, numerical, coding]
+ *           example: long
  *         difficulty:
  *           type: string
  *           enum: [easy, medium, hard]
+ *           example: medium
  *         bloomLevel:
  *           type: string
  *           enum: [remember, understand, apply, analyze, evaluate, create]
+ *           example: understand
  *         marks:
  *           type: number
+ *           example: 10
  *         estimatedTime:
  *           type: integer
  *           description: Estimated solving time in minutes
+ *           example: 15
  *         tags:
  *           type: array
  *           items:
  *             type: string
  *           description: References to Tag documents
+ *           example: ["compiler-design", "architecture"]
  *         images:
  *           type: array
  *           items:
  *             type: string
+ *           example: ["https://example.com/compiler-diagram.png"]
  *         equations:
  *           type: array
  *           items:
  *             type: string
  *           description: LaTeX equation strings
+ *           example: ["E = mc^2"]
  *         codeSnippets:
  *           type: array
  *           items:
  *             type: string
+ *           example: ["void main() { printf(\"Hello\"); }"]
  *         slug:
  *           type: string
- *           example: explain-lexical-analyzer-compiler-design
+ *           example: explain-compiler-architecture
  *         language:
  *           type: string
  *           default: en
+ *           example: en
  *         createdBy:
  *           type: string
  *           description: Reference to User
+ *           example: 65b98765a43210fedcba9876
  *         isVerified:
  *           type: boolean
  *           default: false
+ *           example: true
  *         createdAt:
  *           type: string
  *           format: date-time
