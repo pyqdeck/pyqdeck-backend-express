@@ -1,6 +1,4 @@
-import { Semester } from '../models/Semester.js';
-import { Branch } from '../models/Branch.js';
-import { University } from '../models/University.js';
+import { Semester, semesterZodSchema } from '../models/Semester.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 
 class SemesterRepository {
@@ -26,7 +24,7 @@ class SemesterRepository {
   }
 
   async findByBranchId(branchId) {
-    return Semester.find({ branchId })
+    return Semester.find({ branchId: String(branchId) })
       .populate({
         path: 'branchId',
         populate: { path: 'universityId', select: 'name shortName slug' },
@@ -36,7 +34,7 @@ class SemesterRepository {
 
   async findAll(query = {}, pagination = { skip: 0, limit: 10 }) {
     const filters = {};
-    if (query.branchId) filters.branchId = query.branchId;
+    if (query.branchId) filters.branchId = String(query.branchId);
 
     const items = await Semester.find(filters)
       .populate({
@@ -53,21 +51,36 @@ class SemesterRepository {
   }
 
   async findByBranchAndNumber(branchId, number) {
-    const semester = await Semester.findOne({ branchId, number });
+    const semester = await Semester.findOne({
+      branchId: String(branchId),
+      number: Number(number),
+    });
     if (!semester) throw new NotFoundError('Semester not found');
     return semester;
   }
 
   async findByBranchAndSlug(branchId, slug) {
-    const semester = await Semester.findOne({ branchId, slug });
+    const semester = await Semester.findOne({
+      branchId: String(branchId),
+      slug: String(slug),
+    });
     if (!semester) throw new NotFoundError('Semester not found');
     return semester;
   }
 
   async update(id, data) {
-    const semester = await Semester.findByIdAndUpdate(id, data, {
-      returnDocument: 'after',
-    });
+    // Sanitize data using the Zod schema to prevent NoSQL injection
+    // and ensure only allowed fields are updated.
+    const sanitizedData = semesterZodSchema.partial().parse(data);
+
+    const semester = await Semester.findByIdAndUpdate(
+      id,
+      { $set: sanitizedData },
+      {
+        returnDocument: 'after',
+        runValidators: true,
+      }
+    );
     if (!semester) throw new NotFoundError('Semester not found');
     return semester;
   }
