@@ -66,14 +66,14 @@ export function UniversitiesTableView({
 
   return (
     <Card className="border-border/50 overflow-hidden border-2 py-0 shadow-none">
-      <CardContent className="p-0">
-        <Table>
+      <CardContent className="overflow-x-auto p-0">
+        <Table className="min-w-[500px]">
           <TableHeader>
             <TableRow className="bg-muted/30 border-b-2 hover:bg-transparent">
               <TableHead className="text-foreground font-roboto h-12 px-6 font-bold">
                 Institution
               </TableHead>
-              <TableHead className="text-foreground font-roboto h-12 px-6 font-bold">
+              <TableHead className="text-foreground font-roboto hidden h-12 px-6 font-bold sm:table-cell">
                 Location
               </TableHead>
               <TableHead className="text-foreground font-roboto h-12 px-6 font-bold">
@@ -131,8 +131,8 @@ export function UniversitiesTableView({
                           {uni.name.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
-                      <div className="flex flex-col">
-                        <span className="text-foreground group-hover:text-primary font-roboto flex items-center gap-1.5 font-bold transition-colors">
+                      <div className="flex min-w-0 flex-col">
+                        <span className="text-foreground group-hover:text-primary font-roboto flex items-center gap-1.5 truncate font-bold transition-colors">
                           {uni.name}
                           {uni.websiteUrl && (
                             <Link
@@ -156,7 +156,7 @@ export function UniversitiesTableView({
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="px-6 py-4">
+                  <TableCell className="hidden px-6 py-4 sm:table-cell">
                     <div className="flex flex-col">
                       <span className="text-foreground font-roboto text-sm font-semibold">
                         {uni.state || 'N/A'}
@@ -260,7 +260,7 @@ export function UniversitiesTableView({
         </Table>
       </CardContent>
       {pagination && pagination.pages > 1 && (
-        <CardFooter className="border-t-2 pt-6">
+        <CardFooter className="flex-col items-start gap-4 border-t-2 pt-6 sm:flex-row sm:items-center">
           <Pagination className="mx-0 w-auto justify-start">
             <PaginationContent>
               <PaginationItem>
@@ -330,7 +330,7 @@ export function UniversitiesTableView({
               </PaginationItem>
             </PaginationContent>
           </Pagination>
-          <div className="text-muted-foreground font-roboto ml-auto text-sm">
+          <div className="text-muted-foreground font-roboto sm:ml-auto text-sm">
             Showing{' '}
             <span className="text-foreground font-bold">
               {(pagination.current - 1) * 10 + 1}

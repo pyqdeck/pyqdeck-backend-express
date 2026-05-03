@@ -97,20 +97,20 @@ export function BranchesTableView({
 
   return (
     <Card className="border-border/50 overflow-hidden border-2 p-0 shadow-none">
-      <CardContent className="p-0">
-        <Table>
+      <CardContent className="overflow-x-auto p-0">
+        <Table className="min-w-[560px]">
           <TableHeader>
             <TableRow className="bg-muted/30 border-b-2 hover:bg-transparent">
               <TableHead className="font-roboto text-foreground h-12 px-6 font-bold tracking-wider uppercase">
                 Branch
               </TableHead>
-              <TableHead className="font-roboto text-foreground h-12 px-6 font-bold tracking-wider uppercase">
+              <TableHead className="font-roboto text-foreground hidden h-12 px-6 font-bold tracking-wider uppercase sm:table-cell">
                 Short Name
               </TableHead>
               <TableHead className="font-roboto text-foreground h-12 px-6 font-bold tracking-wider uppercase">
                 Institution
               </TableHead>
-              <TableHead className="font-roboto text-foreground h-12 px-6 text-center font-bold tracking-wider uppercase">
+              <TableHead className="font-roboto text-foreground hidden h-12 px-6 text-center font-bold tracking-wider uppercase sm:table-cell">
                 Code
               </TableHead>
               <TableHead className="font-roboto text-foreground h-12 px-6 font-bold tracking-wider uppercase">
@@ -140,8 +140,8 @@ export function BranchesTableView({
                   className="group hover:bg-muted/30 border-b transition-colors"
                 >
                   <TableCell className="px-6 py-3">
-                    <div className="flex flex-col">
-                      <span className="font-roboto text-foreground group-hover:text-primary cursor-pointer font-bold transition-colors">
+                    <div className="flex min-w-0 flex-col">
+                      <span className="font-roboto text-foreground group-hover:text-primary cursor-pointer truncate font-bold transition-colors">
                         {branch.name}
                       </span>
                       <span className="text-muted-foreground font-roboto text-xs italic">
@@ -149,7 +149,7 @@ export function BranchesTableView({
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden sm:table-cell">
                     <Badge
                       variant="outline"
                       className="font-roboto border-2 font-bold uppercase"
@@ -179,7 +179,7 @@ export function BranchesTableView({
                       )}
                     </div>
                   </TableCell>
-                  <TableCell className="text-center">
+                  <TableCell className="hidden text-center sm:table-cell">
                     <div className="flex items-center justify-center gap-1">
                       <Hash className="text-muted-foreground h-3 w-3" />
                       <span className="font-mono text-xs font-bold">
@@ -257,7 +257,7 @@ export function BranchesTableView({
         </Table>
       </CardContent>
       {pagination && pagination.pages > 1 && (
-        <CardFooter className="border-t-2 pt-6">
+        <CardFooter className="flex-col items-start gap-4 border-t-2 pt-6 sm:flex-row sm:items-center">
           <Pagination className="mx-0 w-auto justify-start">
             <PaginationContent>
               <PaginationItem>
@@ -324,7 +324,7 @@ export function BranchesTableView({
               </PaginationItem>
             </PaginationContent>
           </Pagination>
-          <div className="text-muted-foreground font-roboto ml-auto text-sm">
+          <div className="text-muted-foreground font-roboto sm:ml-auto text-sm">
             Showing{' '}
             <span className="text-foreground font-bold">
               {(pagination.current - 1) * 10 + 1}

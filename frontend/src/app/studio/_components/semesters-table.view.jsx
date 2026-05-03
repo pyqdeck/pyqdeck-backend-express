@@ -46,20 +46,20 @@ export function SemestersTableView({
   const search = searchParams.get('search') || '';
   return (
     <Card className="border-border/50 overflow-hidden border-2 p-0 shadow-none">
-      <CardContent className="p-0">
-        <Table>
+      <CardContent className="overflow-x-auto p-0">
+        <Table className="min-w-[480px]">
           <TableHeader>
             <TableRow className="bg-muted/30 border-b-2 hover:bg-transparent">
               <TableHead className="font-roboto text-foreground h-12 w-[200px] px-6 font-bold tracking-wider uppercase">
                 Semester
               </TableHead>
-              <TableHead className="font-roboto text-foreground h-12 px-6 font-bold tracking-wider uppercase">
+              <TableHead className="font-roboto text-foreground hidden h-12 px-6 font-bold tracking-wider uppercase sm:table-cell">
                 Title / Label
               </TableHead>
               <TableHead className="font-roboto text-foreground h-12 px-6 font-bold tracking-wider uppercase">
                 Branch
               </TableHead>
-              <TableHead className="font-roboto text-foreground h-12 px-6 font-bold tracking-wider uppercase">
+              <TableHead className="font-roboto text-foreground hidden h-12 px-6 font-bold tracking-wider uppercase sm:table-cell">
                 URL Path
               </TableHead>
               <TableHead className="font-roboto text-foreground h-12 w-[100px] px-6 text-right font-bold tracking-wider uppercase">
@@ -97,7 +97,7 @@ export function SemestersTableView({
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell className="px-6 py-3">
+                  <TableCell className="hidden px-6 py-3 sm:table-cell">
                     <span className="font-roboto text-muted-foreground text-sm italic">
                       {sem.title || `Standard Semester ${sem.number}`}
                     </span>
@@ -122,7 +122,7 @@ export function SemestersTableView({
                         )}
                     </div>
                   </TableCell>
-                  <TableCell className="px-6 py-3">
+                  <TableCell className="hidden px-6 py-3 sm:table-cell">
                     <code className="bg-muted font-roboto text-muted-foreground rounded px-1.5 py-0.5 text-xs font-bold">
                       /{sem.slug}
                     </code>
@@ -184,7 +184,7 @@ export function SemestersTableView({
         </Table>
       </CardContent>
       {pagination && pagination.pages > 1 && (
-        <CardFooter className="border-t-2 pt-6">
+        <CardFooter className="flex-col items-start gap-4 border-t-2 pt-6 sm:flex-row sm:items-center">
           <Pagination className="mx-0 w-auto justify-start">
             <PaginationContent>
               <PaginationItem>
@@ -251,7 +251,7 @@ export function SemestersTableView({
               </PaginationItem>
             </PaginationContent>
           </Pagination>
-          <div className="text-muted-foreground font-roboto ml-auto text-sm">
+          <div className="text-muted-foreground font-roboto sm:ml-auto text-sm">
             Showing{' '}
             <span className="text-foreground font-bold">
               {(pagination.current - 1) * 10 + 1}

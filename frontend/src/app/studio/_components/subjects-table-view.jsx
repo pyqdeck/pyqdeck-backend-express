@@ -95,8 +95,8 @@ export function SubjectsTableView({
 
   return (
     <Card className="border-border/50 bg-background overflow-hidden rounded-3xl border p-0 shadow-sm">
-      <CardContent className="p-0">
-        <Table>
+      <CardContent className="overflow-x-auto p-0">
+        <Table className="min-w-[400px]">
           {/* HEADER */}
           <TableHeader className="bg-muted/30 backdrop-blur">
             <TableRow className="border-border/50 border-b hover:bg-transparent">
@@ -104,7 +104,7 @@ export function SubjectsTableView({
                 Subject
               </TableHead>
 
-              <TableHead className="text-muted-foreground text-[11px] font-semibold tracking-[0.12em] uppercase">
+              <TableHead className="text-muted-foreground hidden text-[11px] font-semibold tracking-[0.12em] uppercase sm:table-cell">
                 Code
               </TableHead>
 
@@ -112,7 +112,7 @@ export function SubjectsTableView({
                 Status
               </TableHead>
 
-              <TableHead className="text-muted-foreground text-center text-[11px] font-semibold tracking-[0.12em] uppercase">
+              <TableHead className="text-muted-foreground hidden text-center text-[11px] font-semibold tracking-[0.12em] uppercase sm:table-cell">
                 Units
               </TableHead>
 
@@ -168,7 +168,7 @@ export function SubjectsTableView({
                   </TableCell>
 
                   {/* CODE */}
-                  <TableCell>
+                  <TableCell className="hidden sm:table-cell">
                     <Badge
                       variant="secondary"
                       className="bg-muted text-muted-foreground rounded-xl border-0 px-2.5 py-1 font-mono text-[11px] font-medium tracking-tight"
@@ -185,7 +185,7 @@ export function SubjectsTableView({
                   </TableCell>
 
                   {/* UNITS */}
-                  <TableCell className="text-center">
+                  <TableCell className="hidden text-center sm:table-cell">
                     <div className="bg-muted/70 text-muted-foreground inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium">
                       <Layers className="h-3.5 w-3.5" />
 
@@ -200,7 +200,7 @@ export function SubjectsTableView({
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="hover:bg-muted rounded-2xl opacity-0 transition-all duration-200 group-hover:opacity-100 data-[state=open]:opacity-100"
+                          className="hover:bg-muted rounded-2xl transition-all duration-200 sm:opacity-0 sm:group-hover:opacity-100 data-[state=open]:opacity-100"
                         >
                           <MoreVertical className="h-4 w-4" />
                         </Button>
@@ -251,7 +251,7 @@ export function SubjectsTableView({
       {/* PAGINATION */}
       {pagination && pagination.pages > 1 && (
         <CardFooter className="border-border/50 border-t px-6 py-4">
-          <div className="flex w-full items-center justify-between">
+          <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <Pagination className="mx-0 w-auto">
               <PaginationContent>
                 <PaginationItem>

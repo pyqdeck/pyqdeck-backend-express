@@ -41,7 +41,7 @@ export function SubjectManagement({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex flex-col gap-1">
           <h1 className="font-roboto text-foreground text-3xl font-bold tracking-tight">
             Subject Repository
@@ -50,7 +50,7 @@ export function SubjectManagement({
             Central database for academic subjects and curriculum mapping.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex w-full items-center gap-2 sm:w-auto sm:gap-3">
           <StudioSearch
             placeholder="Search subjects..."
             paramName="q"
