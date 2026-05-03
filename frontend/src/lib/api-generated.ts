@@ -196,12 +196,12 @@ export interface Question {
   difficulty?: "easy" | "medium" | "hard";
   /** @example "understand" */
   bloomLevel?:
-    | "remember"
-    | "understand"
-    | "apply"
-    | "analyze"
-    | "evaluate"
-    | "create";
+  | "remember"
+  | "understand"
+  | "apply"
+  | "analyze"
+  | "evaluate"
+  | "create";
   /** @example 10 */
   marks?: number;
   /**
@@ -667,7 +667,7 @@ export class HttpClient<SecurityDataType = unknown> {
   }: ApiConfig<SecurityDataType> = {}) {
     this.instance = axios.create({
       ...axiosConfig,
-      baseURL: axiosConfig.baseURL || "http://localhost:5000/api/v1",
+      baseURL: axiosConfig.baseURL || "http://localhost:3000/api/v1",
     });
     this.secure = secure;
     this.format = format;
@@ -691,7 +691,7 @@ export class HttpClient<SecurityDataType = unknown> {
       headers: {
         ...((method &&
           this.instance.defaults.headers[
-            method.toLowerCase() as keyof HeadersDefaults
+          method.toLowerCase() as keyof HeadersDefaults
           ]) ||
           {}),
         ...(params1.headers || {}),
@@ -781,7 +781,7 @@ export class HttpClient<SecurityDataType = unknown> {
 /**
  * @title PYQDeck API Explorer
  * @version 1.0.0
- * @baseUrl http://localhost:5000/api/v1
+ * @baseUrl http://localhost:3000/api/v1
  * @contact PYQDeck Support <noreply@example.com> (http://localhost:3000/support)
  *
  *

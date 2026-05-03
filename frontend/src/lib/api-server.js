@@ -12,7 +12,7 @@ export async function getApiServer() {
 
   return new Api({
     baseURL: (
-      process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/v1'
+      process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api/v1'
     ).replace(/\/+$/, ''),
     securityWorker: async () => {
       const token = await getToken();

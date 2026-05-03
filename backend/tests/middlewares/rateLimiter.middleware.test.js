@@ -45,7 +45,7 @@ describe('RateLimiter Middleware', () => {
   });
 
   it('should block request and set Retry-After when limit exceeded', async () => {
-    const resetTime = Date.now() + 5000;
+    const resetTime = Date.now() + 3000;
     const error = new RateLimitError('Too many requests');
     error.resetTime = resetTime;
 
