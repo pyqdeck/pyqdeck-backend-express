@@ -136,7 +136,9 @@ class UserRepository {
     const skip = (page - 1) * limit;
 
     const allowedSortFields = ['name', 'email', 'role', 'createdAt'];
-    const sortBy = allowedSortFields.includes(filter.sortBy) ? filter.sortBy : 'createdAt';
+    const sortBy = allowedSortFields.includes(filter.sortBy)
+      ? filter.sortBy
+      : 'createdAt';
     const sortOrder = filter.sortOrder === 'asc' ? 1 : -1;
 
     const query = {};
@@ -151,7 +153,11 @@ class UserRepository {
     }
 
     const [items, total] = await Promise.all([
-      User.find(query).sort({ [sortBy]: sortOrder }).skip(skip).limit(limit).lean(),
+      User.find(query)
+        .sort({ [sortBy]: sortOrder })
+        .skip(skip)
+        .limit(limit)
+        .lean(),
       User.countDocuments(query),
     ]);
 

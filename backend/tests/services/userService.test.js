@@ -8,11 +8,17 @@ vi.mock('../../src/repositories/userRepository.js', () => ({
     existsByClerkId: vi.fn(),
     create: vi.fn(),
     update: vi.fn(),
+    list: vi.fn(),
+    findByClerkId: vi.fn(),
+    getStatsByClerkId: vi.fn(),
   },
   default: {
     existsByClerkId: vi.fn(),
     create: vi.fn(),
     update: vi.fn(),
+    list: vi.fn(),
+    findByClerkId: vi.fn(),
+    getStatsByClerkId: vi.fn(),
   },
 }));
 
@@ -40,6 +46,7 @@ describe('UserService', () => {
         clerkId: 'clerk_123',
         name: 'John Doe',
         email: 'john@example.com',
+        avatarUrl: null,
       });
     });
 
@@ -61,6 +68,7 @@ describe('UserService', () => {
       expect(userRepository.update).toHaveBeenCalledWith('clerk_123', {
         name: 'John Doe',
         email: 'john@example.com',
+        avatarUrl: null,
       });
     });
 
@@ -104,6 +112,47 @@ describe('UserService', () => {
       await expect(userService.handleUserUpdated(clerkData)).rejects.toThrow(
         'Other update error'
       );
+    });
+  });
+
+  describe('listUsers', () => {
+    it('should call userRepository.list', async () => {
+      const filter = { role: 'admin' };
+      const pagination = { page: 1, limit: 5 };
+      userRepository.list.mockResolvedValue({ items: [], total: 0 });
+
+      await userService.listUsers(filter, pagination);
+
+      expect(userRepository.list).toHaveBeenCalledWith(filter, pagination);
+    });
+  });
+
+  describe('getUserByClerkId', () => {
+    it('should return user and stats', async () => {
+      const clerkId = 'user_1';
+      const user = { id: 'db_1', clerkId };
+      const stats = { bookmarksCount: 1, solutionsCount: 2 };
+
+      userRepository.findByClerkId.mockResolvedValue(user);
+      userRepository.getStatsByClerkId.mockResolvedValue(stats);
+
+      const result = await userService.getUserByClerkId(clerkId);
+
+      expect(result).toEqual({ user, stats });
+      expect(userRepository.findByClerkId).toHaveBeenCalledWith(clerkId);
+      expect(userRepository.getStatsByClerkId).toHaveBeenCalledWith(clerkId);
+    });
+  });
+
+  describe('updateUser', () => {
+    it('should call userRepository.update', async () => {
+      const clerkId = 'user_1';
+      const data = { role: 'admin' };
+      userRepository.update.mockResolvedValue({ ...data, clerkId });
+
+      await userService.updateUser(clerkId, data);
+
+      expect(userRepository.update).toHaveBeenCalledWith(clerkId, data);
     });
   });
 });

@@ -29,7 +29,15 @@ export const getMe = catchAsync(async (req, res, next) => {
  * GET /api/v1/users
  */
 export const listUsers = catchAsync(async (req, res) => {
-  const { role, search, page = 1, limit = 10, sortBy, sortOrder, isActive } = req.query;
+  const {
+    role,
+    search,
+    page = 1,
+    limit = 10,
+    sortBy,
+    sortOrder,
+    isActive,
+  } = req.query;
   const { userId: requesterClerkId } = getAuth(req);
 
   const result = await userService.listUsers(

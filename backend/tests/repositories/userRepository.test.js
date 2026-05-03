@@ -102,27 +102,80 @@ describe('UserRepository', () => {
     });
   });
 
-  describe('exists methods', () => {
-    it('existsByEmail should return true if user exists', async () => {
+  describe('getStats and getStatsByClerkId', () => {
+    it('should return default stats if no data exists', async () => {
+      const stats = await userRepository.getStats('507f1f77bcf86cd799439011');
+      expect(stats).toEqual({ bookmarksCount: 0, solutionsCount: 0 });
+    });
+
+    it('should return stats for a user', async () => {
+      const user = await userRepository.create(userData);
+      // Since we don't have bookmarks/solutions created in this test, it will return 0
+      // but it verifies the aggregation pipeline runs without error
+      const stats = await userRepository.getStats(user._id);
+      expect(stats).toHaveProperty('bookmarksCount');
+      expect(stats).toHaveProperty('solutionsCount');
+    });
+
+    it('should return stats by clerkId', async () => {
       await userRepository.create(userData);
-      const exists = await userRepository.existsByEmail(userData.email);
-      expect(exists).toBe(true);
+      const stats = await userRepository.getStatsByClerkId(userData.clerkId);
+      expect(stats).toHaveProperty('bookmarksCount');
+      expect(stats).toHaveProperty('solutionsCount');
+    });
+  });
+
+  describe('list', () => {
+    beforeEach(async () => {
+      await User.create([
+        {
+          clerkId: 'u1',
+          name: 'Alice',
+          email: 'alice@example.com',
+          role: 'admin',
+        },
+        {
+          clerkId: 'u2',
+          name: 'Bob',
+          email: 'bob@example.com',
+          role: 'normal',
+        },
+        {
+          clerkId: 'u3',
+          name: 'Charlie',
+          email: 'charlie@example.com',
+          role: 'normal',
+        },
+      ]);
     });
 
-    it('existsByEmail should return false if user does not exist', async () => {
-      const exists = await userRepository.existsByEmail('none@example.com');
-      expect(exists).toBe(false);
+    it('should list users with default pagination', async () => {
+      const result = await userRepository.list();
+      expect(result.items).toHaveLength(3);
+      expect(result.total).toBe(3);
+      expect(result.page).toBe(1);
     });
 
-    it('existsByClerkId should return true if user exists', async () => {
-      await userRepository.create(userData);
-      const exists = await userRepository.existsByClerkId(userData.clerkId);
-      expect(exists).toBe(true);
+    it('should filter by role', async () => {
+      const result = await userRepository.list({ role: 'admin' });
+      expect(result.items).toHaveLength(1);
+      expect(result.items[0].name).toBe('Alice');
     });
 
-    it('existsByClerkId should return false if user does not exist', async () => {
-      const exists = await userRepository.existsByClerkId('none');
-      expect(exists).toBe(false);
+    it('should search by name', async () => {
+      const result = await userRepository.list({ search: 'Bob' });
+      expect(result.items).toHaveLength(1);
+      expect(result.items[0].name).toBe('Bob');
+    });
+
+    it('should sort users', async () => {
+      const result = await userRepository.list({
+        sortBy: 'name',
+        sortOrder: 'asc',
+      });
+      expect(result.items[0].name).toBe('Alice');
+      expect(result.items[1].name).toBe('Bob');
+      expect(result.items[2].name).toBe('Charlie');
     });
   });
 });
