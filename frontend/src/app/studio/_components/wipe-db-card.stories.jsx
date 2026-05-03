@@ -1,7 +1,7 @@
 import { WipeDbCardView } from './wipe-db-card.view';
 import { fn } from '@storybook/test';
 
-export default {
+const meta = {
   title: 'Studio/Security/WipeDbCard',
   component: WipeDbCardView,
   tags: ['autodocs'],
@@ -9,6 +9,8 @@ export default {
     layout: 'centered',
   },
 };
+
+export default meta;
 
 export const Default = {
   args: {

@@ -1,6 +1,6 @@
 import { SystemInfoCardView } from './system-info-card.view';
 
-export default {
+const meta = {
   title: 'Studio/System/SystemInfoCard',
   component: SystemInfoCardView,
   tags: ['autodocs'],
@@ -8,6 +8,8 @@ export default {
     layout: 'centered',
   },
 };
+
+export default meta;
 
 const mockHealth = {
   status: 'healthy',

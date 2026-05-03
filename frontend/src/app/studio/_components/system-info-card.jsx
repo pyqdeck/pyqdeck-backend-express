@@ -24,11 +24,6 @@ export function SystemInfoCard({ initialHealth }) {
     [api]
   );
 
-  // Initial sync with prop
-  React.useEffect(() => {
-    if (initialHealth) setHealth(initialHealth);
-  }, [initialHealth]);
-
   // Polling: refresh every 30 seconds
   React.useEffect(() => {
     const interval = setInterval(() => {

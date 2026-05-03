@@ -12,7 +12,7 @@ const branchSchema = z.object({
   slug: z.string().min(1),
 });
 
-export default {
+const meta = {
   title: 'Studio/Academics/AddBranchDialog',
   component: AddBranchDialogView,
   tags: ['autodocs'],
@@ -20,6 +20,8 @@ export default {
     layout: 'centered',
   },
 };
+
+export default meta;
 
 const FormWrapper = ({ mockSubmitting = false, ...args }) => {
   const form = useForm({
