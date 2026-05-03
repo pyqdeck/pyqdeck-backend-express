@@ -35,6 +35,7 @@ export function AddOfferingDialogView({
   onOpenChange,
   trigger = true,
 }) {
+  'use no memo';
   const {
     control,
     handleSubmit,

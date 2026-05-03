@@ -11,16 +11,18 @@ export function StudioSearch({
   initialValue = '',
   className = 'w-72',
 }) {
-  const [value, setValue] = React.useState(initialValue);
-  const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const urlValue = searchParams.get(paramName) || '';
+  const [value, setValue] = React.useState(urlValue);
+  const [prevUrlValue, setPrevUrlValue] = React.useState(urlValue);
+  const router = useRouter();
+  const pathname = usePathname();
 
-  // Sync local value with URL
-  React.useEffect(() => {
+  // Sync local value with URL during render to avoid cascading effects
+  if (urlValue !== prevUrlValue) {
+    setPrevUrlValue(urlValue);
     setValue(urlValue);
-  }, [urlValue]);
+  }
 
   // Debounced URL update
   React.useEffect(() => {

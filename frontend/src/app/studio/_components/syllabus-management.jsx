@@ -2,21 +2,19 @@
 
 import * as React from 'react';
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useApi } from '@/hooks/use-api';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Plus, Search, Loader2 } from 'lucide-react';
+import { Plus, Settings2, RefreshCcw } from 'lucide-react';
 import { SyllabusTable } from './syllabus-table';
 import { EditSyllabusDialog } from './edit-syllabus-dialog';
+import { StudioSearch } from './studio-search';
+import { DropdownAction } from '@/components/dropdown-action';
+import {
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 
 export function SyllabusManagement({
   offerings = [],
@@ -25,13 +23,15 @@ export function SyllabusManagement({
   modules = [],
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const api = useApi();
 
   const [loading, setLoading] = useState(false);
   const [editingSyllabus, setEditingSyllabus] = useState(null);
-  const [search, setSearch] = useState('');
 
-  // Filter offerings based on search
+  const search = searchParams.get('q') || '';
+
+  // Filter offerings based on search for the pill filters
   const filteredOfferings = offerings.filter((off) => {
     if (!search) return true;
     const searchLower = search.toLowerCase();
@@ -42,14 +42,14 @@ export function SyllabusManagement({
     );
   });
 
-  const handleOfferingChange = (value) => {
-    const url = new URL(window.location);
-    if (value) {
-      url.searchParams.set('offeringId', value);
+  const handleOfferingChange = (id) => {
+    const params = new URLSearchParams(searchParams);
+    if (id) {
+      params.set('offeringId', id);
     } else {
-      url.searchParams.delete('offeringId');
+      params.delete('offeringId');
     }
-    window.location.href = url.toString();
+    router.push(`?${params.toString()}`);
   };
 
   const handleInitializeSyllabus = async () => {
@@ -133,7 +133,7 @@ export function SyllabusManagement({
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Header */}
+      {/* Header Section */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex flex-col gap-1">
           <h1 className="font-roboto text-foreground text-3xl font-bold tracking-tight">
@@ -143,79 +143,95 @@ export function SyllabusManagement({
             Design and structure curriculum modules and learning topics.
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Offering Filter */}
-          <div className="flex items-center gap-2">
-            <Label className="font-roboto text-muted-foreground text-[10px] font-bold tracking-widest uppercase">
-              Offering
-            </Label>
-            <Select
-              value={currentOfferingId || ''}
-              onValueChange={handleOfferingChange}
-            >
-              <SelectTrigger className="font-roboto w-[180px] border-2 text-xs focus:ring-0 sm:w-[200px]">
-                <SelectValue placeholder="Select Offering" />
-              </SelectTrigger>
-              <SelectContent className="border-2 shadow-none">
-                {filteredOfferings.map((off) => (
-                  <SelectItem
-                    key={off.id || off._id}
-                    value={off.id || off._id}
-                    className="font-roboto text-xs"
-                  >
-                    {off.subjectId?.name} - Sem {off.semesterId?.number}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+        <div className="flex w-full items-center gap-2 sm:w-auto sm:gap-3">
+          <StudioSearch
+            placeholder="Filter offerings..."
+            paramName="q"
+            initialValue={search}
+          />
 
-          {/* Search */}
-          <div className="relative w-full sm:w-56">
-            <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-            <Input
-              placeholder="Search offerings..."
-              className="font-roboto border-2 pl-9 focus-visible:ring-0"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
+          <DropdownAction label="Management" tooltip="Syllabus Actions">
+            {currentOfferingId && !syllabus && (
+              <DropdownMenuItem
+                onSelect={(e) => {
+                  e.preventDefault();
+                  handleInitializeSyllabus();
+                }}
+                disabled={loading}
+                className="cursor-pointer rounded-md py-2.5 focus:bg-transparent"
+              >
+                <Plus
+                  className={cn(
+                    'text-muted-foreground mr-3 size-4 transition-colors',
+                    loading && 'animate-spin'
+                  )}
+                />
+                <span className="font-medium">
+                  {loading ? 'Initializing...' : 'Initialize Syllabus'}
+                </span>
+              </DropdownMenuItem>
+            )}
 
-          {/* Initialize Button */}
-          {currentOfferingId && !syllabus && (
-            <Button
-              onClick={handleInitializeSyllabus}
-              disabled={loading}
-              className="font-roboto bg-primary hover:bg-primary/90 w-full border-2 font-bold shadow-none sm:w-auto"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Initializing...
-                </>
-              ) : (
-                <>
-                  <Plus className="h-4 w-4" />
-                  Initialize Syllabus
-                </>
-              )}
-            </Button>
-          )}
+            {syllabus && (
+              <DropdownMenuItem
+                onSelect={(e) => {
+                  e.preventDefault();
+                  setEditingSyllabus(syllabus);
+                }}
+                className="cursor-pointer rounded-md py-2.5 focus:bg-transparent"
+              >
+                <Settings2 className="text-muted-foreground mr-3 size-4 transition-colors" />
+                <span className="font-medium">Syllabus Settings</span>
+              </DropdownMenuItem>
+            )}
 
-          {/* Edit Syllabus Button */}
-          {syllabus && (
-            <Button
-              onClick={() => setEditingSyllabus(syllabus)}
-              variant="outline"
-              className="font-roboto w-full border-2 font-bold sm:w-auto"
+            <DropdownMenuSeparator className="my-1 border-b" />
+
+            <DropdownMenuItem
+              onClick={() => router.refresh()}
+              className="cursor-pointer rounded-md py-2.5 focus:bg-transparent"
             >
-              Edit Syllabus
-            </Button>
-          )}
+              <RefreshCcw className="text-muted-foreground mr-3 size-4 transition-colors" />
+              <span className="font-medium">Refresh Data</span>
+            </DropdownMenuItem>
+          </DropdownAction>
         </div>
       </div>
 
-      {/* Content */}
+      {/* Offering Pill Filters */}
+      <div className="hide-scrollbar flex flex-wrap items-center gap-1.5 overflow-x-auto pb-2">
+        <Button
+          variant={!currentOfferingId ? 'default' : 'outline'}
+          size="sm"
+          onClick={() => handleOfferingChange(null)}
+          className={cn(
+            'font-roboto h-8 rounded-full border-2 px-3.5 text-xs font-bold transition-all',
+            currentOfferingId && 'text-muted-foreground hover:text-foreground'
+          )}
+        >
+          Select Offering
+        </Button>
+        {filteredOfferings.map((off) => {
+          const id = off.id || off._id;
+          const isActive = currentOfferingId === id;
+          return (
+            <Button
+              key={id}
+              variant={isActive ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => handleOfferingChange(id)}
+              className={cn(
+                'font-roboto h-8 shrink-0 rounded-full border-2 px-3.5 text-xs font-bold transition-all',
+                !isActive && 'text-muted-foreground hover:text-foreground'
+              )}
+            >
+              {off.subjectId?.name} (Sem {off.semesterId?.number})
+            </Button>
+          );
+        })}
+      </div>
+
+      {/* Main Content Area */}
       {currentOfferingId ? (
         syllabus ? (
           <SyllabusTable
@@ -229,19 +245,49 @@ export function SyllabusManagement({
             onTopicDelete={handleTopicDelete}
           />
         ) : (
-          <div className="font-roboto text-muted-foreground py-12 text-center">
-            No syllabus found for this offering. Click &quot;Initialize
-            Syllabus&quot; to create one.
+          <div className="border-border/50 bg-muted/5 flex flex-col items-center justify-center gap-4 rounded-3xl border-2 border-dashed py-20">
+            <div className="bg-muted text-muted-foreground flex h-16 w-16 items-center justify-center rounded-2xl">
+              <Plus className="h-8 w-8" />
+            </div>
+            <div className="space-y-1 text-center">
+              <h3 className="font-roboto text-lg font-bold">
+                No Syllabus Found
+              </h3>
+              <p className="text-muted-foreground font-roboto mx-auto max-w-xs text-sm">
+                This offering doesn&apos;t have a syllabus structure yet.
+                Initialize it to start adding modules.
+              </p>
+            </div>
+            <Button
+              onClick={handleInitializeSyllabus}
+              disabled={loading}
+              className="font-roboto h-10 border-2 font-bold"
+            >
+              {loading ? (
+                <RefreshCcw className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Plus className="mr-2 h-4 w-4" />
+              )}
+              Initialize Structure
+            </Button>
           </div>
         )
       ) : (
-        <div className="font-roboto text-muted-foreground py-12 text-center">
-          Select an offering from the dropdown above to view or create its
-          syllabus.
+        <div className="border-border/50 bg-muted/5 flex flex-col items-center justify-center gap-4 rounded-3xl border-2 border-dashed py-20">
+          <div className="bg-muted text-muted-foreground flex h-16 w-16 items-center justify-center rounded-2xl">
+            <Settings2 className="h-8 w-8" />
+          </div>
+          <div className="space-y-1 text-center">
+            <h3 className="font-roboto text-lg font-bold">Get Started</h3>
+            <p className="text-muted-foreground font-roboto mx-auto max-w-xs text-sm">
+              Select an academic offering from the filters above to manage its
+              curriculum structure.
+            </p>
+          </div>
         </div>
       )}
 
-      {/* Edit Syllabus Dialog */}
+      {/* Dialogs */}
       <EditSyllabusDialog
         syllabus={editingSyllabus}
         open={!!editingSyllabus}

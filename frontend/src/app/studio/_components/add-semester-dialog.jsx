@@ -24,6 +24,7 @@ export function AddSemesterDialog({
   isOpen,
   onOpenChange,
 }) {
+  'use no memo';
   const [internalOpen, setInternalOpen] = React.useState(false);
   const open = isOpen !== undefined ? isOpen : internalOpen;
   const setOpen = onOpenChange !== undefined ? onOpenChange : setInternalOpen;

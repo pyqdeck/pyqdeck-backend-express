@@ -324,7 +324,7 @@ export function BranchesTableView({
               </PaginationItem>
             </PaginationContent>
           </Pagination>
-          <div className="text-muted-foreground font-roboto sm:ml-auto text-sm">
+          <div className="text-muted-foreground font-roboto text-sm sm:ml-auto">
             Showing{' '}
             <span className="text-foreground font-bold">
               {(pagination.current - 1) * 10 + 1}

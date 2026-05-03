@@ -17,6 +17,7 @@ const moduleSchema = z.object({
 });
 
 export function AddModuleDialog({ syllabusId, onAdd }) {
+  'use no memo';
   const [open, setOpen] = React.useState(false);
 
   const form = useForm({

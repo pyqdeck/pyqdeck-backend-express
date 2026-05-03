@@ -21,6 +21,7 @@ export function AddSubjectDialog({
   open: controlledOpen,
   onOpenChange: controlledOnOpenChange,
 }) {
+  'use no memo';
   const [internalOpen, setInternalOpen] = React.useState(false);
   const open = controlledOpen !== undefined ? controlledOpen : internalOpen;
   const onOpenChange =

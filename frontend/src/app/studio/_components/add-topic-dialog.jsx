@@ -21,6 +21,7 @@ export function AddTopicDialog({
   open,
   onOpenChange,
 }) {
+  'use no memo';
   const form = useForm({
     resolver: zodResolver(topicSchema),
     defaultValues: {

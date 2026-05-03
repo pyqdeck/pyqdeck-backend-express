@@ -81,28 +81,36 @@ export function SyllabusTable({
         onUpdate={onTopicUpdate}
       />
 
+      {/* Add Topic Dialog */}
+      <AddTopicDialog
+        moduleId={addingTopicModule?.id || addingTopicModule?._id}
+        open={!!addingTopicModule}
+        onOpenChange={(open) => !open && setAddingTopicModule(null)}
+        onAdd={handleTopicAddSubmit}
+      />
+
       {/* Delete Module AlertDialog */}
       <AlertDialog
         open={!!deletingModule}
         onOpenChange={(open) => !open && setDeletingModule(null)}
       >
-        <AlertDialogContent className="border-2 shadow-none">
+        <AlertDialogContent className="border-border/50 border-2 shadow-none sm:max-w-[425px]">
           <AlertDialogHeader>
             <AlertDialogTitle className="font-roboto text-xl font-bold">
               Delete Module?
             </AlertDialogTitle>
-            <AlertDialogDescription className="font-roboto">
+            <AlertDialogDescription className="font-roboto text-sm">
               This will permanently delete &quot;{deletingModule?.title}&quot;
               and all its associated topics. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel className="font-roboto border-2 font-bold">
+          <AlertDialogFooter className="mt-2">
+            <AlertDialogCancel className="font-roboto h-10 border-2 font-bold">
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmModuleDelete}
-              className="font-roboto bg-destructive hover:bg-destructive/90 border-2 font-bold shadow-none"
+              className="font-roboto bg-destructive hover:bg-destructive/90 h-10 border-none font-bold shadow-none"
             >
               Delete Module
             </AlertDialogAction>
@@ -115,23 +123,23 @@ export function SyllabusTable({
         open={!!deletingTopic}
         onOpenChange={(open) => !open && setDeletingTopic(null)}
       >
-        <AlertDialogContent className="border-2 shadow-none">
+        <AlertDialogContent className="border-border/50 border-2 shadow-none sm:max-w-[425px]">
           <AlertDialogHeader>
             <AlertDialogTitle className="font-roboto text-xl font-bold">
               Remove Topic?
             </AlertDialogTitle>
-            <AlertDialogDescription className="font-roboto">
+            <AlertDialogDescription className="font-roboto text-sm">
               This will permanently remove &quot;{deletingTopic?.title}&quot;
               from the module. This action cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel className="font-roboto border-2 font-bold">
+          <AlertDialogFooter className="mt-2">
+            <AlertDialogCancel className="font-roboto h-10 border-2 font-bold">
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirmTopicDelete}
-              className="font-roboto bg-destructive hover:bg-destructive/90 border-2 font-bold shadow-none"
+              className="font-roboto bg-destructive hover:bg-destructive/90 h-10 border-none font-bold shadow-none"
             >
               Remove Topic
             </AlertDialogAction>

@@ -27,7 +27,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card';
 import {
   Pagination,
   PaginationContent,
@@ -200,7 +205,7 @@ export function SubjectsTableView({
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="hover:bg-muted rounded-2xl transition-all duration-200 sm:opacity-0 sm:group-hover:opacity-100 data-[state=open]:opacity-100"
+                          className="hover:bg-muted rounded-2xl transition-all duration-200 data-[state=open]:opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
                         >
                           <MoreVertical className="h-4 w-4" />
                         </Button>

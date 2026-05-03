@@ -24,6 +24,7 @@ export function AddOfferingDialog({
   subjects = [],
   onAdd,
 }) {
+  'use no memo';
   const [open, setOpen] = React.useState(false);
 
   const form = useForm({

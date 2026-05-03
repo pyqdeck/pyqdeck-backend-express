@@ -27,7 +27,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import {
+  Card,
+  CardHeader,
+  CardContent,
+  CardFooter,
+} from '@/components/ui/card';
 import {
   Pagination,
   PaginationContent,
@@ -50,7 +55,7 @@ export function OfferingsTableView({
 }) {
   if (loading) {
     return (
-      <Card className="border-border/50 border-2 shadow-none p-0">
+      <Card className="border-border/50 border-2 p-0 shadow-none">
         <CardHeader className="pb-3">
           <Skeleton className="mb-2 h-8 w-48" />
           <Skeleton className="h-4 w-64" />
@@ -94,7 +99,7 @@ export function OfferingsTableView({
   }
 
   return (
-    <Card className="border-border/50 border-2 shadow-none p-0">
+    <Card className="border-border/50 border-2 p-0 shadow-none">
       <CardContent className="overflow-x-auto p-0">
         <Table className="min-w-[480px]">
           <TableHeader>
