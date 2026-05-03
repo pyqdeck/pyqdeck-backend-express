@@ -167,7 +167,7 @@ export function OfferingsTableView({
                 >
                   <TableCell className="py-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl border-2 border-emerald-100 bg-emerald-50 text-emerald-600 transition-transform group-hover:scale-110 dark:border-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400">
+                      <div className="border-success/20 bg-success/5 text-success dark:border-success/30 dark:bg-success/10 dark:text-success flex h-10 w-10 items-center justify-center rounded-xl border-2 transition-transform group-hover:scale-110">
                         <BookOpen className="h-5 w-5" />
                       </div>
                       <div className="flex flex-col">
@@ -198,7 +198,7 @@ export function OfferingsTableView({
                             'N/A'}
                         </span>
                         <span className="mx-1">•</span>
-                        <span className="font-bold text-indigo-600 dark:text-indigo-400">
+                        <span className="text-primary font-bold">
                           Sem {offering.semesterId?.number || 'N/A'}
                         </span>
                       </div>
@@ -207,7 +207,7 @@ export function OfferingsTableView({
                   <TableCell>
                     <Badge
                       variant="outline"
-                      className="bg-muted/30 border-2 border-indigo-100 font-mono font-bold text-indigo-700 dark:border-indigo-900/50 dark:text-indigo-400"
+                      className="bg-muted/30 border-primary/20 text-primary dark:border-primary/30 dark:text-primary border-2 font-mono font-bold"
                     >
                       {offering.regulation || 'General'}
                     </Badge>
@@ -241,8 +241,8 @@ export function OfferingsTableView({
                           <span className="font-medium">View Syllabus</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5">
-                          <Layers className="text-muted-foreground mr-3 h-4 w-4 transition-colors group-hover:text-indigo-600" />
-                          <span className="font-medium text-indigo-600">
+                          <Layers className="text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors" />
+                          <span className="text-primary font-medium">
                             Learning Materials
                           </span>
                         </DropdownMenuItem>

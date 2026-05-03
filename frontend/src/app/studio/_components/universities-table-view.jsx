@@ -151,7 +151,7 @@ export function UniversitiesTableView({
                       variant={uni.isActive !== false ? 'default' : 'secondary'}
                       className={`font-roboto rounded-full px-2.5 py-0.5 font-semibold ${
                         uni.isActive !== false
-                          ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400'
+                          ? 'bg-success/10 text-success hover:bg-success/10 dark:bg-success/10 dark:text-success'
                           : 'bg-muted text-muted-foreground'
                       }`}
                     >
@@ -207,8 +207,8 @@ export function UniversitiesTableView({
                             href={`/studio/branches?universityId=${uni.id}`}
                             className="flex w-full items-center"
                           >
-                            <Layers className="text-muted-foreground mr-3 h-4 w-4 transition-colors group-hover:text-indigo-600" />
-                            <span className="font-medium text-indigo-600">
+                            <Layers className="text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors" />
+                            <span className="text-primary font-medium">
                               View Branches
                             </span>
                           </Link>
@@ -221,8 +221,8 @@ export function UniversitiesTableView({
                             href={`/studio/semesters?universityId=${uni.id}`}
                             className="flex w-full items-center"
                           >
-                            <GraduationCap className="text-muted-foreground mr-3 h-4 w-4 transition-colors group-hover:text-amber-600" />
-                            <span className="font-medium text-amber-600">
+                            <GraduationCap className="text-muted-foreground group-hover:text-warning mr-3 h-4 w-4 transition-colors" />
+                            <span className="text-warning font-medium">
                               View Semesters
                             </span>
                           </Link>

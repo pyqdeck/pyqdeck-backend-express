@@ -168,7 +168,7 @@ export function SubjectsTableView({
                 >
                   <TableCell className="py-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl border-2 border-indigo-100 bg-indigo-50 text-indigo-600 transition-transform group-hover:scale-110 dark:border-indigo-800 dark:bg-indigo-900/20 dark:text-indigo-400">
+                      <div className="border-primary/20 bg-primary/5 text-primary dark:border-primary/30 dark:bg-primary/10 dark:text-primary flex h-10 w-10 items-center justify-center rounded-xl border-2 transition-transform group-hover:scale-110">
                         <BookOpen className="h-5 w-5" />
                       </div>
                       <div className="flex flex-col">
@@ -197,7 +197,7 @@ export function SubjectsTableView({
                       variant={subject.isActive ? 'success' : 'secondary'}
                       className={`font-roboto border-2 font-bold ${
                         subject.isActive
-                          ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-900/30 dark:text-emerald-400'
+                          ? 'bg-success/10 text-success hover:bg-success/10 dark:bg-success/10 dark:text-success'
                           : 'bg-muted text-muted-foreground'
                       }`}
                     >
@@ -239,8 +239,8 @@ export function SubjectsTableView({
                           <span className="font-medium">Edit Curriculum</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5">
-                          <FileText className="text-muted-foreground mr-3 h-4 w-4 transition-colors group-hover:text-indigo-600" />
-                          <span className="font-medium text-indigo-600">
+                          <FileText className="text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors" />
+                          <span className="text-primary font-medium">
                             Syllabus Details
                           </span>
                         </DropdownMenuItem>

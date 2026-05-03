@@ -50,23 +50,23 @@ export function AddModuleDialogView({
         <DialogTrigger asChild>
           <Button
             size="sm"
-            className="font-roboto border-2 bg-indigo-600 font-bold shadow-none hover:bg-indigo-700"
+            className="font-roboto bg-primary hover:bg-primary/90 border-2 font-bold shadow-none"
           >
             <Plus className="mr-2 h-4 w-4" /> Add Module
           </Button>
         </DialogTrigger>
       )}
       <DialogContent className="overflow-hidden border-2 bg-white p-0 shadow-xl sm:max-w-[550px] dark:bg-zinc-950">
-        <DialogHeader className="border-b-2 bg-indigo-50/50 px-6 pt-6 pb-4 dark:bg-indigo-950/20">
+        <DialogHeader className="bg-primary/5 dark:bg-primary/10 border-b-2 px-6 pt-6 pb-4">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-md shadow-indigo-200 dark:shadow-none">
+            <div className="bg-primary shadow-primary/20 flex h-12 w-12 items-center justify-center rounded-xl text-white shadow-md dark:shadow-none">
               <Layers className="h-6 w-6" />
             </div>
             <div className="space-y-1">
-              <DialogTitle className="font-roboto text-2xl font-black text-indigo-950 dark:text-indigo-50">
+              <DialogTitle className="font-roboto text-2xl font-black">
                 New Curriculum Module
               </DialogTitle>
-              <DialogDescription className="font-roboto text-sm font-medium text-indigo-700/70 dark:text-indigo-300/70">
+              <DialogDescription className="font-roboto text-muted-foreground text-sm font-medium">
                 Define a new unit and its learning objectives.
               </DialogDescription>
             </div>
@@ -88,7 +88,7 @@ export function AddModuleDialogView({
                         {...field}
                         type="number"
                         min="1"
-                        className="font-roboto h-12 border-2 bg-white text-lg font-bold shadow-sm focus-visible:border-indigo-600 focus-visible:ring-indigo-600/20 dark:bg-zinc-900"
+                        className="font-roboto focus-visible:border-primary focus-visible:ring-primary/20 h-12 border-2 bg-white text-lg font-bold shadow-sm dark:bg-zinc-900"
                         onChange={(e) =>
                           field.onChange(parseInt(e.target.value) || 0)
                         }
@@ -112,7 +112,7 @@ export function AddModuleDialogView({
                         type="number"
                         min="0"
                         max="100"
-                        className="font-roboto h-12 border-2 bg-white text-lg font-bold shadow-sm focus-visible:border-indigo-600 focus-visible:ring-indigo-600/20 dark:bg-zinc-900"
+                        className="font-roboto focus-visible:border-primary focus-visible:ring-primary/20 h-12 border-2 bg-white text-lg font-bold shadow-sm dark:bg-zinc-900"
                         onChange={(e) =>
                           field.onChange(parseFloat(e.target.value) || 0)
                         }
@@ -136,7 +136,7 @@ export function AddModuleDialogView({
                       <Input
                         {...field}
                         placeholder="e.g. Introduction to Neural Networks"
-                        className="font-roboto h-12 border-2 bg-white text-base font-semibold shadow-sm focus-visible:border-indigo-600 focus-visible:ring-indigo-600/20 dark:bg-zinc-900"
+                        className="font-roboto focus-visible:border-primary focus-visible:ring-primary/20 h-12 border-2 bg-white text-base font-semibold shadow-sm dark:bg-zinc-900"
                         aria-invalid={!!errors.title}
                       />
                     )}
@@ -155,7 +155,7 @@ export function AddModuleDialogView({
                       <Input
                         {...field}
                         placeholder="e.g. CO1, CO2"
-                        className="font-roboto h-11 border-2 bg-white text-sm shadow-sm focus-visible:border-indigo-600 focus-visible:ring-indigo-600/20 dark:bg-zinc-900"
+                        className="font-roboto focus-visible:border-primary focus-visible:ring-primary/20 h-11 border-2 bg-white text-sm shadow-sm dark:bg-zinc-900"
                         aria-invalid={!!errors.coMapping}
                       />
                     )}
@@ -177,7 +177,7 @@ export function AddModuleDialogView({
                       <Textarea
                         {...field}
                         placeholder="Detail the scope and objectives of this module..."
-                        className="font-roboto min-h-[120px] resize-none border-2 bg-white text-sm shadow-sm focus-visible:border-indigo-600 focus-visible:ring-indigo-600/20 dark:bg-zinc-900"
+                        className="font-roboto focus-visible:border-primary focus-visible:ring-primary/20 min-h-[120px] resize-none border-2 bg-white text-sm shadow-sm dark:bg-zinc-900"
                         aria-invalid={!!errors.description}
                       />
                     )}
@@ -192,7 +192,7 @@ export function AddModuleDialogView({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="font-roboto h-12 w-full border-2 bg-indigo-600 text-base font-black tracking-wider text-white uppercase shadow-lg shadow-indigo-600/20 transition-all hover:bg-indigo-700 hover:shadow-indigo-600/40 active:scale-[0.98] dark:shadow-none"
+              className="font-roboto bg-primary shadow-primary/20 hover:bg-primary/90 h-12 w-full border-2 text-base font-black tracking-wider text-white uppercase shadow-lg transition-all active:scale-[0.98] dark:shadow-none"
             >
               {isSubmitting ? (
                 'Creating Module...'

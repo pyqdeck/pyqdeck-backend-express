@@ -36,7 +36,7 @@ export function EditSyllabusDialogView({
       <DialogContent className="border-2 shadow-none sm:max-w-[500px]">
         <DialogHeader>
           <div className="mb-2 flex items-center gap-3">
-            <div className="rounded-lg bg-indigo-100 p-2 text-indigo-600">
+            <div className="bg-primary/10 text-primary rounded-lg p-2">
               <Settings2 className="h-5 w-5" />
             </div>
             <DialogTitle className="font-roboto text-xl font-bold">
@@ -60,7 +60,7 @@ export function EditSyllabusDialogView({
                 <Textarea
                   {...field}
                   placeholder="Enter a detailed overview of this syllabus..."
-                  className="font-roboto min-h-[120px] border-2 text-sm focus-visible:ring-indigo-500"
+                  className="font-roboto focus-visible:ring-primary/50 min-h-[120px] border-2 text-sm"
                 />
               )}
             />
@@ -103,7 +103,7 @@ export function EditSyllabusDialogView({
             </Button>
             <Button
               type="submit"
-              className="font-roboto min-w-[120px] bg-indigo-600 font-bold hover:bg-indigo-700"
+              className="font-roboto bg-primary hover:bg-primary/90 min-w-[120px] font-bold"
               disabled={isSubmitting}
             >
               {isSubmitting ? (

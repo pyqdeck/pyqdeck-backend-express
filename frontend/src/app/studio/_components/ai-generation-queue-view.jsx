@@ -86,7 +86,7 @@ export function AiGenerationQueueView({
   }
 
   return (
-    <Card className="border-border/50 border-2 shadow-none transition-all hover:border-purple-500/20">
+    <Card className="border-border/50 hover:border-primary/20 border-2 shadow-none transition-all">
       {header}
       <CardContent className="p-0">
         <Table>
@@ -110,7 +110,7 @@ export function AiGenerationQueueView({
             {questions.map((question) => (
               <TableRow
                 key={question._id}
-                className="group transition-colors hover:bg-purple-500/[0.02]"
+                className="group hover:bg-primary/[0.02] transition-colors"
               >
                 <TableCell className="py-4">
                   <div className="flex items-center gap-3">
@@ -128,7 +128,7 @@ export function AiGenerationQueueView({
                       <Badge
                         key={i}
                         variant="secondary"
-                        className="bg-purple-100/50 text-[10px] text-purple-700 hover:bg-purple-100 dark:bg-purple-900/30 dark:text-purple-400"
+                        className="bg-primary/5 text-primary hover:bg-primary/10 dark:bg-primary/10 dark:text-primary text-[10px]"
                       >
                         {tag}
                       </Badge>
@@ -160,7 +160,7 @@ export function AiGenerationQueueView({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="font-roboto group/btn h-9 gap-2 text-indigo-600 transition-all hover:bg-indigo-100 hover:text-indigo-700 dark:hover:bg-indigo-900/30"
+                    className="font-roboto group/btn text-primary hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/10 h-9 gap-2 transition-all"
                     onClick={() => onGenerate(question)}
                   >
                     <Sparkles className="h-4 w-4 transition-transform group-hover/btn:scale-110" />

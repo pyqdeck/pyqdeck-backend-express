@@ -103,7 +103,7 @@ export function AddTopicDialogView({
                         <Input
                           {...field}
                           type="number"
-                          className="font-roboto h-12 border-2 bg-white text-center text-lg font-bold shadow-sm focus-visible:border-emerald-600 focus-visible:ring-emerald-600/20 dark:bg-zinc-900"
+                          className="font-roboto focus-visible:border-success focus-visible:ring-success/20 h-12 border-2 bg-white text-center text-lg font-bold shadow-sm dark:bg-zinc-900"
                           onChange={(e) =>
                             field.onChange(parseInt(e.target.value) || 0)
                           }
@@ -127,7 +127,7 @@ export function AddTopicDialogView({
                     <Textarea
                       {...field}
                       placeholder="Brief overview of the topic contents..."
-                      className="font-roboto min-h-[100px] resize-none border-2 bg-white text-sm shadow-sm focus-visible:border-emerald-600 focus-visible:ring-emerald-600/20 dark:bg-zinc-900"
+                      className="font-roboto focus-visible:border-success focus-visible:ring-success/20 min-h-[100px] resize-none border-2 bg-white text-sm shadow-sm dark:bg-zinc-900"
                       aria-invalid={!!errors.description}
                     />
                   )}
@@ -141,7 +141,7 @@ export function AddTopicDialogView({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="font-roboto h-12 w-full border-2 bg-emerald-600 text-base font-black tracking-wider text-white uppercase shadow-lg shadow-emerald-600/20 transition-all hover:bg-emerald-700 hover:shadow-emerald-600/40 active:scale-[0.98] dark:shadow-none"
+              className="font-roboto bg-success shadow-success/20 hover:bg-success/90 hover:shadow-success/40 h-12 w-full border-2 text-base font-black tracking-wider text-white uppercase shadow-lg transition-all active:scale-[0.98] dark:shadow-none"
             >
               {isSubmitting ? (
                 'Registering Topic...'

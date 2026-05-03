@@ -261,7 +261,7 @@ export function SyllabusBuilder({
                       <SelectItem
                         key={o.id}
                         value={o.id}
-                        className="font-roboto rounded-lg py-3 focus:bg-indigo-50 focus:text-indigo-900"
+                        className="font-roboto focus:bg-primary/5 focus:text-primary rounded-lg py-3"
                       >
                         <div className="flex items-center gap-2 overflow-hidden">
                           <span className="text-sm font-bold whitespace-nowrap">
@@ -285,7 +285,7 @@ export function SyllabusBuilder({
                     size="lg"
                     onClick={handleInitialize}
                     disabled={loading}
-                    className="font-roboto h-14 bg-indigo-600 px-10 text-sm font-black tracking-wider uppercase shadow-lg shadow-indigo-600/20 transition-all hover:bg-indigo-700 active:scale-[0.98] dark:shadow-none"
+                    className="font-roboto bg-primary shadow-primary/20 hover:bg-primary/90 h-14 px-10 text-sm font-black tracking-wider uppercase shadow-lg transition-all active:scale-[0.98] dark:shadow-none"
                   >
                     {loading ? (
                       'Initializing...'
@@ -358,12 +358,12 @@ export function SyllabusBuilder({
                   .map((mod) => (
                     <Card
                       key={mod.id}
-                      className="group overflow-hidden border-2 p-0 shadow-none transition-all hover:border-indigo-300 dark:hover:border-indigo-800"
+                      className="group hover:border-primary/30 dark:hover:border-primary/50 overflow-hidden border-2 p-0 shadow-none transition-all"
                     >
                       <CardHeader className="bg-muted/30 border-b px-6 py-5">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-4">
-                            <div className="font-roboto flex h-11 w-11 items-center justify-center rounded-xl border-2 bg-white text-xl font-black text-indigo-600 shadow-sm dark:bg-zinc-900 dark:text-indigo-400">
+                            <div className="font-roboto text-primary dark:text-primary flex h-11 w-11 items-center justify-center rounded-xl border-2 bg-white text-xl font-black shadow-sm dark:bg-zinc-900">
                               {mod.moduleNumber}
                             </div>
                             <div className="space-y-0.5">
@@ -405,7 +405,7 @@ export function SyllabusBuilder({
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator className="my-1" />
                                 <DropdownMenuItem
-                                  className="group cursor-pointer rounded-md py-2.5 focus:bg-indigo-50 focus:text-indigo-600"
+                                  className="group focus:bg-primary/5 focus:text-primary cursor-pointer rounded-md py-2.5"
                                   onClick={() => setEditingModule(mod)}
                                 >
                                   <Edit className="mr-3 h-4 w-4" />
@@ -431,7 +431,7 @@ export function SyllabusBuilder({
                       <CardContent className="p-6">
                         <div className="space-y-6">
                           {mod.description && (
-                            <p className="text-muted-foreground font-roboto border-l-4 border-indigo-100 py-1 pl-4 text-sm leading-relaxed italic">
+                            <p className="text-muted-foreground font-roboto border-primary/20 border-l-4 py-1 pl-4 text-sm leading-relaxed italic">
                               {mod.description}
                             </p>
                           )}
@@ -439,7 +439,7 @@ export function SyllabusBuilder({
                           <div className="space-y-4">
                             <div className="flex items-center justify-between">
                               <div className="flex items-center gap-2">
-                                <FileText className="h-4 w-4 text-indigo-600" />
+                                <FileText className="text-primary h-4 w-4" />
                                 <h4 className="font-roboto text-muted-foreground text-xs font-bold tracking-widest uppercase">
                                   Topics / Sub-units
                                 </h4>
@@ -464,10 +464,10 @@ export function SyllabusBuilder({
                                   .map((topic) => (
                                     <div
                                       key={topic.id || topic._id}
-                                      className="group/topic bg-muted/30 flex items-center justify-between rounded-xl border-2 border-transparent p-3 transition-all hover:border-indigo-100 hover:bg-white dark:hover:border-indigo-900 dark:hover:bg-zinc-900"
+                                      className="group/topic bg-muted/30 hover:border-primary/20 dark:hover:border-primary/30 flex items-center justify-between rounded-xl border-2 border-transparent p-3 transition-all hover:bg-white dark:hover:bg-zinc-900"
                                     >
                                       <div className="flex items-center gap-3">
-                                        <div className="rounded-md border bg-white p-1 text-indigo-400 shadow-xs transition-all group-hover/topic:scale-110 group-hover/topic:text-indigo-600 dark:bg-zinc-800">
+                                        <div className="text-primary group-hover/topic:text-primary/70 rounded-md border bg-white p-1 shadow-xs transition-all group-hover/topic:scale-110 dark:bg-zinc-800">
                                           <ChevronRight className="h-3.5 w-3.5" />
                                         </div>
                                         <span className="font-roboto text-sm font-medium">
@@ -490,7 +490,7 @@ export function SyllabusBuilder({
                                             className="font-roboto w-48 border-2 p-2 shadow-xl"
                                           >
                                             <DropdownMenuItem
-                                              className="group cursor-pointer rounded-md py-2 focus:bg-indigo-50 focus:text-indigo-600"
+                                              className="group focus:bg-primary/5 focus:text-primary cursor-pointer rounded-md py-2"
                                               onClick={() =>
                                                 setEditingTopic(topic)
                                               }
@@ -529,11 +529,11 @@ export function SyllabusBuilder({
 
           {/* Sidebar: Syllabus Info */}
           <div className="col-span-12 flex flex-col gap-6 lg:col-span-4">
-            <Card className="sticky top-6 overflow-hidden border-2 p-0 pb-2 shadow-xl shadow-indigo-500/5 dark:shadow-none">
-              <CardHeader className="border-b-2 bg-indigo-50/50 px-5 py-3 dark:bg-indigo-900/10">
+            <Card className="shadow-primary/5 sticky top-6 overflow-hidden border-2 p-0 pb-2 shadow-xl dark:shadow-none">
+              <CardHeader className="bg-primary/5 dark:bg-primary/10 border-b-2 px-5 py-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
-                    <div className="rounded-lg bg-indigo-600 p-1.5 text-white shadow-sm">
+                    <div className="bg-primary rounded-lg p-1.5 text-white shadow-sm">
                       <Settings2 className="h-4 w-4" />
                     </div>
                     <CardTitle className="font-roboto text-lg font-bold">
@@ -543,7 +543,7 @@ export function SyllabusBuilder({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-9 w-9 rounded-full text-indigo-600 transition-colors hover:bg-indigo-100 hover:text-indigo-700"
+                    className="text-primary hover:bg-primary/10 hover:text-primary h-9 w-9 rounded-full transition-colors"
                     onClick={() => setEditingSyllabus(syllabus)}
                   >
                     <Edit className="h-4.5 w-4.5" />
@@ -558,7 +558,7 @@ export function SyllabusBuilder({
                   <div className="font-roboto text-foreground bg-muted/40 group/desc relative rounded-xl border-2 p-4 text-sm leading-relaxed">
                     {syllabus.description ||
                       'No detailed description provided for this curriculum track.'}
-                    <div className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-indigo-400 opacity-0 transition-opacity group-hover/desc:opacity-100" />
+                    <div className="bg-primary absolute top-2 right-2 h-1.5 w-1.5 rounded-full opacity-0 transition-opacity group-hover/desc:opacity-100" />
                   </div>
                 </div>
 
@@ -584,8 +584,8 @@ export function SyllabusBuilder({
                             (acc, m) => acc + (m.weightage || 0),
                             0
                           ) === 100
-                            ? 'text-emerald-600'
-                            : 'text-amber-600'
+                            ? 'text-success'
+                            : 'text-warning'
                         }`}
                       >
                         {modules.reduce(
@@ -598,16 +598,16 @@ export function SyllabusBuilder({
                   </div>
                 </div>
 
-                <div className="rounded-xl border-2 border-indigo-100 bg-indigo-50 p-5 dark:border-indigo-900/30 dark:bg-indigo-900/10">
+                <div className="border-primary/20 bg-primary/5 dark:border-primary/30 dark:bg-primary/10 rounded-xl border-2 p-5">
                   <div className="flex items-center gap-3">
-                    <div className="rounded-lg bg-indigo-600 p-2 text-white">
+                    <div className="bg-primary rounded-lg p-2 text-white">
                       <GraduationCap className="h-5 w-5" />
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-roboto text-xs font-bold tracking-tighter text-indigo-600 uppercase dark:text-indigo-400">
+                      <span className="font-roboto text-primary dark:text-primary text-xs font-bold tracking-tighter uppercase">
                         Academic Status
                       </span>
-                      <span className="font-roboto text-sm font-black text-indigo-900 dark:text-indigo-100">
+                      <span className="font-roboto text-primary/80 dark:text-primary/90 text-sm font-black">
                         {syllabus.isActive
                           ? 'Active Curriculum'
                           : 'Draft / Archived'}

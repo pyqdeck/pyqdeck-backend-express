@@ -116,7 +116,7 @@ export function SemestersTableView({
                 >
                   <TableCell className="py-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-lg border-2 border-blue-200 bg-blue-50 text-blue-600 dark:border-blue-800 dark:bg-blue-900/20 dark:text-blue-400">
+                      <div className="border-info/20 bg-info/5 text-info dark:border-info/30 dark:bg-info/10 dark:text-info flex h-9 w-9 items-center justify-center rounded-lg border-2">
                         <span className="font-roboto text-sm font-bold">
                           {sem.number}
                         </span>
@@ -189,8 +189,8 @@ export function SemestersTableView({
                             href={`/studio/subjects?semesterId=${sem.id}`}
                             className="flex w-full items-center"
                           >
-                            <BookOpen className="text-muted-foreground mr-3 h-4 w-4 transition-colors group-hover:text-emerald-600" />
-                            <span className="font-medium text-emerald-600">
+                            <BookOpen className="text-muted-foreground group-hover:text-success mr-3 h-4 w-4 transition-colors" />
+                            <span className="text-success font-medium">
                               View Subjects
                             </span>
                           </Link>

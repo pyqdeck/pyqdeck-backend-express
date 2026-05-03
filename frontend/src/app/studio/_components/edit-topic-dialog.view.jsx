@@ -112,7 +112,7 @@ export function EditTopicDialogView({ form, onSubmit, open, onOpenChange }) {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="font-roboto h-11 w-full border-2 bg-emerald-600 font-bold shadow-none hover:bg-emerald-700"
+              className="font-roboto bg-success hover:bg-success/90 h-11 w-full border-2 font-bold shadow-none"
             >
               {isSubmitting ? 'Saving...' : 'Update Topic'}
             </Button>
