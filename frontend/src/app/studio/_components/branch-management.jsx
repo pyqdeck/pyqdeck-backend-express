@@ -6,14 +6,10 @@ import { useApi } from '@/hooks/use-api';
 import { BranchesTable } from './branches-table';
 import { AddBranchDialog } from './add-branch-dialog';
 import { StudioSearch } from './studio-search';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
+import { BranchFilters } from './branch-filters';
+import { Plus } from 'lucide-react';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { DropdownAction } from '@/components/dropdown-action';
 
 export function BranchManagement({
   initialBranches = [],
@@ -24,20 +20,7 @@ export function BranchManagement({
   const searchParams = useSearchParams();
   const api = useApi();
 
-  // Sync filters from URL
-  const selectedUniId = searchParams.get('universityId') || 'all';
   const search = searchParams.get('search') || '';
-
-  const handleUniChange = (value) => {
-    const params = new URLSearchParams(searchParams);
-    if (value === 'all') {
-      params.delete('universityId');
-    } else {
-      params.set('universityId', value);
-    }
-    params.set('page', '1');
-    router.push(`?${params.toString()}`);
-  };
 
   const handleAdd = async (data) => {
     const universityId = data.universityId;
@@ -67,39 +50,34 @@ export function BranchManagement({
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <Label className="font-roboto text-xs font-bold tracking-wider uppercase">
-              Institution:
-            </Label>
-            <Select value={selectedUniId} onValueChange={handleUniChange}>
-              <SelectTrigger className="font-roboto w-[180px] border-2 focus:ring-0">
-                <SelectValue placeholder="All Universities" />
-              </SelectTrigger>
-              <SelectContent className="border-2 shadow-none">
-                <SelectItem value="all" className="font-roboto">
-                  All Universities
-                </SelectItem>
-                {universities.map((uni) => (
-                  <SelectItem
-                    key={uni.id}
-                    value={uni.id}
-                    className="font-roboto"
-                  >
-                    {uni.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
           <StudioSearch
             placeholder="Search branches..."
             initialValue={search}
           />
-          <AddBranchDialog
-            universities={universities}
-            defaultUniversityId={selectedUniId !== 'all' ? selectedUniId : ''}
-            onAdd={handleAdd}
-          />
+          <BranchFilters universities={universities} />
+          <DropdownAction label="Management" tooltip="Branch Actions">
+            <AddBranchDialog
+              universities={universities}
+              defaultUniversityId={selectedUniId !== 'all' ? selectedUniId : ''}
+              onAdd={handleAdd}
+              trigger={
+                <DropdownMenuItem
+                  onSelect={(e) => e.preventDefault()}
+                  className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
+                >
+                  <Plus className="text-muted-foreground group-hover:text-primary mr-3 size-4 transition-colors" />
+                  <span className="font-medium">Add New Branch</span>
+                </DropdownMenuItem>
+              }
+            />
+            <DropdownMenuItem
+              className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
+              onClick={() => router.refresh()}
+            >
+              <RefreshCcw className="text-muted-foreground group-hover:text-success mr-3 size-4 transition-colors" />
+              <span className="font-medium">Refresh Data</span>
+            </DropdownMenuItem>
+          </DropdownAction>
         </div>
       </div>
 

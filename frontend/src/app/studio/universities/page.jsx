@@ -1,7 +1,6 @@
 import { getApiServer } from '@/lib/api-server';
-import { AddUniversityDialog } from '../_components/add-university-dialog';
 import { UniversitiesTable } from '../_components/universities-table';
-import { StudioSearch } from '../_components/studio-search';
+import { UniversitiesHeaderActions } from '../_components/universities-header-actions';
 
 export default async function UniversitiesPage({ searchParams }) {
   const api = await getApiServer();
@@ -10,6 +9,7 @@ export default async function UniversitiesPage({ searchParams }) {
   const search = resolvedSearchParams?.search || '';
   const page = parseInt(resolvedSearchParams?.page || '1', 10);
   const limit = parseInt(resolvedSearchParams?.limit || '10', 10);
+  const isActive = resolvedSearchParams?.isActive || 'all';
 
   let universities = [];
   let pagination = { total: 0, pages: 1, current: 1 };
@@ -18,7 +18,8 @@ export default async function UniversitiesPage({ searchParams }) {
     const res = await api.universities.listUniversities({
       page,
       limit,
-      isActive: 'all',
+      search,
+      isActive,
     });
     universities = res.data.data.items || [];
     const backendPagination = res.data.data.pagination;
@@ -44,13 +45,7 @@ export default async function UniversitiesPage({ searchParams }) {
             Manage institution profiles and academic settings.
           </p>
         </div>
-        <div className="flex items-center gap-3">
-          <StudioSearch
-            placeholder="Search universities..."
-            initialValue={search}
-          />
-          <AddUniversityDialog />
-        </div>
+        <UniversitiesHeaderActions search={search} />
       </div>
 
       <UniversitiesTable

@@ -27,8 +27,7 @@ const universitySchema = z.object({
   logo: z.string().url('Must be a valid URL').optional().or(z.literal('')),
   description: z.string().optional(),
 });
-
-export function AddUniversityDialog() {
+export function AddUniversityDialog({ trigger }) {
   const [open, setOpen] = React.useState(false);
   const api = useApi();
   const router = useRouter();
@@ -65,6 +64,7 @@ export function AddUniversityDialog() {
       onOpenChange={setOpen}
       form={form}
       onSubmit={onSubmit}
+      trigger={trigger}
     />
   );
 }

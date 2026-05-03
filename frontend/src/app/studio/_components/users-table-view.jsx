@@ -313,7 +313,7 @@ export function UsersTableView({
         </Link>
       </div>
 
-      <Card className="border-border/50 overflow-hidden border-2 shadow-none p-0">
+      <Card className="border-border/50 overflow-hidden border-2 p-0 shadow-none">
         <CardContent className="p-0">
           <Table>
             <TableHeader>
@@ -525,7 +525,7 @@ export function UsersTableView({
         </CardContent>
 
         {pagination && pagination.pages >= 1 && (
-          <CardFooter className="border-t-2 ">
+          <CardFooter className="border-t-2">
             {pagination.pages > 1 && (
               <Pagination className="mx-0 w-auto justify-start">
                 <PaginationContent>
@@ -591,7 +591,7 @@ export function UsersTableView({
               </Pagination>
             )}
 
-            <div className="ml-auto flex items-center gap-3 ">
+            <div className="ml-auto flex items-center gap-3">
               <span className="text-muted-foreground font-roboto text-sm">
                 Showing{' '}
                 <span className="text-foreground font-bold">

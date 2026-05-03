@@ -29,13 +29,16 @@ export function AddUniversityDialogView({
   onOpenChange,
   form,
   onSubmit,
+  trigger,
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button className="font-roboto font-semibold">
-          <Plus className="h-4 w-4" /> Add University
-        </Button>
+        {trigger || (
+          <Button className="font-roboto font-semibold">
+            <Plus className="h-4 w-4 bg-red-900" /> Add University
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="font-roboto border-2 pb-0 shadow-none sm:max-w-[500px]">
         <DialogHeader>
@@ -46,31 +49,27 @@ export function AddUniversityDialogView({
             Register a new institution in the PyqDeck database.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 py-4">
           <FieldGroup>
+            <Controller
+              name="name"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>University Name</FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    placeholder="University of Mumbai"
+                    className="border-2 focus-visible:ring-0"
+                  />
+                  <FieldError errors={[fieldState.error]} />
+                </Field>
+              )}
+            />
+
             <div className="grid grid-cols-2 gap-4">
-              <Controller
-                name="name"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field
-                    data-invalid={fieldState.invalid}
-                    className="col-span-2"
-                  >
-                    <FieldLabel htmlFor={field.name}>
-                      University Name
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id={field.name}
-                      aria-invalid={fieldState.invalid}
-                      placeholder="University of Mumbai"
-                      className="border-2 focus-visible:ring-0"
-                    />
-                    <FieldError errors={[fieldState.error]} />
-                  </Field>
-                )}
-              />
               <Controller
                 name="shortName"
                 control={form.control}
@@ -105,6 +104,9 @@ export function AddUniversityDialogView({
                   </Field>
                 )}
               />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
               <Controller
                 name="state"
                 control={form.control}

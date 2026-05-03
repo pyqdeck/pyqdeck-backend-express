@@ -27,6 +27,10 @@ const updateUniversitySchema = universityZodSchema.partial();
  *         name: limit
  *         schema: { type: integer, default: 20 }
  *       - in: query
+ *         name: search
+ *         schema: { type: string }
+ *         description: Search by university name or short name
+ *       - in: query
  *         name: isActive
  *         schema: { type: string, enum: [true, all] }
  *     responses:

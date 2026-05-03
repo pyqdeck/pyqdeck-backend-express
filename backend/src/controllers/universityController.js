@@ -5,14 +5,8 @@ import { successFormatter, catchAsync } from '../utils/index.js';
  * GET /api/v1/universities
  */
 export const list = catchAsync(async (req, res, next) => {
-  const filter = {};
-  // Allow filtering by active status (default: only active)
-  if (req.query.isActive !== 'all') {
-    filter.isActive = true;
-  }
-
   const { items, total, page, limit } = await universityService.list(
-    filter,
+    req.query,
     req.pagination
   );
   res.json(

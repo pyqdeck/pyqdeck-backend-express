@@ -1,6 +1,13 @@
 'use client';
 
 import * as React from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
+import { DropdownAction } from '@/components/dropdown-action';
+import {
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
 import {
   MoreVertical,
   Edit2,
@@ -8,7 +15,9 @@ import {
   Trash2,
   GraduationCap,
   Layers,
+  Search,
 } from 'lucide-react';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -17,10 +26,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty';
 import {
   Pagination,
   PaginationContent,
@@ -30,16 +45,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 
 export function UniversitiesTableView({
   universities,
@@ -49,6 +54,15 @@ export function UniversitiesTableView({
 }) {
   const searchParams = useSearchParams();
   const search = searchParams.get('search') || '';
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const clearSearch = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete('search');
+    params.set('page', '1');
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   return (
     <Card className="border-border/50 overflow-hidden border-2 py-0 shadow-none">
@@ -60,10 +74,7 @@ export function UniversitiesTableView({
                 Institution
               </TableHead>
               <TableHead className="text-foreground font-roboto h-12 px-6 font-bold">
-                State
-              </TableHead>
-              <TableHead className="text-foreground font-roboto h-12 px-6 font-bold">
-                Country
+                Location
               </TableHead>
               <TableHead className="text-foreground font-roboto h-12 px-6 font-bold">
                 Status
@@ -76,142 +87,171 @@ export function UniversitiesTableView({
           <TableBody>
             {universities.length === 0 ? (
               <TableRow>
-                <TableCell
-                  colSpan={5}
-                  className="text-muted-foreground font-roboto h-48 text-center italic"
-                >
-                  {search
-                    ? 'No universities match your search.'
-                    : 'No universities found. Add your first institution to get started!'}
+                <TableCell colSpan={4} className="h-72 p-0">
+                  <Empty className="border-0 shadow-none">
+                    <EmptyHeader>
+                      <EmptyMedia variant="icon">
+                        <Search className="size-4" />
+                      </EmptyMedia>
+                      <EmptyTitle className="text-lg">
+                        {search
+                          ? 'No matching universities'
+                          : 'No universities found'}
+                      </EmptyTitle>
+                      <EmptyDescription>
+                        {search
+                          ? `We couldn't find any results for "${search}". Try adjusting your filters or search term.`
+                          : 'Add your first institution to start managing your academic database.'}
+                      </EmptyDescription>
+                    </EmptyHeader>
+                    {search && (
+                      <Button
+                        variant="outline"
+                        onClick={clearSearch}
+                        className="mt-2 border-2"
+                      >
+                        Clear Search
+                      </Button>
+                    )}
+                  </Empty>
                 </TableCell>
               </TableRow>
             ) : (
               universities.map((uni) => (
                 <TableRow key={uni.id} className="group border-b">
-                  <TableCell className="px-6 py-3">
+                  <TableCell className="px-6 py-4">
                     <div className="flex items-center gap-4">
-                      <Avatar className="border-muted bg-muted/50 h-12 w-12 rounded-lg border-2 after:rounded-lg">
+                      <Avatar className="border-muted bg-muted/50 size-12 rounded-lg border-2 after:rounded-lg">
                         <AvatarImage
                           src={uni.logo}
                           alt={uni.name}
-                          className="rounded-lg"
+                          className="rounded-lg object-contain"
                         />
-                        <AvatarFallback className="rounded-lg">
+                        <AvatarFallback className="rounded-lg text-lg font-bold">
                           {uni.name.charAt(0)}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col">
-                        <span className="text-foreground group-hover:text-primary font-roboto flex cursor-pointer items-center gap-1 font-bold transition-colors">
+                        <span className="text-foreground group-hover:text-primary font-roboto flex items-center gap-1.5 font-bold transition-colors">
                           {uni.name}
-                          <ExternalLink className="h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100" />
+                          {uni.websiteUrl && (
+                            <Link
+                              href={uni.websiteUrl}
+                              target="_blank"
+                              className="text-muted-foreground hover:text-primary transition-colors"
+                            >
+                              <ExternalLink className="size-3" />
+                            </Link>
+                          )}
                         </span>
-                        <span className="text-muted-foreground font-roboto text-xs lowercase">
-                          /{uni.slug}
-                        </span>
+                        <div className="flex items-center gap-2 leading-none">
+                          <span className="text-muted-foreground font-roboto text-[10px] font-bold tracking-wider uppercase">
+                            {uni.shortName}
+                          </span>
+                          <span className="text-muted-foreground/30">•</span>
+                          <span className="text-muted-foreground font-roboto text-xs lowercase">
+                            /{uni.slug}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="px-6 py-3">
-                    <div className="text-foreground font-roboto text-sm font-medium">
-                      {uni.state || 'N/A'}
+                  <TableCell className="px-6 py-4">
+                    <div className="flex flex-col">
+                      <span className="text-foreground font-roboto text-sm font-semibold">
+                        {uni.state || 'N/A'}
+                      </span>
+                      <span className="text-muted-foreground font-roboto text-xs">
+                        {uni.country || 'India'}
+                      </span>
                     </div>
                   </TableCell>
-                  <TableCell className="px-6 py-3">
-                    <div className="text-muted-foreground font-roboto flex items-center gap-2 text-sm">
-                      {uni.country || 'India'}
-                    </div>
-                  </TableCell>
-                  <TableCell className="px-6 py-3">
+                  <TableCell className="px-6 py-4">
                     <Badge
                       variant={uni.isActive !== false ? 'default' : 'secondary'}
                       className={`font-roboto rounded-full px-2.5 py-0.5 font-semibold ${
                         uni.isActive !== false
-                          ? 'bg-success/10 text-success hover:bg-success/10 dark:bg-success/10 dark:text-success'
+                          ? 'bg-success/10 text-success hover:bg-success/10'
                           : 'bg-muted text-muted-foreground'
                       }`}
                     >
                       {uni.isActive !== false ? 'Active' : 'Inactive'}
                     </Badge>
                   </TableCell>
-                  <TableCell className="px-6 py-3 text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
+                  <TableCell className="px-6 py-4 text-right">
+                    <DropdownAction
+                      label="Management"
+                      trigger={
                         <Button
                           variant="ghost"
-                          className="hover:bg-muted/50 h-9 w-9 border-2 p-0 transition-colors"
+                          className="hover:bg-muted/50 size-9 border-2 p-0 transition-colors"
                         >
                           <span className="sr-only">Open menu</span>
-                          <MoreVertical className="h-4 w-4" />
+                          <MoreVertical className="size-4" />
                         </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent
-                        align="end"
-                        className="font-roboto w-56 border-2 p-2 shadow-none"
+                      }
+                    >
+                      <DropdownMenuItem
+                        className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
+                        onClick={() => onEdit(uni)}
                       >
-                        <DropdownMenuLabel className="text-muted-foreground px-2 py-1.5 text-xs font-semibold tracking-wider uppercase">
-                          Management
-                        </DropdownMenuLabel>
-                        <DropdownMenuSeparator className="my-1 border-b" />
-                        <DropdownMenuItem
-                          className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
-                          onClick={() => onEdit(uni)}
-                        >
-                          <Edit2 className="text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors" />
-                          <span className="font-medium">Edit University</span>
-                        </DropdownMenuItem>
+                        <Edit2 className="text-muted-foreground group-hover:text-primary mr-3 size-4 transition-colors" />
+                        <span className="font-medium">Edit University</span>
+                      </DropdownMenuItem>
+                      {uni.websiteUrl && (
                         <DropdownMenuItem
                           asChild
                           className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
                         >
                           <Link
-                            href={uni.websiteUrl || '#'}
+                            href={uni.websiteUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex w-full items-center"
                           >
-                            <ExternalLink className="text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors" />
+                            <ExternalLink className="text-muted-foreground group-hover:text-primary mr-3 size-4 transition-colors" />
                             <span className="font-medium">Visit Website</span>
                           </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuSeparator className="my-1 border-b" />
-                        <DropdownMenuItem
-                          asChild
-                          className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
+                      )}
+                      <DropdownMenuSeparator className="my-1 border-b" />
+                      <DropdownMenuItem
+                        asChild
+                        className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
+                      >
+                        <Link
+                          href={`/studio/branches?universityId=${uni.id}`}
+                          className="flex w-full items-center"
                         >
-                          <Link
-                            href={`/studio/branches?universityId=${uni.id}`}
-                            className="flex w-full items-center"
-                          >
-                            <Layers className="text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors" />
-                            <span className="text-primary font-medium">
-                              View Branches
-                            </span>
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          asChild
-                          className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
+                          <Layers className="text-muted-foreground group-hover:text-primary mr-3 size-4 transition-colors" />
+                          <span className="text-primary font-medium">
+                            View Branches
+                          </span>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        asChild
+                        className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
+                      >
+                        <Link
+                          href={`/studio/semesters?universityId=${uni.id}`}
+                          className="flex w-full items-center"
                         >
-                          <Link
-                            href={`/studio/semesters?universityId=${uni.id}`}
-                            className="flex w-full items-center"
-                          >
-                            <GraduationCap className="text-muted-foreground group-hover:text-warning mr-3 h-4 w-4 transition-colors" />
-                            <span className="text-warning font-medium">
-                              View Semesters
-                            </span>
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator className="my-1 border-b" />
-                        <DropdownMenuItem
-                          className="text-destructive focus:text-destructive focus:bg-destructive/5 group cursor-pointer rounded-md py-2.5"
-                          onClick={() => onDelete(uni)}
-                        >
-                          <Trash2 className="text-destructive/70 group-hover:text-destructive mr-3 h-4 w-4 transition-colors" />
-                          <span className="font-bold">Delete Institution</span>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                          <GraduationCap className="text-muted-foreground group-hover:text-warning mr-3 size-4 transition-colors" />
+                          <span className="text-warning font-medium">
+                            View Semesters
+                          </span>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator className="my-1 border-b" />
+                      <DropdownMenuItem
+                        className="text-destructive focus:text-destructive focus:bg-destructive/5 group cursor-pointer rounded-md py-2.5"
+                        onClick={() => onDelete(uni)}
+                      >
+                        <Trash2 className="text-destructive/70 group-hover:text-destructive mr-3 size-4 transition-colors" />
+                        <span className="font-bold">Delete Institution</span>
+                      </DropdownMenuItem>
+                    </DropdownAction>
                   </TableCell>
                 </TableRow>
               ))

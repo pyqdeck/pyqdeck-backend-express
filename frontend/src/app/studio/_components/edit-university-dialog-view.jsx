@@ -39,30 +39,26 @@ export function EditUniversityDialogView({
             Update the institution profile for {university?.name}.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 py-4">
           <FieldGroup>
+            <Controller
+              name="name"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>University Name</FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    className="border-2 focus-visible:ring-0"
+                  />
+                  <FieldError errors={[fieldState.error]} />
+                </Field>
+              )}
+            />
+
             <div className="grid grid-cols-2 gap-4">
-              <Controller
-                name="name"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field
-                    data-invalid={fieldState.invalid}
-                    className="col-span-2"
-                  >
-                    <FieldLabel htmlFor={field.name}>
-                      University Name
-                    </FieldLabel>
-                    <Input
-                      {...field}
-                      id={field.name}
-                      aria-invalid={fieldState.invalid}
-                      className="border-2 focus-visible:ring-0"
-                    />
-                    <FieldError errors={[fieldState.error]} />
-                  </Field>
-                )}
-              />
               <Controller
                 name="shortName"
                 control={form.control}
@@ -95,6 +91,9 @@ export function EditUniversityDialogView({
                   </Field>
                 )}
               />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
               <Controller
                 name="state"
                 control={form.control}

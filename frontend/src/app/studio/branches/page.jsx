@@ -9,6 +9,7 @@ export default async function BranchesPage({ searchParams }) {
   const page = parseInt(resolvedSearchParams?.page || '1', 10);
   const limit = parseInt(resolvedSearchParams?.limit || '10', 10);
   const universityId = resolvedSearchParams?.universityId;
+  const isActive = resolvedSearchParams?.isActive || 'all';
 
   let initialBranches = [];
   let universities = [];
@@ -24,6 +25,7 @@ export default async function BranchesPage({ searchParams }) {
       page,
       limit,
       search,
+      isActive,
       universityId: universityId === 'all' ? undefined : universityId,
     });
 

@@ -42,8 +42,12 @@ export function AddBranchDialogView({
     <Dialog open={open} onOpenChange={onOpenChange}>
       {trigger && (
         <DialogTrigger asChild>
-          <Button className="font-roboto border-2 font-bold shadow-none">
-            <Plus className="h-4 w-4" /> Add Branch
+          <Button
+            variant="none"
+            className="font-roboto hover:bg-primary hover:text-primary-foreground flex w-full items-center justify-start gap-2 border-2 px-4 py-2 font-bold shadow-none transition-colors"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Add Branch</span>
           </Button>
         </DialogTrigger>
       )}

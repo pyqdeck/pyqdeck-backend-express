@@ -15,11 +15,19 @@ export function StudioSearch({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const urlValue = searchParams.get(paramName) || '';
+
+  // Sync local value with URL
+  React.useEffect(() => {
+    setValue(urlValue);
+  }, [urlValue]);
 
   // Debounced URL update
   React.useEffect(() => {
     const handler = setTimeout(() => {
       const params = new URLSearchParams(searchParams.toString());
+
+      if (value === urlValue) return;
 
       if (value) {
         params.set(paramName, value);
@@ -30,14 +38,11 @@ export function StudioSearch({
       // Always reset to page 1 on search
       params.set('page', '1');
 
-      const currentParamValue = searchParams.get(paramName) || '';
-      if (params.get(paramName) !== currentParamValue) {
-        router.push(`${pathname}?${params.toString()}`);
-      }
+      router.push(`${pathname}?${params.toString()}`);
     }, 500);
 
     return () => clearTimeout(handler);
-  }, [value, paramName, pathname, router, searchParams]);
+  }, [value, paramName, pathname, router, searchParams, urlValue]);
 
   return (
     <div className={`relative ${className}`}>
