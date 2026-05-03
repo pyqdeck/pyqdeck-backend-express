@@ -129,7 +129,7 @@ export function SystemInfoCardView({ health, isRefreshing, onRefresh }) {
 
         <div className="text-muted-foreground flex justify-between border-t pt-2 text-[10px]">
           <span>Last Check</span>
-          <span>
+          <span suppressHydrationWarning>
             {health?.timestamp
               ? new Date(health.timestamp).toLocaleString()
               : 'Never'}
