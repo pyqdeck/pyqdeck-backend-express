@@ -5,7 +5,6 @@ import {
   Trash2,
   MoreVertical,
   BookOpen,
-  Search,
   Calendar,
   Layers,
   GraduationCap,
@@ -28,14 +27,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import {
   Pagination,
   PaginationContent,
@@ -47,20 +39,18 @@ import {
 } from '@/components/ui/pagination';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export function OfferingsTableView({
   offerings = [],
   pagination,
   search,
-  onSearchChange,
   onDelete,
   loading = false,
 }) {
   if (loading) {
     return (
-      <Card className="border-border/50 border-2 shadow-none">
+      <Card className="border-border/50 border-2 shadow-none p-0">
         <CardHeader className="pb-3">
           <Skeleton className="mb-2 h-8 w-48" />
           <Skeleton className="h-4 w-64" />
@@ -104,30 +94,9 @@ export function OfferingsTableView({
   }
 
   return (
-    <Card className="border-border/50 border-2 shadow-none">
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="font-roboto text-xl">
-              Subject Delivery
-            </CardTitle>
-            <CardDescription className="font-roboto">
-              Active mappings between subjects and academic tracks.
-            </CardDescription>
-          </div>
-          <div className="relative w-72">
-            <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-            <Input
-              placeholder="Filter offerings..."
-              className="font-roboto border-2 pl-9 focus-visible:ring-0"
-              value={search}
-              onChange={(e) => onSearchChange?.(e.target.value)}
-            />
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <Table>
+    <Card className="border-border/50 border-2 shadow-none p-0">
+      <CardContent className="overflow-x-auto p-0">
+        <Table className="min-w-[480px]">
           <TableHeader>
             <TableRow className="text-muted-foreground border-b-2 text-xs font-bold tracking-wider uppercase hover:bg-transparent">
               <TableHead className="text-foreground w-[300px] font-bold">
@@ -136,10 +105,10 @@ export function OfferingsTableView({
               <TableHead className="text-foreground font-bold">
                 Hierarchy
               </TableHead>
-              <TableHead className="text-foreground font-bold">
+              <TableHead className="text-foreground hidden font-bold sm:table-cell">
                 Regulation
               </TableHead>
-              <TableHead className="text-foreground font-bold">
+              <TableHead className="text-foreground hidden font-bold sm:table-cell">
                 Academic Year
               </TableHead>
               <TableHead className="text-foreground w-[100px] text-right text-xs font-bold tracking-widest uppercase">
@@ -170,8 +139,8 @@ export function OfferingsTableView({
                       <div className="border-success/20 bg-success/5 text-success dark:border-success/30 dark:bg-success/10 dark:text-success flex h-10 w-10 items-center justify-center rounded-xl border-2 transition-transform group-hover:scale-110">
                         <BookOpen className="h-5 w-5" />
                       </div>
-                      <div className="flex flex-col">
-                        <span className="font-roboto text-foreground group-hover:text-primary cursor-pointer font-bold transition-colors">
+                      <div className="flex min-w-0 flex-col">
+                        <span className="font-roboto text-foreground group-hover:text-primary cursor-pointer truncate font-bold transition-colors">
                           {offering.subjectId?.name || 'Unknown Subject'}
                         </span>
                         <span className="text-muted-foreground font-roboto text-xs italic">
@@ -204,7 +173,7 @@ export function OfferingsTableView({
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden sm:table-cell">
                     <Badge
                       variant="outline"
                       className="bg-muted/30 border-primary/20 text-primary dark:border-primary/30 dark:text-primary border-2 font-mono font-bold"
@@ -212,7 +181,7 @@ export function OfferingsTableView({
                       {offering.regulation || 'General'}
                     </Badge>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="hidden sm:table-cell">
                     <div className="font-roboto flex items-center gap-2 text-sm font-medium">
                       <Calendar className="text-muted-foreground h-4 w-4" />
                       {offering.academicYear || 'Ongoing'}
@@ -264,7 +233,7 @@ export function OfferingsTableView({
         </Table>
       </CardContent>
       {pagination && pagination.pages > 1 && (
-        <CardFooter className="border-t-2 pt-6">
+        <CardFooter className="flex-col items-start gap-4 border-t-2 pt-6 sm:flex-row sm:items-center">
           <Pagination className="mx-0 w-auto justify-start">
             <PaginationContent>
               <PaginationItem>

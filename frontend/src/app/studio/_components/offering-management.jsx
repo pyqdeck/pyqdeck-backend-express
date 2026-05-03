@@ -6,6 +6,7 @@ import { useApi } from '@/hooks/use-api';
 import { OfferingsTable } from './offerings-table';
 import { AddOfferingDialog } from './add-offering-dialog';
 import { OfferingFilters } from './offering-filters';
+import { StudioSearch } from './studio-search';
 import { Plus } from 'lucide-react';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { DropdownAction } from '@/components/dropdown-action';
@@ -24,17 +25,6 @@ export function OfferingManagement({
 
   const search = searchParams.get('q') || '';
 
-  const handleSearchChange = (value) => {
-    const params = new URLSearchParams(searchParams);
-    if (value) {
-      params.set('q', value);
-    } else {
-      params.delete('q');
-    }
-    params.set('page', '1');
-    router.push(`?${params.toString()}`);
-  };
-
   const handleAdd = async (data) => {
     await api.subjectOfferings.createSubjectOffering(data);
     router.refresh();
@@ -47,7 +37,7 @@ export function OfferingManagement({
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex flex-col gap-1">
           <h1 className="font-roboto text-foreground text-3xl font-bold tracking-tight">
             Subject Offerings
@@ -56,7 +46,12 @@ export function OfferingManagement({
             Deploy subjects to specific semesters and academic tracks.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex w-full items-center gap-2 sm:w-auto sm:gap-3">
+          <StudioSearch
+            placeholder="Search offerings..."
+            paramName="q"
+            initialValue={search}
+          />
           <OfferingFilters
             universities={universities}
             branches={branches}
@@ -87,7 +82,6 @@ export function OfferingManagement({
         offerings={initialOfferings}
         pagination={pagination}
         search={search}
-        onSearchChange={handleSearchChange}
         onDelete={handleDelete}
       />
     </div>

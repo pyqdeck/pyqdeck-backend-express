@@ -134,7 +134,7 @@ export function SyllabusManagement({
   return (
     <div className="flex flex-col gap-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex flex-col gap-1">
           <h1 className="font-roboto text-foreground text-3xl font-bold tracking-tight">
             Syllabus Builder
@@ -143,7 +143,7 @@ export function SyllabusManagement({
             Design and structure curriculum modules and learning topics.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2">
           {/* Offering Filter */}
           <div className="flex items-center gap-2">
             <Label className="font-roboto text-muted-foreground text-[10px] font-bold tracking-widest uppercase">
@@ -153,7 +153,7 @@ export function SyllabusManagement({
               value={currentOfferingId || ''}
               onValueChange={handleOfferingChange}
             >
-              <SelectTrigger className="font-roboto w-[200px] border-2 text-xs focus:ring-0">
+              <SelectTrigger className="font-roboto w-[180px] border-2 text-xs focus:ring-0 sm:w-[200px]">
                 <SelectValue placeholder="Select Offering" />
               </SelectTrigger>
               <SelectContent className="border-2 shadow-none">
@@ -171,7 +171,7 @@ export function SyllabusManagement({
           </div>
 
           {/* Search */}
-          <div className="relative w-64">
+          <div className="relative w-full sm:w-56">
             <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
             <Input
               placeholder="Search offerings..."
@@ -186,7 +186,7 @@ export function SyllabusManagement({
             <Button
               onClick={handleInitializeSyllabus}
               disabled={loading}
-              className="font-roboto bg-primary hover:bg-primary/90 border-2 font-bold shadow-none"
+              className="font-roboto bg-primary hover:bg-primary/90 w-full border-2 font-bold shadow-none sm:w-auto"
             >
               {loading ? (
                 <>
@@ -207,7 +207,7 @@ export function SyllabusManagement({
             <Button
               onClick={() => setEditingSyllabus(syllabus)}
               variant="outline"
-              className="font-roboto border-2 font-bold"
+              className="font-roboto w-full border-2 font-bold sm:w-auto"
             >
               Edit Syllabus
             </Button>

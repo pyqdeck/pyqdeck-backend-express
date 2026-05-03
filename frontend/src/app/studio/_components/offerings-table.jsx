@@ -7,7 +7,6 @@ export function OfferingsTable({
   offerings = [],
   pagination,
   search,
-  onSearchChange,
   onDelete,
   loading = false,
 }) {
@@ -16,7 +15,6 @@ export function OfferingsTable({
       offerings={offerings}
       pagination={pagination}
       search={search}
-      onSearchChange={onSearchChange}
       loading={loading}
       onDelete={onDelete}
     />

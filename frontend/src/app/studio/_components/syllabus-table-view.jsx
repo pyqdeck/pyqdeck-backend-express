@@ -68,7 +68,7 @@ export function SyllabusTableView({
   return (
     <Card className="border-border/50 border-2 shadow-none">
       <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <div className="mb-2 flex items-center gap-3">
               <CardTitle className="font-roboto text-xl">
@@ -89,7 +89,7 @@ export function SyllabusTableView({
             <CardDescription className="font-roboto">
               {syllabus?.description || 'No description provided.'}
             </CardDescription>
-            <div className="mt-3 flex items-center gap-4">
+            <div className="mt-3 flex flex-wrap items-center gap-4">
               <span className="text-muted-foreground text-xs font-medium">
                 <strong className="text-foreground">
                   {sortedModules.length}
@@ -117,20 +117,20 @@ export function SyllabusTableView({
           </div>
         </div>
       </CardHeader>
-      <CardContent>
-        <Table>
+      <CardContent className="overflow-x-auto p-0 sm:p-6">
+        <Table className="min-w-[500px]">
           <TableHeader>
             <TableRow className="border-b-2 hover:bg-transparent">
               <TableHead className="font-roboto text-foreground font-bold tracking-wider uppercase">
                 Module / Topic
               </TableHead>
-              <TableHead className="font-roboto text-foreground font-bold tracking-wider uppercase">
+              <TableHead className="font-roboto text-foreground hidden font-bold tracking-wider uppercase sm:table-cell">
                 Description
               </TableHead>
               <TableHead className="font-roboto text-foreground text-center font-bold tracking-wider uppercase">
                 Weightage
               </TableHead>
-              <TableHead className="font-roboto text-foreground font-bold tracking-wider uppercase">
+              <TableHead className="font-roboto text-foreground hidden font-bold tracking-wider uppercase sm:table-cell">
                 CO Mapping
               </TableHead>
               <TableHead className="text-foreground w-[100px] text-right font-bold">
