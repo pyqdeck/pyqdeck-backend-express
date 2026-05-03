@@ -3124,6 +3124,95 @@ export class Api<
         format: "json",
         ...params,
       }),
+
+    /**
+ * No description
+ *
+ * @tags Users
+ * @name ListUsers
+ * @summary List all users (Admin only)
+ * @request GET:/users
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: {
+    items?: (User)[],
+    total?: number,
+    page?: number,
+    limit?: number,
+
+},
+
+})` List of users with pagination
+ */
+    listUsers: (
+      query?: {
+        role?: "admin" | "editor" | "normal";
+        search?: string;
+        /** @default 1 */
+        page?: number;
+        /** @default 10 */
+        limit?: number;
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            items?: User[];
+            total?: number;
+            page?: number;
+            limit?: number;
+          };
+        },
+        any
+      >({
+        path: `/users`,
+        method: "GET",
+        query: query,
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Users
+ * @name UpdateUser
+ * @summary Update a user (Admin only)
+ * @request PATCH:/users/{clerkId}
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: {
+    user?: User,
+
+},
+
+})` User updated successfully
+ */
+    updateUser: (
+      clerkId: string,
+      data: {
+        role?: "admin" | "editor" | "normal";
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            user?: User;
+          };
+        },
+        any
+      >({
+        path: `/users/${clerkId}`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
   };
   webhooks = {
     /**

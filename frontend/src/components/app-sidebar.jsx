@@ -98,7 +98,7 @@ const navData = {
   ],
   security: [
     {
-      title: 'User List',
+      title: 'User Directory',
       url: '/studio/users',
       icon: <UsersIcon />,
     },

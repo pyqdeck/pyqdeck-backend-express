@@ -100,6 +100,32 @@ class UserRepository {
 
     return results[0] || { bookmarksCount: 0, solutionsCount: 0 };
   }
+
+  async list(filter = {}, pagination = { page: 1, limit: 10 }) {
+    const { page, limit } = pagination;
+    const skip = (page - 1) * limit;
+
+    const query = {};
+    if (filter.role) query.role = filter.role;
+    if (filter.search) {
+      query.$or = [
+        { name: { $regex: filter.search, $options: 'i' } },
+        { email: { $regex: filter.search, $options: 'i' } },
+      ];
+    }
+
+    const [items, total] = await Promise.all([
+      User.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+      User.countDocuments(query),
+    ]);
+
+    return {
+      items,
+      total,
+      page,
+      limit,
+    };
+  }
 }
 
 export const userRepository = new UserRepository();

@@ -88,12 +88,16 @@ async function syncClerkUsers() {
         [clerkUser.first_name, clerkUser.last_name].filter(Boolean).join(' ') ||
         email;
 
+      // Extract image URL for sync
+      const avatarUrl = clerkUser.image_url || null;
+
       await User.findOneAndUpdate(
         { clerkId: clerkUser.id },
         {
           clerkId: clerkUser.id,
           name: name,
           email: email,
+          avatarUrl: avatarUrl,
         },
         { upsert: true, new: true, setDefaultsOnInsert: true }
       );

@@ -29,6 +29,11 @@ import { z } from 'zod';
  *           format: email
  *           description: The email of the user
  *           example: "john.doe@example.com"
+ *         avatarUrl:
+ *           type: string
+ *           nullable: true
+ *           description: The profile image URL from Clerk
+ *           example: "https://img.clerk.com/..."
  *         universityId:
  *           type: string
  *           nullable: true
@@ -81,6 +86,10 @@ const userSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
+    },
+    avatarUrl: {
+      type: String,
+      default: null,
     },
     universityId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -137,6 +146,7 @@ export const userZodSchema = z.object({
   clerkId: z.string().min(1, 'Clerk ID is required'),
   name: z.string().min(1, 'Name is required').max(100),
   email: z.string().email('Invalid email address'),
+  avatarUrl: z.string().url().nullable().optional(),
   role: UserRole.optional(),
   universityId: z.string().nullable().optional(),
   branchId: z.string().nullable().optional(),

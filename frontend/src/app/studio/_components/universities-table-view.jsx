@@ -119,8 +119,12 @@ export function UniversitiesTableView({
                 <TableRow key={uni.id} className="group border-b">
                   <TableCell className="py-4">
                     <div className="flex items-center gap-4">
-                      <Avatar className="border-muted bg-muted/50 h-12 w-12 rounded-lg border-2">
-                        <AvatarImage src={uni.logo} alt={uni.name} />
+                      <Avatar className="border-muted bg-muted/50 h-12 w-12 rounded-lg border-2 after:rounded-lg">
+                        <AvatarImage
+                          src={uni.logo}
+                          alt={uni.name}
+                          className="rounded-lg"
+                        />
                         <AvatarFallback className="rounded-lg">
                           {uni.name.charAt(0)}
                         </AvatarFallback>

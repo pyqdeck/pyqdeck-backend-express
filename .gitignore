@@ -3,3 +3,6 @@
 .claude
 test-report.junit.xml
 *.junit.xml
+
+logs
+
