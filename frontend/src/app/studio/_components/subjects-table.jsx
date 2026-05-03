@@ -8,8 +8,6 @@ import { DeleteSubjectDialog } from './delete-subject-dialog';
 export function SubjectsTable({
   subjects = [],
   pagination,
-  search,
-  onSearchChange,
   onUpdate,
   onDelete,
   loading = false,
@@ -22,8 +20,6 @@ export function SubjectsTable({
       <SubjectsTableView
         subjects={subjects}
         pagination={pagination}
-        search={search}
-        onSearchChange={onSearchChange}
         loading={loading}
         onEdit={setEditingSubject}
         onDelete={setDeletingSubject}

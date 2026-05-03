@@ -5,14 +5,11 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useApi } from '@/hooks/use-api';
 import { SubjectsTable } from './subjects-table';
 import { AddSubjectDialog } from './add-subject-dialog';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
+import { SubjectFilters } from './subject-filters';
+import { StudioSearch } from './studio-search';
+import { Plus } from 'lucide-react';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { DropdownAction } from '@/components/dropdown-action';
 
 export function SubjectManagement({
   initialSubjects = [],
@@ -25,57 +22,7 @@ export function SubjectManagement({
   const searchParams = useSearchParams();
   const api = useApi();
 
-  // Sync filters from URL
-  const selectedUniId = searchParams.get('universityId') || 'all';
-  const selectedBranchId = searchParams.get('branchId') || 'all';
-  const selectedSemesterId = searchParams.get('semesterId') || 'all';
   const search = searchParams.get('q') || '';
-
-  // Hierarchical filtering for dropdowns
-  const filteredBranches =
-    selectedUniId === 'all'
-      ? branches
-      : branches.filter(
-          (b) => (b.universityId?.id || b.universityId) === selectedUniId
-        );
-
-  const filteredSemesters =
-    selectedBranchId === 'all'
-      ? semesters
-      : semesters.filter(
-          (s) => (s.branchId?.id || s.branchId) === selectedBranchId
-        );
-
-  const handleFilterChange = (key, value) => {
-    const params = new URLSearchParams(searchParams);
-    if (value === 'all') {
-      params.delete(key);
-    } else {
-      params.set(key, value);
-    }
-
-    // Reset dependent filters
-    if (key === 'universityId') {
-      params.delete('branchId');
-      params.delete('semesterId');
-    } else if (key === 'branchId') {
-      params.delete('semesterId');
-    }
-
-    params.set('page', '1');
-    router.push(`?${params.toString()}`);
-  };
-
-  const handleSearchChange = (value) => {
-    const params = new URLSearchParams(searchParams);
-    if (value) {
-      params.set('q', value);
-    } else {
-      params.delete('q');
-    }
-    params.set('page', '1');
-    router.push(`?${params.toString()}`);
-  };
 
   const handleAdd = async (data) => {
     await api.subjects.createSubject(data);
@@ -104,73 +51,32 @@ export function SubjectManagement({
           </p>
         </div>
         <div className="flex items-center gap-3">
-          {/* Institution Filter */}
-          <div className="flex items-center gap-2">
-            <Label className="font-roboto text-muted-foreground text-[10px] font-bold tracking-widest uppercase">
-              Uni
-            </Label>
-            <Select
-              value={selectedUniId}
-              onValueChange={(v) => handleFilterChange('universityId', v)}
-            >
-              <SelectTrigger className="font-roboto w-[160px] border-2 text-xs focus:ring-0">
-                <SelectValue placeholder="All Universities" />
-              </SelectTrigger>
-              <SelectContent className="border-2 shadow-none">
-                <SelectItem value="all" className="font-roboto text-xs">
-                  All Universities
-                </SelectItem>
-                {universities.map((uni) => (
-                  <SelectItem
-                    key={uni.id}
-                    value={uni.id}
-                    className="font-roboto text-xs"
-                  >
-                    {uni.shortName || uni.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Branch Filter */}
-          <div className="flex items-center gap-2">
-            <Label className="font-roboto text-muted-foreground text-[10px] font-bold tracking-widest uppercase">
-              Branch
-            </Label>
-            <Select
-              value={selectedBranchId}
-              onValueChange={(v) => handleFilterChange('branchId', v)}
-            >
-              <SelectTrigger className="font-roboto w-[160px] border-2 text-xs focus:ring-0">
-                <SelectValue placeholder="All Branches" />
-              </SelectTrigger>
-              <SelectContent className="border-2 shadow-none">
-                <SelectItem value="all" className="font-roboto text-xs">
-                  All Branches
-                </SelectItem>
-                {filteredBranches.map((branch) => (
-                  <SelectItem
-                    key={branch.id}
-                    value={branch.id}
-                    className="font-roboto text-xs"
-                  >
-                    {branch.shortName || branch.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          <AddSubjectDialog onAdd={handleAdd} />
+          <StudioSearch
+            placeholder="Search subjects..."
+            paramName="q"
+            initialValue={search}
+          />
+          <SubjectFilters universities={universities} branches={branches} />
+          <DropdownAction label="Management" tooltip="Subject Actions">
+            <AddSubjectDialog
+              onAdd={handleAdd}
+              trigger={
+                <DropdownMenuItem
+                  onSelect={(e) => e.preventDefault()}
+                  className="cursor-pointer rounded-md py-2.5 focus:bg-transparent"
+                >
+                  <Plus className="text-muted-foreground mr-3 size-4 transition-colors" />
+                  <span className="font-medium">Add Subject</span>
+                </DropdownMenuItem>
+              }
+            />
+          </DropdownAction>
         </div>
       </div>
 
       <SubjectsTable
         subjects={initialSubjects}
         pagination={pagination}
-        search={search}
-        onSearchChange={handleSearchChange}
         onUpdate={handleUpdate}
         onDelete={handleDelete}
       />
