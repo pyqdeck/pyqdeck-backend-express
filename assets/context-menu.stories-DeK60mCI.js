@@ -1,0 +1,49 @@
+import{n as e,s as t}from"./chunk-CzyJ72yW.js";import{$t as n,Br as r,Ci as i,Gt as a,Jt as o,Kt as s,Qt as c,Xt as l,Yt as u,Zt as d,an as f,en as p,in as m,nn as h,o as g,qt as _,rn as v,s as y,tn as b,u as x}from"./iframe-C0HzGJbe.js";import{_t as S,mt as C,t as w}from"./lucide-react-BStNJWpg.js";function T({...e}){return(0,B.jsx)(p,{"data-slot":`context-menu`,...e})}function E({className:e,...t}){return(0,B.jsx)(f,{"data-slot":`context-menu-trigger`,className:g(`select-none`,e),...t})}function D({...e}){return(0,B.jsx)(_,{"data-slot":`context-menu-group`,...e})}function O({...e}){return(0,B.jsx)(d,{"data-slot":`context-menu-portal`,...e})}function k({...e}){return(0,B.jsx)(h,{"data-slot":`context-menu-sub`,...e})}function A({...e}){return(0,B.jsx)(c,{"data-slot":`context-menu-radio-group`,...e})}function j({className:e,...t}){return(0,B.jsx)(d,{children:(0,B.jsx)(s,{"data-slot":`context-menu-content`,className:g(`bg-popover text-popover-foreground ring-foreground/10 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 z-50 max-h-(--radix-context-menu-content-available-height) min-w-36 origin-(--radix-context-menu-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-lg p-1 shadow-md ring-1 duration-100`,e),...t})})}function M({className:e,inset:t,variant:n=`default`,...r}){return(0,B.jsx)(o,{"data-slot":`context-menu-item`,"data-inset":t,"data-variant":n,className:g(`group/context-menu-item focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20 focus:*:[svg]:text-accent-foreground data-[variant=destructive]:*:[svg]:text-destructive relative flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 data-inset:pl-7 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4`,e),...r})}function N({className:e,inset:t,children:n,...r}){return(0,B.jsxs)(m,{"data-slot":`context-menu-sub-trigger`,"data-inset":t,className:g(`focus:bg-accent focus:text-accent-foreground data-open:bg-accent data-open:text-accent-foreground flex cursor-default items-center gap-1.5 rounded-md px-1.5 py-1 text-sm outline-hidden select-none data-inset:pl-7 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4`,e),...r,children:[n,(0,B.jsx)(C,{className:`ml-auto`})]})}function P({className:e,...t}){return(0,B.jsx)(v,{"data-slot":`context-menu-sub-content`,className:g(`bg-popover text-popover-foreground data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95 z-50 min-w-32 origin-(--radix-context-menu-content-transform-origin) overflow-hidden rounded-lg border p-1 duration-100`,e),...t})}function F({className:e,children:t,checked:n,inset:r,...i}){return(0,B.jsxs)(a,{"data-slot":`context-menu-checkbox-item`,"data-inset":r,className:g(`focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 data-inset:pl-7 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4`,e),checked:n,...i,children:[(0,B.jsx)(`span`,{className:`pointer-events-none absolute right-2`,children:(0,B.jsx)(u,{children:(0,B.jsx)(S,{})})}),t]})}function I({className:e,children:t,inset:r,...i}){return(0,B.jsxs)(n,{"data-slot":`context-menu-radio-item`,"data-inset":r,className:g(`focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-1.5 rounded-md py-1 pr-8 pl-1.5 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 data-inset:pl-7 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4`,e),...i,children:[(0,B.jsx)(`span`,{className:`pointer-events-none absolute right-2`,children:(0,B.jsx)(u,{children:(0,B.jsx)(S,{})})}),t]})}function L({className:e,inset:t,...n}){return(0,B.jsx)(l,{"data-slot":`context-menu-label`,"data-inset":t,className:g(`text-muted-foreground px-1.5 py-1 text-xs font-medium data-inset:pl-7`,e),...n})}function R({className:e,...t}){return(0,B.jsx)(b,{"data-slot":`context-menu-separator`,className:g(`bg-border -mx-1 my-1 h-px`,e),...t})}function z({className:e,...t}){return(0,B.jsx)(`span`,{"data-slot":`context-menu-shortcut`,className:g(`text-muted-foreground group-focus/context-menu-item:text-accent-foreground ml-auto text-xs tracking-widest`,e),...t})}var B,V=e((()=>{B=t(r(),1),i(),x(),y(),w(),T.__docgenInfo={description:``,methods:[],displayName:`ContextMenu`},E.__docgenInfo={description:``,methods:[],displayName:`ContextMenuTrigger`},j.__docgenInfo={description:``,methods:[],displayName:`ContextMenuContent`},M.__docgenInfo={description:``,methods:[],displayName:`ContextMenuItem`,props:{variant:{defaultValue:{value:`'default'`,computed:!1},required:!1}}},F.__docgenInfo={description:``,methods:[],displayName:`ContextMenuCheckboxItem`},I.__docgenInfo={description:``,methods:[],displayName:`ContextMenuRadioItem`},L.__docgenInfo={description:``,methods:[],displayName:`ContextMenuLabel`},R.__docgenInfo={description:``,methods:[],displayName:`ContextMenuSeparator`},z.__docgenInfo={description:``,methods:[],displayName:`ContextMenuShortcut`},D.__docgenInfo={description:``,methods:[],displayName:`ContextMenuGroup`},O.__docgenInfo={description:``,methods:[],displayName:`ContextMenuPortal`},k.__docgenInfo={description:``,methods:[],displayName:`ContextMenuSub`},P.__docgenInfo={description:``,methods:[],displayName:`ContextMenuSubContent`},N.__docgenInfo={description:``,methods:[],displayName:`ContextMenuSubTrigger`},A.__docgenInfo={description:``,methods:[],displayName:`ContextMenuRadioGroup`}})),H,U,W,G;e((()=>{H=t(r(),1),V(),U={title:`UI/ContextMenu`,component:T,tags:[`autodocs`]},W={render:()=>(0,H.jsxs)(T,{children:[(0,H.jsx)(E,{className:`flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed text-sm`,children:`Right click here`}),(0,H.jsxs)(j,{className:`w-64`,children:[(0,H.jsxs)(M,{inset:!0,children:[`Back`,(0,H.jsx)(z,{children:`⌘[`})]}),(0,H.jsxs)(M,{inset:!0,disabled:!0,children:[`Forward`,(0,H.jsx)(z,{children:`⌘]`})]}),(0,H.jsxs)(M,{inset:!0,children:[`Reload`,(0,H.jsx)(z,{children:`⌘R`})]}),(0,H.jsxs)(k,{children:[(0,H.jsx)(N,{inset:!0,children:`More Tools`}),(0,H.jsxs)(P,{className:`w-48`,children:[(0,H.jsxs)(M,{children:[`Save Page As...`,(0,H.jsx)(z,{children:`⇧⌘S`})]}),(0,H.jsx)(M,{children:`Create Shortcut...`}),(0,H.jsx)(M,{children:`Name Window...`}),(0,H.jsx)(R,{}),(0,H.jsx)(M,{children:`Developer Tools`})]})]}),(0,H.jsx)(R,{}),(0,H.jsxs)(F,{checked:!0,children:[`Show Bookmarks Bar`,(0,H.jsx)(z,{children:`⌘⇧B`})]}),(0,H.jsx)(F,{children:`Show Full URLs`}),(0,H.jsx)(R,{}),(0,H.jsxs)(A,{value:`pedro`,children:[(0,H.jsx)(L,{inset:!0,children:`People`}),(0,H.jsx)(R,{}),(0,H.jsx)(I,{value:`pedro`,children:`Pedro Duarte`}),(0,H.jsx)(I,{value:`colm`,children:`Colm Tuite`})]})]})]})},W.parameters={...W.parameters,docs:{...W.parameters?.docs,source:{originalSource:`{
+  render: () => <ContextMenu>
+      <ContextMenuTrigger className="flex h-[150px] w-[300px] items-center justify-center rounded-md border border-dashed text-sm">
+        Right click here
+      </ContextMenuTrigger>
+      <ContextMenuContent className="w-64">
+        <ContextMenuItem inset>
+          Back
+          <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem inset disabled>
+          Forward
+          <ContextMenuShortcut>⌘]</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuItem inset>
+          Reload
+          <ContextMenuShortcut>⌘R</ContextMenuShortcut>
+        </ContextMenuItem>
+        <ContextMenuSub>
+          <ContextMenuSubTrigger inset>More Tools</ContextMenuSubTrigger>
+          <ContextMenuSubContent className="w-48">
+            <ContextMenuItem>
+              Save Page As...
+              <ContextMenuShortcut>⇧⌘S</ContextMenuShortcut>
+            </ContextMenuItem>
+            <ContextMenuItem>Create Shortcut...</ContextMenuItem>
+            <ContextMenuItem>Name Window...</ContextMenuItem>
+            <ContextMenuSeparator />
+            <ContextMenuItem>Developer Tools</ContextMenuItem>
+          </ContextMenuSubContent>
+        </ContextMenuSub>
+        <ContextMenuSeparator />
+        <ContextMenuCheckboxItem checked>
+          Show Bookmarks Bar
+          <ContextMenuShortcut>⌘⇧B</ContextMenuShortcut>
+        </ContextMenuCheckboxItem>
+        <ContextMenuCheckboxItem>Show Full URLs</ContextMenuCheckboxItem>
+        <ContextMenuSeparator />
+        <ContextMenuRadioGroup value="pedro">
+          <ContextMenuLabel inset>People</ContextMenuLabel>
+          <ContextMenuSeparator />
+          <ContextMenuRadioItem value="pedro">
+            Pedro Duarte
+          </ContextMenuRadioItem>
+          <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
+        </ContextMenuRadioGroup>
+      </ContextMenuContent>
+    </ContextMenu>
+}`,...W.parameters?.docs?.source}}},G=[`Default`]}))();export{W as Default,G as __namedExportsOrder,U as default};
