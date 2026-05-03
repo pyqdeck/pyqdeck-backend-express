@@ -23,3 +23,4 @@ export {
   paginationSchema,
 } from './pagination/index.js';
 export { catchAsync } from './catchAsync.js';
+export { escapeRegExp } from './regex.js';

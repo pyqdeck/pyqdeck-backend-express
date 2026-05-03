@@ -1,10 +1,11 @@
 import questionRepository from '../repositories/questionRepository.js';
 import subjectRepository from '../repositories/subjectRepository.js';
 import paperRepository from '../repositories/paperRepository.js';
+import { escapeRegExp } from '../utils/index.js';
 
 class SearchService {
   async unifiedSearch(query, pagination) {
-    const searchRegex = new RegExp(query, 'i');
+    const searchRegex = new RegExp(escapeRegExp(query), 'i');
 
     // Run searches in parallel
     const [questions, subjects, papers] = await Promise.all([
