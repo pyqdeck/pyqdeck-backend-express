@@ -58,25 +58,18 @@ export function BranchManagement({
           <DropdownAction label="Management" tooltip="Branch Actions">
             <AddBranchDialog
               universities={universities}
-              defaultUniversityId={selectedUniId !== 'all' ? selectedUniId : ''}
+              defaultUniversityId={searchParams.get('universityId') || ''}
               onAdd={handleAdd}
               trigger={
                 <DropdownMenuItem
                   onSelect={(e) => e.preventDefault()}
-                  className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
+                  className="cursor-pointer rounded-md py-2.5 focus:bg-transparent"
                 >
-                  <Plus className="text-muted-foreground group-hover:text-primary mr-3 size-4 transition-colors" />
-                  <span className="font-medium">Add New Branch</span>
+                  <Plus className="text-muted-foreground mr-3 size-4 transition-colors" />
+                  <span className="font-medium">Add Branch</span>
                 </DropdownMenuItem>
               }
             />
-            <DropdownMenuItem
-              className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
-              onClick={() => router.refresh()}
-            >
-              <RefreshCcw className="text-muted-foreground group-hover:text-success mr-3 size-4 transition-colors" />
-              <span className="font-medium">Refresh Data</span>
-            </DropdownMenuItem>
           </DropdownAction>
         </div>
       </div>
