@@ -8,6 +8,7 @@ import { paginate } from '../middlewares/pagination.middleware.js';
 import { validateBody } from '../middlewares/validationMiddleware.js';
 import { questionZodSchema } from '../models/Question.js';
 import * as questionController from '../controllers/questionController.js';
+import { checkContentFreeze } from '../middlewares/checkContentFreeze.middleware.js';
 
 const router = Router();
 
@@ -150,6 +151,7 @@ router.post(
   '/',
   requireAuthentication,
   isEditor,
+  checkContentFreeze,
   validateBody(questionZodSchema),
   questionController.create
 );

@@ -105,9 +105,7 @@ describe('Users API Integration', () => {
         .set('Authorization', 'Bearer admin_token');
 
       expect(response.status).toBe(403);
-      expect(response.body.message).toContain(
-        'cannot change your own role'
-      );
+      expect(response.body.message).toContain('cannot change your own role');
     });
   });
 });

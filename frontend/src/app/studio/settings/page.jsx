@@ -1,15 +1,20 @@
-import { WipeDbCard } from '../_components/wipe-db-card';
-import { SystemInfoCard } from '../_components/system-info-card';
+import { SettingsTabs } from '../_components/settings-tabs';
 import { getApiServer } from '@/lib/api-server';
 
 export default async function SettingsPage() {
   let health = null;
+  let platformConfig = null;
+
   try {
     const api = await getApiServer();
-    const res = await api.health.getHealthDetailed();
-    health = res.data.data;
+    const [healthRes, configRes] = await Promise.all([
+      api.health.getHealthDetailed(),
+      api.platformConfig.getPlatformConfig(),
+    ]);
+    health = healthRes.data.data;
+    platformConfig = configRes.data.data;
   } catch (error) {
-    console.error('Failed to fetch health data:', error);
+    console.error('Failed to fetch settings data:', error);
   }
 
   return (
@@ -23,10 +28,7 @@ export default async function SettingsPage() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <WipeDbCard />
-        <SystemInfoCard initialHealth={health} />
-      </div>
+      <SettingsTabs platformConfig={platformConfig} health={health} />
     </div>
   );
 }

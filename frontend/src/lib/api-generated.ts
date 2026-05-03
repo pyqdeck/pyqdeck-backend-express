@@ -164,6 +164,22 @@ export interface Paper {
   updatedAt?: string;
 }
 
+export interface PlatformConfig {
+  /** @default false */
+  devMode?: boolean;
+  /** @default false */
+  contentFreeze?: boolean;
+  /** @default false */
+  maintenanceMode?: boolean;
+  ai?: {
+    enabled?: boolean;
+    provider?: "openai" | "openai-compatible" | "anthropic";
+    hasApiKey?: boolean;
+    baseUrl?: string | null;
+    model?: string | null;
+  };
+}
+
 export interface Question {
   /** @example "65a12345b67890cdef123456" */
   id?: string;
@@ -651,7 +667,7 @@ export class HttpClient<SecurityDataType = unknown> {
   }: ApiConfig<SecurityDataType> = {}) {
     this.instance = axios.create({
       ...axiosConfig,
-      baseURL: axiosConfig.baseURL || "http://localhost:3000/api/v1",
+      baseURL: axiosConfig.baseURL || "http://localhost:5000/api/v1",
     });
     this.secure = secure;
     this.format = format;
@@ -765,7 +781,7 @@ export class HttpClient<SecurityDataType = unknown> {
 /**
  * @title PYQDeck API Explorer
  * @version 1.0.0
- * @baseUrl http://localhost:3000/api/v1
+ * @baseUrl http://localhost:5000/api/v1
  * @contact PYQDeck Support <noreply@example.com> (http://localhost:3000/support)
  *
  *
@@ -1985,6 +2001,81 @@ export class Api<
         Error
       >({
         path: `/papers/${id}/status`,
+        method: "PATCH",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+  };
+  platformConfig = {
+    /**
+ * No description
+ *
+ * @tags Platform Config
+ * @name GetPlatformConfig
+ * @summary Get platform configuration (Admin only)
+ * @request GET:/platform-config
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: PlatformConfig,
+
+})` Platform configuration
+ * @response `401` `Error`
+ * @response `403` `Error`
+ */
+    getPlatformConfig: (params: RequestParams = {}) =>
+      this.request<
+        SuccessResponse & {
+          data?: PlatformConfig;
+        },
+        Error
+      >({
+        path: `/platform-config`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Platform Config
+ * @name UpdatePlatformConfig
+ * @summary Update platform configuration (Admin only)
+ * @request PATCH:/platform-config
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: PlatformConfig,
+
+})` Updated platform configuration
+ * @response `401` `Error`
+ * @response `403` `Error`
+ */
+    updatePlatformConfig: (
+      data: {
+        devMode?: boolean;
+        contentFreeze?: boolean;
+        maintenanceMode?: boolean;
+        ai?: {
+          enabled?: boolean;
+          provider?: "openai" | "openai-compatible" | "anthropic";
+          apiKey?: string | null;
+          baseUrl?: string | null;
+          model?: string | null;
+        };
+      },
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        SuccessResponse & {
+          data?: PlatformConfig;
+        },
+        Error
+      >({
+        path: `/platform-config`,
         method: "PATCH",
         body: data,
         secure: true,

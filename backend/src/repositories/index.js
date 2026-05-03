@@ -17,3 +17,4 @@ export { questionSyllabusMapRepository } from './questionSyllabusMapRepository.j
 export { solutionRepository } from './solutionRepository.js';
 export { uploadRepository } from './uploadRepository.js';
 export { bookmarkRepository } from './bookmarkRepository.js';
+export { platformConfigRepository } from './platformConfigRepository.js';

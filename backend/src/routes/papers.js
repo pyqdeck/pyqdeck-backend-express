@@ -8,6 +8,7 @@ import * as paperController from '../controllers/paperController.js';
 import { paginate } from '../middlewares/pagination.middleware.js';
 import { validateBody } from '../middlewares/validationMiddleware.js';
 import { paperZodSchema, PaperStatus } from '../models/Paper.js';
+import { checkContentFreeze } from '../middlewares/checkContentFreeze.middleware.js';
 import { z } from 'zod';
 
 const router = Router();
@@ -123,6 +124,7 @@ router.post(
   '/',
   requireAuthentication,
   isEditor,
+  checkContentFreeze,
   validateBody(paperZodSchema),
   paperController.create
 );

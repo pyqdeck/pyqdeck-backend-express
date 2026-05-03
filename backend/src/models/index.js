@@ -36,3 +36,8 @@ export {
 } from './Solution.js';
 export { Upload, uploadZodSchema } from './Upload.js';
 export { Bookmark, BookmarkTargetType, bookmarkZodSchema } from './Bookmark.js';
+export {
+  PlatformConfig,
+  AiProvider,
+  platformConfigZodSchema,
+} from './PlatformConfig.js';
