@@ -1,4 +1,4 @@
-import { Module } from '../models/Module.js';
+import { Module, moduleZodSchema } from '../models/Module.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
 
@@ -40,9 +40,18 @@ class ModuleRepository {
   }
 
   async update(id, data) {
-    const module = await Module.findByIdAndUpdate(id, data, {
-      returnDocument: 'after',
-    });
+    // Sanitize data using the Zod schema to prevent NoSQL injection
+    // and ensure only allowed fields are updated.
+    const sanitizedData = moduleZodSchema.partial().parse(data);
+
+    const module = await Module.findByIdAndUpdate(
+      id,
+      { $set: sanitizedData },
+      {
+        returnDocument: 'after',
+        runValidators: true,
+      }
+    );
     if (!module) throw new NotFoundError('Module not found');
     return module;
   }

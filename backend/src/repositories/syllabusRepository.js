@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Syllabus } from '../models/Syllabus.js';
+import { Syllabus, syllabusZodSchema } from '../models/Syllabus.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 
 class SyllabusRepository {
@@ -31,9 +31,18 @@ class SyllabusRepository {
   }
 
   async update(id, data) {
-    const syllabus = await Syllabus.findByIdAndUpdate(id, data, {
-      returnDocument: 'after',
-    });
+    // Sanitize data using the Zod schema to prevent NoSQL injection
+    // and ensure only allowed fields are updated.
+    const sanitizedData = syllabusZodSchema.partial().parse(data);
+
+    const syllabus = await Syllabus.findByIdAndUpdate(
+      id,
+      { $set: sanitizedData },
+      {
+        returnDocument: 'after',
+        runValidators: true,
+      }
+    );
     if (!syllabus) throw new NotFoundError('Syllabus not found');
     return syllabus;
   }

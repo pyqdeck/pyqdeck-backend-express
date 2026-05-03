@@ -1,4 +1,4 @@
-import { Topic } from '../models/Topic.js';
+import { Topic, topicZodSchema } from '../models/Topic.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
 
@@ -38,9 +38,18 @@ class TopicRepository {
   }
 
   async update(id, data) {
-    const topic = await Topic.findByIdAndUpdate(id, data, {
-      returnDocument: 'after',
-    });
+    // Sanitize data using the Zod schema to prevent NoSQL injection
+    // and ensure only allowed fields are updated.
+    const sanitizedData = topicZodSchema.partial().parse(data);
+
+    const topic = await Topic.findByIdAndUpdate(
+      id,
+      { $set: sanitizedData },
+      {
+        returnDocument: 'after',
+        runValidators: true,
+      }
+    );
     if (!topic) throw new NotFoundError('Topic not found');
     return topic;
   }
