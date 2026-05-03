@@ -1,4 +1,7 @@
-import { SubjectOffering } from '../models/SubjectOffering.js';
+import {
+  SubjectOffering,
+  subjectOfferingZodSchema,
+} from '../models/SubjectOffering.js';
 import { University } from '../models/University.js';
 import { Branch } from '../models/Branch.js';
 import { Semester } from '../models/Semester.js';
@@ -29,7 +32,7 @@ class SubjectOfferingRepository {
   }
 
   async findBySlug(slug) {
-    const offering = await SubjectOffering.findOne({ slug });
+    const offering = await SubjectOffering.findOne({ slug: String(slug) });
     if (!offering) throw new NotFoundError('Subject offering not found');
     return offering;
   }
@@ -37,7 +40,7 @@ class SubjectOfferingRepository {
   async findBySemesterId(semesterId, pagination, filter = {}) {
     const result = await paginate(
       SubjectOffering,
-      { semesterId, ...filter },
+      { semesterId: String(semesterId), ...filter },
       pagination
     );
 
@@ -59,9 +62,9 @@ class SubjectOfferingRepository {
     filter = {}
   ) {
     const query = { ...filter };
-    if (universityId) query.universityId = universityId;
-    if (branchId) query.branchId = branchId;
-    if (semesterId) query.semesterId = semesterId;
+    if (universityId) query.universityId = String(universityId);
+    if (branchId) query.branchId = String(branchId);
+    if (semesterId) query.semesterId = String(semesterId);
 
     const result = await paginate(SubjectOffering, query, pagination);
 
@@ -77,9 +80,18 @@ class SubjectOfferingRepository {
   }
 
   async update(id, data) {
-    const offering = await SubjectOffering.findByIdAndUpdate(id, data, {
-      returnDocument: 'after',
-    });
+    // Sanitize data using the Zod schema to prevent NoSQL injection
+    // and ensure only allowed fields are updated.
+    const sanitizedData = subjectOfferingZodSchema.partial().parse(data);
+
+    const offering = await SubjectOffering.findByIdAndUpdate(
+      id,
+      { $set: sanitizedData },
+      {
+        returnDocument: 'after',
+        runValidators: true,
+      }
+    );
     if (!offering) throw new NotFoundError('Subject offering not found');
     return offering;
   }

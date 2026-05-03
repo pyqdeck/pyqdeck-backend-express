@@ -1,4 +1,4 @@
-import { University } from '../models/University.js';
+import { University, universityZodSchema } from '../models/University.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
 
@@ -24,7 +24,7 @@ class UniversityRepository {
 
   async findBySlug(slug) {
     const university = await University.findOne({
-      $or: [{ slug }, { redirectSlugs: slug }],
+      $or: [{ slug: String(slug) }, { redirectSlugs: String(slug) }],
     });
     if (!university) throw new NotFoundError('University not found');
     return university;
@@ -35,9 +35,18 @@ class UniversityRepository {
   }
 
   async update(id, data) {
-    const university = await University.findByIdAndUpdate(id, data, {
-      returnDocument: 'after',
-    });
+    // Sanitize data using the Zod schema to prevent NoSQL injection
+    // and ensure only allowed fields are updated.
+    const sanitizedData = universityZodSchema.partial().parse(data);
+
+    const university = await University.findByIdAndUpdate(
+      id,
+      { $set: sanitizedData },
+      {
+        returnDocument: 'after',
+        runValidators: true,
+      }
+    );
     if (!university) throw new NotFoundError('University not found');
     return university;
   }

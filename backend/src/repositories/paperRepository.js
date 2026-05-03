@@ -1,4 +1,4 @@
-import { Paper } from '../models/Paper.js';
+import { Paper, paperZodSchema } from '../models/Paper.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
 
@@ -23,15 +23,20 @@ class PaperRepository {
   }
 
   async findBySlug(slug) {
-    const paper = await Paper.findOne({ slug });
+    const paper = await Paper.findOne({ slug: String(slug) });
     if (!paper) throw new NotFoundError('Paper not found');
     return paper;
   }
 
   async findBySubjectOffering(subjectOfferingId, pagination, filter = {}) {
-    return paginate(Paper, { subjectOfferingId, ...filter }, pagination, {
-      sort: { examYear: -1 },
-    });
+    return paginate(
+      Paper,
+      { subjectOfferingId: String(subjectOfferingId), ...filter },
+      pagination,
+      {
+        sort: { examYear: -1 },
+      }
+    );
   }
 
   async findAll(filter = {}, pagination) {
@@ -41,17 +46,26 @@ class PaperRepository {
   async updateStatus(id, status) {
     const paper = await Paper.findByIdAndUpdate(
       id,
-      { status },
-      { returnDocument: 'after' }
+      { status: String(status) },
+      { returnDocument: 'after', runValidators: true }
     );
     if (!paper) throw new NotFoundError('Paper not found');
     return paper;
   }
 
   async update(id, data) {
-    const paper = await Paper.findByIdAndUpdate(id, data, {
-      returnDocument: 'after',
-    });
+    // Sanitize data using the Zod schema to prevent NoSQL injection
+    // and ensure only allowed fields are updated.
+    const sanitizedData = paperZodSchema.partial().parse(data);
+
+    const paper = await Paper.findByIdAndUpdate(
+      id,
+      { $set: sanitizedData },
+      {
+        returnDocument: 'after',
+        runValidators: true,
+      }
+    );
     if (!paper) throw new NotFoundError('Paper not found');
     return paper;
   }

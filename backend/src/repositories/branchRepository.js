@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Branch } from '../models/Branch.js';
+import { Branch, branchZodSchema } from '../models/Branch.js';
 import { University } from '../models/University.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
@@ -28,15 +28,19 @@ class BranchRepository {
 
   async findBySlug(universityId, slug) {
     const branch = await Branch.findOne({
-      universityId,
-      $or: [{ slug }, { redirectSlugs: slug }],
+      universityId: String(universityId),
+      $or: [{ slug: String(slug) }, { redirectSlugs: String(slug) }],
     });
     if (!branch) throw new NotFoundError('Branch not found');
     return branch;
   }
 
   async findByUniversityId(universityId, pagination, filter = {}) {
-    return paginate(Branch, { universityId, ...filter }, pagination);
+    return paginate(
+      Branch,
+      { universityId: String(universityId), ...filter },
+      pagination
+    );
   }
 
   async findAll(filter = {}, pagination) {
@@ -54,9 +58,18 @@ class BranchRepository {
   }
 
   async update(id, data) {
-    const branch = await Branch.findByIdAndUpdate(id, data, {
-      returnDocument: 'after',
-    });
+    // Sanitize data using the Zod schema to prevent NoSQL injection
+    // and ensure only allowed fields are updated.
+    const sanitizedData = branchZodSchema.partial().parse(data);
+
+    const branch = await Branch.findByIdAndUpdate(
+      id,
+      { $set: sanitizedData },
+      {
+        returnDocument: 'after',
+        runValidators: true,
+      }
+    );
     if (!branch) throw new NotFoundError('Branch not found');
     return branch;
   }

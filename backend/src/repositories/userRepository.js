@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { User } from '../models/User.js';
+import { User, userZodSchema } from '../models/User.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 
 class UserRepository {
@@ -27,7 +27,7 @@ class UserRepository {
   }
 
   async findByClerkId(clerkId) {
-    const user = await User.findOne({ clerkId });
+    const user = await User.findOne({ clerkId: String(clerkId) });
     if (!user) {
       throw new NotFoundError('User not found');
     }
@@ -35,7 +35,7 @@ class UserRepository {
   }
 
   async findByEmail(email) {
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: String(email) });
     if (!user) {
       throw new NotFoundError('User not found');
     }
@@ -43,9 +43,18 @@ class UserRepository {
   }
 
   async update(clerkId, updateData) {
-    const user = await User.findOneAndUpdate({ clerkId }, updateData, {
-      returnDocument: 'after',
-    });
+    // Sanitize data using the Zod schema to prevent NoSQL injection
+    // and ensure only allowed fields are updated.
+    const sanitizedData = userZodSchema.partial().parse(updateData);
+
+    const user = await User.findOneAndUpdate(
+      { clerkId: String(clerkId) },
+      { $set: sanitizedData },
+      {
+        returnDocument: 'after',
+        runValidators: true,
+      }
+    );
     if (!user) {
       throw new NotFoundError('User not found');
     }

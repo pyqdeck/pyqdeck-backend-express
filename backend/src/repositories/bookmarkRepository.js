@@ -1,4 +1,4 @@
-import { Bookmark } from '../models/Bookmark.js';
+import { Bookmark, bookmarkZodSchema } from '../models/Bookmark.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
 
@@ -23,20 +23,28 @@ class BookmarkRepository {
   }
 
   async findByUser(userId, pagination, filter = {}) {
-    return paginate(Bookmark, { userId, ...filter }, pagination);
+    return paginate(
+      Bookmark,
+      { userId: String(userId), ...filter },
+      pagination
+    );
   }
 
   async findByUserAndTarget(userId, targetId, targetType) {
-    const bookmark = await Bookmark.findOne({ userId, targetId, targetType });
+    const bookmark = await Bookmark.findOne({
+      userId: String(userId),
+      targetId: String(targetId),
+      targetType: String(targetType),
+    });
     if (!bookmark) throw new NotFoundError('Bookmark not found');
     return bookmark;
   }
 
   async deleteByUserAndTarget(userId, targetId, targetType) {
     const bookmark = await Bookmark.findOneAndDelete({
-      userId,
-      targetId,
-      targetType,
+      userId: String(userId),
+      targetId: String(targetId),
+      targetType: String(targetType),
     });
     if (!bookmark) throw new NotFoundError('Bookmark not found');
     return bookmark;

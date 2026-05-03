@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Solution } from '../models/Solution.js';
+import { Solution, solutionZodSchema } from '../models/Solution.js';
 import { NotFoundError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
 
@@ -17,13 +17,22 @@ class SolutionRepository {
   }
 
   async findByQuestion(questionId, pagination, filter = {}) {
-    return paginate(Solution, { questionId, ...filter }, pagination, {
-      sort: { upvotes: -1 },
-    });
+    return paginate(
+      Solution,
+      { questionId: String(questionId), ...filter },
+      pagination,
+      {
+        sort: { upvotes: -1 },
+      }
+    );
   }
 
   async findByAuthor(authorId, pagination, filter = {}) {
-    return paginate(Solution, { authorId, ...filter }, pagination);
+    return paginate(
+      Solution,
+      { authorId: String(authorId), ...filter },
+      pagination
+    );
   }
 
   async vote(id, type) {
@@ -31,7 +40,7 @@ class SolutionRepository {
     const solution = await Solution.findByIdAndUpdate(
       id,
       { $inc: { [field]: 1 } },
-      { returnDocument: 'after' }
+      { returnDocument: 'after', runValidators: true }
     );
     if (!solution) throw new NotFoundError('Solution not found');
     return solution;
@@ -40,17 +49,26 @@ class SolutionRepository {
   async updateStatus(id, status) {
     const solution = await Solution.findByIdAndUpdate(
       id,
-      { status },
-      { returnDocument: 'after' }
+      { status: String(status) },
+      { returnDocument: 'after', runValidators: true }
     );
     if (!solution) throw new NotFoundError('Solution not found');
     return solution;
   }
 
   async update(id, data) {
-    const solution = await Solution.findByIdAndUpdate(id, data, {
-      returnDocument: 'after',
-    });
+    // Sanitize data using the Zod schema to prevent NoSQL injection
+    // and ensure only allowed fields are updated.
+    const sanitizedData = solutionZodSchema.partial().parse(data);
+
+    const solution = await Solution.findByIdAndUpdate(
+      id,
+      { $set: sanitizedData },
+      {
+        returnDocument: 'after',
+        runValidators: true,
+      }
+    );
     if (!solution) throw new NotFoundError('Solution not found');
     return solution;
   }

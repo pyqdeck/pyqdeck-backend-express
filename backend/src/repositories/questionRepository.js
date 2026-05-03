@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Question } from '../models/Question.js';
+import { Question, questionZodSchema } from '../models/Question.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
 
@@ -24,7 +24,7 @@ class QuestionRepository {
   }
 
   async findBySlug(slug) {
-    const question = await Question.findOne({ slug });
+    const question = await Question.findOne({ slug: String(slug) });
     if (!question) throw new NotFoundError('Question not found');
     return question;
   }
@@ -36,15 +36,27 @@ class QuestionRepository {
   async findByTags(tagIds, pagination, extraFilter = {}) {
     return paginate(
       Question,
-      { tags: { $in: tagIds }, ...extraFilter },
+      {
+        tags: { $in: Array.isArray(tagIds) ? tagIds.map(String) : [] },
+        ...extraFilter,
+      },
       pagination
     );
   }
 
   async update(id, data) {
-    const question = await Question.findByIdAndUpdate(id, data, {
-      returnDocument: 'after',
-    });
+    // Sanitize data using the Zod schema to prevent NoSQL injection
+    // and ensure only allowed fields are updated.
+    const sanitizedData = questionZodSchema.partial().parse(data);
+
+    const question = await Question.findByIdAndUpdate(
+      id,
+      { $set: sanitizedData },
+      {
+        returnDocument: 'after',
+        runValidators: true,
+      }
+    );
     if (!question) throw new NotFoundError('Question not found');
     return question;
   }

@@ -1,4 +1,4 @@
-import { Tag } from '../models/Tag.js';
+import { Tag, tagZodSchema } from '../models/Tag.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
 
@@ -24,14 +24,16 @@ class TagRepository {
 
   async findBySlug(slug) {
     const tag = await Tag.findOne({
-      $or: [{ slug }, { redirectSlugs: slug }],
+      $or: [{ slug: String(slug) }, { redirectSlugs: String(slug) }],
     });
     if (!tag) throw new NotFoundError('Tag not found');
     return tag;
   }
 
   async findByIds(ids) {
-    return Tag.find({ _id: { $in: ids } });
+    return Tag.find({
+      _id: { $in: Array.isArray(ids) ? ids.map(String) : [] },
+    });
   }
 
   async findAll(filter = {}, pagination) {
@@ -42,7 +44,7 @@ class TagRepository {
     const tag = await Tag.findByIdAndUpdate(
       id,
       { $inc: { usageCount: 1 } },
-      { returnDocument: 'after' }
+      { returnDocument: 'after', runValidators: true }
     );
     if (!tag) throw new NotFoundError('Tag not found');
     return tag;
@@ -52,16 +54,25 @@ class TagRepository {
     const tag = await Tag.findByIdAndUpdate(
       id,
       { $inc: { usageCount: -1 } },
-      { returnDocument: 'after' }
+      { returnDocument: 'after', runValidators: true }
     );
     if (!tag) throw new NotFoundError('Tag not found');
     return tag;
   }
 
   async update(id, data) {
-    const tag = await Tag.findByIdAndUpdate(id, data, {
-      returnDocument: 'after',
-    });
+    // Sanitize data using the Zod schema to prevent NoSQL injection
+    // and ensure only allowed fields are updated.
+    const sanitizedData = tagZodSchema.partial().parse(data);
+
+    const tag = await Tag.findByIdAndUpdate(
+      id,
+      { $set: sanitizedData },
+      {
+        returnDocument: 'after',
+        runValidators: true,
+      }
+    );
     if (!tag) throw new NotFoundError('Tag not found');
     return tag;
   }

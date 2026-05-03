@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Subject } from '../models/Subject.js';
+import { Subject, subjectZodSchema } from '../models/Subject.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
 
@@ -27,7 +27,7 @@ class SubjectRepository {
 
   async findBySlug(slug) {
     const subject = await Subject.findOne({
-      $or: [{ slug }, { redirectSlugs: slug }],
+      $or: [{ slug: String(slug) }, { redirectSlugs: String(slug) }],
     });
     if (!subject) throw new NotFoundError('Subject not found');
     return subject;
@@ -156,9 +156,18 @@ class SubjectRepository {
   }
 
   async update(id, data) {
-    const subject = await Subject.findByIdAndUpdate(id, data, {
-      returnDocument: 'after',
-    });
+    // Sanitize data using the Zod schema to prevent NoSQL injection
+    // and ensure only allowed fields are updated.
+    const sanitizedData = subjectZodSchema.partial().parse(data);
+
+    const subject = await Subject.findByIdAndUpdate(
+      id,
+      { $set: sanitizedData },
+      {
+        returnDocument: 'after',
+        runValidators: true,
+      }
+    );
     if (!subject) throw new NotFoundError('Subject not found');
     return subject;
   }
