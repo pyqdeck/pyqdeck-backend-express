@@ -216,7 +216,7 @@ export function SyllabusTableView({
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               className="focus:bg-primary/5 group cursor-pointer rounded-md py-2.5"
-                              onClick={() => onTopicAdd?.(moduleId)}
+                              onClick={() => onTopicAdd?.(mod)}
                             >
                               <Plus className="text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors" />
                               <span className="font-medium">Add Topic</span>

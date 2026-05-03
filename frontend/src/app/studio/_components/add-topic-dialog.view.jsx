@@ -30,6 +30,7 @@ export function AddTopicDialogView({
   open,
   onOpenChange,
   trigger = true,
+  moduleName,
 }) {
   const {
     control,
@@ -61,7 +62,9 @@ export function AddTopicDialogView({
                 Add Learning Topic
               </DialogTitle>
               <DialogDescription className="font-roboto text-muted-foreground text-sm font-medium">
-                Specify a new learning point for this unit.
+                {moduleName
+                  ? `Adding to: ${moduleName}`
+                  : 'Specify a new learning point for this unit.'}
               </DialogDescription>
             </div>
           </div>

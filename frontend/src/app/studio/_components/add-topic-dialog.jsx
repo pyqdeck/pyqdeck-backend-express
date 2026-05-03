@@ -14,9 +14,13 @@ const topicSchema = z.object({
   order: z.number().int().default(0),
 });
 
-export function AddTopicDialog({ moduleId, onAdd }) {
-  const [open, setOpen] = React.useState(false);
-
+export function AddTopicDialog({
+  moduleId,
+  moduleName,
+  onAdd,
+  open,
+  onOpenChange,
+}) {
   const form = useForm({
     resolver: zodResolver(topicSchema),
     defaultValues: {
@@ -53,7 +57,7 @@ export function AddTopicDialog({ moduleId, onAdd }) {
     try {
       await onAdd(data);
       reset();
-      setOpen(false);
+      onOpenChange?.(false);
     } catch (error) {
       console.error('Failed to create topic:', error);
     }
@@ -64,7 +68,8 @@ export function AddTopicDialog({ moduleId, onAdd }) {
       form={form}
       onSubmit={onSubmit}
       open={open}
-      onOpenChange={setOpen}
+      onOpenChange={onOpenChange}
+      moduleName={moduleName}
     />
   );
 }

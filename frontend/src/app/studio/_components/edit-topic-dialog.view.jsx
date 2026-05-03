@@ -34,7 +34,7 @@ export function EditTopicDialogView({ form, onSubmit, open, onOpenChange }) {
       <DialogContent className="border-2 shadow-none sm:max-w-[450px]">
         <DialogHeader>
           <div className="mb-2 flex items-center gap-3">
-            <div className="bg-success/10 text-success rounded-lg p-2">
+            <div className="bg-primary/10 text-primary rounded-lg p-2">
               <BookOpen className="h-5 w-5" />
             </div>
             <DialogTitle className="font-roboto text-xl font-bold">
@@ -112,7 +112,7 @@ export function EditTopicDialogView({ form, onSubmit, open, onOpenChange }) {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="font-roboto bg-success hover:bg-success/90 h-11 w-full border-2 font-bold shadow-none"
+              className="font-roboto bg-primary hover:bg-primary/90 h-11 w-full border-2 font-bold shadow-none"
             >
               {isSubmitting ? 'Saving...' : 'Update Topic'}
             </Button>

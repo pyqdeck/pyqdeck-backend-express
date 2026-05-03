@@ -36,15 +36,13 @@ export default async function SubjectsPage({ searchParams }) {
     branches = branchRes.data.data.items || [];
     semesters = semRes.data.data.items || [];
 
-    // Fetch subjects (if semesterId is provided, we might want to fetch offerings,
-    // but for now let's list global subjects with filters if the API supports it)
-    // The current subjects API doesn't seem to have branchId/semesterId filters directly,
-    // but subject-offerings does.
-
+    // Fetch subjects with filters
     const subRes = await api.subjects.listSubjects({
       page,
       limit,
-      // Add other filters if the API is updated to support them
+      universityId: universityId === 'all' ? undefined : universityId,
+      branchId: branchId === 'all' ? undefined : branchId,
+      q: search,
     });
 
     subjects = subRes.data.data.items || [];

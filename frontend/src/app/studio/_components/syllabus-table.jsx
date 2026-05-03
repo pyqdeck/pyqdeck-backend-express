@@ -29,7 +29,7 @@ export function SyllabusTable({
 }) {
   const [editingModule, setEditingModule] = useState(null);
   const [editingTopic, setEditingTopic] = useState(null);
-  const [addingTopicModuleId, setAddingTopicModuleId] = useState(null);
+  const [addingTopicModule, setAddingTopicModule] = useState(null);
   const [deletingModule, setDeletingModule] = useState(null);
   const [deletingTopic, setDeletingTopic] = useState(null);
 
@@ -49,7 +49,7 @@ export function SyllabusTable({
 
   const handleTopicAddSubmit = async (data) => {
     await onTopicAdd(data);
-    setAddingTopicModuleId(null);
+    setAddingTopicModule(null);
   };
 
   return (
@@ -58,7 +58,7 @@ export function SyllabusTable({
         syllabus={syllabus}
         modules={modules}
         onModuleAdd={onModuleAdd}
-        onTopicAdd={(moduleId) => setAddingTopicModuleId(moduleId)}
+        onTopicAdd={(mod) => setAddingTopicModule(mod)}
         onEditModule={setEditingModule}
         onDeleteModule={setDeletingModule}
         onEditTopic={setEditingTopic}
@@ -79,14 +79,6 @@ export function SyllabusTable({
         open={!!editingTopic}
         onOpenChange={(open) => !open && setEditingTopic(null)}
         onUpdate={onTopicUpdate}
-      />
-
-      {/* Add Topic Dialog */}
-      <AddTopicDialog
-        moduleId={addingTopicModuleId}
-        onAdd={handleTopicAddSubmit}
-        open={!!addingTopicModuleId}
-        onOpenChange={(open) => !open && setAddingTopicModuleId(null)}
       />
 
       {/* Delete Module AlertDialog */}
