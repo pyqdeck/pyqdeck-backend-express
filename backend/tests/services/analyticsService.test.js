@@ -20,10 +20,18 @@ describe('analyticsService', () => {
   describe('getStudioOverviewData', () => {
     it('should aggregate and format all studio overview data', async () => {
       // Mock repository returns
-      analyticsRepository.getGlobalCounts.mockResolvedValue([100, 50, 5, 200, 150, 10, 20]);
-      analyticsRepository.getRecentPendingPapers.mockResolvedValue([{ title: 'Pending Paper 1' }]);
-      analyticsRepository.getRecentQuestionsWithoutSolutions.mockResolvedValue([{ text: 'Q without sol' }]);
-      analyticsRepository.getSubjectPopularity.mockResolvedValue([{ subject: 'Math', count: 10 }]);
+      analyticsRepository.getGlobalCounts.mockResolvedValue([
+        100, 50, 5, 200, 150, 10, 20,
+      ]);
+      analyticsRepository.getRecentPendingPapers.mockResolvedValue([
+        { title: 'Pending Paper 1' },
+      ]);
+      analyticsRepository.getRecentQuestionsWithoutSolutions.mockResolvedValue([
+        { text: 'Q without sol' },
+      ]);
+      analyticsRepository.getSubjectPopularity.mockResolvedValue([
+        { subject: 'Math', count: 10 },
+      ]);
 
       // Mock paper uploads mapping over last 7 days
       analyticsRepository.getPaperUploadsByDay.mockImplementation(() => {
@@ -34,8 +42,12 @@ describe('analyticsService', () => {
       const result = await analyticsService.getStudioOverviewData();
 
       expect(analyticsRepository.getGlobalCounts).toHaveBeenCalled();
-      expect(analyticsRepository.getRecentPendingPapers).toHaveBeenCalledWith(5);
-      expect(analyticsRepository.getRecentQuestionsWithoutSolutions).toHaveBeenCalledWith(5);
+      expect(analyticsRepository.getRecentPendingPapers).toHaveBeenCalledWith(
+        5
+      );
+      expect(
+        analyticsRepository.getRecentQuestionsWithoutSolutions
+      ).toHaveBeenCalledWith(5);
       expect(analyticsRepository.getSubjectPopularity).toHaveBeenCalled();
       expect(analyticsRepository.getPaperUploadsByDay).toHaveBeenCalled();
 
@@ -53,16 +65,22 @@ describe('analyticsService', () => {
         },
       });
 
-      expect(result.queues.pendingPapers).toEqual([{ title: 'Pending Paper 1' }]);
+      expect(result.queues.pendingPapers).toEqual([
+        { title: 'Pending Paper 1' },
+      ]);
       expect(result.queues.aiGeneration).toEqual([{ text: 'Q without sol' }]);
-      expect(result.charts.subjectPopularity).toEqual([{ subject: 'Math', count: 10 }]);
+      expect(result.charts.subjectPopularity).toEqual([
+        { subject: 'Math', count: 10 },
+      ]);
 
       // Content velocity chart should have 7 elements for the last 7 days
       expect(result.charts.contentVelocity).toHaveLength(7);
 
       // Validate structure of chart item
       const today = new Date().toISOString().split('T')[0];
-      const todayChart = result.charts.contentVelocity.find(c => c.date === today);
+      const todayChart = result.charts.contentVelocity.find(
+        (c) => c.date === today
+      );
       expect(todayChart).toBeDefined();
       expect(todayChart.papers).toBe(5);
     });

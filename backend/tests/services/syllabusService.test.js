@@ -70,7 +70,10 @@ describe('syllabusService', () => {
       const pagination = { page: 1, limit: 10 };
 
       const result = await syllabusService.listModules(filter, pagination);
-      expect(moduleRepository.findBySyllabus).toHaveBeenCalledWith('syl-1', pagination);
+      expect(moduleRepository.findBySyllabus).toHaveBeenCalledWith(
+        'syl-1',
+        pagination
+      );
       expect(result).toEqual(mockResponse);
     });
 
@@ -123,12 +126,20 @@ describe('syllabusService', () => {
   describe('Questions Mapping', () => {
     it('getModuleQuestions should call repository.findByModule', async () => {
       const mockResponse = { items: [], total: 0 };
-      questionSyllabusMapRepository.findByModule.mockResolvedValue(mockResponse);
+      questionSyllabusMapRepository.findByModule.mockResolvedValue(
+        mockResponse
+      );
 
       const pagination = { page: 1, limit: 10 };
-      const result = await syllabusService.getModuleQuestions('mod-1', pagination);
+      const result = await syllabusService.getModuleQuestions(
+        'mod-1',
+        pagination
+      );
 
-      expect(questionSyllabusMapRepository.findByModule).toHaveBeenCalledWith('mod-1', pagination);
+      expect(questionSyllabusMapRepository.findByModule).toHaveBeenCalledWith(
+        'mod-1',
+        pagination
+      );
       expect(result).toEqual(mockResponse);
     });
 
@@ -137,9 +148,15 @@ describe('syllabusService', () => {
       questionSyllabusMapRepository.findByTopic.mockResolvedValue(mockResponse);
 
       const pagination = { page: 1, limit: 10 };
-      const result = await syllabusService.getTopicQuestions('top-1', pagination);
+      const result = await syllabusService.getTopicQuestions(
+        'top-1',
+        pagination
+      );
 
-      expect(questionSyllabusMapRepository.findByTopic).toHaveBeenCalledWith('top-1', pagination);
+      expect(questionSyllabusMapRepository.findByTopic).toHaveBeenCalledWith(
+        'top-1',
+        pagination
+      );
       expect(result).toEqual(mockResponse);
     });
   });

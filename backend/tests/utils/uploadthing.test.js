@@ -26,13 +26,12 @@ vi.mock('../../src/utils/index.js', async (importOriginal) => {
         error: vi.fn(),
         warn: vi.fn(),
         debug: vi.fn(),
-      })
-    }
+      }),
+    },
   };
 });
 
 describe('uploadRouter', () => {
-
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -63,7 +62,11 @@ describe('uploadRouter', () => {
       Upload.create.mockResolvedValue({ _id: 'new-upload-id' });
 
       const metadata = { clerkId: 'user-123' };
-      const file = { url: 'https://example.com/file.pdf', key: 'file-key', size: 1024 };
+      const file = {
+        url: 'https://example.com/file.pdf',
+        key: 'file-key',
+        size: 1024,
+      };
 
       await onUploadCompleteFn({ metadata, file });
 
@@ -83,7 +86,11 @@ describe('uploadRouter', () => {
       User.findOne.mockResolvedValue(null);
 
       const metadata = { clerkId: 'user-123' };
-      const file = { url: 'https://example.com/file.pdf', key: 'file-key', size: 1024 };
+      const file = {
+        url: 'https://example.com/file.pdf',
+        key: 'file-key',
+        size: 1024,
+      };
 
       await onUploadCompleteFn({ metadata, file });
 
@@ -98,7 +105,11 @@ describe('uploadRouter', () => {
       Upload.create.mockRejectedValue(error);
 
       const metadata = { clerkId: 'user-123' };
-      const file = { url: 'https://example.com/file.pdf', key: 'file-key', size: 1024 };
+      const file = {
+        url: 'https://example.com/file.pdf',
+        key: 'file-key',
+        size: 1024,
+      };
 
       await onUploadCompleteFn({ metadata, file });
       // Error is caught silently in code, we just ensure it didn't throw to caller

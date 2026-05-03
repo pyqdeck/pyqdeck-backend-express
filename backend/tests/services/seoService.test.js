@@ -50,18 +50,42 @@ describe('seoService', () => {
       expect(data).toHaveLength(6);
 
       // Check universities formatting
-      expect(data[0]).toEqual({ url: '/universities/uni-1', lastMod: uDate, priority: 0.8 });
-      expect(data[1]).toEqual({ url: '/universities/uni-2', lastMod: uDate, priority: 0.8 });
+      expect(data[0]).toEqual({
+        url: '/universities/uni-1',
+        lastMod: uDate,
+        priority: 0.8,
+      });
+      expect(data[1]).toEqual({
+        url: '/universities/uni-2',
+        lastMod: uDate,
+        priority: 0.8,
+      });
 
       // Check subjects formatting
-      expect(data[2]).toEqual({ url: '/subjects/sub-1', lastMod: sDate, priority: 0.7 });
+      expect(data[2]).toEqual({
+        url: '/subjects/sub-1',
+        lastMod: sDate,
+        priority: 0.7,
+      });
 
       // Check papers formatting
-      expect(data[3]).toEqual({ url: '/papers/pap-1', lastMod: pDate, priority: 0.6 });
-      expect(data[4]).toEqual({ url: '/papers/pap-2', lastMod: pDate, priority: 0.6 });
+      expect(data[3]).toEqual({
+        url: '/papers/pap-1',
+        lastMod: pDate,
+        priority: 0.6,
+      });
+      expect(data[4]).toEqual({
+        url: '/papers/pap-2',
+        lastMod: pDate,
+        priority: 0.6,
+      });
 
       // Check questions formatting
-      expect(data[5]).toEqual({ url: '/questions/que-1', lastMod: qDate, priority: 0.5 });
+      expect(data[5]).toEqual({
+        url: '/questions/que-1',
+        lastMod: qDate,
+        priority: 0.5,
+      });
     });
 
     it('should return empty list if no entities exist', async () => {

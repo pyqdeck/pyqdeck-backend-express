@@ -24,7 +24,12 @@ describe('analyticsRepository', () => {
 
   describe('getGlobalCounts', () => {
     it('should return counts of all entities', async () => {
-      await User.create({ clerkId: 'user1', email: 'test@test.com', name: 'Test User', role: UserRole.STUDENT });
+      await User.create({
+        clerkId: 'user1',
+        email: 'test@test.com',
+        name: 'Test User',
+        role: UserRole.STUDENT,
+      });
       const counts = await analyticsRepository.getGlobalCounts();
       expect(counts).toEqual([1, 0, 0, 0, 0, 0, 0]);
     });
@@ -60,7 +65,7 @@ describe('analyticsRepository', () => {
         branchId: branch._id,
         semesterId: new mongoose.Types.ObjectId(),
         syllabusId: new mongoose.Types.ObjectId(),
-        slug: 'math-offering'
+        slug: 'math-offering',
       });
 
       await Paper.create([
@@ -72,7 +77,7 @@ describe('analyticsRepository', () => {
           examYear: 2023,
           examType: 'regular',
           subjectOfferingId: offering._id,
-          createdAt: new Date('2023-01-01')
+          createdAt: new Date('2023-01-01'),
         },
         {
           title: 'Paper 2',
@@ -82,7 +87,7 @@ describe('analyticsRepository', () => {
           examYear: 2023,
           examType: 'regular',
           subjectOfferingId: offering._id,
-          createdAt: new Date('2023-01-02')
+          createdAt: new Date('2023-01-02'),
         },
         {
           title: 'Paper 3',
@@ -91,8 +96,8 @@ describe('analyticsRepository', () => {
           exam: 'End',
           examYear: 2023,
           examType: 'regular',
-          subjectOfferingId: offering._id
-        }
+          subjectOfferingId: offering._id,
+        },
       ]);
 
       const pendingPapers = await analyticsRepository.getRecentPendingPapers(1);
@@ -112,20 +117,40 @@ describe('analyticsRepository', () => {
       const offering = new mongoose.Types.ObjectId();
       await Paper.create([
         {
-          title: 'P1', slug: 'p1', status: 'approved', exam: 'End', examYear: 2023, examType: 'regular', subjectOfferingId: offering,
-          createdAt: new Date('2023-10-10T10:00:00Z')
+          title: 'P1',
+          slug: 'p1',
+          status: 'approved',
+          exam: 'End',
+          examYear: 2023,
+          examType: 'regular',
+          subjectOfferingId: offering,
+          createdAt: new Date('2023-10-10T10:00:00Z'),
         },
         {
-          title: 'P2', slug: 'p2', status: 'approved', exam: 'End', examYear: 2023, examType: 'regular', subjectOfferingId: offering,
-          createdAt: new Date('2023-10-10T12:00:00Z')
+          title: 'P2',
+          slug: 'p2',
+          status: 'approved',
+          exam: 'End',
+          examYear: 2023,
+          examType: 'regular',
+          subjectOfferingId: offering,
+          createdAt: new Date('2023-10-10T12:00:00Z'),
         },
         {
-          title: 'P3', slug: 'p3', status: 'approved', exam: 'End', examYear: 2023, examType: 'regular', subjectOfferingId: offering,
-          createdAt: new Date('2023-10-11T10:00:00Z')
-        }
+          title: 'P3',
+          slug: 'p3',
+          status: 'approved',
+          exam: 'End',
+          examYear: 2023,
+          examType: 'regular',
+          subjectOfferingId: offering,
+          createdAt: new Date('2023-10-11T10:00:00Z'),
+        },
       ]);
 
-      const result = await analyticsRepository.getPaperUploadsByDay(new Date('2023-10-01T00:00:00Z'));
+      const result = await analyticsRepository.getPaperUploadsByDay(
+        new Date('2023-10-01T00:00:00Z')
+      );
       expect(result).toHaveLength(2);
       expect(result[0]._id).toBe('2023-10-10');
       expect(result[0].count).toBe(2);
@@ -137,24 +162,46 @@ describe('analyticsRepository', () => {
   describe('getRecentQuestionsWithoutSolutions', () => {
     it('should return recent questions limited to given number', async () => {
       await Question.create([
-        { text: 'Q1', slug: 'q1', type: 'short', createdAt: new Date('2023-01-01') },
-        { text: 'Q2', slug: 'q2', type: 'short', createdAt: new Date('2023-01-02') }
+        {
+          text: 'Q1',
+          slug: 'q1',
+          type: 'short',
+          createdAt: new Date('2023-01-01'),
+        },
+        {
+          text: 'Q2',
+          slug: 'q2',
+          type: 'short',
+          createdAt: new Date('2023-01-02'),
+        },
       ]);
-      const questions = await analyticsRepository.getRecentQuestionsWithoutSolutions(1);
+      const questions =
+        await analyticsRepository.getRecentQuestionsWithoutSolutions(1);
       expect(questions).toHaveLength(1);
       expect(questions[0].text).toBe('Q2');
     });
 
     it('should default limit to 5 if not provided', async () => {
-      const questions = await analyticsRepository.getRecentQuestionsWithoutSolutions();
+      const questions =
+        await analyticsRepository.getRecentQuestionsWithoutSolutions();
       expect(questions).toHaveLength(0);
     });
   });
 
   describe('getSubjectPopularity', () => {
     it('should calculate subject popularity by grouping papers by subject offerings', async () => {
-      const subject1 = await Subject.create({ name: 'Sub1', subjectCode: 'C1', slug: 's1', isActive: true });
-      const subject2 = await Subject.create({ name: 'Sub2', subjectCode: 'C2', slug: 's2', isActive: true });
+      const subject1 = await Subject.create({
+        name: 'Sub1',
+        subjectCode: 'C1',
+        slug: 's1',
+        isActive: true,
+      });
+      const subject2 = await Subject.create({
+        name: 'Sub2',
+        subjectCode: 'C2',
+        slug: 's2',
+        isActive: true,
+      });
 
       const offering1 = await SubjectOffering.create({
         subjectId: subject1._id,
@@ -162,7 +209,7 @@ describe('analyticsRepository', () => {
         branchId: new mongoose.Types.ObjectId(),
         semesterId: new mongoose.Types.ObjectId(),
         syllabusId: new mongoose.Types.ObjectId(),
-        slug: 'o1'
+        slug: 'o1',
       });
 
       const offering2 = await SubjectOffering.create({
@@ -171,13 +218,37 @@ describe('analyticsRepository', () => {
         branchId: new mongoose.Types.ObjectId(),
         semesterId: new mongoose.Types.ObjectId(),
         syllabusId: new mongoose.Types.ObjectId(),
-        slug: 'o2'
+        slug: 'o2',
       });
 
       await Paper.create([
-        { title: 'P1', slug: 'p1', status: 'approved', exam: 'End', examYear: 2023, examType: 'regular', subjectOfferingId: offering1._id },
-        { title: 'P2', slug: 'p2', status: 'approved', exam: 'End', examYear: 2023, examType: 'regular', subjectOfferingId: offering1._id },
-        { title: 'P3', slug: 'p3', status: 'approved', exam: 'End', examYear: 2023, examType: 'regular', subjectOfferingId: offering2._id }
+        {
+          title: 'P1',
+          slug: 'p1',
+          status: 'approved',
+          exam: 'End',
+          examYear: 2023,
+          examType: 'regular',
+          subjectOfferingId: offering1._id,
+        },
+        {
+          title: 'P2',
+          slug: 'p2',
+          status: 'approved',
+          exam: 'End',
+          examYear: 2023,
+          examType: 'regular',
+          subjectOfferingId: offering1._id,
+        },
+        {
+          title: 'P3',
+          slug: 'p3',
+          status: 'approved',
+          exam: 'End',
+          examYear: 2023,
+          examType: 'regular',
+          subjectOfferingId: offering2._id,
+        },
       ]);
 
       const result = await analyticsRepository.getSubjectPopularity();
