@@ -5,8 +5,14 @@ import { successFormatter, catchAsync } from '../utils/index.js';
  * GET /api/v1/universities
  */
 export const list = catchAsync(async (req, res, next) => {
+  const filter = {};
+  if (req.query.isActive !== 'all') filter.isActive = true;
+  if (req.query.search) filter.search = req.query.search;
+  if (req.query.state) filter.state = req.query.state;
+  if (req.query.country) filter.country = req.query.country;
+
   const { items, total, page, limit } = await universityService.list(
-    req.query,
+    filter,
     req.pagination
   );
   res.json(

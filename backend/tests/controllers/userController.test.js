@@ -1,20 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as userController from '../../src/controllers/userController.js';
-import userRepository from '../../src/repositories/userRepository.js';
 import userService from '../../src/services/userService.js';
 import { ForbiddenError } from '../../src/utils/errors/index.js';
-
-vi.mock('../../src/repositories/userRepository.js', () => ({
-  default: {
-    getStats: vi.fn(),
-  },
-}));
 
 vi.mock('../../src/services/userService.js', () => ({
   default: {
     listUsers: vi.fn(),
     getUserByClerkId: vi.fn(),
     updateUser: vi.fn(),
+    getUserStats: vi.fn(),
   },
 }));
 
@@ -42,14 +36,14 @@ describe('userController', () => {
 
   describe('getMe', () => {
     it('should return user info and stats', async () => {
-      userRepository.getStats.mockResolvedValue({
+      userService.getUserStats.mockResolvedValue({
         bookmarksCount: 5,
         solutionsCount: 10,
       });
 
       await userController.getMe(req, res, next);
 
-      expect(userRepository.getStats).toHaveBeenCalledWith('user_1');
+      expect(userService.getUserStats).toHaveBeenCalledWith('user_1');
       expect(res.json).toHaveBeenCalledWith(
         expect.objectContaining({
           message: 'User profile fetched',

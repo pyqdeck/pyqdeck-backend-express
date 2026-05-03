@@ -4,11 +4,9 @@ class UniversityService {
   async list(query = {}, pagination) {
     const filter = {};
 
-    // Filter by active status (default: only active unless 'all' is specified)
-    if (query.isActive === 'false' || query.isActive === false) {
-      filter.isActive = false;
-    } else if (query.isActive !== 'all') {
-      filter.isActive = true;
+    // Filter by active status if explicitly requested
+    if (query.isActive !== undefined && query.isActive !== 'all') {
+      filter.isActive = query.isActive === 'true' || query.isActive === true;
     }
 
     // Support searching by name or short name

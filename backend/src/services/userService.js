@@ -81,6 +81,10 @@ class UserService {
     return { user, stats };
   }
 
+  async getUserStats(userId) {
+    return userRepository.getStats(userId);
+  }
+
   async updateUser(clerkId, data) {
     return userRepository.update(clerkId, data);
   }

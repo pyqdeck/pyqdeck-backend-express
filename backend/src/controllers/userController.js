@@ -1,5 +1,4 @@
 import { successFormatter, catchAsync } from '../utils/index.js';
-import userRepository from '../repositories/userRepository.js';
 import userService from '../services/userService.js';
 import { ForbiddenError } from '../utils/errors/index.js';
 import { getAuth } from '@clerk/express';
@@ -17,8 +16,8 @@ export const getMe = catchAsync(async (req, res, next) => {
     });
   }
 
-  // Fetch stats via optimized aggregation
-  const stats = await userRepository.getStats(user._id);
+  // Fetch stats via service
+  const stats = await userService.getUserStats(user._id);
 
   res.json(
     successFormatter.formatSuccess({ user, stats }, 'User profile fetched')
