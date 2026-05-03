@@ -1584,6 +1584,27 @@ export class Api<
         ...params,
       }),
   };
+  maintenance = {
+    /**
+     * @description Deletes all records from all collections except 'users'. This is irreversible.
+     *
+     * @tags Maintenance
+     * @name WipeDatabase
+     * @summary Wipe all content from database (Admin only)
+     * @request POST:/maintenance/wipe-db
+     * @secure
+     * @response `200` `void` Database wiped successfully
+     * @response `401` `Error`
+     * @response `403` `Error`
+     */
+    wipeDatabase: (params: RequestParams = {}) =>
+      this.request<void, Error>({
+        path: `/maintenance/wipe-db`,
+        method: "POST",
+        secure: true,
+        ...params,
+      }),
+  };
   papers = {
     /**
  * No description
