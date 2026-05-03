@@ -53,12 +53,12 @@ export function UniversitiesTableView({
   onDelete,
 }) {
   const searchParams = useSearchParams();
-  const search = searchParams.get('search') || '';
+  const search = searchParams?.get('search') || '';
   const router = useRouter();
   const pathname = usePathname();
 
   const clearSearch = () => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString() || '');
     params.delete('search');
     params.set('page', '1');
     router.push(`${pathname}?${params.toString()}`);

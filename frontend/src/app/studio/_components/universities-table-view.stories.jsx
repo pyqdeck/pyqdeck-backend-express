@@ -93,6 +93,15 @@ export const Searching = {
     },
     search: 'Mumbai',
   },
+  parameters: {
+    nextjs: {
+      navigation: {
+        query: {
+          search: 'Mumbai',
+        },
+      },
+    },
+  },
 };
 
 export const Empty = {
@@ -116,5 +125,14 @@ export const NoResults = {
       current: 0,
     },
     search: 'Something that does not exist',
+  },
+  parameters: {
+    nextjs: {
+      navigation: {
+        query: {
+          search: 'Something that does not exist',
+        },
+      },
+    },
   },
 };

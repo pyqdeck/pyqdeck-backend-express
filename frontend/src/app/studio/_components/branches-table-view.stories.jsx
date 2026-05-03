@@ -73,3 +73,19 @@ export const Empty = {
     loading: false,
   },
 };
+
+export const Searching = {
+  args: {
+    branches: [],
+    loading: false,
+  },
+  parameters: {
+    nextjs: {
+      navigation: {
+        query: {
+          search: 'Computer',
+        },
+      },
+    },
+  },
+};
