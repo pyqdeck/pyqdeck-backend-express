@@ -11,7 +11,7 @@ import { SystemInfoCard } from './system-info-card';
 export function SettingsTabs({ platformConfig, health }) {
   return (
     <Tabs defaultValue="platform">
-      <TabsList variant="line" className="w-full justify-start border-b pb-0">
+      <TabsList variant="line" className="w-full justify-start border-none pb-0">
         <TabsTrigger value="platform" className="font-roboto gap-1.5">
           <Settings2Icon className="h-4 w-4" />
           Platform
