@@ -49,21 +49,21 @@ export function SettingsTabs({ platformConfig, health }) {
           {/* 4. Added a subtle fade-in animation to smooth out tab switching */}
           <TabsContent
             value="platform"
-            className="mt-2 animate-in fade-in-50 duration-300"
+            className="animate-in fade-in-50 mt-2 duration-300"
           >
             <GeneralSettingsCard initialConfig={platformConfig} />
           </TabsContent>
 
           <TabsContent
             value="ai"
-            className="mt-2 animate-in fade-in-50 duration-300"
+            className="animate-in fade-in-50 mt-2 duration-300"
           >
             <AiConfigCard initialConfig={platformConfig} />
           </TabsContent>
 
           <TabsContent
             value="maintenance"
-            className="mt-2 animate-in fade-in-50 duration-300"
+            className="animate-in fade-in-50 mt-2 duration-300"
           >
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
               <WipeDbCard />

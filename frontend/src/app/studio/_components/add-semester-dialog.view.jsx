@@ -43,7 +43,7 @@ export function AddSemesterDialogView({
       {trigger && (
         <DialogTrigger asChild>
           <Button className="font-roboto border-2 font-bold shadow-none">
-            <Plus className="mr-2 h-4 w-4" /> Add Semester
+            <Plus className="h-4 w-4" /> Add Semester
           </Button>
         </DialogTrigger>
       )}

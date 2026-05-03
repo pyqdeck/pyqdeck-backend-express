@@ -5,6 +5,7 @@ export default async function SemestersPage({ searchParams }) {
   const api = await getApiServer();
 
   const resolvedSearchParams = await searchParams;
+  const search = resolvedSearchParams?.search || '';
   const page = parseInt(resolvedSearchParams?.page || '1', 10);
   const limit = parseInt(resolvedSearchParams?.limit || '10', 10);
   const universityId = resolvedSearchParams?.universityId;
@@ -29,6 +30,7 @@ export default async function SemestersPage({ searchParams }) {
     const semRes = await api.semesters.listAllSemesters({
       page,
       limit,
+      search,
       branchId: branchId === 'all' ? undefined : branchId,
     });
 

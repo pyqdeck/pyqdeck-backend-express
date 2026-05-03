@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useApi } from '@/hooks/use-api';
 import { SemestersTable } from './semesters-table';
 import { AddSemesterDialog } from './add-semester-dialog';
+import { StudioSearch } from './studio-search';
 import {
   Select,
   SelectContent,
@@ -27,7 +28,7 @@ export function SemesterManagement({
   // Sync filters from URL
   const selectedUniId = searchParams.get('universityId') || 'all';
   const selectedBranchId = searchParams.get('branchId') || 'all';
-  const search = searchParams.get('q') || '';
+  const search = searchParams.get('search') || '';
 
   // Filter branches based on selected university
   const filteredBranches =
@@ -60,17 +61,6 @@ export function SemesterManagement({
     router.push(`?${params.toString()}`);
   };
 
-  const handleSearchChange = (value) => {
-    const params = new URLSearchParams(searchParams);
-    if (value) {
-      params.set('q', value);
-    } else {
-      params.delete('q');
-    }
-    params.set('page', '1');
-    router.push(`?${params.toString()}`);
-  };
-
   const handleAdd = async (data) => {
     await api.branches.createSemester(data.branchId, data);
     router.refresh();
@@ -97,13 +87,13 @@ export function SemesterManagement({
             Define academic periods and curriculum stages.
           </p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <Label className="font-roboto text-xs font-bold tracking-wider uppercase">
-              Institution:
+              Inst:
             </Label>
             <Select value={selectedUniId} onValueChange={handleUniChange}>
-              <SelectTrigger className="font-roboto w-[200px] border-2 focus:ring-0">
+              <SelectTrigger className="font-roboto w-[160px] border-2 focus:ring-0">
                 <SelectValue placeholder="All Universities" />
               </SelectTrigger>
               <SelectContent className="border-2 shadow-none">
@@ -127,7 +117,7 @@ export function SemesterManagement({
               Branch:
             </Label>
             <Select value={selectedBranchId} onValueChange={handleBranchChange}>
-              <SelectTrigger className="font-roboto w-[200px] border-2 focus:ring-0">
+              <SelectTrigger className="font-roboto w-[160px] border-2 focus:ring-0">
                 <SelectValue placeholder="All Branches" />
               </SelectTrigger>
               <SelectContent className="border-2 shadow-none">
@@ -146,6 +136,10 @@ export function SemesterManagement({
               </SelectContent>
             </Select>
           </div>
+          <StudioSearch
+            placeholder="Search semesters..."
+            initialValue={search}
+          />
           <AddSemesterDialog
             branches={branches}
             defaultBranchId={selectedBranchId !== 'all' ? selectedBranchId : ''}
@@ -157,8 +151,6 @@ export function SemesterManagement({
       <SemestersTable
         semesters={initialSemesters}
         pagination={pagination}
-        search={search}
-        onSearchChange={handleSearchChange}
         onUpdate={handleUpdate}
         onDelete={handleDelete}
       />

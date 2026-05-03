@@ -1,12 +1,14 @@
 'use client';
 
 import * as React from 'react';
+import { useSearchParams } from 'next/navigation';
 import { EditUniversityDialog } from './edit-university-dialog';
 import { DeleteUniversityDialog } from './delete-university-dialog';
 import { UniversitiesTableView } from './universities-table-view';
 
 export function UniversitiesTable({ initialUniversities = [], pagination }) {
-  const [search, setSearch] = React.useState('');
+  const searchParams = useSearchParams();
+  const search = searchParams.get('search') || '';
 
   // Dialog States
   const [editOpen, setEditOpen] = React.useState(false);
@@ -34,8 +36,6 @@ export function UniversitiesTable({ initialUniversities = [], pagination }) {
       <UniversitiesTableView
         universities={filteredUniversities}
         pagination={pagination}
-        search={search}
-        onSearchChange={setSearch}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />

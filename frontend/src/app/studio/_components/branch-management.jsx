@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useApi } from '@/hooks/use-api';
 import { BranchesTable } from './branches-table';
 import { AddBranchDialog } from './add-branch-dialog';
+import { StudioSearch } from './studio-search';
 import {
   Select,
   SelectContent,
@@ -25,7 +26,7 @@ export function BranchManagement({
 
   // Sync filters from URL
   const selectedUniId = searchParams.get('universityId') || 'all';
-  const search = searchParams.get('q') || '';
+  const search = searchParams.get('search') || '';
 
   const handleUniChange = (value) => {
     const params = new URLSearchParams(searchParams);
@@ -33,17 +34,6 @@ export function BranchManagement({
       params.delete('universityId');
     } else {
       params.set('universityId', value);
-    }
-    params.set('page', '1');
-    router.push(`?${params.toString()}`);
-  };
-
-  const handleSearchChange = (value) => {
-    const params = new URLSearchParams(searchParams);
-    if (value) {
-      params.set('q', value);
-    } else {
-      params.delete('q');
     }
     params.set('page', '1');
     router.push(`?${params.toString()}`);
@@ -76,13 +66,13 @@ export function BranchManagement({
             Manage academic courses and specializations.
           </p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <Label className="font-roboto text-xs font-bold tracking-wider uppercase">
               Institution:
             </Label>
             <Select value={selectedUniId} onValueChange={handleUniChange}>
-              <SelectTrigger className="font-roboto w-[200px] border-2 focus:ring-0">
+              <SelectTrigger className="font-roboto w-[180px] border-2 focus:ring-0">
                 <SelectValue placeholder="All Universities" />
               </SelectTrigger>
               <SelectContent className="border-2 shadow-none">
@@ -101,6 +91,10 @@ export function BranchManagement({
               </SelectContent>
             </Select>
           </div>
+          <StudioSearch
+            placeholder="Search branches..."
+            initialValue={search}
+          />
           <AddBranchDialog
             universities={universities}
             defaultUniversityId={selectedUniId !== 'all' ? selectedUniId : ''}
@@ -112,8 +106,6 @@ export function BranchManagement({
       <BranchesTable
         branches={initialBranches}
         pagination={pagination}
-        search={search}
-        onSearchChange={handleSearchChange}
         onUpdate={handleUpdate}
         onDelete={handleDelete}
       />

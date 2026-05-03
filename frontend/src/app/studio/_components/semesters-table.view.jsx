@@ -5,9 +5,9 @@ import {
   Building2,
   GraduationCap,
   BookOpen,
-  Search,
 } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import {
   Table,
   TableBody,
@@ -16,14 +16,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import {
   Pagination,
   PaginationContent,
@@ -42,56 +35,34 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
 
 export function SemestersTableView({
   semesters = [],
   pagination,
-  search,
-  onSearchChange,
   onEdit,
   onDelete,
 }) {
+  const searchParams = useSearchParams();
+  const search = searchParams.get('search') || '';
   return (
-    <Card className="border-border/50 border-2 shadow-none">
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="font-roboto text-foreground text-xl">
-              Semester Configuration
-            </CardTitle>
-            <CardDescription className="font-roboto">
-              Organize academic periods and content delivery schedules.
-            </CardDescription>
-          </div>
-          <div className="relative w-72">
-            <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-            <Input
-              placeholder="Search semesters..."
-              className="font-roboto border-2 pl-9 focus-visible:ring-0"
-              value={search}
-              onChange={(e) => onSearchChange?.(e.target.value)}
-            />
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
+    <Card className="border-border/50 overflow-hidden border-2 p-0 shadow-none">
+      <CardContent className="p-0">
         <Table>
           <TableHeader>
-            <TableRow className="border-b-2 hover:bg-transparent">
-              <TableHead className="font-roboto text-foreground w-[200px] font-bold tracking-wider uppercase">
+            <TableRow className="bg-muted/30 border-b-2 hover:bg-transparent">
+              <TableHead className="font-roboto text-foreground h-12 w-[200px] px-6 font-bold tracking-wider uppercase">
                 Semester
               </TableHead>
-              <TableHead className="font-roboto text-foreground font-bold tracking-wider uppercase">
+              <TableHead className="font-roboto text-foreground h-12 px-6 font-bold tracking-wider uppercase">
                 Title / Label
               </TableHead>
-              <TableHead className="font-roboto text-foreground font-bold tracking-wider uppercase">
+              <TableHead className="font-roboto text-foreground h-12 px-6 font-bold tracking-wider uppercase">
                 Branch
               </TableHead>
-              <TableHead className="font-roboto text-foreground font-bold tracking-wider uppercase">
+              <TableHead className="font-roboto text-foreground h-12 px-6 font-bold tracking-wider uppercase">
                 URL Path
               </TableHead>
-              <TableHead className="font-roboto text-foreground w-[100px] text-right font-bold tracking-wider uppercase">
+              <TableHead className="font-roboto text-foreground h-12 w-[100px] px-6 text-right font-bold tracking-wider uppercase">
                 Actions
               </TableHead>
             </TableRow>
@@ -114,7 +85,7 @@ export function SemestersTableView({
                   key={sem.id}
                   className="group hover:bg-muted/30 border-b transition-colors"
                 >
-                  <TableCell className="py-4">
+                  <TableCell className="px-6 py-3">
                     <div className="flex items-center gap-3">
                       <div className="border-info/20 bg-info/5 text-info dark:border-info/30 dark:bg-info/10 dark:text-info flex h-9 w-9 items-center justify-center rounded-lg border-2">
                         <span className="font-roboto text-sm font-bold">
@@ -126,12 +97,12 @@ export function SemestersTableView({
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="px-6 py-3">
                     <span className="font-roboto text-muted-foreground text-sm italic">
                       {sem.title || `Standard Semester ${sem.number}`}
                     </span>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="px-6 py-3">
                     <div className="flex flex-col">
                       <div className="flex items-center gap-2">
                         <GraduationCap className="text-muted-foreground h-4 w-4" />
@@ -151,12 +122,12 @@ export function SemestersTableView({
                         )}
                     </div>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="px-6 py-3">
                     <code className="bg-muted font-roboto text-muted-foreground rounded px-1.5 py-0.5 text-xs font-bold">
                       /{sem.slug}
                     </code>
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="px-6 py-3 text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button

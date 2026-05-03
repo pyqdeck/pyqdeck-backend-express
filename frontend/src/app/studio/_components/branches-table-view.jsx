@@ -5,13 +5,12 @@ import {
   Edit,
   Trash2,
   MoreVertical,
-  ExternalLink,
   Building,
   Hash,
   GraduationCap,
-  Search,
 } from 'lucide-react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import {
   Table,
   TableBody,
@@ -28,14 +27,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import {
   Pagination,
   PaginationContent,
@@ -47,26 +39,21 @@ import {
 } from '@/components/ui/pagination';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export function BranchesTableView({
   branches = [],
   pagination,
-  search,
-  onSearchChange,
   onEdit,
   onDelete,
   loading = false,
 }) {
+  const searchParams = useSearchParams();
+  const search = searchParams.get('search') || '';
   if (loading) {
     return (
-      <Card className="border-border/50 border-2 shadow-none">
-        <CardHeader className="pb-3">
-          <Skeleton className="mb-2 h-8 w-48" />
-          <Skeleton className="h-4 w-64" />
-        </CardHeader>
-        <CardContent>
+      <Card className="border-border/50 overflow-hidden border-2 p-0 shadow-none">
+        <CardContent className="p-0">
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
@@ -109,48 +96,27 @@ export function BranchesTableView({
   }
 
   return (
-    <Card className="border-border/50 border-2 shadow-none">
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="font-roboto text-xl">
-              Academic Departments
-            </CardTitle>
-            <CardDescription className="font-roboto">
-              Manage branches and specializations across institutions.
-            </CardDescription>
-          </div>
-          <div className="relative w-72">
-            <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-            <Input
-              placeholder="Search branches..."
-              className="font-roboto border-2 pl-9 focus-visible:ring-0"
-              value={search}
-              onChange={(e) => onSearchChange?.(e.target.value)}
-            />
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent>
+    <Card className="border-border/50 overflow-hidden border-2 p-0 shadow-none">
+      <CardContent className="p-0">
         <Table>
           <TableHeader>
-            <TableRow className="border-b-2 hover:bg-transparent">
-              <TableHead className="font-roboto text-foreground font-bold tracking-wider uppercase">
+            <TableRow className="bg-muted/30 border-b-2 hover:bg-transparent">
+              <TableHead className="font-roboto text-foreground h-12 px-6 font-bold tracking-wider uppercase">
                 Branch
               </TableHead>
-              <TableHead className="font-roboto text-foreground font-bold tracking-wider uppercase">
+              <TableHead className="font-roboto text-foreground h-12 px-6 font-bold tracking-wider uppercase">
                 Short Name
               </TableHead>
-              <TableHead className="font-roboto text-foreground font-bold tracking-wider uppercase">
+              <TableHead className="font-roboto text-foreground h-12 px-6 font-bold tracking-wider uppercase">
                 Institution
               </TableHead>
-              <TableHead className="font-roboto text-foreground text-center font-bold tracking-wider uppercase">
+              <TableHead className="font-roboto text-foreground h-12 px-6 text-center font-bold tracking-wider uppercase">
                 Code
               </TableHead>
-              <TableHead className="font-roboto text-foreground font-bold tracking-wider uppercase">
+              <TableHead className="font-roboto text-foreground h-12 px-6 font-bold tracking-wider uppercase">
                 Status
               </TableHead>
-              <TableHead className="text-foreground w-[100px] text-right font-bold">
+              <TableHead className="text-foreground h-12 w-[100px] px-6 text-right font-bold">
                 Actions
               </TableHead>
             </TableRow>
@@ -173,7 +139,7 @@ export function BranchesTableView({
                   key={branch.id}
                   className="group hover:bg-muted/30 border-b transition-colors"
                 >
-                  <TableCell className="py-4">
+                  <TableCell className="px-6 py-3">
                     <div className="flex flex-col">
                       <span className="font-roboto text-foreground group-hover:text-primary cursor-pointer font-bold transition-colors">
                         {branch.name}

@@ -52,7 +52,7 @@ export function AddModuleDialogView({
             size="sm"
             className="font-roboto bg-primary hover:bg-primary/90 border-2 font-bold shadow-none"
           >
-            <Plus className="mr-2 h-4 w-4" /> Add Module
+            <Plus className="h-4 w-4" /> Add Module
           </Button>
         </DialogTrigger>
       )}

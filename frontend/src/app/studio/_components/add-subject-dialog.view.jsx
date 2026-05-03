@@ -36,7 +36,7 @@ export function AddSubjectDialogView({
       {trigger && (
         <DialogTrigger asChild>
           <Button className="font-roboto bg-primary hover:bg-primary/90 border-2 font-bold shadow-none">
-            <Plus className="mr-2 h-4 w-4" /> Add Subject
+            <Plus className="h-4 w-4" /> Add Subject
           </Button>
         </DialogTrigger>
       )}

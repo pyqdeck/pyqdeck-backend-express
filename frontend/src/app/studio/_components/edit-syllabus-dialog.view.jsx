@@ -113,7 +113,7 @@ export function EditSyllabusDialogView({
                 </>
               ) : (
                 <>
-                  <Check className="mr-2 h-4 w-4" />
+                  <Check className="h-4 w-4" />
                   Save Changes
                 </>
               )}

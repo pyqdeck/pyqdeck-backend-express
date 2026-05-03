@@ -8,8 +8,6 @@ import { DeleteBranchDialog } from './delete-branch-dialog';
 export function BranchesTable({
   branches = [],
   pagination,
-  search,
-  onSearchChange,
   onUpdate,
   onDelete,
   loading = false,
@@ -22,8 +20,6 @@ export function BranchesTable({
       <BranchesTableView
         branches={branches}
         pagination={pagination}
-        search={search}
-        onSearchChange={onSearchChange}
         loading={loading}
         onEdit={setEditingBranch}
         onDelete={setDeletingBranch}

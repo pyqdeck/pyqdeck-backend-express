@@ -1,4 +1,5 @@
 import { UsersTable } from '../_components/users-table';
+import { StudioSearch } from '../_components/studio-search';
 import { getApiServer } from '@/lib/api-server';
 
 export const dynamic = 'force-dynamic';
@@ -45,20 +46,19 @@ export default async function UsersPage({ searchParams }) {
 
   return (
     <div className="flex flex-col gap-6 p-4">
-      <div className="flex flex-col gap-1">
-        <h1 className="font-roboto text-foreground text-3xl font-bold tracking-tight">
-          User Management
-        </h1>
-        <p className="text-muted-foreground font-roboto">
-          View and manage platform users and their roles.
-        </p>
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-1">
+          <h1 className="font-roboto text-foreground text-3xl font-bold tracking-tight">
+            User Management
+          </h1>
+          <p className="text-muted-foreground font-roboto">
+            View and manage platform users and their roles.
+          </p>
+        </div>
+        <StudioSearch placeholder="Search users..." initialValue={search} />
       </div>
 
-      <UsersTable
-        initialUsers={users}
-        pagination={pagination}
-        initialSearch={search}
-      />
+      <UsersTable initialUsers={users} pagination={pagination} />
     </div>
   );
 }

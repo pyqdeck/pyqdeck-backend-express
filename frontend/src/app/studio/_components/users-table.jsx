@@ -4,43 +4,15 @@ import * as React from 'react';
 import { toast } from 'sonner';
 import { UsersTableView } from './users-table-view';
 import { useApi } from '@/hooks/use-api';
-import { useRouter, usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
-export function UsersTable({
-  initialUsers = [],
-  pagination,
-  initialSearch = '',
-}) {
-  const [search, setSearch] = React.useState(initialSearch);
+export function UsersTable({ initialUsers = [], pagination }) {
   const [isUpdating, setIsUpdating] = React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState(null);
   const [userStats, setUserStats] = React.useState(null);
   const [isLoadingStats, setIsLoadingStats] = React.useState(false);
   const api = useApi();
   const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  // Debounced URL update on search input
-  React.useEffect(() => {
-    const handler = setTimeout(() => {
-      const params = new URLSearchParams(searchParams.toString());
-
-      if (search) {
-        params.set('search', search);
-      } else {
-        params.delete('search');
-      }
-
-      params.set('page', '1');
-
-      if (params.get('search') !== searchParams.get('search')) {
-        router.push(`${pathname}?${params.toString()}`);
-      }
-    }, 500);
-
-    return () => clearTimeout(handler);
-  }, [search, pathname, router, searchParams]);
 
   const handleUpdateRole = async (clerkId, newRole) => {
     setIsUpdating(true);
@@ -110,8 +82,6 @@ export function UsersTable({
     <UsersTableView
       users={initialUsers}
       pagination={pagination}
-      search={search}
-      onSearchChange={setSearch}
       onUpdateRole={handleUpdateRole}
       onBanUser={handleBanUser}
       onUnbanUser={handleUnbanUser}

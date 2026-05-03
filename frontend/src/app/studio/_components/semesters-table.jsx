@@ -8,8 +8,6 @@ import { DeleteSemesterDialog } from './delete-semester-dialog';
 export function SemestersTable({
   semesters = [],
   pagination,
-  search,
-  onSearchChange,
   onUpdate,
   onDelete,
 }) {
@@ -32,8 +30,6 @@ export function SemestersTable({
       <SemestersTableView
         semesters={semesters}
         pagination={pagination}
-        search={search}
-        onSearchChange={onSearchChange}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />

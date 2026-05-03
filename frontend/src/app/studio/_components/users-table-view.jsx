@@ -4,7 +4,6 @@ import * as React from 'react';
 import {
   MoreVertical,
   ShieldCheck,
-  Search,
   UserCog,
   Calendar,
   ExternalLink,
@@ -27,18 +26,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -234,8 +225,6 @@ function UserDetailDialog({ user, stats, isLoadingStats, onClose }) {
 export function UsersTableView({
   users = [],
   pagination,
-  search,
-  onSearchChange,
   onUpdateRole,
   onBanUser,
   onUnbanUser,
@@ -249,6 +238,7 @@ export function UsersTableView({
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
+  const search = searchParams.get('search') || '';
   const currentRole = searchParams.get('role') || '';
   const currentSortBy = searchParams.get('sortBy') || 'createdAt';
   const currentSortOrder = searchParams.get('sortOrder') || 'desc';
@@ -323,37 +313,15 @@ export function UsersTableView({
         </Link>
       </div>
 
-      <Card className="border-border/50 border-2 shadow-none">
-        <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="font-roboto text-xl">
-                User Directory
-              </CardTitle>
-              <CardDescription className="font-roboto">
-                Total {pagination?.total || users.length} users registered.
-              </CardDescription>
-            </div>
-            <div className="relative w-72">
-              <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-              <Input
-                placeholder="Search users..."
-                className="font-roboto border-2 pl-9 focus-visible:ring-0"
-                value={search}
-                onChange={(e) => onSearchChange(e.target.value)}
-              />
-            </div>
-          </div>
-        </CardHeader>
-
-        <CardContent>
+      <Card className="border-border/50 overflow-hidden border-2 shadow-none">
+        <CardContent className="p-0">
           <Table>
             <TableHeader>
-              <TableRow className="border-b-2 hover:bg-transparent">
-                <TableHead className="text-foreground font-roboto w-[400px] font-bold">
+              <TableRow className="bg-muted/30 border-b-2 hover:bg-transparent">
+                <TableHead className="text-foreground font-roboto h-12 w-[400px] px-6 font-bold">
                   User Identity
                 </TableHead>
-                <TableHead className="text-foreground font-roboto font-bold">
+                <TableHead className="text-foreground font-roboto h-12 px-6 font-bold">
                   <Link
                     href={buildSortHref('role')}
                     className="hover:text-foreground inline-flex items-center transition-colors"
@@ -366,10 +334,10 @@ export function UsersTableView({
                     />
                   </Link>
                 </TableHead>
-                <TableHead className="text-foreground font-roboto font-bold">
+                <TableHead className="text-foreground font-roboto h-12 px-6 font-bold">
                   Affiliation
                 </TableHead>
-                <TableHead className="text-foreground font-roboto font-bold">
+                <TableHead className="text-foreground font-roboto h-12 px-6 font-bold">
                   <Link
                     href={buildSortHref('createdAt')}
                     className="hover:text-foreground inline-flex items-center transition-colors"
@@ -382,7 +350,7 @@ export function UsersTableView({
                     />
                   </Link>
                 </TableHead>
-                <TableHead className="text-foreground font-roboto w-[100px] text-right font-bold">
+                <TableHead className="text-foreground font-roboto h-12 w-[100px] px-6 text-right font-bold">
                   Actions
                 </TableHead>
               </TableRow>
@@ -409,7 +377,7 @@ export function UsersTableView({
                     )}
                   >
                     {/* Identity */}
-                    <TableCell className="py-4">
+                    <TableCell className="px-6 py-3">
                       <div className="flex items-center gap-4">
                         <div className="relative shrink-0">
                           <Avatar className="border-muted bg-muted/50 h-12 w-12 rounded-lg border-2">
@@ -471,7 +439,7 @@ export function UsersTableView({
                     </TableCell>
 
                     {/* Joined */}
-                    <TableCell>
+                    <TableCell className="px-6 py-3">
                       <div className="text-muted-foreground font-roboto flex items-center gap-2 text-sm">
                         <Calendar className="h-3.5 w-3.5" />
                         {new Date(user.createdAt).toLocaleDateString(
@@ -485,7 +453,7 @@ export function UsersTableView({
                     </TableCell>
 
                     {/* Actions */}
-                    <TableCell className="text-right">
+                    <TableCell className="px-6 py-3 text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button

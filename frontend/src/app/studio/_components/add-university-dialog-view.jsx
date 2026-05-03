@@ -34,7 +34,7 @@ export function AddUniversityDialogView({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button className="font-roboto font-semibold">
-          <Plus className="mr-2 h-4 w-4" /> Add University
+          <Plus className="h-4 w-4" /> Add University
         </Button>
       </DialogTrigger>
       <DialogContent className="font-roboto border-2 pb-0 shadow-none sm:max-w-[500px]">
