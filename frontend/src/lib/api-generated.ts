@@ -551,6 +551,11 @@ export interface User {
    */
   email: string;
   /**
+   * The profile image URL from Clerk
+   * @example "https://img.clerk.com/..."
+   */
+  avatarUrl?: string | null;
+  /**
    * Reference to University
    * @example "60d0fe4f5311236168a109ca"
    */
@@ -646,7 +651,7 @@ export class HttpClient<SecurityDataType = unknown> {
   }: ApiConfig<SecurityDataType> = {}) {
     this.instance = axios.create({
       ...axiosConfig,
-      baseURL: axiosConfig.baseURL || "http://localhost:3000/api/v1",
+      baseURL: axiosConfig.baseURL || "http://localhost:5000/api/v1",
     });
     this.secure = secure;
     this.format = format;
@@ -760,7 +765,7 @@ export class HttpClient<SecurityDataType = unknown> {
 /**
  * @title PYQDeck API Explorer
  * @version 1.0.0
- * @baseUrl http://localhost:3000/api/v1
+ * @baseUrl http://localhost:5000/api/v1
  * @contact PYQDeck Support <noreply@example.com> (http://localhost:3000/support)
  *
  *
@@ -3148,6 +3153,11 @@ export class Api<
       query?: {
         role?: "admin" | "editor" | "normal";
         search?: string;
+        isActive?: boolean;
+        /** @default "createdAt" */
+        sortBy?: "name" | "email" | "role" | "createdAt";
+        /** @default "desc" */
+        sortOrder?: "asc" | "desc";
         /** @default 1 */
         page?: number;
         /** @default 10 */
@@ -3178,6 +3188,48 @@ export class Api<
  * No description
  *
  * @tags Users
+ * @name GetUserById
+ * @summary Get a user by clerkId with activity stats (Admin only)
+ * @request GET:/users/{clerkId}
+ * @secure
+ * @response `200` `(SuccessResponse & {
+    data?: {
+    user?: User,
+    stats?: {
+    bookmarksCount?: number,
+    solutionsCount?: number,
+
+},
+
+},
+
+})` User record and activity stats
+ * @response `404` `Error`
+ */
+    getUserById: (clerkId: string, params: RequestParams = {}) =>
+      this.request<
+        SuccessResponse & {
+          data?: {
+            user?: User;
+            stats?: {
+              bookmarksCount?: number;
+              solutionsCount?: number;
+            };
+          };
+        },
+        Error
+      >({
+        path: `/users/${clerkId}`,
+        method: "GET",
+        secure: true,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Users
  * @name UpdateUser
  * @summary Update a user (Admin only)
  * @request PATCH:/users/{clerkId}
@@ -3194,6 +3246,7 @@ export class Api<
       clerkId: string,
       data: {
         role?: "admin" | "editor" | "normal";
+        isActive?: boolean;
       },
       params: RequestParams = {},
     ) =>

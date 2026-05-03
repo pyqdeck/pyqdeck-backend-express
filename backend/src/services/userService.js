@@ -76,9 +76,13 @@ class UserService {
   async getUserByClerkId(clerkId) {
     const [user, stats] = await Promise.all([
       userRepository.findByClerkId(clerkId),
-      userRepository.getStats(clerkId),
+      userRepository.getStatsByClerkId(clerkId),
     ]);
     return { user, stats };
+  }
+
+  async updateUser(clerkId, data) {
+    return userRepository.update(clerkId, data);
   }
 }
 

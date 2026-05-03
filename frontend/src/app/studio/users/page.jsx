@@ -8,9 +8,18 @@ export default async function UsersPage({ searchParams }) {
   const search = params.search || '';
   const page = parseInt(params.page) || 1;
   const limit = parseInt(params.limit) || 10;
+  const role = params.role || undefined;
+  const sortBy = params.sortBy || 'createdAt';
+  const sortOrder = params.sortOrder || 'desc';
+  const isActive =
+    params.isActive === 'true'
+      ? true
+      : params.isActive === 'false'
+        ? false
+        : undefined;
 
   let users = [];
-  let pagination = { total: 0, page, limit };
+  let pagination = { total: 0, page, limit, pages: 1 };
 
   try {
     const api = await getApiServer();
@@ -18,6 +27,10 @@ export default async function UsersPage({ searchParams }) {
       search,
       page,
       limit,
+      role,
+      sortBy,
+      sortOrder,
+      isActive,
     });
     users = res.data.data.items;
     pagination = {

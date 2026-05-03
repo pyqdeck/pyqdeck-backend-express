@@ -1,5 +1,6 @@
 import { successFormatter, catchAsync } from '../utils/index.js';
 import userRepository from '../repositories/userRepository.js';
+import userService from '../services/userService.js';
 import { ForbiddenError } from '../utils/errors/index.js';
 import { getAuth } from '@clerk/express';
 
@@ -28,11 +29,11 @@ export const getMe = catchAsync(async (req, res, next) => {
  * GET /api/v1/users
  */
 export const listUsers = catchAsync(async (req, res) => {
-  const { role, search, page = 1, limit = 10 } = req.query;
+  const { role, search, page = 1, limit = 10, sortBy, sortOrder, isActive } = req.query;
   const { userId: requesterClerkId } = getAuth(req);
 
-  const result = await userRepository.list(
-    { role, search },
+  const result = await userService.listUsers(
+    { role, search, sortBy, sortOrder, isActive },
     { page: parseInt(page), limit: parseInt(limit) }
   );
 
@@ -51,21 +52,34 @@ export const listUsers = catchAsync(async (req, res) => {
 });
 
 /**
+ * GET /api/v1/users/:clerkId
+ */
+export const getUserById = catchAsync(async (req, res) => {
+  const { clerkId } = req.params;
+
+  const { user, stats } = await userService.getUserByClerkId(clerkId);
+
+  res.json(
+    successFormatter.formatSuccess({ user, stats }, 'User fetched successfully')
+  );
+});
+
+/**
  * PATCH /api/v1/users/:clerkId
  */
 export const updateUser = catchAsync(async (req, res) => {
   const { clerkId } = req.params;
-  const { role } = req.body;
+  const { role, isActive } = req.body;
   const { userId: requesterClerkId } = getAuth(req);
 
-  // Prevent users from changing their own role (self-demotion)
-  if (clerkId === requesterClerkId && role) {
+  // Prevent self-demotion or self-ban
+  if (clerkId === requesterClerkId && (role || isActive === false)) {
     throw new ForbiddenError(
-      'You cannot change your own role to prevent administrative lockout.'
+      'You cannot change your own role or ban yourself to prevent administrative lockout.'
     );
   }
 
-  const user = await userRepository.update(clerkId, { role });
+  const user = await userService.updateUser(clerkId, { role, isActive });
 
   res.json(
     successFormatter.formatSuccess({ user }, 'User updated successfully')

@@ -101,12 +101,48 @@ class UserRepository {
     return results[0] || { bookmarksCount: 0, solutionsCount: 0 };
   }
 
+  async getStatsByClerkId(clerkId) {
+    const results = await User.aggregate([
+      { $match: { clerkId: String(clerkId) } },
+      {
+        $lookup: {
+          from: 'bookmarks',
+          localField: '_id',
+          foreignField: 'userId',
+          as: 'bookmarks',
+        },
+      },
+      {
+        $lookup: {
+          from: 'solutions',
+          localField: '_id',
+          foreignField: 'authorId',
+          as: 'solutions',
+        },
+      },
+      {
+        $project: {
+          bookmarksCount: { $size: '$bookmarks' },
+          solutionsCount: { $size: '$solutions' },
+        },
+      },
+    ]);
+
+    return results[0] || { bookmarksCount: 0, solutionsCount: 0 };
+  }
+
   async list(filter = {}, pagination = { page: 1, limit: 10 }) {
     const { page, limit } = pagination;
     const skip = (page - 1) * limit;
 
+    const allowedSortFields = ['name', 'email', 'role', 'createdAt'];
+    const sortBy = allowedSortFields.includes(filter.sortBy) ? filter.sortBy : 'createdAt';
+    const sortOrder = filter.sortOrder === 'asc' ? 1 : -1;
+
     const query = {};
     if (filter.role) query.role = filter.role;
+    if (filter.isActive === 'true') query.isActive = true;
+    else if (filter.isActive === 'false') query.isActive = false;
     if (filter.search) {
       query.$or = [
         { name: { $regex: filter.search, $options: 'i' } },
@@ -115,7 +151,7 @@ class UserRepository {
     }
 
     const [items, total] = await Promise.all([
-      User.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit).lean(),
+      User.find(query).sort({ [sortBy]: sortOrder }).skip(skip).limit(limit).lean(),
       User.countDocuments(query),
     ]);
 

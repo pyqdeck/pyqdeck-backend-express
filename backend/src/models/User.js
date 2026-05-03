@@ -148,6 +148,7 @@ export const userZodSchema = z.object({
   email: z.string().email('Invalid email address'),
   avatarUrl: z.string().url().nullable().optional(),
   role: UserRole.optional(),
+  isActive: z.boolean().optional(),
   universityId: z.string().nullable().optional(),
   branchId: z.string().nullable().optional(),
   semesterId: z.string().nullable().optional(),

@@ -12,7 +12,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000/api/v1",
+      "url": "http://localhost:5000/api/v1",
       "description": "Development server"
     }
   ],
@@ -1198,6 +1198,12 @@
             "format": "email",
             "description": "The email of the user",
             "example": "john.doe@example.com"
+          },
+          "avatarUrl": {
+            "type": "string",
+            "nullable": true,
+            "description": "The profile image URL from Clerk",
+            "example": "https://img.clerk.com/..."
           },
           "universityId": {
             "type": "string",
@@ -5293,6 +5299,39 @@
           },
           {
             "in": "query",
+            "name": "isActive",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "name",
+                "email",
+                "role",
+                "createdAt"
+              ],
+              "default": "createdAt"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "default": "desc"
+            }
+          },
+          {
+            "in": "query",
             "name": "page",
             "schema": {
               "type": "integer",
@@ -5352,6 +5391,71 @@
       }
     },
     "/users/{clerkId}": {
+      "get": {
+        "operationId": "getUserById",
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a user by clerkId with activity stats (Admin only)",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "clerkId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User record and activity stats",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SuccessResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "user": {
+                              "$ref": "#/components/schemas/User"
+                            },
+                            "stats": {
+                              "type": "object",
+                              "properties": {
+                                "bookmarksCount": {
+                                  "type": "integer"
+                                },
+                                "solutionsCount": {
+                                  "type": "integer"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
       "patch": {
         "operationId": "updateUser",
         "tags": [
@@ -5387,6 +5491,9 @@
                       "editor",
                       "normal"
                     ]
+                  },
+                  "isActive": {
+                    "type": "boolean"
                   }
                 }
               }
