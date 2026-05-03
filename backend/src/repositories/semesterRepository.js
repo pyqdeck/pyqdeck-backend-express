@@ -1,4 +1,6 @@
 import { Semester, semesterZodSchema } from '../models/Semester.js';
+import { Branch } from '../models/Branch.js';
+import { University } from '../models/University.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 
 class SemesterRepository {
