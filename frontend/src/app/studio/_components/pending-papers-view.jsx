@@ -15,8 +15,24 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, CheckCircle, XCircle, Clock } from 'lucide-react';
+import {
+  ExternalLink,
+  CheckCircle,
+  XCircle,
+  Clock,
+  MoreVertical,
+  FileText,
+  Calendar,
+} from 'lucide-react';
 import Link from 'next/link';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import {
   Empty,
   EmptyHeader,
@@ -27,112 +43,158 @@ import {
 
 export function PendingPapersView({ papers, onApprove, onReject }) {
   const header = (
-    <CardHeader className="flex flex-row items-center gap-3 pb-2">
-      <div className="rounded-full bg-orange-100 p-2 dark:bg-orange-900/30">
-        <Clock className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+    <CardHeader className="flex flex-row items-center justify-between pb-4">
+      <div className="flex items-center gap-4">
+        <div className="bg-warning/10 text-warning dark:bg-warning/10 dark:text-warning flex h-12 w-12 items-center justify-center rounded-xl shadow-sm">
+          <Clock className="h-6 w-6" />
+        </div>
+        <div>
+          <CardTitle className="font-roboto text-xl font-bold tracking-tight">
+            Moderation Queue
+          </CardTitle>
+          <CardDescription className="font-roboto">
+            {papers?.length || 0} paper uploads awaiting review and approval
+          </CardDescription>
+        </div>
       </div>
-      <div>
-        <CardTitle>Moderation Queue</CardTitle>
-        <CardDescription>
-          Recent paper uploads awaiting approval
-        </CardDescription>
-      </div>
+      <Badge
+        variant="secondary"
+        className="bg-warning/10 text-warning dark:bg-warning/10 dark:text-warning"
+      >
+        Needs Attention
+      </Badge>
     </CardHeader>
   );
 
   if (!papers || papers.length === 0) {
     return (
-      <Card className="shadow-none">
+      <Card className="border-border/50 hover:border-warning/20 border-2 shadow-none transition-all">
         {header}
-        <CardContent className="pt-6">
-          <div className="flex h-[200px] items-center justify-center">
-            <Empty className="border-none shadow-none">
-              <EmptyMedia
-                variant="icon"
-                className="rounded-full bg-slate-50 dark:bg-slate-900/50"
-              >
-                <Clock className="text-muted-foreground/50 h-6 w-6" />
-              </EmptyMedia>
-              <EmptyHeader>
-                <EmptyTitle className="text-base">
-                  Moderation Queue Clear
-                </EmptyTitle>
-                <EmptyDescription>
-                  You&apos;re all caught up! No papers awaiting review. 🎉
-                </EmptyDescription>
-              </EmptyHeader>
-            </Empty>
-          </div>
+        <CardContent className="py-12">
+          <Empty className="border-none shadow-none">
+            <EmptyMedia
+              variant="icon"
+              className="h-20 w-20 rounded-full bg-slate-50 dark:bg-slate-900/50"
+            >
+              <CheckCircle className="text-success/50 h-10 w-10" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle className="font-roboto text-xl font-bold">
+                Moderation Queue Clear
+              </EmptyTitle>
+              <EmptyDescription className="font-roboto text-base">
+                You&apos;re all caught up! No papers awaiting review. 🎉
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className="shadow-none">
+    <Card className="border-border/50 hover:border-warning/20 border-2 shadow-none transition-all">
       {header}
-      <CardContent>
+      <CardContent className="p-0">
         <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Title</TableHead>
-              <TableHead>Offering</TableHead>
-              <TableHead>Date Uploaded</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+          <TableHeader className="bg-muted/50">
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="font-roboto text-foreground h-12 py-0 font-bold">
+                Document Details
+              </TableHead>
+              <TableHead className="font-roboto text-foreground h-12 py-0 font-bold">
+                Academic Context
+              </TableHead>
+              <TableHead className="font-roboto text-foreground h-12 py-0 font-bold">
+                Uploaded On
+              </TableHead>
+              <TableHead className="font-roboto text-foreground h-12 py-0 text-right font-bold">
+                Actions
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {papers.map((paper) => (
-              <TableRow key={paper._id}>
-                <TableCell className="max-w-[200px] truncate font-medium">
-                  {paper.title || 'Untitled Paper'}
-                </TableCell>
-                <TableCell>
-                  <Badge variant="outline">
-                    {paper.subjectOfferingId?.slug || 'Unknown'}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  {new Date(paper.createdAt).toLocaleDateString()}
-                </TableCell>
-                <TableCell>
-                  <Badge
-                    variant="warning"
-                    className="bg-amber-100 text-amber-800 hover:bg-amber-100 dark:bg-amber-900/30 dark:text-amber-500"
-                  >
-                    Pending
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <Button variant="ghost" size="icon" asChild title="Review">
-                      <Link href={`/studio/papers/${paper._id}`}>
-                        <ExternalLink className="h-4 w-4" />
-                        <span className="sr-only">Review</span>
-                      </Link>
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-green-600 hover:bg-green-100 hover:text-green-700 dark:hover:bg-green-900/30"
-                      title="Quick Approve"
-                      onClick={() => onApprove(paper)}
-                    >
-                      <CheckCircle className="h-4 w-4" />
-                      <span className="sr-only">Approve</span>
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-red-600 hover:bg-red-100 hover:text-red-700 dark:hover:bg-red-900/30"
-                      title="Quick Reject"
-                      onClick={() => onReject(paper)}
-                    >
-                      <XCircle className="h-4 w-4" />
-                      <span className="sr-only">Reject</span>
-                    </Button>
+              <TableRow
+                key={paper._id}
+                className="group hover:bg-warning/[0.02] transition-colors"
+              >
+                <TableCell className="py-4">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800">
+                      <FileText className="h-5 w-5" />
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="font-roboto text-foreground line-clamp-1 max-w-[250px] font-bold">
+                        {paper.title || 'Untitled Paper'}
+                      </span>
+                      <span className="text-muted-foreground font-roboto text-xs tracking-wider uppercase">
+                        {paper.status || 'Pending Review'}
+                      </span>
+                    </div>
                   </div>
+                </TableCell>
+                <TableCell className="py-4">
+                  <Badge
+                    variant="outline"
+                    className="border-primary/20 bg-primary/5 text-primary dark:border-primary/30 dark:bg-primary/10 dark:text-primary px-2 py-0.5"
+                  >
+                    {paper.subjectOfferingId?.slug || 'General'}
+                  </Badge>
+                </TableCell>
+                <TableCell className="py-4">
+                  <div className="text-muted-foreground font-roboto flex items-center gap-2 text-sm">
+                    <Calendar className="h-3.5 w-3.5" />
+                    {new Date(paper.createdAt).toLocaleDateString(undefined, {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })}
+                  </div>
+                </TableCell>
+                <TableCell className="py-4 text-right">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="hover:bg-warning/10 hover:text-warning dark:hover:bg-warning/10 h-8 w-8 rounded-full transition-all"
+                      >
+                        <MoreVertical className="h-4 w-4" />
+                        <span className="sr-only">Open menu</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48 shadow-xl">
+                      <DropdownMenuLabel className="font-roboto">
+                        Moderation Actions
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <Link
+                          href={`/studio/papers/${paper._id}`}
+                          className="flex cursor-pointer items-center gap-2"
+                        >
+                          <ExternalLink className="h-4 w-4" />
+                          <span>Review Document</span>
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        className="text-success focus:bg-success/10 focus:text-success dark:focus:bg-success/10 flex cursor-pointer items-center gap-2"
+                        onClick={() => onApprove(paper)}
+                      >
+                        <CheckCircle className="h-4 w-4" />
+                        <span>Approve Paper</span>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="text-destructive focus:bg-destructive/10 focus:text-destructive dark:focus:bg-destructive/10 flex cursor-pointer items-center gap-2"
+                        onClick={() => onReject(paper)}
+                      >
+                        <XCircle className="h-4 w-4" />
+                        <span>Reject Paper</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </TableCell>
               </TableRow>
             ))}

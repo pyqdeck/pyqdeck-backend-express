@@ -34,7 +34,7 @@ export function EditTopicDialogView({ form, onSubmit, open, onOpenChange }) {
       <DialogContent className="border-2 shadow-none sm:max-w-[450px]">
         <DialogHeader>
           <div className="mb-2 flex items-center gap-3">
-            <div className="rounded-lg bg-emerald-100 p-2 text-emerald-600">
+            <div className="bg-success/10 text-success rounded-lg p-2">
               <BookOpen className="h-5 w-5" />
             </div>
             <DialogTitle className="font-roboto text-xl font-bold">

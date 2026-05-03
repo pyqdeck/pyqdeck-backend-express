@@ -38,7 +38,7 @@ export function EditSubjectDialogView({
       <DialogContent className="border-2 shadow-none sm:max-w-[500px]">
         <DialogHeader>
           <div className="mb-2 flex items-center gap-3">
-            <div className="rounded-lg bg-amber-100 p-2 text-amber-600">
+            <div className="bg-warning/10 text-warning rounded-lg p-2">
               <Edit className="h-5 w-5" />
             </div>
             <DialogTitle className="font-roboto text-xl font-bold">
@@ -179,7 +179,7 @@ export function EditSubjectDialogView({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="font-roboto w-full border-2 bg-amber-600 font-bold shadow-none hover:bg-amber-700"
+              className="font-roboto bg-warning hover:bg-warning/90 w-full border-2 font-bold shadow-none"
             >
               {isSubmitting ? 'Updating...' : 'Save Changes'}
             </Button>

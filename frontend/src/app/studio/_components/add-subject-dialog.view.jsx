@@ -35,7 +35,7 @@ export function AddSubjectDialogView({
     <Dialog open={open} onOpenChange={onOpenChange}>
       {trigger && (
         <DialogTrigger asChild>
-          <Button className="font-roboto border-2 bg-indigo-600 font-bold shadow-none hover:bg-indigo-700">
+          <Button className="font-roboto bg-primary hover:bg-primary/90 border-2 font-bold shadow-none">
             <Plus className="mr-2 h-4 w-4" /> Add Subject
           </Button>
         </DialogTrigger>
@@ -43,7 +43,7 @@ export function AddSubjectDialogView({
       <DialogContent className="border-2 shadow-none sm:max-w-[500px]">
         <DialogHeader>
           <div className="mb-2 flex items-center gap-3">
-            <div className="rounded-lg bg-indigo-100 p-2 text-indigo-600">
+            <div className="bg-primary/10 text-primary rounded-lg p-2">
               <BookOpen className="h-5 w-5" />
             </div>
             <DialogTitle className="font-roboto text-xl font-bold">
@@ -184,7 +184,7 @@ export function AddSubjectDialogView({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="font-roboto w-full border-2 bg-indigo-600 font-bold shadow-none hover:bg-indigo-700"
+              className="font-roboto bg-primary hover:bg-primary/90 w-full border-2 font-bold shadow-none"
             >
               {isSubmitting ? 'Registering...' : 'Register Subject'}
             </Button>

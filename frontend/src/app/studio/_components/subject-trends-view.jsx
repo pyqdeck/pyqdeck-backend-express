@@ -22,8 +22,8 @@ export function SubjectTrendsView({ subjects }) {
   return (
     <Card className="border-border/50 border-2 shadow-none">
       <CardHeader className="flex flex-row items-center gap-3">
-        <div className="rounded-full bg-emerald-100 p-2 dark:bg-emerald-900/30">
-          <Award className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+        <div className="bg-success/10 dark:bg-success/10 rounded-full p-2">
+          <Award className="text-success h-5 w-5" />
         </div>
         <div>
           <CardTitle>Top Subjects</CardTitle>
@@ -49,13 +49,13 @@ export function SubjectTrendsView({ subjects }) {
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-1">
                     {s.status === 'up' ? (
-                      <TrendingUp className="h-3 w-3 text-emerald-500" />
+                      <TrendingUp className="text-success h-3 w-3" />
                     ) : (
-                      <TrendingDown className="h-3 w-3 text-red-500" />
+                      <TrendingDown className="text-destructive h-3 w-3" />
                     )}
                     <span
                       className={
-                        s.status === 'up' ? 'text-emerald-500' : 'text-red-500'
+                        s.status === 'up' ? 'text-success' : 'text-destructive'
                       }
                     >
                       {s.trend}

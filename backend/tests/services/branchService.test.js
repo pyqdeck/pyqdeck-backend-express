@@ -12,6 +12,7 @@ vi.mock('../../src/repositories/branchRepository.js', () => ({
     update: vi.fn(),
     delete: vi.fn(),
     getStructure: vi.fn(),
+    findAll: vi.fn(),
   },
 }));
 

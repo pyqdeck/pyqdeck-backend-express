@@ -28,8 +28,8 @@ export function VelocityChartView({ data }) {
   return (
     <Card className="flex h-full flex-col shadow-none">
       <CardHeader className="flex flex-row items-center gap-3 pb-2">
-        <div className="rounded-full bg-blue-100 p-2 dark:bg-blue-900/30">
-          <ChartArea className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+        <div className="bg-info/10 dark:bg-info/10 rounded-full p-2">
+          <ChartArea className="text-info h-5 w-5" />
         </div>
         <div>
           <CardTitle>Content Velocity</CardTitle>

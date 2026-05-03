@@ -49,8 +49,8 @@ export function PopularityChartView({ data }) {
   return (
     <Card className="flex h-full flex-col shadow-none">
       <CardHeader className="flex flex-row items-center gap-3 pb-2">
-        <div className="rounded-full bg-purple-100 p-2 dark:bg-purple-900/30">
-          <ChartPie className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+        <div className="bg-primary/10 dark:bg-primary/10 rounded-full p-2">
+          <ChartPie className="text-primary h-5 w-5" />
         </div>
         <div>
           <CardTitle>Subject Popularity</CardTitle>

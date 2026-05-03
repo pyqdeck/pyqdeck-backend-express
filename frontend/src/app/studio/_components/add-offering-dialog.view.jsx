@@ -61,7 +61,7 @@ export function AddOfferingDialogView({
     <Dialog open={open} onOpenChange={onOpenChange}>
       {trigger && (
         <DialogTrigger asChild>
-          <Button className="font-roboto border-2 bg-emerald-600 font-bold shadow-none hover:bg-emerald-700">
+          <Button className="font-roboto bg-primary hover:bg-primary/90 border-2 font-bold shadow-none">
             <Plus className="mr-2 h-4 w-4" /> New Offering
           </Button>
         </DialogTrigger>
@@ -69,7 +69,7 @@ export function AddOfferingDialogView({
       <DialogContent className="border-2 shadow-none sm:max-w-[550px]">
         <DialogHeader>
           <div className="mb-2 flex items-center gap-3">
-            <div className="rounded-lg bg-emerald-100 p-2 text-emerald-600">
+            <div className="bg-primary/10 text-primary rounded-lg p-2">
               <Layers className="h-5 w-5" />
             </div>
             <DialogTitle className="font-roboto text-xl font-bold">
@@ -263,7 +263,7 @@ export function AddOfferingDialogView({
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="font-roboto w-full border-2 bg-emerald-600 font-bold shadow-none hover:bg-emerald-700"
+              className="font-roboto bg-primary hover:bg-primary/90 w-full border-2 font-bold shadow-none"
             >
               {isSubmitting ? 'Deploying...' : 'Confirm Offering'}
             </Button>

@@ -15,8 +15,8 @@ export function SearchGapsView({ gaps }) {
   return (
     <Card className="border-border/50 border-2 shadow-none">
       <CardHeader className="flex flex-row items-center gap-3">
-        <div className="rounded-full bg-amber-100 p-2 dark:bg-amber-900/30">
-          <Search className="h-5 w-5 text-amber-600 dark:text-amber-400" />
+        <div className="bg-warning/10 dark:bg-warning/10 rounded-full p-2">
+          <Search className="text-warning h-5 w-5" />
         </div>
         <div>
           <CardTitle>Zero-Result Searches</CardTitle>
@@ -40,7 +40,7 @@ export function SearchGapsView({ gaps }) {
               </div>
               <Badge
                 variant="outline"
-                className="border-amber-200 bg-amber-50 text-amber-600 dark:bg-amber-900/20"
+                className="border-warning/30 bg-warning/10 text-warning dark:bg-warning/10"
               >
                 Gap Identified
               </Badge>

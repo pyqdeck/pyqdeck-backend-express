@@ -44,23 +44,23 @@ export function AddTopicDialogView({
           <Button
             variant="ghost"
             size="sm"
-            className="font-roboto h-7 border px-2 text-[10px] font-bold tracking-widest uppercase transition-colors hover:bg-indigo-50 hover:text-indigo-600"
+            className="font-roboto hover:bg-primary/10 hover:text-primary h-7 border px-2 text-[10px] font-bold tracking-widest uppercase transition-colors"
           >
             <Plus className="mr-1 h-3 w-3" /> Add Topic
           </Button>
         </DialogTrigger>
       )}
       <DialogContent className="overflow-hidden border-2 bg-white p-0 shadow-xl sm:max-w-[480px] dark:bg-zinc-950">
-        <DialogHeader className="border-b-2 bg-emerald-50/50 px-6 pt-6 pb-4 dark:bg-emerald-950/20">
+        <DialogHeader className="bg-primary/5 dark:bg-primary/10 border-b-2 px-6 pt-6 pb-4">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-600 text-white shadow-md shadow-emerald-200 dark:shadow-none">
+            <div className="bg-primary shadow-primary/20 flex h-12 w-12 items-center justify-center rounded-xl text-white shadow-md dark:shadow-none">
               <BookOpen className="h-6 w-6" />
             </div>
             <div className="space-y-1">
-              <DialogTitle className="font-roboto text-2xl font-black text-emerald-950 dark:text-emerald-50">
+              <DialogTitle className="font-roboto text-2xl font-black">
                 Add Learning Topic
               </DialogTitle>
-              <DialogDescription className="font-roboto text-sm font-medium text-emerald-700/70 dark:text-emerald-300/70">
+              <DialogDescription className="font-roboto text-muted-foreground text-sm font-medium">
                 Specify a new learning point for this unit.
               </DialogDescription>
             </div>
@@ -82,7 +82,7 @@ export function AddTopicDialogView({
                         <Input
                           {...field}
                           placeholder="e.g. Backpropagation Algorithm"
-                          className="font-roboto h-12 border-2 bg-white text-base font-semibold shadow-sm focus-visible:border-emerald-600 focus-visible:ring-emerald-600/20 dark:bg-zinc-900"
+                          className="font-roboto focus-visible:border-primary focus-visible:ring-primary/20 h-12 border-2 bg-white text-base font-semibold shadow-sm dark:bg-zinc-900"
                           aria-invalid={!!errors.title}
                         />
                       )}
