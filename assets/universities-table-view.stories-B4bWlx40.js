@@ -1,0 +1,51 @@
+import{n as e,s as t}from"./chunk-CzyJ72yW.js";import{Br as n,Gr as r,Hr as i,Si as a}from"./iframe-DvEPLiaD.js";import{D as o,G as s,Q as c,X as l,d as ee,t as u,z as d}from"./lucide-react-Dn19uea4.js";import{r as f,t as p}from"./button-DE0fCBNJ.js";import{n as m,t as h}from"./dist-DwLJy-Q9.js";import{c as g,i as _,l as te,n as ne,o as v,s as re,t as ie}from"./table-DqIDrgPU.js";import{i as ae,n as oe,s as y,t as b}from"./card-DbdxJB_I.js";import{n as x,t as S}from"./badge-6fg5O3zy.js";import{t as C}from"./link-C4mtzFev.js";import{a as w,f as T,i as E,n as D,p as O,s as k,t as A}from"./dropdown-menu-DxZ3E3-B.js";import{a as j,c as M,i as N,n as P,o as se,r as F,s as I,t as L}from"./pagination-CrcQShqS.js";import{a as R,n as z,o as B,t as V}from"./avatar-B3xLPvxf.js";function H({universities:e,pagination:t,onEdit:n,onDelete:i}){let a=r().get(`search`)||``;return(0,U.jsxs)(b,{className:`border-border/50 overflow-hidden border-2 py-0 shadow-none`,children:[(0,U.jsx)(oe,{className:`p-0`,children:(0,U.jsxs)(ie,{children:[(0,U.jsx)(re,{children:(0,U.jsxs)(g,{className:`bg-muted/30 border-b-2 hover:bg-transparent`,children:[(0,U.jsx)(v,{className:`text-foreground font-roboto h-12 px-6 font-bold`,children:`Institution`}),(0,U.jsx)(v,{className:`text-foreground font-roboto h-12 px-6 font-bold`,children:`State`}),(0,U.jsx)(v,{className:`text-foreground font-roboto h-12 px-6 font-bold`,children:`Country`}),(0,U.jsx)(v,{className:`text-foreground font-roboto h-12 px-6 font-bold`,children:`Status`}),(0,U.jsx)(v,{className:`text-foreground font-roboto h-12 w-[100px] px-6 text-right font-bold`,children:`Actions`})]})}),(0,U.jsx)(ne,{children:e.length===0?(0,U.jsx)(g,{children:(0,U.jsx)(_,{colSpan:5,className:`text-muted-foreground font-roboto h-48 text-center italic`,children:a?`No universities match your search.`:`No universities found. Add your first institution to get started!`})}):e.map(e=>(0,U.jsxs)(g,{className:`group border-b`,children:[(0,U.jsx)(_,{className:`px-6 py-3`,children:(0,U.jsxs)(`div`,{className:`flex items-center gap-4`,children:[(0,U.jsxs)(V,{className:`border-muted bg-muted/50 h-12 w-12 rounded-lg border-2 after:rounded-lg`,children:[(0,U.jsx)(R,{src:e.logo,alt:e.name,className:`rounded-lg`}),(0,U.jsx)(z,{className:`rounded-lg`,children:e.name.charAt(0)})]}),(0,U.jsxs)(`div`,{className:`flex flex-col`,children:[(0,U.jsxs)(`span`,{className:`text-foreground group-hover:text-primary font-roboto flex cursor-pointer items-center gap-1 font-bold transition-colors`,children:[e.name,(0,U.jsx)(l,{className:`h-3 w-3 opacity-0 transition-opacity group-hover:opacity-100`})]}),(0,U.jsxs)(`span`,{className:`text-muted-foreground font-roboto text-xs lowercase`,children:[`/`,e.slug]})]})]})}),(0,U.jsx)(_,{className:`px-6 py-3`,children:(0,U.jsx)(`div`,{className:`text-foreground font-roboto text-sm font-medium`,children:e.state||`N/A`})}),(0,U.jsx)(_,{className:`px-6 py-3`,children:(0,U.jsx)(`div`,{className:`text-muted-foreground font-roboto flex items-center gap-2 text-sm`,children:e.country||`India`})}),(0,U.jsx)(_,{className:`px-6 py-3`,children:(0,U.jsx)(S,{variant:e.isActive===!1?`secondary`:`default`,className:`font-roboto rounded-full px-2.5 py-0.5 font-semibold ${e.isActive===!1?`bg-muted text-muted-foreground`:`bg-success/10 text-success hover:bg-success/10 dark:bg-success/10 dark:text-success`}`,children:e.isActive===!1?`Inactive`:`Active`})}),(0,U.jsx)(_,{className:`px-6 py-3 text-right`,children:(0,U.jsxs)(A,{children:[(0,U.jsx)(T,{asChild:!0,children:(0,U.jsxs)(p,{variant:`ghost`,className:`hover:bg-muted/50 h-9 w-9 border-2 p-0 transition-colors`,children:[(0,U.jsx)(`span`,{className:`sr-only`,children:`Open menu`}),(0,U.jsx)(c,{className:`h-4 w-4`})]})}),(0,U.jsxs)(D,{align:`end`,className:`font-roboto w-56 border-2 p-2 shadow-none`,children:[(0,U.jsx)(w,{className:`text-muted-foreground px-2 py-1.5 text-xs font-semibold tracking-wider uppercase`,children:`Management`}),(0,U.jsx)(k,{className:`my-1 border-b`}),(0,U.jsxs)(E,{className:`focus:bg-primary/5 group cursor-pointer rounded-md py-2.5`,onClick:()=>n(e),children:[(0,U.jsx)(o,{className:`text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors`}),(0,U.jsx)(`span`,{className:`font-medium`,children:`Edit University`})]}),(0,U.jsx)(E,{asChild:!0,className:`focus:bg-primary/5 group cursor-pointer rounded-md py-2.5`,children:(0,U.jsxs)(W.default,{href:e.websiteUrl||`#`,target:`_blank`,rel:`noopener noreferrer`,className:`flex w-full items-center`,children:[(0,U.jsx)(l,{className:`text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors`}),(0,U.jsx)(`span`,{className:`font-medium`,children:`Visit Website`})]})}),(0,U.jsx)(k,{className:`my-1 border-b`}),(0,U.jsx)(E,{asChild:!0,className:`focus:bg-primary/5 group cursor-pointer rounded-md py-2.5`,children:(0,U.jsxs)(W.default,{href:`/studio/branches?universityId=${e.id}`,className:`flex w-full items-center`,children:[(0,U.jsx)(d,{className:`text-muted-foreground group-hover:text-primary mr-3 h-4 w-4 transition-colors`}),(0,U.jsx)(`span`,{className:`text-primary font-medium`,children:`View Branches`})]})}),(0,U.jsx)(E,{asChild:!0,className:`focus:bg-primary/5 group cursor-pointer rounded-md py-2.5`,children:(0,U.jsxs)(W.default,{href:`/studio/semesters?universityId=${e.id}`,className:`flex w-full items-center`,children:[(0,U.jsx)(s,{className:`text-muted-foreground group-hover:text-warning mr-3 h-4 w-4 transition-colors`}),(0,U.jsx)(`span`,{className:`text-warning font-medium`,children:`View Semesters`})]})}),(0,U.jsx)(k,{className:`my-1 border-b`}),(0,U.jsxs)(E,{className:`text-destructive focus:text-destructive focus:bg-destructive/5 group cursor-pointer rounded-md py-2.5`,onClick:()=>i(e),children:[(0,U.jsx)(ee,{className:`text-destructive/70 group-hover:text-destructive mr-3 h-4 w-4 transition-colors`}),(0,U.jsx)(`span`,{className:`font-bold`,children:`Delete Institution`})]})]})]})})]},e.id))})]})}),t&&t.pages>1&&(0,U.jsxs)(ae,{className:`border-t-2 pt-6`,children:[(0,U.jsx)(L,{className:`mx-0 w-auto justify-start`,children:(0,U.jsxs)(P,{children:[(0,U.jsx)(N,{children:(0,U.jsx)(I,{href:t.current>1?`?page=${t.current-1}`:`#`,className:t.current===1?`pointer-events-none opacity-50`:`border-2`})}),[...Array(t.pages)].map((e,n)=>{let r=n+1;return r===1||r===t.pages||r>=t.current-1&&r<=t.current+1?(0,U.jsx)(N,{children:(0,U.jsx)(j,{href:`?page=${r}`,isActive:r===t.current,className:`font-roboto border-2 font-bold`,children:r})},r):r===t.current-2||r===t.current+2?(0,U.jsx)(N,{children:(0,U.jsx)(F,{})},r):null}),(0,U.jsx)(N,{children:(0,U.jsx)(se,{href:t.current<t.pages?`?page=${t.current+1}`:`#`,className:t.current===t.pages?`pointer-events-none opacity-50`:`border-2`})})]})}),(0,U.jsxs)(`div`,{className:`text-muted-foreground font-roboto ml-auto text-sm`,children:[`Showing`,` `,(0,U.jsx)(`span`,{className:`text-foreground font-bold`,children:(t.current-1)*10+1}),` `,`to`,` `,(0,U.jsx)(`span`,{className:`text-foreground font-bold`,children:Math.min(t.current*10,t.total)}),` `,`of`,` `,(0,U.jsx)(`span`,{className:`text-foreground font-bold`,children:t.total}),` `,`entries`]})]})]})}var U,W,G=e((()=>{U=t(n(),1),a(),u(),te(),y(),x(),B(),f(),M(),O(),W=t(C(),1),i(),H.__docgenInfo={description:``,methods:[],displayName:`UniversitiesTableView`}})),K,q,J,Y,X,Z,Q,$;e((()=>{G(),m(),K={title:`Studio/Academics/UniversitiesTableView`,component:H,tags:[`autodocs`],args:{onSearchChange:h(),onEdit:h(),onDelete:h()}},q=[{id:`1`,name:`University of Mumbai`,shortName:`MU`,slug:`mumbai-university`,logo:`https://upload.wikimedia.org/wikipedia/en/thumb/5/5a/University_of_Mumbai_logo.png/220px-University_of_Mumbai_logo.png`,state:`Maharashtra`,country:`India`,websiteUrl:`https://mu.ac.in`,isActive:!0},{id:`2`,name:`Delhi University`,shortName:`DU`,slug:`delhi-university`,logo:``,state:`Delhi`,country:`India`,websiteUrl:`https://du.ac.in`,isActive:!0},{id:`3`,name:`Indian Institute of Technology Bombay`,shortName:`IITB`,slug:`iit-bombay`,logo:`https://upload.wikimedia.org/wikipedia/en/thumb/1/1d/IIT_Bombay_Logo.svg/1200px-IIT_Bombay_Logo.svg.png`,state:`Maharashtra`,country:`India`,websiteUrl:`https://iitb.ac.in`,isActive:!0},{id:`4`,name:`Savitribai Phule Pune University`,shortName:`SPPU`,slug:`pune-university`,logo:``,state:`Maharashtra`,country:`India`,websiteUrl:`https://unipune.ac.in`,isActive:!1}],J={args:{universities:q,pagination:{total:4,pages:1,current:1},search:``}},Y={args:{universities:q,pagination:{total:45,pages:5,current:2},search:``}},X={args:{universities:[q[0]],pagination:{total:1,pages:1,current:1},search:`Mumbai`}},Z={args:{universities:[],pagination:{total:0,pages:0,current:0},search:``}},Q={args:{universities:[],pagination:{total:0,pages:0,current:0},search:`Something that does not exist`}},J.parameters={...J.parameters,docs:{...J.parameters?.docs,source:{originalSource:`{
+  args: {
+    universities: mockUniversities,
+    pagination: {
+      total: 4,
+      pages: 1,
+      current: 1
+    },
+    search: ''
+  }
+}`,...J.parameters?.docs?.source}}},Y.parameters={...Y.parameters,docs:{...Y.parameters?.docs,source:{originalSource:`{
+  args: {
+    universities: mockUniversities,
+    pagination: {
+      total: 45,
+      pages: 5,
+      current: 2
+    },
+    search: ''
+  }
+}`,...Y.parameters?.docs?.source}}},X.parameters={...X.parameters,docs:{...X.parameters?.docs,source:{originalSource:`{
+  args: {
+    universities: [mockUniversities[0]],
+    pagination: {
+      total: 1,
+      pages: 1,
+      current: 1
+    },
+    search: 'Mumbai'
+  }
+}`,...X.parameters?.docs?.source}}},Z.parameters={...Z.parameters,docs:{...Z.parameters?.docs,source:{originalSource:`{
+  args: {
+    universities: [],
+    pagination: {
+      total: 0,
+      pages: 0,
+      current: 0
+    },
+    search: ''
+  }
+}`,...Z.parameters?.docs?.source}}},Q.parameters={...Q.parameters,docs:{...Q.parameters?.docs,source:{originalSource:`{
+  args: {
+    universities: [],
+    pagination: {
+      total: 0,
+      pages: 0,
+      current: 0
+    },
+    search: 'Something that does not exist'
+  }
+}`,...Q.parameters?.docs?.source}}},$=[`Default`,`WithPagination`,`Searching`,`Empty`,`NoResults`]}))();export{J as Default,Z as Empty,Q as NoResults,X as Searching,Y as WithPagination,$ as __namedExportsOrder,K as default};
