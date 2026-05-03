@@ -5149,6 +5149,14 @@
           },
           {
             "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search by university name or short name"
+          },
+          {
+            "in": "query",
             "name": "isActive",
             "schema": {
               "type": "string",

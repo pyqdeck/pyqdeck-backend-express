@@ -196,12 +196,12 @@ export interface Question {
   difficulty?: "easy" | "medium" | "hard";
   /** @example "understand" */
   bloomLevel?:
-  | "remember"
-  | "understand"
-  | "apply"
-  | "analyze"
-  | "evaluate"
-  | "create";
+    | "remember"
+    | "understand"
+    | "apply"
+    | "analyze"
+    | "evaluate"
+    | "create";
   /** @example 10 */
   marks?: number;
   /**
@@ -691,7 +691,7 @@ export class HttpClient<SecurityDataType = unknown> {
       headers: {
         ...((method &&
           this.instance.defaults.headers[
-          method.toLowerCase() as keyof HeadersDefaults
+            method.toLowerCase() as keyof HeadersDefaults
           ]) ||
           {}),
         ...(params1.headers || {}),
@@ -1380,6 +1380,8 @@ export class Api<
         page?: number;
         /** @default 20 */
         limit?: number;
+        /** Search by university name or short name */
+        search?: string;
         isActive?: true | "all";
       },
       params: RequestParams = {},
