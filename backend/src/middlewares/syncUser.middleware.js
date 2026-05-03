@@ -2,6 +2,7 @@ import https from 'https';
 import userRepository from '../repositories/userRepository.js';
 import { NotFoundError } from '../utils/errors/index.js';
 import { loggerService } from '../utils/index.js';
+import { getAuth } from '@clerk/express';
 
 const logger = loggerService.getLogger();
 
@@ -36,15 +37,13 @@ function fetchClerkUser(userId) {
   });
 }
 
-import { getAuth } from '@clerk/express';
-
 export async function syncUser(req, res, next) {
-  const authState = getAuth(req);
-  const userId = authState?.userId;
-
-  if (!userId) return next();
-
   try {
+    const authState = getAuth(req);
+    const userId = authState?.userId;
+
+    if (!userId) return next();
+
     let user;
     try {
       user = await userRepository.findByClerkId(userId);
@@ -73,12 +72,15 @@ export async function syncUser(req, res, next) {
     }
 
     req.dbUser = user;
+    next();
   } catch (err) {
     logger.error('Failed to sync user', {
-      clerkId: userId,
       error: err.message,
+      stack: err.stack,
     });
+    // For non-critical failures in sync, we might want to continue
+    // but the report suggested propagating errors.
+    // If it's a getAuth error, we should definitely know.
+    next(err);
   }
-
-  next();
 }

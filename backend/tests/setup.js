@@ -25,10 +25,10 @@ vi.mock('../src/utils/logger/index.js', () => ({
 // Mock Clerk middleware and client
 vi.mock('@clerk/express', () => ({
   clerkMiddleware: () => (req, res, next) => {
-    req.auth = { userId: 'test_user_123' };
+    // By default, do not populate req.auth to simulate unauthenticated state
     next();
   },
-  getAuth: vi.fn((req) => req.auth || { userId: 'test_user_123' }),
+  getAuth: vi.fn((req) => req.auth || {}),
   clerkClient: {
     users: {
       getUser: vi.fn().mockResolvedValue({

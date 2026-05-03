@@ -1,30 +1,22 @@
 import * as healthService from '../services/healthService.js';
-import { successFormatter } from '../utils/index.js';
+import { successFormatter, catchAsync } from '../utils/index.js';
 
-export async function healthCheck(req, res, next) {
-  try {
-    const health = await healthService.getHealth();
+export const healthCheck = catchAsync(async (req, res, next) => {
+  const health = await healthService.getHealth();
 
-    const statusCode = health.status === 'healthy' ? 200 : 503;
-    res
-      .status(statusCode)
-      .json(successFormatter.formatSuccess(health, 'Health check passed'));
-  } catch (error) {
-    next(error);
-  }
-}
+  const statusCode = health.status === 'healthy' ? 200 : 503;
+  res
+    .status(statusCode)
+    .json(successFormatter.formatSuccess(health, 'Health check passed'));
+});
 
-export async function detailedHealth(req, res, next) {
-  try {
-    const health = await healthService.getDetailedHealth();
+export const detailedHealth = catchAsync(async (req, res, next) => {
+  const health = await healthService.getDetailedHealth();
 
-    const statusCode = health.status === 'healthy' ? 200 : 503;
-    res
-      .status(statusCode)
-      .json(
-        successFormatter.formatSuccess(health, 'Detailed health check passed')
-      );
-  } catch (error) {
-    next(error);
-  }
-}
+  const statusCode = health.status === 'healthy' ? 200 : 503;
+  res
+    .status(statusCode)
+    .json(
+      successFormatter.formatSuccess(health, 'Detailed health check passed')
+    );
+});

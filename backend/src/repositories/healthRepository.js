@@ -18,6 +18,7 @@ export const healthRepository = {
 
   async getDatabaseStats() {
     const db = mongoose.connection.db;
+    if (!db) return {};
     const collections = await db.listCollections().toArray();
     const stats = {};
 

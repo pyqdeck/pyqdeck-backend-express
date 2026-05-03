@@ -31,44 +31,66 @@ if (process.env.SENTRY_DSN) {
   logger.info('Sentry initialized successfully');
 }
 
-// Database connection
-database.connect().catch((err) => {
-  logger.error('Database connection failed', { error: err.message });
-  process.exit(1);
-});
+// Database connection and Server Start
+const startServer = async () => {
+  try {
+    await database.connect();
+    logger.info('Database connected successfully');
 
-const PORT = config.port || 3000;
-const server = app.listen(PORT, () => {
-  logger.info('🚀 System initialized and connected to Better Stack!');
-  logger.info(`Server is running on port ${PORT} in ${config.nodeEnv} mode`);
-  logger.info(
-    `API Documentation available at http://localhost:${PORT}/api-docs`
-  );
-});
-
-// Graceful Shutdown Logic
-const shutdown = async (signal) => {
-  logger.info(`${signal} received. Starting graceful shutdown...`);
-
-  // 1. Stop the server from accepting new connections
-  server.close(() => {
-    logger.info('HTTP server closed.');
-
-    // 2. Close the database connection
-    database.disconnect().then(() => {
-      logger.info('Database connection closed.');
-      process.exit(0);
+    const PORT = config.port || 3000;
+    const server = app.listen(PORT, () => {
+      logger.info('🚀 System initialized and connected to Better Stack!');
+      logger.info(
+        `Server is running on port ${PORT} in ${config.nodeEnv} mode`
+      );
+      logger.info(
+        `API Documentation available at http://localhost:${PORT}/api-docs`
+      );
     });
-  });
 
-  // If server.close() takes too long, force exit
-  setTimeout(() => {
-    logger.error(
-      'Could not close connections in time, forcefully shutting down'
-    );
-    process.exit(1);
-  }, 10000); // 10 seconds timeout
+    // Graceful Shutdown Logic
+    const shutdown = async (signal) => {
+      logger.info(`${signal} received. Starting graceful shutdown...`);
+
+      // 1. Stop the server from accepting new connections
+      server.close(() => {
+        logger.info('HTTP server closed.');
+
+        // 2. Close the database connection
+        database.disconnect().then(() => {
+          logger.info('Database connection closed.');
+          process.exit(signal === 'uncaughtException' ? 1 : 0);
+        });
+      });
+
+      // If server.close() takes too long, force exit
+      setTimeout(() => {
+        logger.error(
+          'Could not close connections in time, forcefully shutting down'
+        );
+        process.exit(1);
+      }, 10000); // 10 seconds timeout
+    };
+
+    process.on('SIGTERM', () => shutdown('SIGTERM'));
+    process.on('SIGINT', () => shutdown('SIGINT'));
+
+    process.on('unhandledRejection', (reason, promise) => {
+      logger.error('Unhandled Rejection at:', { promise, reason });
+    });
+
+    process.on('uncaughtException', (error) => {
+      logger.error('Uncaught Exception:', {
+        error: error.message,
+        stack: error.stack,
+      });
+      shutdown('uncaughtException');
+    });
+  } catch (err) {
+    logger.error('Failed to start server', { error: err.message });
+    // Give logger time to flush
+    setTimeout(() => process.exit(1), 1000);
+  }
 };
 
-process.on('SIGTERM', () => shutdown('SIGTERM'));
-process.on('SIGINT', () => shutdown('SIGINT'));
+startServer();

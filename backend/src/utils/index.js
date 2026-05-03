@@ -22,3 +22,4 @@ export {
   paginate,
   paginationSchema,
 } from './pagination/index.js';
+export { catchAsync } from './catchAsync.js';
