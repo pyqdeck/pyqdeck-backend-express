@@ -10,6 +10,7 @@ export default async function SemestersPage({ searchParams }) {
   const limit = parseInt(resolvedSearchParams?.limit || '10', 10);
   const universityId = resolvedSearchParams?.universityId;
   const branchId = resolvedSearchParams?.branchId;
+  const isActive = resolvedSearchParams?.isActive;
 
   let initialSemesters = [];
   let branches = [];
@@ -32,6 +33,7 @@ export default async function SemestersPage({ searchParams }) {
       limit,
       search,
       branchId: branchId === 'all' ? undefined : branchId,
+      isActive,
     });
 
     initialSemesters = semRes.data.data.items || [];

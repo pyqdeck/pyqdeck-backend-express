@@ -6,14 +6,10 @@ import { useApi } from '@/hooks/use-api';
 import { SemestersTable } from './semesters-table';
 import { AddSemesterDialog } from './add-semester-dialog';
 import { StudioSearch } from './studio-search';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
+import { SemesterFilters } from './semester-filters';
+import { Plus } from 'lucide-react';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { DropdownAction } from '@/components/dropdown-action';
 
 export function SemesterManagement({
   initialSemesters = [],
@@ -25,41 +21,7 @@ export function SemesterManagement({
   const searchParams = useSearchParams();
   const api = useApi();
 
-  // Sync filters from URL
-  const selectedUniId = searchParams.get('universityId') || 'all';
-  const selectedBranchId = searchParams.get('branchId') || 'all';
   const search = searchParams.get('search') || '';
-
-  // Filter branches based on selected university
-  const filteredBranches =
-    selectedUniId === 'all'
-      ? branches
-      : branches.filter(
-          (b) => (b.universityId?.id || b.universityId) === selectedUniId
-        );
-
-  const handleUniChange = (value) => {
-    const params = new URLSearchParams(searchParams);
-    if (value === 'all') {
-      params.delete('universityId');
-    } else {
-      params.set('universityId', value);
-    }
-    params.delete('branchId'); // Reset branch when university changes
-    params.set('page', '1');
-    router.push(`?${params.toString()}`);
-  };
-
-  const handleBranchChange = (value) => {
-    const params = new URLSearchParams(searchParams);
-    if (value === 'all') {
-      params.delete('branchId');
-    } else {
-      params.set('branchId', value);
-    }
-    params.set('page', '1');
-    router.push(`?${params.toString()}`);
-  };
 
   const handleAdd = async (data) => {
     await api.branches.createSemester(data.branchId, data);
@@ -88,63 +50,27 @@ export function SemesterManagement({
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <Label className="font-roboto text-xs font-bold tracking-wider uppercase">
-              Inst:
-            </Label>
-            <Select value={selectedUniId} onValueChange={handleUniChange}>
-              <SelectTrigger className="font-roboto w-[160px] border-2 focus:ring-0">
-                <SelectValue placeholder="All Universities" />
-              </SelectTrigger>
-              <SelectContent className="border-2 shadow-none">
-                <SelectItem value="all" className="font-roboto">
-                  All Universities
-                </SelectItem>
-                {universities.map((uni) => (
-                  <SelectItem
-                    key={uni.id}
-                    value={uni.id}
-                    className="font-roboto"
-                  >
-                    {uni.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex items-center gap-2">
-            <Label className="font-roboto text-xs font-bold tracking-wider uppercase">
-              Branch:
-            </Label>
-            <Select value={selectedBranchId} onValueChange={handleBranchChange}>
-              <SelectTrigger className="font-roboto w-[160px] border-2 focus:ring-0">
-                <SelectValue placeholder="All Branches" />
-              </SelectTrigger>
-              <SelectContent className="border-2 shadow-none">
-                <SelectItem value="all" className="font-roboto">
-                  All Branches
-                </SelectItem>
-                {filteredBranches.map((branch) => (
-                  <SelectItem
-                    key={branch.id}
-                    value={branch.id}
-                    className="font-roboto"
-                  >
-                    {branch.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
           <StudioSearch
             placeholder="Search semesters..."
             initialValue={search}
           />
-          <AddSemesterDialog
-            branches={branches}
-            defaultBranchId={selectedBranchId !== 'all' ? selectedBranchId : ''}
-            onAdd={handleAdd}
-          />
+          <SemesterFilters universities={universities} branches={branches} />
+          <DropdownAction label="Management" tooltip="Semester Actions">
+            <AddSemesterDialog
+              branches={branches}
+              defaultBranchId={searchParams.get('branchId') || ''}
+              onAdd={handleAdd}
+              trigger={
+                <DropdownMenuItem
+                  onSelect={(e) => e.preventDefault()}
+                  className="cursor-pointer rounded-md py-2.5 focus:bg-transparent"
+                >
+                  <Plus className="text-muted-foreground mr-3 size-4 transition-colors" />
+                  <span className="font-medium">Add Semester</span>
+                </DropdownMenuItem>
+              }
+            />
+          </DropdownAction>
         </div>
       </div>
 

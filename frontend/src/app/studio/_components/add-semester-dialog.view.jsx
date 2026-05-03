@@ -42,8 +42,13 @@ export function AddSemesterDialogView({
     <Dialog open={open} onOpenChange={onOpenChange}>
       {trigger && (
         <DialogTrigger asChild>
-          <Button className="font-roboto border-2 font-bold shadow-none">
-            <Plus className="h-4 w-4" /> Add Semester
+          <Button
+            size="sm"
+            variant="none"
+            className="font-roboto hover:bg-primary hover:text-primary-foreground flex w-full items-center justify-start gap-2 border-2 px-3 py-2 font-bold shadow-none transition-colors"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Add Semester</span>
           </Button>
         </DialogTrigger>
       )}
