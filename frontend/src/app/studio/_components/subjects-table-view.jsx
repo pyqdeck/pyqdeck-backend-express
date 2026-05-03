@@ -98,7 +98,7 @@ export function SubjectsTableView({
       <CardContent className="p-0">
         <Table>
           {/* HEADER */}
-          <TableHeader className="bg-muted/30">
+          <TableHeader className="bg-muted/30 backdrop-blur">
             <TableRow className="border-border/50 border-b hover:bg-transparent">
               <TableHead className="text-muted-foreground h-14 px-6 text-[11px] font-semibold tracking-[0.12em] uppercase">
                 Subject
@@ -146,7 +146,7 @@ export function SubjectsTableView({
               subjects.map((subject) => (
                 <TableRow
                   key={subject.id}
-                  className="group border-border/40 hover:bg-muted/40 border-b transition-colors"
+                  className="group border-border/40 odd:bg-background even:bg-muted/[0.015] hover:bg-muted/50 border-b transition-all hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.02)]"
                 >
                   {/* SUBJECT */}
                   <TableCell className="px-6 py-5">
@@ -171,7 +171,7 @@ export function SubjectsTableView({
                   <TableCell>
                     <Badge
                       variant="secondary"
-                      className="bg-muted text-muted-foreground rounded-lg border-0 px-2.5 py-1 font-mono text-[11px] font-medium tracking-tight"
+                      className="bg-muted text-muted-foreground rounded-xl border-0 px-2.5 py-1 font-mono text-[11px] font-medium tracking-tight"
                     >
                       {subject.code || 'NO-CODE'}
                     </Badge>
@@ -179,10 +179,7 @@ export function SubjectsTableView({
 
                   {/* STATUS */}
                   <TableCell>
-                    <Badge
-                      variant={subject.isActive ? 'default' : 'secondary'}
-                      className="rounded-md border-0 px-2.5 py-1 font-medium shadow-none"
-                    >
+                    <Badge className="rounded-xl border-0 bg-emerald-500/10 px-2.5 py-1 font-medium text-emerald-600 shadow-none dark:text-emerald-400">
                       {subject.isActive ? 'Active' : 'Archived'}
                     </Badge>
                   </TableCell>
@@ -203,7 +200,7 @@ export function SubjectsTableView({
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="hover:bg-muted rounded-xl opacity-0 transition-all duration-200 group-hover:opacity-100 data-[state=open]:opacity-100"
+                          className="hover:bg-muted rounded-2xl opacity-0 transition-all duration-200 group-hover:opacity-100 data-[state=open]:opacity-100"
                         >
                           <MoreVertical className="h-4 w-4" />
                         </Button>
@@ -267,7 +264,7 @@ export function SubjectsTableView({
                     className={
                       pagination.current === 1
                         ? 'pointer-events-none opacity-50'
-                        : ''
+                        : 'rounded-xl'
                     }
                   />
                 </PaginationItem>
@@ -286,7 +283,7 @@ export function SubjectsTableView({
                         <PaginationLink
                           href={`?page=${pageNumber}`}
                           isActive={pageNumber === pagination.current}
-                          className="rounded-lg"
+                          className="rounded-xl"
                         >
                           {pageNumber}
                         </PaginationLink>
@@ -318,7 +315,7 @@ export function SubjectsTableView({
                     className={
                       pagination.current === pagination.pages
                         ? 'pointer-events-none opacity-50'
-                        : ''
+                        : 'rounded-xl'
                     }
                   />
                 </PaginationItem>
