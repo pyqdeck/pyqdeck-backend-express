@@ -1,5 +1,5 @@
 import { getApiServer } from '@/lib/api-server';
-import { SyllabusBuilder } from '../_components/syllabus-builder';
+import { SyllabusManagement } from '../_components/syllabus-management';
 
 export const metadata = {
   title: 'Syllabus Builder | PyqDeck Studio',
@@ -38,7 +38,7 @@ export default async function SyllabusPage({ searchParams }) {
 
   return (
     <div className="p-4">
-      <SyllabusBuilder
+      <SyllabusManagement
         offerings={offerings}
         currentOfferingId={offeringId}
         syllabus={currentSyllabus}
