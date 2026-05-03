@@ -104,13 +104,58 @@ describe('subjectOfferingController', () => {
       );
     });
 
-    it('should return 400 when no semesterId is given', async () => {
+    it('should use general list when no filters are given', async () => {
       req.query = {};
+      subjectOfferingService.list.mockResolvedValue({
+        items: [sampleOffering],
+        total: 1,
+        page: 1,
+        limit: 10,
+      });
+
       await subjectOfferingController.list(req, res, next);
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith(
-        expect.objectContaining({ status: 'error' })
+
+      expect(subjectOfferingService.list).toHaveBeenCalledWith(
+        { universityId: undefined, branchId: undefined, semesterId: undefined },
+        req.pagination
       );
+      expect(res.json).toHaveBeenCalled();
+    });
+
+    it('should use general list when only universityId is given', async () => {
+      req.query = { universityId: 'uni_1' };
+      subjectOfferingService.list.mockResolvedValue({
+        items: [sampleOffering],
+        total: 1,
+        page: 1,
+        limit: 10,
+      });
+
+      await subjectOfferingController.list(req, res, next);
+
+      expect(subjectOfferingService.list).toHaveBeenCalledWith(
+        { universityId: 'uni_1', branchId: undefined, semesterId: undefined },
+        req.pagination
+      );
+      expect(res.json).toHaveBeenCalled();
+    });
+
+    it('should use general list when universityId+branchId given without semesterId', async () => {
+      req.query = { universityId: 'uni_1', branchId: 'branch_1' };
+      subjectOfferingService.list.mockResolvedValue({
+        items: [sampleOffering],
+        total: 1,
+        page: 1,
+        limit: 10,
+      });
+
+      await subjectOfferingController.list(req, res, next);
+
+      expect(subjectOfferingService.list).toHaveBeenCalledWith(
+        { universityId: 'uni_1', branchId: 'branch_1', semesterId: undefined },
+        req.pagination
+      );
+      expect(res.json).toHaveBeenCalled();
     });
 
     it('should call next on service error', async () => {

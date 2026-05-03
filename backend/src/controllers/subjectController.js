@@ -11,6 +11,14 @@ export async function list(req, res, next) {
       filter.isActive = true;
     }
 
+    // Add university/branch filters if provided
+    if (req.query.universityId) {
+      filter.universityId = req.query.universityId;
+    }
+    if (req.query.branchId) {
+      filter.branchId = req.query.branchId;
+    }
+
     const { items, total, page, limit } = await subjectService.list(
       filter,
       req.pagination

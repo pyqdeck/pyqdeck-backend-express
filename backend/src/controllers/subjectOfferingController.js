@@ -9,13 +9,6 @@ export async function list(req, res, next) {
   try {
     const { universityId, branchId, semesterId } = req.query;
 
-    if (!semesterId) {
-      return res.status(400).json({
-        status: 'error',
-        message: 'semesterId is required',
-      });
-    }
-
     // If all three filters provided, use the optimised path
     if (universityId && branchId && semesterId) {
       const { items, total, page, limit } = await subjectOfferingService.list(
@@ -34,7 +27,7 @@ export async function list(req, res, next) {
     }
 
     // Fall back to semester-only filter
-    if (semesterId) {
+    if (semesterId && !universityId && !branchId) {
       const filter = {};
       if (req.query.isActive !== 'all') filter.isActive = true;
       const { items, total, page, limit } =

@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { Subject } from '../models/Subject.js';
 import { NotFoundError, ConflictError } from '../utils/errors/index.js';
 import { paginate } from '../utils/pagination/index.js';
@@ -36,8 +37,12 @@ class SubjectRepository {
     const { page = 1, limit = 20 } = pagination || {};
     const skip = (page - 1) * limit;
 
+    // Extract university/branch filters before applying to subject match
+    const { universityId, branchId, ...subjectFilter } = filter;
+
     const aggregate = [
-      { $match: filter },
+      // Apply subject-level filters (like isActive)
+      { $match: subjectFilter },
       // Lookup subject offerings for this subject
       {
         $lookup: {
@@ -47,6 +52,47 @@ class SubjectRepository {
           as: 'offerings',
         },
       },
+      // Filter offerings by university/branch if specified
+      ...(universityId || branchId
+        ? [
+            {
+              $addFields: {
+                offerings: {
+                  $filter: {
+                    input: '$offerings',
+                    as: 'offering',
+                    cond: {
+                      $and: [
+                        ...(universityId
+                          ? [
+                              {
+                                $eq: [
+                                  '$$offering.universityId',
+                                  new mongoose.Types.ObjectId(universityId),
+                                ],
+                              },
+                            ]
+                          : []),
+                        ...(branchId
+                          ? [
+                              {
+                                $eq: [
+                                  '$$offering.branchId',
+                                  new mongoose.Types.ObjectId(branchId),
+                                ],
+                              },
+                            ]
+                          : []),
+                      ],
+                    },
+                  },
+                },
+              },
+            },
+            // Only keep subjects that have matching offerings
+            { $match: { 'offerings.0': { $exists: true } } },
+          ]
+        : []),
       // Lookup syllabuses for those offerings
       {
         $lookup: {
@@ -86,13 +132,16 @@ class SubjectRepository {
         },
       },
       { $sort: { createdAt: -1 } },
-      { $skip: skip },
-      { $limit: limit },
     ];
 
+    // For filtered queries, we need to count after filtering
     const [items, totalCount] = await Promise.all([
-      Subject.aggregate(aggregate),
-      Subject.countDocuments(filter),
+      Subject.aggregate([...aggregate, { $skip: skip }, { $limit: limit }]),
+      universityId || branchId
+        ? Subject.aggregate([...aggregate, { $count: 'total' }]).then(
+            (result) => result[0]?.total || 0
+          )
+        : Subject.countDocuments(subjectFilter),
     ]);
 
     return {
