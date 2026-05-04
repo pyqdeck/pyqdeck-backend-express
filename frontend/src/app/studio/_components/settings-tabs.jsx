@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Settings2Icon, WrenchIcon, BrainIcon } from 'lucide-react';
-import { Tabs, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { GeneralSettingsCard } from './general-settings-card';
@@ -22,30 +22,22 @@ export function SettingsTabs({ platformConfig, health }) {
   return (
     <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
       <div className="flex flex-col gap-4">
-        {/* Pill style tabs matching UsersTableView */}
-        <div className="flex flex-wrap items-center gap-1.5">
-          {SETTINGS_TABS.map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <Button
-                key={tab.id}
-                variant={isActive ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setActiveTab(tab.id)}
-                className={cn(
-                  'font-roboto h-8 rounded-full border-2 px-3.5 text-xs font-bold transition-all',
-                  !isActive && 'text-muted-foreground hover:text-foreground'
-                )}
-              >
-                <Icon className="mr-1.5 h-3.5 w-3.5" />
-                {tab.label}
-              </Button>
-            );
-          })}
-        </div>
-
-        <Tabs value={activeTab} className="w-full">
+        <Tabs
+          value={activeTab}
+          onValueChange={setActiveTab}
+          className="flex w-full flex-col gap-6"
+        >
+          <TabsList variant="pill" className="w-fit">
+            {SETTINGS_TABS.map((tab) => {
+              const Icon = tab.icon;
+              return (
+                <TabsTrigger key={tab.id} value={tab.id}>
+                  <Icon className="mr-1.5 h-3.5 w-3.5" />
+                  {tab.label}
+                </TabsTrigger>
+              );
+            })}
+          </TabsList>
           {/* 4. Added a subtle fade-in animation to smooth out tab switching */}
           <TabsContent
             value="platform"

@@ -120,17 +120,13 @@ export function ImportUniversitiesDialog({ open, onOpenChange }) {
     try {
       if (api.universities.bulkCreateUniversities) {
         const response = await api.universities.bulkCreateUniversities(data);
-        // The API returns { status: 'success', data: { inserted, failed, summary } }
-        // The SDK might return the nested data directly depending on its implementation
-        const result = response.data || response;
-        const { summary } = result;
+        const result = response.data?.data || response.data || response;
+        const summary = result.summary || { success: data.length, failed: 0 };
 
         if (summary.failed > 0) {
           toast.warning(
             `Import completed: ${summary.success} added, ${summary.failed} skipped (duplicates/errors).`,
-            {
-              duration: 5000,
-            }
+            { duration: 5000 }
           );
         } else {
           toast.success(
@@ -164,11 +160,26 @@ export function ImportUniversitiesDialog({ open, onOpenChange }) {
         }
       }
 
-      onOpenChange(false);
+      // Clear all states
       setFile(null);
       setPastedText('');
       setData([]);
+      setParseErrors([]);
+      editForm.reset({
+        name: '',
+        shortName: '',
+        slug: '',
+        websiteUrl: '',
+        state: '',
+        country: 'India',
+        logo: '',
+        isActive: true,
+        description: '',
+      });
+
+      // Refresh data and close
       router.refresh();
+      onOpenChange(false);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to import data');
     } finally {
