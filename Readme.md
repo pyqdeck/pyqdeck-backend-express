@@ -15,7 +15,7 @@ Welcome to the **PYQDeck** monorepo. This repository contains both the high-perf
 | Component | Tech Stack | Production URL |
 | :--- | :--- | :--- |
 | **Backend API** | Node.js, Express, MongoDB, Clerk | [backend.pyqdeck.in](https://backend.pyqdeck.in/) |
-| **Frontend Web** | Next.js 15, Tailwind 4, shadcn/ui | [pyqdeck.in](https://app.pyqdeck.in/) |
+| **Frontend Web** | Next.js 15, Tailwind 4, shadcn/ui | [app.pyqdeck.in](https://app.pyqdeck.in/) |
 | **UI Library** | Storybook 8, Radix UI, Vite | [storybook.pyqdeck.in](https://storybook.pyqdeck.in/) |
 | **API Docs** | Swagger / OpenAPI 3.0 | [/api-docs](https://backend.pyqdeck.in/api-docs) |
 | **Engineering Docs** | Mintlify | [docs.pyqdeck.in](https://docs.pyqdeck.in/) |
