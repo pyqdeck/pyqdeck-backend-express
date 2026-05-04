@@ -1,0 +1,7 @@
+import{n as e,s as t}from"./chunk-CzyJ72yW.js";import{Br as n,Un as r,u as i}from"./iframe-BisVWlkQ.js";function a({...e}){return(0,o.jsx)(r,{"data-slot":`aspect-ratio`,...e})}var o,s=e((()=>{o=t(n(),1),i(),a.__docgenInfo={description:``,methods:[],displayName:`AspectRatio`}})),c,l,u,d;e((()=>{c=t(n(),1),s(),l={title:`UI/AspectRatio`,component:a,tags:[`autodocs`]},u={render:e=>(0,c.jsx)(`div`,{className:`w-[450px]`,children:(0,c.jsx)(a,{ratio:16/9,className:`bg-muted`,children:(0,c.jsx)(`img`,{src:`https://images.unsplash.com/photo-1588345921523-c2d6c9fd1eac?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80`,alt:`Photo by Drew Beamer`,className:`h-full w-full rounded-md object-cover`})})})},u.parameters={...u.parameters,docs:{...u.parameters?.docs,source:{originalSource:`{
+  render: args => <div className="w-[450px]">
+      <AspectRatio ratio={16 / 9} className="bg-muted">
+        <img src="https://images.unsplash.com/photo-1588345921523-c2d6c9fd1eac?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Photo by Drew Beamer" className="h-full w-full rounded-md object-cover" />
+      </AspectRatio>
+    </div>
+}`,...u.parameters?.docs?.source}}},d=[`Default`]}))();export{u as Default,d as __namedExportsOrder,l as default};
