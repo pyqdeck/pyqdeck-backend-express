@@ -380,12 +380,12 @@ export function ImportUniversitiesView({
 
                   <TabsContent
                     value="paste"
-                    className="mt-0 flex flex-1 flex-col gap-4 outline-none"
+                    className="mt-0 flex flex-col gap-4 outline-none"
                   >
-                    <div className="relative min-h-0 flex-1">
+                    <div className="relative">
                       <Textarea
                         placeholder="Paste your CSV content here (including header row)..."
-                        className="bg-muted/10 h-full min-h-[220px] resize-none border-2 p-4 font-mono text-xs focus-visible:ring-0"
+                        className="h-[380px] w-full resize-none border-2 bg-muted/10 p-4 font-mono text-xs focus-visible:ring-0"
                         value={pastedText}
                         onChange={(e) => onPastedTextChange(e.target.value)}
                       />
@@ -393,7 +393,7 @@ export function ImportUniversitiesView({
                         <Button
                           variant="secondary"
                           size="sm"
-                          className="absolute top-2 right-2 h-7 border px-2 text-xs font-bold shadow-sm"
+                          className="absolute right-3 top-3 h-7 border px-2 text-xs font-bold shadow-sm"
                           onClick={() => onPastedTextChange('')}
                         >
                           Clear
@@ -413,7 +413,7 @@ export function ImportUniversitiesView({
                         onClick={onProcessPaste}
                         className="min-w-[140px] font-bold"
                       >
-                        <Plus className="mr-2 size-4" />
+                        <Plus className="size-4" />
                         Process Data
                       </Button>
                     </div>
