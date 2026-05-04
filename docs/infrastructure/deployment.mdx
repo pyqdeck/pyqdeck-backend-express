@@ -1,6 +1,6 @@
 ---
 title: Deployment & CI/CD
-description: 'How PyqDeck is built, tested, and deployed'
+description: "How PyqDeck is built, tested, and deployed"
 ---
 
 ## Overview
@@ -21,25 +21,32 @@ graph LR
 ## CI/CD Stages
 
 ### Stage 0: Security Audit
+
 Runs `pnpm audit --prod` on both `backend` and `frontend` to scan for known vulnerabilities in production dependencies.
 
 ### Stage 1: Quality & Linting
+
 Ensures code style consistency using ESLint and Prettier.
 
 ### Stage 2: Backend Tests & API Contract
+
 1. **Vitest**: Runs all backend tests using `MongoMemoryServer`.
 2. **Coverage**: Checks if coverage meets thresholds (80% for most metrics).
 3. **Contract Check**: Runs `pnpm run openapi:export` and verifies that `backend/openapi.json` is in sync with the code.
 
 ### Stage 3: Frontend Build & SDK Validation
+
 1. **SDK Generation**: Runs `pnpm run gen:api` in the frontend.
 2. **Next.js Build**: Ensures the frontend builds correctly with the generated SDK.
 
 ### Stage 4: Docker Build
+
 Builds the backend Docker image (`backend/Dockerfile`) to verify it compiles and packages correctly.
 
 ### Stage 5: Deployment
+
 Only triggers on the `main` branch.
+
 - **Backend**: Fires a Render deploy webhook.
 - **Frontend**: Handled by Vercel's native GitHub integration.
 

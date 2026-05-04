@@ -1,6 +1,6 @@
 ---
 title: Monorepo Architecture
-description: 'Understanding the PyqDeck monorepo structure and design decisions'
+description: "Understanding the PyqDeck monorepo structure and design decisions"
 ---
 
 ## Overview
@@ -36,12 +36,12 @@ This is enforced in CI to prevent API drift. For more details, see the [SDK Flow
 
 ## Deployment Targets
 
-| Package | Platform | Method |
-|---|---|---|
-| **Backend** | Render | Docker (multi-stage build) |
-| **Frontend** | Vercel | Vercel GitHub integration |
-| **Storybook** | GitHub Pages | GitHub Actions |
-| **Documentation** | Mintlify | GitHub Actions |
+| Package           | Platform     | Method                     |
+| ----------------- | ------------ | -------------------------- |
+| **Backend**       | Render       | Docker (multi-stage build) |
+| **Frontend**      | Vercel       | Vercel GitHub integration  |
+| **Storybook**     | GitHub Pages | GitHub Actions             |
+| **Documentation** | Mintlify     | GitHub Actions             |
 
 ## Key Directories
 

@@ -1,6 +1,6 @@
 ---
 title: The Data Pipeline
-description: 'How question papers are uploaded, stored, and managed in PyqDeck'
+description: "How question papers are uploaded, stored, and managed in PyqDeck"
 ---
 
 ## Overview
@@ -20,12 +20,12 @@ graph LR
 
 ## Implementation Map
 
-| Step | Implementation Path | Key Files |
-|---|---|---|
-| **PDF Upload** | `backend/src/utils/uploadthing.js` | `Upload.js` (Model) |
-| **Paper Creation** | `backend/src/controllers/paperController.js` | `Paper.js` (Model) |
+| Step               | Implementation Path                             | Key Files                            |
+| ------------------ | ----------------------------------------------- | ------------------------------------ |
+| **PDF Upload**     | `backend/src/utils/uploadthing.js`              | `Upload.js` (Model)                  |
+| **Paper Creation** | `backend/src/controllers/paperController.js`    | `Paper.js` (Model)                   |
 | **Question Entry** | `backend/src/controllers/questionController.js` | `Question.js`, `QuestionPaperMap.js` |
-| **Solutions** | `backend/src/controllers/solutionController.js` | `Solution.js` (Model) |
+| **Solutions**      | `backend/src/controllers/solutionController.js` | `Solution.js` (Model)                |
 
 ## 1. Upload Pipeline (`backend/src/utils/uploadthing.js`)
 

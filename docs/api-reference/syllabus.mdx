@@ -1,0 +1,26 @@
+---
+title: Syllabus API
+description: "Endpoints for managing the syllabus structure"
+---
+
+## Overview
+
+Manage the curriculum structure (Modules and Topics).
+
+## Endpoints
+
+### Get Syllabus
+
+`GET /syllabus/:subjectOfferingId`
+
+### Create Module
+
+`POST /syllabus/modules`
+
+- **Auth**: Required (`admin` or `editor`)
+
+### Create Topic
+
+`POST /syllabus/topics`
+
+- **Auth**: Required (`admin` or `editor`)

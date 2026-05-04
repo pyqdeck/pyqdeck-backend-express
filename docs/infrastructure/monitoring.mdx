@@ -1,6 +1,6 @@
 ---
 title: Monitoring & Observability
-description: 'How PyqDeck monitors production errors, logs, and performance'
+description: "How PyqDeck monitors production errors, logs, and performance"
 ---
 
 ## Overview
@@ -27,35 +27,35 @@ graph TB
 Sentry is initialized in the backend entry point (`backend/src/index.js`):
 
 ```javascript
-import * as Sentry from '@sentry/node';
-import { nodeProfilingIntegration } from '@sentry/profiling-node';
+import * as Sentry from "@sentry/node";
+import { nodeProfilingIntegration } from "@sentry/profiling-node";
 
 if (process.env.SENTRY_DSN) {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
     environment: config.nodeEnv,
     integrations: [nodeProfilingIntegration()],
-    tracesSampleRate: 1.0,    // 100% of transactions
-    profilesSampleRate: 1.0,  // Profiling for all traces
+    tracesSampleRate: 1.0, // 100% of transactions
+    profilesSampleRate: 1.0, // Profiling for all traces
   });
 }
 ```
 
 ### What's Captured
 
-| Feature | Setting | Impact |
-|---|---|---|
-| Error tracking | All 500+ errors | Captured via `Sentry.captureException(err)` |
-| Performance traces | `tracesSampleRate: 1.0` | 100% of requests traced |
-| CPU profiling | `profilesSampleRate: 1.0` | CPU profiles attached to traces |
-| Environment tagging | `environment: config.nodeEnv` | Separates dev/staging/production |
+| Feature             | Setting                       | Impact                                      |
+| ------------------- | ----------------------------- | ------------------------------------------- |
+| Error tracking      | All 500+ errors               | Captured via `Sentry.captureException(err)` |
+| Performance traces  | `tracesSampleRate: 1.0`       | 100% of requests traced                     |
+| CPU profiling       | `profilesSampleRate: 1.0`     | CPU profiles attached to traces             |
+| Environment tagging | `environment: config.nodeEnv` | Separates dev/staging/production            |
 
 ### Error Handler Middleware
 
 All server errors flow through the error handler (`backend/src/middlewares/errorHandler.js`):
 
 ```javascript
-import * as Sentry from '@sentry/node';
+import * as Sentry from "@sentry/node";
 
 export const errorHandler = (err, req, res, next) => {
   // Report to Sentry
@@ -74,9 +74,10 @@ export const errorHandler = (err, req, res, next) => {
   res.status(err.statusCode || 500).json({
     success: false,
     error: {
-      message: config.nodeEnv === 'production' && err.statusCode >= 500
-        ? 'Internal server error'
-        : err.message,
+      message:
+        config.nodeEnv === "production" && err.statusCode >= 500
+          ? "Internal server error"
+          : err.message,
     },
   });
 };
@@ -92,19 +93,19 @@ Sentry also sets up Express error handling via `Sentry.setupExpressErrorHandler(
 
 The logger (`backend/src/utils/logger/index.js`) sends logs to three destinations:
 
-| Transport | Format | Retention | Purpose |
-|---|---|---|---|
-| **Console** | Colorized, timestamped (`YYYY-MM-DD HH:mm:ss`) | N/A | Local development |
-| **Daily Rotating File** | JSON, `logs/application-YYYY-MM-DD.log` | 14 days, 20MB max per file | Local archive |
-| **Logtail (Better Stack)** | JSON, structured | Configurable in Better Stack | Production monitoring |
+| Transport                  | Format                                         | Retention                    | Purpose               |
+| -------------------------- | ---------------------------------------------- | ---------------------------- | --------------------- |
+| **Console**                | Colorized, timestamped (`YYYY-MM-DD HH:mm:ss`) | N/A                          | Local development     |
+| **Daily Rotating File**    | JSON, `logs/application-YYYY-MM-DD.log`        | 14 days, 20MB max per file   | Local archive         |
+| **Logtail (Better Stack)** | JSON, structured                               | Configurable in Better Stack | Production monitoring |
 
 ### Logtail Configuration
 
 Logtail is enabled when `LOGTAIL_SOURCE_TOKEN` is set:
 
 ```javascript
-import { Logtail } from '@logtail/node';
-import { LogtailTransport } from '@logtail/winston';
+import { Logtail } from "@logtail/node";
+import { LogtailTransport } from "@logtail/winston";
 
 if (process.env.LOGTAIL_SOURCE_TOKEN) {
   const logtail = new Logtail(process.env.LOGTAIL_SOURCE_TOKEN);
@@ -153,10 +154,10 @@ X-RateLimit-Reset: 1620000000
 
 ## Health Endpoints
 
-| Endpoint | Description |
-|---|---|
-| `/api/v1/health` | Simple health check (used by Better Uptime and Render) |
-| `/api/v1/health/detailed` | Detailed health including database connection status |
+| Endpoint                  | Description                                            |
+| ------------------------- | ------------------------------------------------------ |
+| `/api/v1/health`          | Simple health check (used by Better Uptime and Render) |
+| `/api/v1/health/detailed` | Detailed health including database connection status   |
 
 ## Debugging Production Issues
 
@@ -167,6 +168,7 @@ If the service is down, Better Uptime will show the outage and when it started.
 ### Step 2: Check Sentry
 
 For application errors:
+
 1. Open the Sentry dashboard
 2. Filter by environment (`production`)
 3. Check the error's transaction trace for the full request lifecycle
@@ -175,6 +177,7 @@ For application errors:
 ### Step 3: Check Better Stack
 
 For structured log analysis:
+
 1. Open the Better Stack dashboard
 2. Search logs by user ID, request path, or error message
 3. Correlate with Sentry events using timestamps
@@ -182,6 +185,7 @@ For structured log analysis:
 ### Step 4: Check Render Logs
 
 For deployment and infrastructure issues:
+
 1. Open the Render dashboard
 2. View the service logs for startup errors, crash loops, or deployment failures
 

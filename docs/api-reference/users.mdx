@@ -1,0 +1,29 @@
+---
+title: Users API
+description: "Endpoints for managing user profiles"
+---
+
+## Overview
+
+Manage user roles and profiles.
+
+## Endpoints
+
+### Get Current User
+
+`GET /users/me`
+
+- **Auth**: Required
+
+### List Users
+
+`GET /users`
+
+- **Auth**: Required (`admin`)
+
+### Update User Role
+
+`PATCH /users/:id/role`
+
+- **Auth**: Required (`admin`)
+- **Body**: `{ "role": "admin" | "editor" | "normal" }`
