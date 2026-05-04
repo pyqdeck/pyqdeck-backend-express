@@ -1,5 +1,4 @@
-<iframe src="https://status.pyqdeck.in/badge?theme=light" width="250" height="30" frameborder="0" scrolling="no" style="color-scheme: normal"></iframe>
-
+![status](https://status.pyqdeck.in/badge?theme=light)
 # 🎓 PYQDeck Monorepo
 
 [![CI/CD Status](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/monorepo-ci.yml/badge.svg)](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/monorepo-ci.yml)
