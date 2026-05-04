@@ -61,6 +61,15 @@ class UserRepository {
     return user;
   }
 
+  async upsertByClerkOrEmail(clerkId, userData) {
+    // Use findOneAndUpdate with upsert to handle race conditions atomically
+    return User.findOneAndUpdate(
+      { $or: [{ clerkId: String(clerkId) }, { email: userData.email }] },
+      { $set: userData },
+      { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
+    );
+  }
+
   async existsByEmail(email) {
     const count = await User.countDocuments({ email });
     return count > 0;

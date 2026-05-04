@@ -79,4 +79,50 @@ describe('SolutionService', () => {
       );
     });
   });
+
+  describe('listByAuthor', () => {
+    it('should call findByAuthor on repository', async () => {
+      solutionRepository.findByAuthor.mockResolvedValue({ items: [] });
+      await solutionService.listByAuthor('user_1', { page: 1 });
+      expect(solutionRepository.findByAuthor).toHaveBeenCalledWith('user_1', {
+        page: 1,
+      });
+    });
+  });
+
+  describe('getById', () => {
+    it('should call findById on repository', async () => {
+      solutionRepository.findById.mockResolvedValue(sampleSolution);
+      await solutionService.getById('sol_1');
+      expect(solutionRepository.findById).toHaveBeenCalledWith('sol_1');
+    });
+  });
+
+  describe('update', () => {
+    it('should call update on repository', async () => {
+      solutionRepository.update.mockResolvedValue(sampleSolution);
+      await solutionService.update('sol_1', { content: 'Updated' });
+      expect(solutionRepository.update).toHaveBeenCalledWith('sol_1', {
+        content: 'Updated',
+      });
+    });
+  });
+
+  describe('delete', () => {
+    it('should call delete on repository', async () => {
+      solutionRepository.delete.mockResolvedValue(sampleSolution);
+      await solutionService.delete('sol_1');
+      expect(solutionRepository.delete).toHaveBeenCalledWith('sol_1');
+    });
+  });
+
+  describe('deleteByQuestion', () => {
+    it('should call deleteByQuestion on repository', async () => {
+      solutionRepository.deleteByQuestion.mockResolvedValue({
+        deletedCount: 1,
+      });
+      await solutionService.deleteByQuestion('q_1');
+      expect(solutionRepository.deleteByQuestion).toHaveBeenCalledWith('q_1');
+    });
+  });
 });

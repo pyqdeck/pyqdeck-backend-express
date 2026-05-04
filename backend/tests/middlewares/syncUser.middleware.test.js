@@ -19,10 +19,12 @@ vi.mock('../../src/repositories/userRepository.js', () => ({
   userRepository: {
     findByClerkId: vi.fn(),
     create: vi.fn(),
+    upsertByClerkOrEmail: vi.fn(),
   },
   default: {
     findByClerkId: vi.fn(),
     create: vi.fn(),
+    upsertByClerkOrEmail: vi.fn(),
   },
 }));
 
@@ -94,13 +96,13 @@ describe('SyncUser Middleware', () => {
     clerkClient.users.getUser.mockResolvedValue(mockClerkUser);
 
     const mockDbUser = { id: 'db_456', clerkId: 'clerk_123', name: 'New User' };
-    userRepository.create.mockResolvedValue(mockDbUser);
+    userRepository.upsertByClerkOrEmail.mockResolvedValue(mockDbUser);
 
     const response = await request(app).get('/test');
 
     expect(response.status).toBe(200);
     expect(response.body.user.id).toBe('db_456');
-    expect(userRepository.create).toHaveBeenCalled();
+    expect(userRepository.upsertByClerkOrEmail).toHaveBeenCalled();
   });
 
   it('should continue if userId is missing', async () => {

@@ -139,8 +139,18 @@ async function manageUsersInteractive() {
       })),
     });
 
-    const selectedEmail = await userPrompt.run();
-    const selectedUser = users.find((u) => u.email === selectedEmail);
+    const selection = await userPrompt.run();
+    const selectedUser =
+      typeof selection === 'object'
+        ? selection
+        : users.find((u) => u.email === selection);
+
+    if (!selectedUser) {
+      console.log(chalk.red('User not found.'));
+      return;
+    }
+
+    const selectedEmail = selectedUser.email;
 
     const actionPrompt = new Select({
       name: 'action',
@@ -535,7 +545,7 @@ async function manageLogs() {
     return;
   }
 
-  const { file } = await new AutoComplete({
+  const file = await new AutoComplete({
     name: 'file',
     message: 'Select a log file to view:',
     choices: files,

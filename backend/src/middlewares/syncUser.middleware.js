@@ -63,7 +63,7 @@ export async function syncUser(req, res, next) {
         primaryEmail ||
         'Unknown';
 
-      user = await userRepository.create({
+      user = await userRepository.upsertByClerkOrEmail(userId, {
         clerkId: userId,
         name,
         email: primaryEmail,

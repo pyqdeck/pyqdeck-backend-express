@@ -98,13 +98,21 @@ describe('UniversityService', () => {
   });
 
   describe('create', () => {
-    it('should create and return a university', async () => {
+    it('should call create on repository', async () => {
       universityRepository.create.mockResolvedValue(sampleUniversity);
-      const result = await universityService.create(sampleUniversity);
-      expect(universityRepository.create).toHaveBeenCalledWith(
-        sampleUniversity
-      );
+      const result = await universityService.create({ name: 'New' });
+      expect(universityRepository.create).toHaveBeenCalledWith({ name: 'New' });
       expect(result).toEqual(sampleUniversity);
+    });
+  });
+
+  describe('bulkCreate', () => {
+    it('should call createMany on repository', async () => {
+      const unis = [{ name: 'U1' }, { name: 'U2' }];
+      universityRepository.createMany.mockResolvedValue({ success: 2 });
+      const result = await universityService.bulkCreate(unis);
+      expect(universityRepository.createMany).toHaveBeenCalledWith(unis);
+      expect(result).toEqual({ success: 2 });
     });
   });
 

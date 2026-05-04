@@ -174,4 +174,64 @@ describe('BranchService', () => {
       );
     });
   });
+
+  describe('listAll', () => {
+    it('should return all branches with default filter', async () => {
+      branchRepository.findAll.mockResolvedValue({ items: [], total: 0 });
+      await branchService.listAll({}, { page: 1, limit: 10 });
+      expect(branchRepository.findAll).toHaveBeenCalledWith(
+        {},
+        { page: 1, limit: 10 }
+      );
+    });
+
+    it('should apply universityId filter in listAll', async () => {
+      branchRepository.findAll.mockResolvedValue({ items: [], total: 0 });
+      await branchService.listAll(
+        { universityId: 'uni_1' },
+        { page: 1, limit: 10 }
+      );
+      expect(branchRepository.findAll).toHaveBeenCalledWith(
+        { universityId: 'uni_1' },
+        { page: 1, limit: 10 }
+      );
+    });
+
+    it('should apply isActive:true when string "true" is passed', async () => {
+      branchRepository.findAll.mockResolvedValue({ items: [], total: 0 });
+      await branchService.listAll({ isActive: 'true' }, { page: 1, limit: 10 });
+      expect(branchRepository.findAll).toHaveBeenCalledWith(
+        { isActive: true },
+        { page: 1, limit: 10 }
+      );
+    });
+
+    it('should apply isActive:true when boolean true is passed', async () => {
+      branchRepository.findAll.mockResolvedValue({ items: [], total: 0 });
+      await branchService.listAll({ isActive: true }, { page: 1, limit: 10 });
+      expect(branchRepository.findAll).toHaveBeenCalledWith(
+        { isActive: true },
+        { page: 1, limit: 10 }
+      );
+    });
+
+    it('should skip isActive when "all" is passed', async () => {
+      branchRepository.findAll.mockResolvedValue({ items: [], total: 0 });
+      await branchService.listAll({ isActive: 'all' }, { page: 1, limit: 10 });
+      expect(branchRepository.findAll).toHaveBeenCalledWith(
+        {},
+        { page: 1, limit: 10 }
+      );
+    });
+  });
+
+  describe('bulkCreate', () => {
+    it('should call createMany on repository', async () => {
+      const branches = [{ name: 'B1' }, { name: 'B2' }];
+      branchRepository.createMany.mockResolvedValue({ success: 2 });
+      const result = await branchService.bulkCreate(branches);
+      expect(branchRepository.createMany).toHaveBeenCalledWith(branches);
+      expect(result).toEqual({ success: 2 });
+    });
+  });
 });
