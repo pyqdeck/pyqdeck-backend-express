@@ -1,12 +1,12 @@
 import solutionService from '../services/solutionService.js';
-import { successFormatter, catchAsync } from '../utils/index.js';
+import { successFormatter, catchAsync, UserRole } from '../utils/index.js';
 
 /**
  * GET /api/v1/questions/:questionId/solutions
  * Public: only approved. Admin: all statuses.
  */
 export const listByQuestion = catchAsync(async (req, res, next) => {
-  const isAdmin = req.dbUser?.role === 'admin';
+  const isAdmin = req.dbUser?.role === UserRole.ADMIN;
   const { items, total, page, limit } = await solutionService.listByQuestion(
     req.params.questionId,
     req.pagination,

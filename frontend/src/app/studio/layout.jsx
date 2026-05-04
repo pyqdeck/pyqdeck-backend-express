@@ -1,4 +1,6 @@
-import { auth } from '@clerk/nextjs/server';
+'use client';
+
+import { useUser } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 import { AppSidebar } from '@/components/app-sidebar';
 import {
@@ -17,9 +19,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { Roboto } from 'next/font/google';
 
-import { getApiServer } from '@/lib/api-server';
-
-export const dynamic = 'force-dynamic';
+import { useProfile } from '@/hooks/use-user-profile';
 
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
@@ -27,47 +27,24 @@ const roboto = Roboto({
   display: 'swap',
 });
 
-export default async function StudioLayout({ children }) {
-  const { userId } = await auth();
+export default function StudioLayout({ children }) {
+  const { isLoaded, isSignedIn } = useUser();
+  const { profile, isLoading, isAdmin, isEditor, role } = useProfile();
 
-  if (!userId) {
+  if (isLoaded && !isSignedIn) {
     redirect('/sign-in');
   }
 
-  let role = 'normal';
-  let isSynced = false;
-
-  try {
-    const api = await getApiServer();
-    const res = await api.users.getCurrentUser();
-    const userData = res.data?.data?.user;
-
-    if (userData) {
-      role = userData.role || 'normal';
-      isSynced = true;
-    }
-  } catch (error) {
-    // If the API fails, we don't necessarily want to kick the admin out immediately
-    // especially if it's just a 500 or network error.
-    console.error(
-      '❌ Studio Auth Error:',
-      error?.response?.data || error?.message || error
-    );
-
-    // If it's a 401, they definitely need to log in again
-    if (error?.response?.status === 401) {
-      redirect('/sign-in');
-    }
-  }
-
   // Security Check: Redirect non-admins away from the Studio
-  // We only redirect if we SUCCESSFULLY fetched a role and it's not authorized.
-  // This prevents "accidental kicks" during backend restarts.
-  if (isSynced && role !== 'admin' && role !== 'editor') {
+  if (!isLoading && !isAdmin && !isEditor) {
     console.warn(
       `🚫 Access Denied: User has role "${role}". Redirecting to dashboard.`
     );
     redirect('/dashboard');
+  }
+
+  if (isLoading) {
+    return null; // Or a loading spinner
   }
 
   return (

@@ -12,11 +12,13 @@ function errorHandler(err, req, res, next) {
     Sentry.captureException(err);
   }
 
+  console.error('ERROR:', err.message, err.stack);
   logger.error('Unhandled error', {
     message: err.message,
     stack: err.stack,
     path: req.path,
     method: req.method,
+    dbUser: req.dbUser ? 'exists' : 'missing',
   });
 
   const formattedError = errorFormatter.formatError(err, statusCode);

@@ -9,6 +9,7 @@
  */
 
 import { ClerkProvider } from '@/components/clerk-provider';
+import { UserProfileProvider } from '@/components/user-profile-provider';
 import { ThemeProvider } from '@/components/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Geist, Geist_Mono } from 'next/font/google';
@@ -40,16 +41,18 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning
       >
         <ClerkProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <TooltipProvider>
-              <MainLayoutWrapper>{children}</MainLayoutWrapper>
-            </TooltipProvider>
-          </ThemeProvider>
+          <UserProfileProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <TooltipProvider>
+                <MainLayoutWrapper>{children}</MainLayoutWrapper>
+              </TooltipProvider>
+            </ThemeProvider>
+          </UserProfileProvider>
         </ClerkProvider>
         {/* BetterStack Announcement Bar */}
         <Script

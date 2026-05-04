@@ -1,4 +1,4 @@
-import { successFormatter, catchAsync } from '../utils/index.js';
+import { successFormatter, catchAsync, UserRole } from '../utils/index.js';
 import userService from '../services/userService.js';
 import { ForbiddenError } from '../utils/errors/index.js';
 import { getAuth } from '@clerk/express';

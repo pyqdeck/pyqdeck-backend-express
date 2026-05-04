@@ -12,6 +12,7 @@ import {
   UserButton,
   useUser,
 } from '@clerk/nextjs';
+import { useProfile } from '@/hooks/use-user-profile';
 
 import { Button } from '@/components/ui/button';
 
@@ -34,6 +35,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   const { isSignedIn } = useUser();
+  const { isAdmin, isEditor } = useProfile();
 
   return (
     <header className="bg-background/80 fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl">
@@ -90,6 +92,15 @@ export function Header() {
               </div>
             ) : (
               <div className="flex items-center gap-3">
+                {(isAdmin || isEditor) && (
+                  <Link href="/studio">
+                    <Button variant="ghost" className="gap-2 rounded-full">
+                      <LayoutDashboard className="size-4" />
+                      Studio
+                    </Button>
+                  </Link>
+                )}
+
                 <Link href="/dashboard">
                   <Button variant="ghost" className="gap-2 rounded-full">
                     <LayoutDashboard className="size-4" />
@@ -188,12 +199,25 @@ export function Header() {
                       </SignUpButton>
                     </div>
                   ) : (
-                    <Link href="/dashboard" onClick={() => setOpen(false)}>
-                      <Button className="h-11 w-full justify-center gap-2 rounded-xl text-sm font-medium">
-                        <LayoutDashboard className="size-4" />
-                        Dashboard
-                      </Button>
-                    </Link>
+                    <div className="flex flex-col gap-2">
+                      {(isAdmin || isEditor) && (
+                        <Link href="/studio" onClick={() => setOpen(false)}>
+                          <Button className="h-11 w-full justify-center gap-2 rounded-xl text-sm font-medium">
+                            <LayoutDashboard className="size-4" />
+                            Studio
+                          </Button>
+                        </Link>
+                      )}
+                      <Link href="/dashboard" onClick={() => setOpen(false)}>
+                        <Button
+                          variant="outline"
+                          className="h-11 w-full justify-center gap-2 rounded-xl text-sm font-medium"
+                        >
+                          <LayoutDashboard className="size-4" />
+                          Dashboard
+                        </Button>
+                      </Link>
+                    </div>
                   )}
                 </ClerkLoaded>
               </div>

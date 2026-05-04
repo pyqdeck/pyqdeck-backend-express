@@ -1,5 +1,5 @@
 import paperService from '../services/paperService.js';
-import { successFormatter, catchAsync } from '../utils/index.js';
+import { successFormatter, catchAsync, UserRole } from '../utils/index.js';
 
 /**
  * GET /api/v1/papers
@@ -7,7 +7,7 @@ import { successFormatter, catchAsync } from '../utils/index.js';
 export const list = catchAsync(async (req, res, next) => {
   const filter = {};
   // Public users only see approved papers
-  const isAdmin = req.dbUser?.role === 'admin';
+  const isAdmin = req.dbUser?.role === UserRole.ADMIN;
   if (!isAdmin) filter.status = 'approved';
 
   // Optional query filters
