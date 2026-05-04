@@ -1,3 +1,5 @@
+<iframe src="https://status.pyqdeck.in/badge?theme=light" width="250" height="30" frameborder="0" scrolling="no" style="color-scheme: normal"></iframe>
+
 # 🎓 PYQDeck Monorepo
 
 [![CI/CD Status](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/monorepo-ci.yml/badge.svg)](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/monorepo-ci.yml)
@@ -19,7 +21,7 @@ Welcome to the **PYQDeck** monorepo. This repository contains both the high-perf
 | **UI Library** | Storybook 8, Radix UI, Vite | [storybook.pyqdeck.in](https://storybook.pyqdeck.in/) |
 | **API Docs** | Swagger / OpenAPI 3.0 | [/api-docs](https://backend.pyqdeck.in/api-docs) |
 | **Engineering Docs** | Mintlify | [docs.pyqdeck.in](https://docs.pyqdeck.in/) |
-| **Status** | BetterUptime | [pyqdeck.betteruptime.com](https://pyqdeck.betteruptime.com/) |
+| **Status** | Custom Status Page | [status.pyqdeck.in](https://status.pyqdeck.in/) |
 
 ---
 
