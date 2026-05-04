@@ -30,6 +30,7 @@ export const metadata = {
 };
 
 import { MainLayoutWrapper } from '@/components/main-layout-wrapper';
+import { Analytics } from '@vercel/analytics/next';
 
 export default function RootLayout({ children }) {
   return (
@@ -50,6 +51,7 @@ export default function RootLayout({ children }) {
             </TooltipProvider>
           </ThemeProvider>
         </ClerkProvider>
+        <Analytics />
       </body>
     </html>
   );
