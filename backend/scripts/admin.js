@@ -26,6 +26,10 @@ import { Syllabus } from '../src/models/Syllabus.js';
 import { Tag } from '../src/models/Tag.js';
 import { Topic } from '../src/models/Topic.js';
 import { UserRole } from '../src/utils/constants.js';
+import https from 'https';
+import dns from 'dns';
+
+dns.setDefaultResultOrder('ipv4first');
 
 const { Select, AutoComplete, Confirm, Input } = enquirer;
 
@@ -61,6 +65,86 @@ async function withDb(callback) {
 }
 
 /**
+ * Helper: Fetch users from Clerk
+ */
+function fetchClerkUsers(secretKey) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: 'api.clerk.com',
+      path: '/v1/users?limit=100',
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${secretKey}`,
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', (chunk) => {
+        data += chunk;
+      });
+      res.on('end', () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          resolve(JSON.parse(data));
+        } else {
+          reject(
+            new Error(`Clerk API returned status ${res.statusCode}: ${data}`)
+          );
+        }
+      });
+    });
+
+    req.on('error', (e) => reject(e));
+    req.end();
+  });
+}
+
+/**
+ * Logic: Sync Clerk Users to DB
+ */
+async function syncClerkUsers(spinner) {
+  const clerkSecretKey = process.env.CLERK_SECRET_KEY;
+  if (!clerkSecretKey) {
+    throw new Error('CLERK_SECRET_KEY is missing in .env file');
+  }
+
+  spinner.start('Fetching users from Clerk...');
+  const clerkUsers = await fetchClerkUsers(clerkSecretKey);
+  spinner.info(`Found ${clerkUsers.length} users in Clerk.`);
+
+  spinner.start('Syncing to MongoDB...');
+  let syncedCount = 0;
+  for (const clerkUser of clerkUsers) {
+    const primaryEmailObj =
+      clerkUser.email_addresses.find(
+        (email) => email.id === clerkUser.primary_email_address_id
+      ) || clerkUser.email_addresses[0];
+
+    if (!primaryEmailObj) continue;
+
+    const email = primaryEmailObj.email_address;
+    const name =
+      [clerkUser.first_name, clerkUser.last_name].filter(Boolean).join(' ') ||
+      email;
+
+    await User.findOneAndUpdate(
+      { $or: [{ clerkId: clerkUser.id }, { email: email }] },
+      {
+        clerkId: clerkUser.id,
+        name: name,
+        email: email,
+        avatarUrl: clerkUser.image_url || null,
+      },
+      { upsert: true, setDefaultsOnInsert: true }
+    );
+    syncedCount++;
+  }
+
+  spinner.succeed(`Successfully synced ${syncedCount} users!`);
+}
+
+/**
  * Interactive Main Menu
  */
 async function mainMenu() {
@@ -71,6 +155,7 @@ async function mainMenu() {
     message: 'What would you like to do?',
     choices: [
       { name: 'users', message: '👤 Manage Users' },
+      { name: 'sync', message: '🔄 Sync Users from Clerk' },
       { name: 'stats', message: '📊 View Statistics' },
       { name: 'insights', message: '🔬 Aggregation Insights' },
       { name: 'seed', message: '🌱 Seed Initial Data' },
@@ -86,6 +171,12 @@ async function mainMenu() {
   switch (choice) {
     case 'users':
       await manageUsersInteractive();
+      break;
+    case 'insights':
+      await showInsights();
+      break;
+    case 'sync':
+      await withDb(async (spinner) => await syncClerkUsers(spinner));
       break;
     case 'stats':
       await showStats();
@@ -627,6 +718,63 @@ program
       spinner.succeed(
         `Success! ${email} is now ${chalk.bold(options.role)}. 🚀`
       );
+    });
+  });
+
+program
+  .command('sync')
+  .description('Sync users from Clerk to MongoDB')
+  .action(async () => {
+    await withDb(async (spinner) => await syncClerkUsers(spinner));
+  });
+
+const users = program.command('users').description('User management commands');
+
+users
+  .command('list')
+  .description('List all users')
+  .action(async () => {
+    await withDb(async (spinner) => {
+      spinner.start('Fetching users...');
+      const users = await User.find().select('name email role isActive').lean();
+      spinner.stop();
+
+      const table = new Table({
+        head: [
+          chalk.cyan('Name'),
+          chalk.cyan('Email'),
+          chalk.cyan('Role'),
+          chalk.cyan('Status'),
+        ],
+      });
+
+      users.forEach((u) => {
+        table.push([
+          u.name,
+          u.email,
+          u.role,
+          u.isActive ? chalk.green('Active') : chalk.red('Inactive'),
+        ]);
+      });
+
+      console.log(table.toString());
+    });
+  });
+
+users
+  .command('delete <email>')
+  .description('Delete a user from the database')
+  .action(async (email) => {
+    await withDb(async (spinner) => {
+      spinner.start(`Deleting user ${email}...`);
+      const result = await User.deleteOne({ email: email.toLowerCase() });
+
+      if (result.deletedCount === 0) {
+        spinner.fail(`User with email ${email} not found.`);
+        return;
+      }
+
+      spinner.succeed(`User ${email} deleted successfully.`);
     });
   });
 
