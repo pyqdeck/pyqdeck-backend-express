@@ -1,12 +1,3 @@
-/* BetterStack Announcement Bar Custom Styling */
-.betteruptime-announcement {
-  top: unset;
-  bottom: 0;
-  background: white;
-}
-.betteruptime-announcement__message {
-  color: black;
-}
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import 'shadcn/tailwind.css';
@@ -166,4 +157,14 @@
   html {
     @apply font-sans;
   }
+}
+
+/* BetterStack Announcement Bar Custom Styling */
+.betteruptime-announcement {
+  top: unset;
+  bottom: 0;
+  background: white;
+}
+.betteruptime-announcement__message {
+  color: black;
 }
