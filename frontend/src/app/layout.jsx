@@ -11,6 +11,7 @@
 import { ClerkProvider } from '@/components/clerk-provider';
 import { ThemeProvider } from '@/components/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { Analytics } from '@vercel/analytics/next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
@@ -51,6 +52,7 @@ export default function RootLayout({ children }) {
             </TooltipProvider>
           </ThemeProvider>
         </ClerkProvider>
+        <Analytics />
         {/* BetterStack Announcement Bar */}
         <Script
           src="https://uptime.betterstack.com/widgets/announcement.js"

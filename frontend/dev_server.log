@@ -1,0 +1,24 @@
+
+> frontend@0.1.0 dev /app/frontend
+> next dev -p 3001
+
+▲ Next.js 16.2.4 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://192.168.0.2:3001
+✓ Ready in 568ms
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+
+○ Compiling / ...
+
+[35m
+[Clerk]:[0m You are running in keyless mode.
+You can [35mclaim your keys[0m by visiting https://dashboard.clerk.com/apps/claim?framework=nextjs&token=etxr9xj8hq4gai7h3brd9qrjl916nl90ksanoqc5&return_url=http%3A%2F%2Flocalhost%3A3001%2F
+
+ HEAD / 200 in 9.8s (next.js: 7.9s, proxy.ts: 199ms, application-code: 1716ms)
+ GET / 200 in 219ms (next.js: 14ms, proxy.ts: 21ms, application-code: 184ms)
+ GET / 200 in 184ms (next.js: 7ms, proxy.ts: 34ms, application-code: 143ms)
+ POST / 303 in 294ms (next.js: 5ms, proxy.ts: 26ms, application-code: 263ms)
+  └─ ƒ syncKeylessConfigAction({"apiKeysUrl":"https://dashboard.clerk.com/apps/app_3DGQsQSU0CWBkPsuPNIyW9OAWE7/instances/ins_3DGQsRA6hmU7djqNJupB5J73HVP/api-keys","claimUrl":"https://dashboard.clerk.com/apps/claim?framework=nextjs&token=etxr9xj8hq4gai7h3brd9qrjl916nl90ksanoqc5","...":"3 items not stringified"}) in 9ms node_modules/.pnpm/@clerk+nextjs@7.3.0_next@16.2.4_@babel+core@7.29.0_react-dom@19.2.4_react@19.2.4__react_cb95118321023aaebce5c30598c6eeb9/node_modules/@clerk/nextjs/dist/esm/app-router/keyless-actions.js
+[browser] Clerk: Clerk has been loaded with development keys. Development instances have strict usage limits and should not be used when deploying your application to production. Learn more: https://clerk.com/docs/deployments/overview (https://blessed-muskrat-26.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js:12:3216)
+ GET / 200 in 46ms (next.js: 5ms, proxy.ts: 26ms, application-code: 15ms)
+ GET / 200 in 114ms (next.js: 16ms, proxy.ts: 29ms, application-code: 69ms)
