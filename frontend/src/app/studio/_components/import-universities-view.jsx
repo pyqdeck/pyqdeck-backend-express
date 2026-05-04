@@ -385,7 +385,7 @@ export function ImportUniversitiesView({
                     <div className="relative">
                       <Textarea
                         placeholder="Paste your CSV content here (including header row)..."
-                        className="h-[380px] w-full resize-none border-2 bg-muted/10 p-4 font-mono text-xs focus-visible:ring-0"
+                        className="bg-muted/10 h-[380px] w-full resize-none border-2 p-4 font-mono text-xs focus-visible:ring-0"
                         value={pastedText}
                         onChange={(e) => onPastedTextChange(e.target.value)}
                       />
@@ -393,7 +393,7 @@ export function ImportUniversitiesView({
                         <Button
                           variant="secondary"
                           size="sm"
-                          className="absolute right-3 top-3 h-7 border px-2 text-xs font-bold shadow-sm"
+                          className="absolute top-3 right-3 h-7 border px-2 text-xs font-bold shadow-sm"
                           onClick={() => onPastedTextChange('')}
                         >
                           Clear

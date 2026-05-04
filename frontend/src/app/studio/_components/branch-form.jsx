@@ -19,9 +19,14 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-export function BranchForm({ form, universities = [], idPrefix = '', showUniversitySelect = false }) {
+export function BranchForm({
+  form,
+  universities = [],
+  idPrefix = '',
+  showUniversitySelect = false,
+}) {
   return (
-    <FieldGroup className="space-y-6 gap-0  ">
+    <FieldGroup className="gap-0 space-y-6">
       {showUniversitySelect && (
         <Controller
           name="universityId"
@@ -32,7 +37,10 @@ export function BranchForm({ form, universities = [], idPrefix = '', showUnivers
                 University
               </FieldLabel>
               <Select onValueChange={field.onChange} value={field.value}>
-                <SelectTrigger id={`${idPrefix}${field.name}`} className="border-2 focus:ring-0">
+                <SelectTrigger
+                  id={`${idPrefix}${field.name}`}
+                  className="border-2 focus:ring-0"
+                >
                   <SelectValue placeholder="Select a university" />
                 </SelectTrigger>
                 <SelectContent className="border-2 shadow-none">

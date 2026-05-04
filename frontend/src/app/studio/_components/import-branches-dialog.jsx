@@ -13,13 +13,21 @@ import { ImportBranchesView } from './import-branches-view';
 
 const branchSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
-  shortName: z.string().min(2, 'Short name must be at least 2 characters').max(20),
+  shortName: z
+    .string()
+    .min(2, 'Short name must be at least 2 characters')
+    .max(20),
   branchCode: z.string().optional().or(z.literal('')),
   slug: z.string().min(2, 'Slug must be at least 2 characters'),
   isActive: z.boolean().default(true),
 });
 
-export function ImportBranchesDialog({ open, onOpenChange, universityId, universityName }) {
+export function ImportBranchesDialog({
+  open,
+  onOpenChange,
+  universityId,
+  universityName,
+}) {
   const [file, setFile] = React.useState(null);
   const [pastedText, setPastedText] = React.useState('');
   const [data, setData] = React.useState([]);
@@ -109,7 +117,9 @@ export function ImportBranchesDialog({ open, onOpenChange, universityId, univers
       const summary = result.summary || { success: data.length, failed: 0 };
 
       if (summary.failed > 0) {
-        toast.warning(`Import completed: ${summary.success} added, ${summary.failed} skipped.`);
+        toast.warning(
+          `Import completed: ${summary.success} added, ${summary.failed} skipped.`
+        );
       } else {
         toast.success(`Successfully imported ${summary.success} branches!`);
       }

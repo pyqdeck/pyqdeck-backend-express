@@ -7,7 +7,10 @@ import { BranchesTable } from './branches-table';
 import { AddBranchDialog } from './add-branch-dialog';
 import { StudioSearch } from './studio-search';
 import { BranchFilters } from './branch-filters';
-import { DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import {
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from '@/components/ui/dropdown-menu';
 import { DropdownAction } from '@/components/dropdown-action';
 import { ImportBranchesDialog } from './import-branches-dialog';
 import { FileSpreadsheet, Plus } from 'lucide-react';
@@ -25,8 +28,8 @@ export function BranchManagement({
   const universityId = searchParams.get('universityId');
   const [importOpen, setImportOpen] = React.useState(false);
 
-  const selectedUniversity = React.useMemo(() => 
-    universities.find(u => u.id === universityId),
+  const selectedUniversity = React.useMemo(
+    () => universities.find((u) => u.id === universityId),
     [universities, universityId]
   );
 
@@ -73,7 +76,7 @@ export function BranchManagement({
                   onSelect={(e) => e.preventDefault()}
                   className="cursor-pointer rounded-md py-2.5 focus:bg-transparent"
                 >
-                  <Plus className="mr-3 size-4 text-muted-foreground transition-colors" />
+                  <Plus className="text-muted-foreground mr-3 size-4 transition-colors" />
                   <span className="font-medium">Add Branch</span>
                 </DropdownMenuItem>
               }
@@ -85,7 +88,7 @@ export function BranchManagement({
                   onClick={() => setImportOpen(true)}
                   className="cursor-pointer rounded-md py-2.5"
                 >
-                  <FileSpreadsheet className="mr-3 size-4 text-muted-foreground transition-colors" />
+                  <FileSpreadsheet className="text-muted-foreground mr-3 size-4 transition-colors" />
                   <span className="font-medium">Import Branches</span>
                 </DropdownMenuItem>
               </>
