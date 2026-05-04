@@ -1,4 +1,5 @@
 import universityRepository from '../repositories/universityRepository.js';
+import { escapeRegExp } from '../utils/index.js';
 
 class UniversityService {
   async list(query = {}, pagination) {
@@ -11,16 +12,16 @@ class UniversityService {
 
     // Support searching by name or short name
     if (query.search) {
-      const searchRegex = { $regex: query.search, $options: 'i' };
+      const searchRegex = { $regex: escapeRegExp(query.search), $options: 'i' };
       filter.$or = [{ name: searchRegex }, { shortName: searchRegex }];
     }
 
     // Filter by location
     if (query.state) {
-      filter.state = { $regex: query.state, $options: 'i' };
+      filter.state = { $regex: escapeRegExp(query.state), $options: 'i' };
     }
     if (query.country) {
-      filter.country = { $regex: query.country, $options: 'i' };
+      filter.country = { $regex: escapeRegExp(query.country), $options: 'i' };
     }
 
     return universityRepository.findAll(filter, pagination);
