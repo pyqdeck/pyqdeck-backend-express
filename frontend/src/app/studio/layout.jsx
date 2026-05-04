@@ -35,19 +35,38 @@ export default async function StudioLayout({ children }) {
   }
 
   let role = 'normal';
+  let isSynced = false;
+
   try {
     const api = await getApiServer();
     const res = await api.users.getCurrentUser();
-    role = res.data.data?.user?.role || 'normal';
+    const userData = res.data?.data?.user;
+
+    if (userData) {
+      role = userData.role || 'normal';
+      isSynced = true;
+    }
   } catch (error) {
+    // If the API fails, we don't necessarily want to kick the admin out immediately
+    // especially if it's just a 500 or network error.
     console.error(
-      'Failed to fetch user role from backend:',
-      error?.message || error
+      '❌ Studio Auth Error:',
+      error?.response?.data || error?.message || error
     );
+
+    // If it's a 401, they definitely need to log in again
+    if (error?.response?.status === 401) {
+      redirect('/sign-in');
+    }
   }
 
   // Security Check: Redirect non-admins away from the Studio
-  if (role !== 'admin' && role !== 'editor') {
+  // We only redirect if we SUCCESSFULLY fetched a role and it's not authorized.
+  // This prevents "accidental kicks" during backend restarts.
+  if (isSynced && role !== 'admin' && role !== 'editor') {
+    console.warn(
+      `🚫 Access Denied: User has role "${role}". Redirecting to dashboard.`
+    );
     redirect('/dashboard');
   }
 
