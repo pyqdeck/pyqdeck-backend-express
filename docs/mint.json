@@ -20,12 +20,7 @@
     "name": "Go to App",
     "url": "https://pyqdeck.in"
   },
-  "anchors": [
-    {
-      "name": "API Reference",
-      "icon": "rectangle-terminal",
-      "url": "api-reference/overview"
-    },
+  "anchors": {
     {
       "name": "GitHub",
       "icon": "github",
