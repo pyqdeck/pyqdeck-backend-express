@@ -39,7 +39,8 @@ UI components in the Studio and complex features should be split into three file
 ## 🚨 Security & Maintenance
 
 - **Rate Limiting**: Use `express-rate-limit` for all public and sensitive endpoints.
-- **NoSQL Injection**: Sanitize user-provided strings using the `escapeRegExp` utility in `backend/src/utils/regex.js` before using in MongoDB `$regex` queries.
+- **NoSQL Injection**: Do not treat `escapeRegExp` as a general NoSQL injection defense. Rely on schema parsing/validation for sanitizing updates and other non-regex inputs.
+- **Regex Search Inputs**: When building MongoDB `$regex` queries from user-provided text, sanitize the pattern with the `escapeRegExp` utility in `backend/src/utils/regex.js`.
 - **Admin Access**: Administrative tasks must be protected by the `isAdmin` middleware.
 
 ---
