@@ -1,36 +1,65 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { Menu } from 'lucide-react';
-import { Show, SignInButton, SignUpButton, UserButton } from '@clerk/nextjs';
+
+import { Menu, Sparkles, LayoutDashboard } from 'lucide-react';
+
+import {
+  ClerkLoaded,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+  useUser,
+} from '@clerk/nextjs';
+
 import { Button } from '@/components/ui/button';
+
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+
 import { Separator } from '@/components/ui/separator';
 
-export function Header() {
-  const [isOpen, setIsOpen] = useState(false);
+const navLinks = [
+  {
+    name: 'Features',
+    href: '/#features',
+  },
+  {
+    name: 'How It Works',
+    href: '/#how-it-works',
+  },
+];
 
-  const navLinks = [
-    { name: 'Features', href: '/#features' },
-    { name: 'How it Works', href: '/#how-it-works' },
-  ];
+export function Header() {
+  const [open, setOpen] = useState(false);
+
+  const { isSignedIn } = useUser();
 
   return (
-    <nav className="bg-background/80 border-border fixed top-0 right-0 left-0 z-50 border-b backdrop-blur-md">
+    <header className="bg-background/80 fixed inset-x-0 top-0 z-50 border-b backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Logo */}
-        <Link
-          href="/"
-          className="group flex items-center gap-2 transition-transform hover:scale-[1.02] active:scale-95"
-        >
-          <div className="bg-primary text-primary-foreground flex size-9 items-center justify-center rounded-lg font-bold transition-all group-hover:shadow-md">
-            PQ
+        {/* =======================================================
+            LOGO
+        ======================================================= */}
+
+        <Link href="/" className="group flex items-center gap-3">
+          <div className="bg-primary text-primary-foreground flex size-10 items-center justify-center rounded-xl shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:shadow-md">
+            <Sparkles className="size-5" />
           </div>
-          <span className="text-xl font-bold tracking-tight">PyqDeck</span>
+
+          <div className="hidden sm:flex sm:flex-col sm:leading-none">
+            <span className="text-lg font-bold tracking-tight">PyqDeck</span>
+
+            <span className="text-muted-foreground text-xs">
+              Smart Learning
+            </span>
+          </div>
         </Link>
 
-        {/* Desktop Navigation */}
+        {/* =======================================================
+            DESKTOP NAVIGATION
+        ======================================================= */}
+
         <div className="hidden items-center gap-6 md:flex">
           {navLinks.map((link) => (
             <Link
@@ -42,115 +71,136 @@ export function Header() {
             </Link>
           ))}
 
-          <Separator orientation="vertical" className="h-4" />
+          <Separator orientation="vertical" className="h-5" />
 
-          <div className="flex items-center gap-3">
-            <Show when="signed-out">
-              <SignInButton mode="modal">
-                <Button
-                  variant="ghost"
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  Sign In
-                </Button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <Button className="rounded-full px-6 transition-all hover:shadow-md">
-                  Get Started
-                </Button>
-              </SignUpButton>
-            </Show>
-            <Show when="signed-in">
-              <div className="flex items-center gap-4">
-                <Link
-                  href="/dashboard"
-                  className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
-                >
-                  Dashboard
+          <ClerkLoaded>
+            {!isSignedIn ? (
+              <div className="flex items-center gap-2">
+                <SignInButton mode="modal">
+                  <Button variant="ghost" className="rounded-full">
+                    Sign In
+                  </Button>
+                </SignInButton>
+
+                <SignUpButton mode="modal">
+                  <Button className="rounded-full px-5 shadow-sm">
+                    Get Started
+                  </Button>
+                </SignUpButton>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <Link href="/dashboard">
+                  <Button variant="ghost" className="gap-2 rounded-full">
+                    <LayoutDashboard className="size-4" />
+                    Dashboard
+                  </Button>
                 </Link>
+
                 <UserButton afterSignOutUrl="/" />
               </div>
-            </Show>
-          </div>
+            )}
+          </ClerkLoaded>
         </div>
 
-        {/* Mobile Navigation Trigger */}
+        {/* =======================================================
+            MOBILE NAVIGATION
+        ======================================================= */}
+
         <div className="flex items-center gap-2 md:hidden">
-          <Show when="signed-in">
-            <UserButton afterSignOutUrl="/" />
-          </Show>
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          {isSignedIn && <UserButton afterSignOutUrl="/" />}
+
+          <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-muted-foreground"
-              >
+              <Button variant="ghost" size="icon" className="rounded-xl">
                 <Menu className="size-6" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] pt-12 sm:w-[400px]">
+
+            <SheetContent
+              side="right"
+              className="bg-background w-full max-w-[320px] border-l px-6 pt-8 sm:max-w-[380px]"
+            >
               <div className="flex flex-col gap-6">
+                {/* =======================================================
+                    MOBILE LOGO
+                ======================================================= */}
+
                 <Link
                   href="/"
-                  className="mb-4 flex items-center gap-2"
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-3 pb-2"
                 >
-                  <div className="bg-primary text-primary-foreground flex size-8 items-center justify-center rounded-lg font-bold">
-                    PQ
+                  <div className="bg-primary text-primary-foreground flex size-10 items-center justify-center rounded-xl">
+                    <Sparkles className="size-5" />
                   </div>
-                  <span className="text-lg font-bold">PyqDeck</span>
-                </Link>
 
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    className="hover:text-primary text-lg font-medium transition-colors"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {link.name}
-                  </Link>
-                ))}
+                  <div className="flex flex-col leading-none">
+                    <span className="text-lg font-bold">PyqDeck</span>
+
+                    <span className="text-muted-foreground text-xs">
+                      Smart Learning
+                    </span>
+                  </div>
+                </Link>
 
                 <Separator />
 
-                <Show when="signed-out">
-                  <div className="flex flex-col gap-3">
-                    <SignInButton mode="modal">
-                      <Button
-                        variant="outline"
-                        className="w-full justify-center"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        Sign In
-                      </Button>
-                    </SignInButton>
-                    <SignUpButton mode="modal">
-                      <Button
-                        className="w-full"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        Get Started
-                      </Button>
-                    </SignUpButton>
-                  </div>
-                </Show>
+                {/* =======================================================
+                    MOBILE LINKS
+                ======================================================= */}
 
-                <Show when="signed-in">
-                  <Link
-                    href="/dashboard"
-                    className="hover:text-primary text-lg font-medium transition-colors"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Dashboard
-                  </Link>
-                </Show>
+                <div className="flex flex-col gap-2">
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => setOpen(false)}
+                      className="hover:bg-muted rounded-xl px-4 py-3 text-[15px] font-medium transition-colors"
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
+                </div>
+
+                <Separator />
+
+                {/* =======================================================
+                    MOBILE AUTH
+                ======================================================= */}
+
+                <ClerkLoaded>
+                  {!isSignedIn ? (
+                    <div className="flex flex-col gap-3">
+                      <SignInButton mode="modal">
+                        <Button
+                          variant="outline"
+                          className="h-11 w-full rounded-xl"
+                        >
+                          Sign In
+                        </Button>
+                      </SignInButton>
+
+                      <SignUpButton mode="modal">
+                        <Button className="h-11 w-full rounded-xl">
+                          Get Started
+                        </Button>
+                      </SignUpButton>
+                    </div>
+                  ) : (
+                    <Link href="/dashboard" onClick={() => setOpen(false)}>
+                      <Button className="h-11 w-full justify-center gap-2 rounded-xl text-sm font-medium">
+                        <LayoutDashboard className="size-4" />
+                        Dashboard
+                      </Button>
+                    </Link>
+                  )}
+                </ClerkLoaded>
               </div>
             </SheetContent>
           </Sheet>
         </div>
       </div>
-    </nav>
+    </header>
   );
 }
