@@ -22,10 +22,15 @@ export const healthRepository = {
     const collections = await db.listCollections().toArray();
     const stats = {};
 
-    for (const collection of collections) {
-      const count = await db.collection(collection.name).countDocuments();
-      stats[collection.name] = count;
-    }
+    const counts = await Promise.all(
+      collections.map((collection) =>
+        db.collection(collection.name).countDocuments()
+      )
+    );
+
+    collections.forEach((collection, index) => {
+      stats[collection.name] = counts[index];
+    });
 
     return stats;
   },
