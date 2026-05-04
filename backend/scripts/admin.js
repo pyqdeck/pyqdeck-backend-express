@@ -598,18 +598,45 @@ async function manageLogs() {
 }
 
 /**
- * CLI Arguments Support (Legacy/CI)
+ * CLI Arguments Support
  */
-const userCmd = program.command('user').description('Manage users');
-userCmd.command('list').action(() => showStats());
+program
+  .command('promote <email>')
+  .description('Promote a user to a specific role')
+  .option(
+    '-r, --role <role>',
+    'Role to assign (admin, editor, normal)',
+    'admin'
+  )
+  .action(async (email, options) => {
+    await withDb(async (spinner) => {
+      spinner.start(`Promoting ${email} to ${options.role}...`);
+      const result = await User.updateOne(
+        { email: email.toLowerCase() },
+        { role: options.role }
+      );
+
+      if (result.matchedCount === 0) {
+        spinner.fail(`User with email ${email} not found.`);
+        console.log(
+          chalk.yellow('\nTip: Make sure the user has signed in at least once.')
+        );
+        return;
+      }
+
+      spinner.succeed(
+        `Success! ${email} is now ${chalk.bold(options.role)}. 🚀`
+      );
+    });
+  });
 
 program
   .command('interactive')
   .description('Open interactive dashboard (Default)')
   .action(() => mainMenu());
 
-// Default action: Open Main Menu
-if (!process.argv.slice(2).length) {
+// Default action: Open Main Menu if no arguments
+if (process.argv.length <= 2) {
   mainMenu();
 } else {
   program.parse();

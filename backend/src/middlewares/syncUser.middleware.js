@@ -44,43 +44,54 @@ export async function syncUser(req, res, next) {
 
     if (!userId) return next();
 
-    let user;
-    try {
-      user = await userRepository.findByClerkId(userId);
-    } catch (err) {
-      if (!(err instanceof NotFoundError)) throw err;
+    // 1. Performance check: If user is in DB, use them and move on
+    let user = await userRepository.findByClerkId(userId).catch(() => null);
 
-      // Use the native https fetch to bypass Node 20 fetch bugs
-      const clerkUser = await fetchClerkUser(userId);
-
-      const primaryEmail =
-        clerkUser.email_addresses?.find(
-          (e) => e.id === clerkUser.primary_email_address_id
-        )?.email_address || clerkUser.email_addresses?.[0]?.email_address;
-
-      const name =
-        [clerkUser.first_name, clerkUser.last_name].filter(Boolean).join(' ') ||
-        primaryEmail ||
-        'Unknown';
-
-      user = await userRepository.upsertByClerkOrEmail(userId, {
-        clerkId: userId,
-        name,
-        email: primaryEmail,
-      });
-      logger.info('User provisioned on-demand', { clerkId: userId });
+    if (user) {
+      req.dbUser = user;
+      return next();
     }
+
+    // 2. User not found -> Fetch full profile from Clerk API
+    // We use a manual fetch to bypass Node 20 IPv6 resolution issues with Clerk
+    const clerkUser = await fetchClerkUser(userId);
+
+    const primaryEmail =
+      clerkUser.email_addresses?.find(
+        (e) => e.id === clerkUser.primary_email_address_id
+      )?.email_address || clerkUser.email_addresses?.[0]?.email_address;
+
+    const name =
+      [clerkUser.first_name, clerkUser.last_name].filter(Boolean).join(' ') ||
+      primaryEmail ||
+      'Unknown';
+
+    // Role priority: Clerk Public Metadata > Default 'normal'
+    // This allows you to set roles via Clerk Dashboard if you want,
+    // but defaults to normal for new web users.
+    const initialRole = clerkUser.public_metadata?.role || 'normal';
+
+    user = await userRepository.upsertByClerkOrEmail(userId, {
+      clerkId: userId,
+      name,
+      email: primaryEmail,
+      avatarUrl: clerkUser.image_url,
+      role: initialRole,
+    });
+
+    logger.info('User provisioned from Clerk session', {
+      clerkId: userId,
+      email: primaryEmail,
+      role: initialRole,
+    });
 
     req.dbUser = user;
     next();
   } catch (err) {
-    logger.error('Failed to sync user', {
+    logger.error('Failed to sync user from Clerk', {
+      userId: getAuth(req)?.userId,
       error: err.message,
-      stack: err.stack,
     });
-    // For non-critical failures in sync, we might want to continue
-    // but the report suggested propagating errors.
-    // If it's a getAuth error, we should definitely know.
     next(err);
   }
 }
