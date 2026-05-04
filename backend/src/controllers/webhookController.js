@@ -41,12 +41,16 @@ export const handleClerkWebhook = catchAsync(async (req, res, next) => {
       const { data: sessions } = await clerkClient.sessions.getSessionList({
         userId,
       });
-      for (const session of sessions) {
-        if (session.id !== currentSessionId && session.status === 'active') {
+      const revokePromises = sessions
+        .filter(
+          (session) =>
+            session.id !== currentSessionId && session.status === 'active'
+        )
+        .map(async (session) => {
           await clerkClient.sessions.revokeSession(session.id);
           logger.info('Revoked old session', { sessionId: session.id });
-        }
-      }
+        });
+      await Promise.all(revokePromises);
       break;
     }
     default:
