@@ -5,8 +5,8 @@ import { successFormatter, catchAsync } from '../utils/index.js';
  * GET /api/v1/universities/:universityId/branches
  */
 export const list = catchAsync(async (req, res, next) => {
-  const filter = {};
-  if (req.query.isActive !== 'all') filter.isActive = true;
+  const filter = { ...req.query };
+  if (req.query.isActive === undefined) filter.isActive = 'true';
 
   const { items, total, page, limit } = await branchService.listByUniversity(
     req.params.universityId,
@@ -23,9 +23,8 @@ export const list = catchAsync(async (req, res, next) => {
  * Admin only
  */
 export const listAll = catchAsync(async (req, res, next) => {
-  const filter = {};
-  if (req.query.isActive !== 'all') filter.isActive = true;
-  if (req.query.universityId) filter.universityId = req.query.universityId;
+  const filter = { ...req.query };
+  if (req.query.isActive === undefined) filter.isActive = 'true';
 
   const { items, total, page, limit } = await branchService.listAll(
     filter,
@@ -75,6 +74,26 @@ export const create = catchAsync(async (req, res, next) => {
   res
     .status(201)
     .json(successFormatter.formatSuccess(branch, 'Branch created'));
+});
+
+/**
+ * POST /api/v1/universities/:universityId/branches/bulk
+ * Admin only
+ */
+export const bulkCreate = catchAsync(async (req, res, next) => {
+  const branches = req.body.map((branch) => ({
+    ...branch,
+    universityId: req.params.universityId,
+  }));
+  const result = await branchService.bulkCreate(branches);
+  res
+    .status(201)
+    .json(
+      successFormatter.formatSuccess(
+        result,
+        `${result.summary.success} Branches imported successfully`
+      )
+    );
 });
 
 /**

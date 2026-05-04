@@ -2,27 +2,18 @@
 
 import * as React from 'react';
 import { Plus } from 'lucide-react';
-import { Controller } from 'react-hook-form';
-
 import { Button } from '@/components/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { BranchForm } from './branch-form';
 
 export function AddBranchDialogView({
   universities = [],
@@ -33,166 +24,54 @@ export function AddBranchDialogView({
   trigger = true,
 }) {
   const {
-    control,
     handleSubmit,
-    formState: { errors = {}, isSubmitting = false } = {},
+    formState: { isSubmitting = false } = {},
   } = form || {};
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Sheet open={open} onOpenChange={onOpenChange}>
       {trigger && (
-        <DialogTrigger asChild>
+        <SheetTrigger asChild>
           <Button
             variant="none"
-            className="font-roboto hover:bg-primary hover:text-primary-foreground flex w-full items-center justify-start gap-2 border-2 px-4 py-2 font-bold shadow-none transition-colors"
+            className="flex w-full items-center justify-start gap-2 border-2 px-4 py-2 font-roboto font-bold transition-colors hover:bg-primary hover:text-primary-foreground shadow-none"
           >
             <Plus className="h-4 w-4" />
             <span>Add Branch</span>
           </Button>
-        </DialogTrigger>
+        </SheetTrigger>
       )}
-      <DialogContent className="border-2 shadow-none sm:max-w-[450px]">
-        <DialogHeader>
-          <DialogTitle className="font-roboto text-xl font-bold">
+      <SheetContent className="flex w-full flex-col gap-0 overflow-hidden border-l p-0 shadow-none sm:max-w-md">
+        <SheetHeader className="shrink-0 border-b p-4 sm:p-6">
+          <SheetTitle className="text-xl font-bold font-roboto">
             Add New Branch
-          </DialogTitle>
-          <DialogDescription className="font-roboto">
+          </SheetTitle>
+          <SheetDescription className="font-roboto">
             Create a new academic branch for a specific university.
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)} className="grid gap-5 py-4">
-          <div className="grid gap-2">
-            <Label htmlFor="universityId" className="font-roboto font-bold">
-              University
-            </Label>
-            <Controller
-              name="universityId"
-              control={control}
-              render={({ field }) => (
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <SelectTrigger className="font-roboto w-full border-2 focus:ring-0">
-                    <SelectValue placeholder="Select a university" />
-                  </SelectTrigger>
-                  <SelectContent className="border-2 shadow-none">
-                    {universities.map((uni) => (
-                      <SelectItem
-                        key={uni.id}
-                        value={uni.id}
-                        className="font-roboto"
-                      >
-                        {uni.name} ({uni.shortName})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
+          </SheetDescription>
+        </SheetHeader>
+        
+        <ScrollArea className="min-h-0 flex-1">
+          <form id="add-branch-form" onSubmit={handleSubmit(onSubmit)} className="p-4 sm:p-6">
+            <BranchForm 
+              form={form} 
+              universities={universities} 
+              showUniversitySelect={true}
             />
-            {errors.universityId && (
-              <p className="font-roboto text-destructive text-xs font-bold">
-                {errors.universityId.message}
-              </p>
-            )}
-          </div>
+          </form>
+        </ScrollArea>
 
-          <div className="grid gap-2">
-            <Label htmlFor="name" className="font-roboto font-bold">
-              Branch Name
-            </Label>
-            <Controller
-              name="name"
-              control={control}
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  id="name"
-                  placeholder="e.g. Computer Engineering"
-                  className="font-roboto border-2 focus-visible:ring-0"
-                />
-              )}
-            />
-            {errors.name && (
-              <p className="font-roboto text-destructive text-xs font-bold">
-                {errors.name.message}
-              </p>
-            )}
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="shortName" className="font-roboto font-bold">
-                Short Name
-              </Label>
-              <Controller
-                name="shortName"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    id="shortName"
-                    placeholder="e.g. COMP"
-                    className="font-roboto border-2 focus-visible:ring-0"
-                  />
-                )}
-              />
-              {errors.shortName && (
-                <p className="font-roboto text-destructive text-xs font-bold">
-                  {errors.shortName.message}
-                </p>
-              )}
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="branchCode" className="font-roboto font-bold">
-                Branch Code
-              </Label>
-              <Controller
-                name="branchCode"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    id="branchCode"
-                    placeholder="e.g. 07"
-                    className="font-roboto border-2 focus-visible:ring-0"
-                  />
-                )}
-              />
-            </div>
-          </div>
-
-          <div className="grid gap-2">
-            <Label htmlFor="slug" className="font-roboto font-bold">
-              URL Slug
-            </Label>
-            <Controller
-              name="slug"
-              control={control}
-              render={({ field }) => (
-                <Input
-                  {...field}
-                  id="slug"
-                  placeholder="e.g. computer-engineering"
-                  className="font-roboto border-2 focus-visible:ring-0"
-                />
-              )}
-            />
-            {errors.slug && (
-              <p className="font-roboto text-destructive text-xs font-bold">
-                {errors.slug.message}
-              </p>
-            )}
-          </div>
-
-          <DialogFooter className="pt-4">
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="font-roboto w-full border-2 font-bold shadow-none"
-            >
-              {isSubmitting ? 'Creating Branch...' : 'Create Branch'}
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
+        <SheetFooter className="shrink-0 border-t bg-muted/10 p-4 sm:p-6">
+          <Button
+            type="submit"
+            form="add-branch-form"
+            disabled={isSubmitting}
+            className="w-full border-2 font-roboto font-bold shadow-none"
+          >
+            {isSubmitting ? 'Creating Branch...' : 'Create Branch'}
+          </Button>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
   );
 }

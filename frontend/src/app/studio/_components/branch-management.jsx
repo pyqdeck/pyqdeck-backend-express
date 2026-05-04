@@ -7,9 +7,10 @@ import { BranchesTable } from './branches-table';
 import { AddBranchDialog } from './add-branch-dialog';
 import { StudioSearch } from './studio-search';
 import { BranchFilters } from './branch-filters';
-import { Plus } from 'lucide-react';
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { DropdownMenuItem, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { DropdownAction } from '@/components/dropdown-action';
+import { ImportBranchesDialog } from './import-branches-dialog';
+import { FileSpreadsheet, Plus } from 'lucide-react';
 
 export function BranchManagement({
   initialBranches = [],
@@ -21,6 +22,13 @@ export function BranchManagement({
   const api = useApi();
 
   const search = searchParams.get('search') || '';
+  const universityId = searchParams.get('universityId');
+  const [importOpen, setImportOpen] = React.useState(false);
+
+  const selectedUniversity = React.useMemo(() => 
+    universities.find(u => u.id === universityId),
+    [universities, universityId]
+  );
 
   const handleAdd = async (data) => {
     const universityId = data.universityId;
@@ -58,19 +66,40 @@ export function BranchManagement({
           <DropdownAction label="Management" tooltip="Branch Actions">
             <AddBranchDialog
               universities={universities}
-              defaultUniversityId={searchParams.get('universityId') || ''}
+              defaultUniversityId={universityId || ''}
               onAdd={handleAdd}
               trigger={
                 <DropdownMenuItem
                   onSelect={(e) => e.preventDefault()}
                   className="cursor-pointer rounded-md py-2.5 focus:bg-transparent"
                 >
-                  <Plus className="text-muted-foreground mr-3 size-4 transition-colors" />
+                  <Plus className="mr-3 size-4 text-muted-foreground transition-colors" />
                   <span className="font-medium">Add Branch</span>
                 </DropdownMenuItem>
               }
             />
+            {universityId && universityId !== 'all' && (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => setImportOpen(true)}
+                  className="cursor-pointer rounded-md py-2.5"
+                >
+                  <FileSpreadsheet className="mr-3 size-4 text-muted-foreground transition-colors" />
+                  <span className="font-medium">Import Branches</span>
+                </DropdownMenuItem>
+              </>
+            )}
           </DropdownAction>
+
+          {universityId && (
+            <ImportBranchesDialog
+              open={importOpen}
+              onOpenChange={setImportOpen}
+              universityId={universityId}
+              universityName={selectedUniversity?.name}
+            />
+          )}
         </div>
       </div>
 

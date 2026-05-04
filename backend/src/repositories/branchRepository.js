@@ -20,6 +20,44 @@ class BranchRepository {
     }
   }
 
+  async createMany(data) {
+    try {
+      const results = await Branch.insertMany(data, {
+        ordered: false,
+        rawResult: true,
+      });
+      return {
+        inserted: results.insertedDocs || [],
+        failed: [],
+        summary: {
+          total: data.length,
+          success: results.insertedCount || 0,
+          failed: 0,
+        },
+      };
+    } catch (error) {
+      if (error.name === 'MongoBulkWriteError') {
+        const inserted = error.insertedDocs || [];
+        const writeErrors = error.writeErrors || [];
+
+        return {
+          inserted,
+          failed: writeErrors.map((err) => ({
+            index: err.index,
+            message: err.errmsg,
+            data: data[err.index],
+          })),
+          summary: {
+            total: data.length,
+            success: inserted.length,
+            failed: writeErrors.length,
+          },
+        };
+      }
+      throw error;
+    }
+  }
+
   async findById(id) {
     const branch = await Branch.findById(id);
     if (!branch) throw new NotFoundError('Branch not found');

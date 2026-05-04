@@ -1302,6 +1302,40 @@ export class Api<
  * No description
  *
  * @tags Branches
+ * @name BulkCreateBranches
+ * @summary Bulk create branches for a university (Admin only)
+ * @request POST:/universities/{universityId}/branches/bulk
+ * @secure
+ * @response `201` `(SuccessResponse & {
+    data?: (Branch)[],
+
+})` Created
+ * @response `403` `Error`
+ */
+    bulkCreateBranches: (
+      universityId: string,
+      data: Branch[],
+      params: RequestParams = {},
+    ) =>
+      this.request<
+        SuccessResponse & {
+          data?: Branch[];
+        },
+        Error
+      >({
+        path: `/universities/${universityId}/branches/bulk`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Branches
  * @name UpdateBranch
  * @summary Update a branch (Admin only)
  * @request PATCH:/universities/{universityId}/branches/{id}

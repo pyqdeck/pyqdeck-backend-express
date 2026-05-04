@@ -1,7 +1,12 @@
 import branchRepository from '../repositories/branchRepository.js';
 
 class BranchService {
-  async listByUniversity(universityId, pagination, filter = {}) {
+  async listByUniversity(universityId, pagination, query = {}) {
+    const filter = {};
+    if (query.isActive !== undefined && query.isActive !== 'all') {
+      filter.isActive = query.isActive === 'true' || query.isActive === true;
+    }
+
     return branchRepository.findByUniversityId(
       universityId,
       pagination,
@@ -9,8 +14,22 @@ class BranchService {
     );
   }
 
-  async listAll(filter = {}, pagination) {
+  async listAll(query = {}, pagination) {
+    const filter = {};
+
+    if (query.isActive !== undefined && query.isActive !== 'all') {
+      filter.isActive = query.isActive === 'true' || query.isActive === true;
+    }
+
+    if (query.universityId) {
+      filter.universityId = query.universityId;
+    }
+
     return branchRepository.findAll(filter, pagination);
+  }
+
+  async bulkCreate(data) {
+    return branchRepository.createMany(data);
   }
 
   async getBySlug(universityId, slug) {
