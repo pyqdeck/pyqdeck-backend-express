@@ -47,6 +47,7 @@ vi.mock('../../src/repositories/userRepository.js', () => ({
   default: {
     findByClerkId: vi.fn(),
     create: vi.fn(),
+    upsertByClerkOrEmail: vi.fn(),
   },
 }));
 
@@ -74,11 +75,12 @@ describe('syncUser Middleware Edge Cases', () => {
   it('should handle case where Clerk user has no email', async () => {
     req = { auth: { userId: 'user_no-email' } };
     userRepository.findByClerkId.mockRejectedValue(new NotFoundError());
-    userRepository.create.mockResolvedValue({ id: 'new_1' });
+    userRepository.upsertByClerkOrEmail.mockResolvedValue({ id: 'new_1' });
 
     await syncUser(req, res, next);
 
-    expect(userRepository.create).toHaveBeenCalledWith(
+    expect(userRepository.upsertByClerkOrEmail).toHaveBeenCalledWith(
+      expect.anything(),
       expect.objectContaining({
         email: undefined,
         name: 'Test User',

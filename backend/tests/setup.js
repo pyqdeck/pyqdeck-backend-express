@@ -45,7 +45,11 @@ vi.mock('@clerk/express', () => ({
 let mongod;
 
 beforeAll(async () => {
-  mongod = await MongoMemoryServer.create();
+  mongod = await MongoMemoryServer.create({
+    instance: {
+      launchTimeoutMS: 30000,
+    },
+  });
   const uri = mongod.getUri();
   await mongoose.connect(uri);
   // Ensure indexes are created for all registered models

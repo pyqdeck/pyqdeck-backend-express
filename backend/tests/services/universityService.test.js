@@ -11,6 +11,7 @@ vi.mock('../../src/repositories/universityRepository.js', () => ({
     create: vi.fn(),
     update: vi.fn(),
     delete: vi.fn(),
+    createMany: vi.fn(),
   },
 }));
 

@@ -12,9 +12,7 @@ vi.mock('../../src/repositories/platformConfigRepository.js', () => ({
 describe('PlatformConfigService', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // Reset cache by manually clearing private fields if possible, or just re-importing
-    // Since it's a singleton, we might need a way to reset it.
-    // Let's assume we can just wait for cache to expire or mock Date.now()
+    platformConfigService.resetCache();
   });
 
   describe('getConfig', () => {

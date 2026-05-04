@@ -20,10 +20,17 @@ class PlatformConfigService {
     this.#cacheExpiresAt = 0;
     return config;
   }
-
   async isContentFrozen() {
     const config = await this.getConfig();
     return config.contentFreeze === true;
+  }
+
+  /**
+   * Internal use for testing only
+   */
+  resetCache() {
+    this.#cache = null;
+    this.#cacheExpiresAt = 0;
   }
 }
 

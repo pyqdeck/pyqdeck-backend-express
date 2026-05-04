@@ -11,6 +11,7 @@ vi.mock('../../src/repositories/userRepository.js', () => ({
     list: vi.fn(),
     findByClerkId: vi.fn(),
     getStatsByClerkId: vi.fn(),
+    upsertByClerkOrEmail: vi.fn(),
   },
   default: {
     existsByClerkId: vi.fn(),
@@ -19,6 +20,7 @@ vi.mock('../../src/repositories/userRepository.js', () => ({
     list: vi.fn(),
     findByClerkId: vi.fn(),
     getStatsByClerkId: vi.fn(),
+    upsertByClerkOrEmail: vi.fn(),
   },
 }));
 
