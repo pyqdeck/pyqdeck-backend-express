@@ -181,9 +181,6 @@ async function mainMenu() {
     case 'stats':
       await showStats();
       break;
-    case 'insights':
-      await showInsights();
-      break;
     case 'seed':
       await seedData();
       break;
