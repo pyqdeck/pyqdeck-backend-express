@@ -14,13 +14,21 @@
     {
       "name": "Support",
       "url": "mailto:admin@pyqdeck.in"
+    },
+    {
+      "name": "Backend API",
+      "url": "https://backend.pyqdeck.in/"
+    },
+    {
+      "name": "API Docs",
+      "url": "https://backend.pyqdeck.in/api-docs"
     }
   ],
   "topbarCtaButton": {
     "name": "Go to App",
-    "url": "https://pyqdeck.in"
+    "url": "https://app.pyqdeck.in/"
   },
-  "anchors": {
+  "anchors": [
     {
       "name": "GitHub",
       "icon": "github",
@@ -30,6 +38,11 @@
       "name": "Storybook",
       "icon": "book-open",
       "url": "https://storybook.pyqdeck.in"
+    },
+    {
+      "name": "Status",
+      "icon": "signal",
+      "url": "https://status.pyqdeck.in/"
     }
   ],
   "navigation": [
