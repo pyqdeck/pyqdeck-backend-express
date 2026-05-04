@@ -124,6 +124,47 @@ router.post(
 
 /**
  * @openapi
+ * /universities/bulk:
+ *   post:
+ *     operationId: bulkCreateUniversities
+ *     tags: [Universities]
+ *     summary: Bulk create universities (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: array
+ *             items:
+ *               $ref: '#/components/schemas/University'
+ *     responses:
+ *       201:
+ *         description: Universities created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/SuccessResponse'
+ *                 - type: object
+ *                   properties:
+ *                     data:
+ *                       type: array
+ *                       items:
+ *                         $ref: '#/components/schemas/University'
+ *       403:
+ *         $ref: '#/components/responses/Forbidden'
+ */
+router.post(
+  '/bulk',
+  requireAuthentication,
+  isAdmin,
+  universityController.bulkCreate
+);
+
+/**
+ * @openapi
  * /universities/{id}:
  *   patch:
  *     operationId: updateUniversity

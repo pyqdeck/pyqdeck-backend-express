@@ -1462,6 +1462,36 @@ export class Api<
  * No description
  *
  * @tags Universities
+ * @name BulkCreateUniversities
+ * @summary Bulk create universities (Admin only)
+ * @request POST:/universities/bulk
+ * @secure
+ * @response `201` `(SuccessResponse & {
+    data?: (University)[],
+
+})` Universities created
+ * @response `403` `Error`
+ */
+    bulkCreateUniversities: (data: University[], params: RequestParams = {}) =>
+      this.request<
+        SuccessResponse & {
+          data?: University[];
+        },
+        Error
+      >({
+        path: `/universities/bulk`,
+        method: "POST",
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+ * No description
+ *
+ * @tags Universities
  * @name UpdateUniversity
  * @summary Update a university (Admin only)
  * @request PATCH:/universities/{id}

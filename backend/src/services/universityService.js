@@ -38,6 +38,10 @@ class UniversityService {
     return universityRepository.create(data);
   }
 
+  async bulkCreate(data) {
+    return universityRepository.createMany(data);
+  }
+
   async update(id, data) {
     return universityRepository.update(id, data);
   }

@@ -9,6 +9,7 @@ vi.mock('../../src/services/universityService.js', () => ({
     getBySlug: vi.fn(),
     getById: vi.fn(),
     create: vi.fn(),
+    bulkCreate: vi.fn(),
     update: vi.fn(),
     delete: vi.fn(),
   },
@@ -126,6 +127,39 @@ describe('universityController', () => {
     it('should call next on error', async () => {
       universityService.create.mockRejectedValue(new Error('Conflict'));
       await universityController.create(req, res, next);
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
+    });
+  });
+
+  // ─── bulkCreate ─────────────────────────────────────────────────────────────
+  describe('bulkCreate', () => {
+    it('should create multiple universities and return 201', async () => {
+      const universities = [
+        { name: 'Uni 1', slug: 'uni-1' },
+        { name: 'Uni 2', slug: 'uni-2' },
+      ];
+      const result = {
+        inserted: universities,
+        failed: [],
+        summary: { total: 2, success: 2, failed: 0 },
+      };
+      req.body = universities;
+      universityService.bulkCreate.mockResolvedValue(result);
+
+      await universityController.bulkCreate(req, res, next);
+
+      expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          status: 'success',
+          message: '2 Universities imported successfully',
+        })
+      );
+    });
+
+    it('should call next on error', async () => {
+      universityService.bulkCreate.mockRejectedValue(new Error('Bulk error'));
+      await universityController.bulkCreate(req, res, next);
       expect(next).toHaveBeenCalledWith(expect.any(Error));
     });
   });

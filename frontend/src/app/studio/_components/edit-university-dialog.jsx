@@ -26,6 +26,7 @@ const universitySchema = z.object({
   country: z.string().default('India'),
   logo: z.string().url('Must be a valid URL').optional().or(z.literal('')),
   description: z.string().optional(),
+  isActive: z.boolean().default(true),
 });
 
 export function EditUniversityDialog({ university, open, onOpenChange }) {
@@ -43,6 +44,7 @@ export function EditUniversityDialog({ university, open, onOpenChange }) {
       country: university?.country || 'India',
       logo: university?.logo || '',
       description: university?.description || '',
+      isActive: university?.isActive ?? true,
     },
   });
 
@@ -58,6 +60,7 @@ export function EditUniversityDialog({ university, open, onOpenChange }) {
         country: university.country || 'India',
         logo: university.logo || '',
         description: university.description || '',
+        isActive: university.isActive ?? true,
       });
     }
   }, [university, form]);

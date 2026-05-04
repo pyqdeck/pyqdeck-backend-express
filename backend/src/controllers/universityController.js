@@ -46,6 +46,22 @@ export const create = catchAsync(async (req, res, next) => {
 });
 
 /**
+ * POST /api/v1/universities/bulk
+ * Admin only
+ */
+export const bulkCreate = catchAsync(async (req, res, next) => {
+  const result = await universityService.bulkCreate(req.body);
+  res
+    .status(201)
+    .json(
+      successFormatter.formatSuccess(
+        result,
+        `${result.summary.success} Universities imported successfully`
+      )
+    );
+});
+
+/**
  * PATCH /api/v1/universities/:id
  * Admin only
  */

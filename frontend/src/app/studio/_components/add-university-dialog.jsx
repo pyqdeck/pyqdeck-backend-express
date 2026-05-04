@@ -26,6 +26,7 @@ const universitySchema = z.object({
   country: z.string().default('India'),
   logo: z.string().url('Must be a valid URL').optional().or(z.literal('')),
   description: z.string().optional(),
+  isActive: z.boolean().default(true),
 });
 export function AddUniversityDialog({ trigger }) {
   const [open, setOpen] = React.useState(false);
@@ -43,6 +44,7 @@ export function AddUniversityDialog({ trigger }) {
       country: 'India',
       logo: '',
       description: '',
+      isActive: true,
     },
   });
 
