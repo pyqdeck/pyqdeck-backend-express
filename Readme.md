@@ -1,4 +1,3 @@
-![status](https://status.pyqdeck.in/badge?theme=light)
 # 🎓 PYQDeck Monorepo
 
 [![CI/CD Status](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/monorepo-ci.yml/badge.svg)](https://github.com/pyqdeck/pyqdeck-backend-express/actions/workflows/monorepo-ci.yml)
