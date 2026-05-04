@@ -1,6 +1,6 @@
 ---
 title: Testing Standards
-description: 'When and how to write tests in the PyqDeck monorepo'
+description: "When and how to write tests in the PyqDeck monorepo"
 ---
 
 ## Overview
@@ -9,12 +9,12 @@ PyqDeck uses a pragmatic testing strategy: **unit tests for backend logic** and 
 
 ## Testing Stack
 
-| Layer | Tool | Purpose |
-|---|---|---|
-| Backend Unit/Integration | **Vitest** | Services, repositories, controllers, middleware |
-| Backend Load Testing | **k6** | API performance and stress testing |
-| Frontend Components | **Vitest + Storybook** | UI component testing |
-| E2E (future) | **Playwright** | Full user journey testing |
+| Layer                    | Tool                   | Purpose                                         |
+| ------------------------ | ---------------------- | ----------------------------------------------- |
+| Backend Unit/Integration | **Vitest**             | Services, repositories, controllers, middleware |
+| Backend Load Testing     | **k6**                 | API performance and stress testing              |
+| Frontend Components      | **Vitest + Storybook** | UI component testing                            |
+| E2E (future)             | **Playwright**         | Full user journey testing                       |
 
 ## When to Write What
 
@@ -80,22 +80,24 @@ backend/tests/
 ### Example: Service Test
 
 ```javascript
-import { describe, it, expect, vi } from 'vitest';
-import { PaperService } from '../../src/services/paper.service.js';
+import { describe, it, expect, vi } from "vitest";
+import { PaperService } from "../../src/services/paper.service.js";
 
-describe('PaperService', () => {
-  it('should return papers filtered by university', async () => {
+describe("PaperService", () => {
+  it("should return papers filtered by university", async () => {
     const mockRepo = {
-      findByUniversity: vi.fn().mockResolvedValue([
-        { id: '1', title: 'Math 2023', universityId: 'u1' }
-      ])
+      findByUniversity: vi
+        .fn()
+        .mockResolvedValue([
+          { id: "1", title: "Math 2023", universityId: "u1" },
+        ]),
     };
     const service = new PaperService(mockRepo);
 
-    const result = await service.getPapersByUniversity('u1');
+    const result = await service.getPapersByUniversity("u1");
 
     expect(result).toHaveLength(1);
-    expect(mockRepo.findByUniversity).toHaveBeenCalledWith('u1');
+    expect(mockRepo.findByUniversity).toHaveBeenCalledWith("u1");
   });
 });
 ```
@@ -117,12 +119,12 @@ pnpm test:coverage
 
 The project enforces minimum coverage:
 
-| Metric | Threshold |
-|---|---|
-| Lines | 80% |
-| Functions | 80% |
-| Statements | 80% |
-| Branches | 65% |
+| Metric     | Threshold |
+| ---------- | --------- |
+| Lines      | 80%       |
+| Functions  | 80%       |
+| Statements | 80%       |
+| Branches   | 65%       |
 
 ## Load Testing Guide
 
@@ -140,19 +142,19 @@ pnpm test:stress
 
 ```javascript
 // tests/load/smoke.js
-import http from 'k6/http';
-import { check, sleep } from 'k6';
+import http from "k6/http";
+import { check, sleep } from "k6";
 
 export const options = {
   vus: 3,
-  duration: '1m',
+  duration: "1m",
 };
 
 export default function () {
-  const res = http.get('http://localhost:3000/api/v1/health');
+  const res = http.get("http://localhost:3000/api/v1/health");
   check(res, {
-    'status is 200': (r) => r.status === 200,
-    'response time < 200ms': (r) => r.timings.duration < 200,
+    "status is 200": (r) => r.status === 200,
+    "response time < 200ms": (r) => r.timings.duration < 200,
   });
   sleep(1);
 }
@@ -166,19 +168,19 @@ Each UI component has a matching Storybook story:
 
 ```javascript
 // components/ui/button.stories.jsx
-import { Button } from './button';
+import { Button } from "./button";
 
 export default {
   component: Button,
-  title: 'UI/Button',
+  title: "UI/Button",
 };
 
 export const Primary = {
-  args: { variant: 'primary', children: 'Click me' },
+  args: { variant: "primary", children: "Click me" },
 };
 
 export const Loading = {
-  args: { loading: true, children: 'Loading...' },
+  args: { loading: true, children: "Loading..." },
 };
 ```
 

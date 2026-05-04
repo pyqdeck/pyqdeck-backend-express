@@ -1,6 +1,6 @@
 ---
 title: Backend Architecture
-description: 'Deep-dive into the PyqDeck Express backend structure'
+description: "Deep-dive into the PyqDeck Express backend structure"
 ---
 
 ## Overview
@@ -18,13 +18,13 @@ graph LR
 
 ## The 5 Layers
 
-| Layer | Directory | Responsibility |
-|---|---|---|
-| **Routes** | `backend/src/routes/` | URL patterns, middleware chains, and OpenAPI JSDoc annotations. |
-| **Controllers** | `backend/src/controllers/` | Request/response handling, input extraction, and response formatting. |
-| **Services** | `backend/src/services/` | Business logic and orchestration between multiple repositories. |
-| **Repositories** | `backend/src/repositories/` | Database queries, aggregations, and direct Mongoose interaction. |
-| **Models** | `backend/src/models/` | Schema definitions, Zod validation schemas, and database indexes. |
+| Layer            | Directory                   | Responsibility                                                        |
+| ---------------- | --------------------------- | --------------------------------------------------------------------- |
+| **Routes**       | `backend/src/routes/`       | URL patterns, middleware chains, and OpenAPI JSDoc annotations.       |
+| **Controllers**  | `backend/src/controllers/`  | Request/response handling, input extraction, and response formatting. |
+| **Services**     | `backend/src/services/`     | Business logic and orchestration between multiple repositories.       |
+| **Repositories** | `backend/src/repositories/` | Database queries, aggregations, and direct Mongoose interaction.      |
+| **Models**       | `backend/src/models/`       | Schema definitions, Zod validation schemas, and database indexes.     |
 
 **Golden Rule**: Each layer can only call the layer directly below it.
 
@@ -40,24 +40,30 @@ graph LR
 ## Key Implementation Details
 
 ### Authentication & Authorization
+
 - **Middleware**: `backend/src/middlewares/auth.middleware.js`
 - **User Sync**: `backend/src/middlewares/syncUser.middleware.js` (lazily provisions users from Clerk).
 
 ### Error Handling
+
 - **Centralized Error Handler**: `backend/src/middlewares/errorHandler.js`
 - **Custom Errors**: `backend/src/utils/errors/index.js` (e.g., `NotFoundError`, `ConflictError`).
 
 ### Data Fetching & Pagination
+
 - **Shared Utility**: `backend/src/utils/pagination/index.js`
 - **Middleware**: `backend/src/middlewares/pagination.middleware.js` (attaches `req.pagination`).
 
 ## Database Management
+
 - **ODM**: Mongoose
 - **Indexes**: Defined in the `models/` files for optimal query performance.
 - **Validations**: Zod schemas in models ensure data integrity before it even hits Mongoose.
 
 ## Adding New Features
+
 To add a new resource, follow the 5-layer pattern:
+
 1. Create a **Model** (schema + Zod).
 2. Create a **Repository** for data access.
 3. Create a **Service** for business logic.

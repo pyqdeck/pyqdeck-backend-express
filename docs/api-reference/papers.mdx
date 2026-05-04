@@ -1,0 +1,41 @@
+---
+title: Papers API
+description: "Endpoints for managing exam papers"
+---
+
+## Overview
+
+Manage Previous Year Question (PYQ) papers.
+
+## Endpoints
+
+### List Papers
+
+`GET /papers`
+
+- **Query Parameters**:
+  - `subjectOfferingId`: Filter by offering
+  - `year`: Filter by year
+  - `status`: draft/published/archived
+
+### Get Paper
+
+`GET /papers/:id`
+
+### Create Paper
+
+`POST /papers`
+
+- **Auth**: Required (`admin` or `editor`)
+
+### Update Paper
+
+`PATCH /papers/:id`
+
+- **Auth**: Required (`admin` or `editor`)
+
+### Delete Paper
+
+`DELETE /papers/:id`
+
+- **Auth**: Required (`admin`)

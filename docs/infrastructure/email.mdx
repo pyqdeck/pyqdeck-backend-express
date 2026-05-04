@@ -1,6 +1,6 @@
 ---
 title: Email System
-description: 'How PyqDeck sends transactional emails using Resend and Mailgen'
+description: "How PyqDeck sends transactional emails using Resend and Mailgen"
 ---
 
 ## Overview
@@ -19,19 +19,19 @@ graph LR
 
 ### Environment Variables
 
-| Variable | Example | Purpose |
-|---|---|---|
-| `RESEND_API_KEY` | `re_abc123...` | Resend API authentication key |
-| `MAIL_FROM` | `onboarding@resend.dev` | Sender "from" address |
-| `APP_NAME` | `PyqDeck` | Product name displayed in email templates |
-| `APP_URL` | `https://pyqdeck.in` | Product link in email footer |
+| Variable         | Example                 | Purpose                                   |
+| ---------------- | ----------------------- | ----------------------------------------- |
+| `RESEND_API_KEY` | `re_abc123...`          | Resend API authentication key             |
+| `MAIL_FROM`      | `onboarding@resend.dev` | Sender "from" address                     |
+| `APP_NAME`       | `PyqDeck`               | Product name displayed in email templates |
+| `APP_URL`        | `https://pyqdeck.in`    | Product link in email footer              |
 
 ### Setup (`backend/src/config/mail.config.js`)
 
 ```javascript
-import Resend from 'resend';
-import Mailgen from 'mailgen';
-import config from './index.js';
+import Resend from "resend";
+import Mailgen from "mailgen";
+import config from "./index.js";
 
 let resendClient = null;
 let mailGenerator = null;
@@ -41,10 +41,10 @@ if (config.mail.apiKey) {
 }
 
 mailGenerator = new Mailgen({
-  theme: 'default',
+  theme: "default",
   product: {
     name: config.mail.appName,
-    link: process.env.APP_URL || 'http://localhost:3000',
+    link: process.env.APP_URL || "http://localhost:3000",
   },
 });
 ```
@@ -58,41 +58,41 @@ Three email functions are available in `backend/src/services/mail.service.js`:
 ### 1. Verification Email (OTP)
 
 ```javascript
-sendVerificationEmail(email, otp)
+sendVerificationEmail(email, otp);
 ```
 
-| Property | Value |
-|---|---|
-| Subject | `"Verify Your Email"` |
-| Content | "Use the following OTP to verify your email:" |
-| Button color | Green (`#22BC66`) |
-| Display | OTP code as button text |
+| Property     | Value                                         |
+| ------------ | --------------------------------------------- |
+| Subject      | `"Verify Your Email"`                         |
+| Content      | "Use the following OTP to verify your email:" |
+| Button color | Green (`#22BC66`)                             |
+| Display      | OTP code as button text                       |
 
 ### 2. Welcome Email
 
 ```javascript
-sendWelcomeEmail(email, name)
+sendWelcomeEmail(email, name);
 ```
 
-| Property | Value |
-|---|---|
-| Subject | `"Welcome to Our Platform"` |
-| Content | `"Welcome ${name}! We're glad to have you on board."` |
-| Outro | "Feel free to reach out if you have any questions." |
-| CTA | Link to the app via `APP_URL` |
+| Property | Value                                                 |
+| -------- | ----------------------------------------------------- |
+| Subject  | `"Welcome to Our Platform"`                           |
+| Content  | `"Welcome ${name}! We're glad to have you on board."` |
+| Outro    | "Feel free to reach out if you have any questions."   |
+| CTA      | Link to the app via `APP_URL`                         |
 
 ### 3. Password Reset Email (OTP)
 
 ```javascript
-sendPasswordResetEmail(email, otp)
+sendPasswordResetEmail(email, otp);
 ```
 
-| Property | Value |
-|---|---|
-| Subject | `"Reset Your Password"` |
-| Content | "Use the following OTP to reset your password:" |
-| Button color | Red (`#FF0000`) |
-| Display | OTP code as button text |
+| Property     | Value                                           |
+| ------------ | ----------------------------------------------- |
+| Subject      | `"Reset Your Password"`                         |
+| Content      | "Use the following OTP to reset your password:" |
+| Button color | Red (`#FF0000`)                                 |
+| Display      | OTP code as button text                         |
 
 ## How Templates Work
 
@@ -104,9 +104,9 @@ There are **no static HTML template files**. All email templates are generated d
 const emailContent = mailGenerator.generate({
   body: {
     action: {
-      instructions: 'Use the following OTP to verify your email:',
+      instructions: "Use the following OTP to verify your email:",
       button: {
-        color: '#22BC66',
+        color: "#22BC66",
         text: otp,
       },
     },
@@ -122,7 +122,7 @@ Mailgen renders this into a responsive HTML email with the OTP displayed as a pr
 const emailContent = mailGenerator.generate({
   body: {
     intro: `Welcome ${name}! We're glad to have you on board.`,
-    outro: 'Feel free to reach out if you have any questions.',
+    outro: "Feel free to reach out if you have any questions.",
   },
 });
 ```
@@ -133,7 +133,7 @@ const emailContent = mailGenerator.generate({
 await resendClient.emails.send({
   from: config.mail.from,
   to: email,
-  subject: 'Verify Your Email',
+  subject: "Verify Your Email",
   html: emailContent.html,
   text: emailContent.plaintext,
 });
@@ -171,27 +171,27 @@ export async function sendVerificationEmail(email, otp) {
 
 ### Where They Should Be Connected
 
-| Email Type | Suggested Trigger Point |
-|---|---|
-| Verification OTP | After user signs up, before Clerk confirms email |
-| Welcome Email | After `user.created` Clerk webhook event |
-| Password Reset OTP | When user requests password reset |
+| Email Type         | Suggested Trigger Point                          |
+| ------------------ | ------------------------------------------------ |
+| Verification OTP   | After user signs up, before Clerk confirms email |
+| Welcome Email      | After `user.created` Clerk webhook event         |
+| Password Reset OTP | When user requests password reset                |
 
 ### Example: Wiring into Clerk Webhook
 
 ```javascript
 // backend/src/routes/webhook.js
-import { sendWelcomeEmail } from '../services/mail.service.js';
+import { sendWelcomeEmail } from "../services/mail.service.js";
 
-router.post('/webhooks/clerk', async (req, res) => {
+router.post("/webhooks/clerk", async (req, res) => {
   const event = verifyWebhook(req);
 
-  if (event.type === 'user.created') {
+  if (event.type === "user.created") {
     const { email_addresses, first_name } = event.data;
     const primaryEmail = email_addresses[0]?.email_address;
 
     if (primaryEmail) {
-      await sendWelcomeEmail(primaryEmail, first_name || 'there');
+      await sendWelcomeEmail(primaryEmail, first_name || "there");
     }
   }
 
@@ -210,6 +210,7 @@ router.post('/webhooks/clerk', async (req, res) => {
 ### Domain Verification
 
 For production, verify your domain in Resend to:
+
 - Remove the "via resend.net" footer
 - Use your own `from` address (e.g., `noreply@pyqdeck.in`)
 - Improve email deliverability
@@ -228,9 +229,9 @@ The email service has full test coverage:
 
 ```javascript
 // tests/services/mail.service.test.js
-it('should send verification email successfully', async () => {
-  mockResend.emails.send.mockResolvedValue({ id: 'test-id' });
-  await sendVerificationEmail('user@test.com', '123456');
+it("should send verification email successfully", async () => {
+  mockResend.emails.send.mockResolvedValue({ id: "test-id" });
+  await sendVerificationEmail("user@test.com", "123456");
   expect(mockResend.emails.send).toHaveBeenCalled();
 });
 ```
@@ -238,10 +239,11 @@ it('should send verification email successfully', async () => {
 ### Error Path Tests
 
 ```javascript
-it('should throw error when sending fails', async () => {
-  mockResend.emails.send.mockRejectedValue(new Error('API error'));
-  await expect(sendVerificationEmail('user@test.com', '123456'))
-    .rejects.toThrow('API error');
+it("should throw error when sending fails", async () => {
+  mockResend.emails.send.mockRejectedValue(new Error("API error"));
+  await expect(
+    sendVerificationEmail("user@test.com", "123456"),
+  ).rejects.toThrow("API error");
 });
 ```
 
@@ -249,9 +251,9 @@ it('should throw error when sending fails', async () => {
 
 ```javascript
 // tests/services/mail.no-config.test.js
-it('should return early when resendClient is null', async () => {
-  const result = await sendVerificationEmail('user@test.com', '123456');
-  expect(result).toBeUndefined();  // No-op
+it("should return early when resendClient is null", async () => {
+  const result = await sendVerificationEmail("user@test.com", "123456");
+  expect(result).toBeUndefined(); // No-op
 });
 ```
 

@@ -1,6 +1,6 @@
 ---
 title: The SDK Flow
-description: 'How the API contract is enforced and the SDK is generated'
+description: "How the API contract is enforced and the SDK is generated"
 ---
 
 ## Overview
@@ -43,7 +43,7 @@ Example route annotation (`backend/src/routes/papers.js`):
  *       200:
  *         description: List of papers
  */
-router.get('/papers', paperController.getPapers);
+router.get("/papers", paperController.getPapers);
 ```
 
 ### 2. SDK Generation
@@ -60,6 +60,7 @@ The frontend's `gen:api` script orchestrates the full pipeline:
 ```
 
 This:
+
 1. Runs `openapi:export` in the backend to regenerate the spec.
 2. Uses `swagger-typescript-api` to generate a TypeScript client.
 3. Outputs to `frontend/src/lib/api-generated.ts`.
@@ -72,8 +73,8 @@ The generated client is wrapped in a React hook that handles authentication:
 
 ```javascript
 // frontend/src/hooks/use-api.js
-import { useAuth } from '@clerk/nextjs';
-import { Api } from '@/lib/api-generated';
+import { useAuth } from "@clerk/nextjs";
+import { Api } from "@/lib/api-generated";
 
 export function useApi() {
   const { getToken } = useAuth();

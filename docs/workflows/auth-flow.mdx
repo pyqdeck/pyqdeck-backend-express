@@ -1,6 +1,6 @@
 ---
 title: Auth Flow
-description: 'How Clerk authentication works across the PyqDeck platform'
+description: "How Clerk authentication works across the PyqDeck platform"
 ---
 
 ## Overview
@@ -32,14 +32,10 @@ sequenceDiagram
 The app is wrapped with `ClerkProvider` in the root layout (`frontend/src/app/layout.jsx`):
 
 ```javascript
-import { ClerkProvider } from '@/components/clerk-provider';
+import { ClerkProvider } from "@/components/clerk-provider";
 
 export default function RootLayout({ children }) {
-  return (
-    <ClerkProvider>
-      {children}
-    </ClerkProvider>
-  );
+  return <ClerkProvider>{children}</ClerkProvider>;
 }
 ```
 
@@ -68,7 +64,7 @@ The backend uses `@clerk/express` to verify JWT tokens on protected routes.
 export function requireAuthentication(req, res, next) {
   const { userId } = getAuth(req);
   if (!userId) {
-    return next(new UnauthorizedError('Authentication required'));
+    return next(new UnauthorizedError("Authentication required"));
   }
   next();
 }

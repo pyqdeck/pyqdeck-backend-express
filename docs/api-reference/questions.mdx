@@ -1,0 +1,33 @@
+---
+title: Questions API
+description: "Endpoints for managing individual questions"
+---
+
+## Overview
+
+Access and search the question bank.
+
+## Endpoints
+
+### List Questions
+
+`GET /questions`
+
+### Search Questions
+
+`GET /questions/search`
+
+- **Query Parameters**:
+  - `q`: Search query
+  - `difficulty`: Filter by difficulty
+  - `topicId`: Filter by syllabus topic
+
+### Get Question
+
+`GET /questions/:id`
+
+### Create Question
+
+`POST /questions`
+
+- **Auth**: Required (`admin` or `editor`)

@@ -1,6 +1,6 @@
 ---
 title: Frontend Architecture
-description: 'Deep-dive into the PyqDeck Next.js frontend'
+description: "Deep-dive into the PyqDeck Next.js frontend"
 ---
 
 ## Overview
@@ -48,12 +48,12 @@ We use a wrapper to manage UI elements that shouldn't appear on every page. For 
 ```javascript
 export function MainLayoutWrapper({ children }) {
   const pathname = usePathname();
-  const isStudio = pathname?.startsWith('/studio');
+  const isStudio = pathname?.startsWith("/studio");
 
   return (
     <>
       {!isStudio && <Header />}
-      <main className={`flex-1 ${!isStudio ? 'pt-16' : ''}`}>{children}</main>
+      <main className={`flex-1 ${!isStudio ? "pt-16" : ""}`}>{children}</main>
     </>
   );
 }
@@ -96,7 +96,7 @@ export function useApi() {
 ### Usage Example
 
 ```javascript
-import { useApi } from '@/hooks/use-api';
+import { useApi } from "@/hooks/use-api";
 
 export default function SubjectList() {
   const api = useApi();
@@ -108,7 +108,9 @@ export default function SubjectList() {
 
   return (
     <ul>
-      {subjects.map(s => <li key={s.id}>{s.name}</li>)}
+      {subjects.map((s) => (
+        <li key={s.id}>{s.name}</li>
+      ))}
     </ul>
   );
 }
