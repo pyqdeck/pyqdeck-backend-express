@@ -6,3 +6,8 @@ test-report.junit.xml
 
 logs
 
+# gemini-cli settings
+.gemini/
+
+# GitHub App credentials
+gha-creds-*.json

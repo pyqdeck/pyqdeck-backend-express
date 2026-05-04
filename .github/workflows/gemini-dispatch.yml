@@ -1,0 +1,21 @@
+name: Gemini Dispatch
+on:
+  issue_comment:
+    types: [created]
+  pull_request:
+    types: [opened, synchronized]
+  issues:
+    types: [opened]
+
+jobs:
+  gemini:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Run Gemini CLI
+        uses: google-github-actions/run-gemini-cli@v0
+        with:
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
