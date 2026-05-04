@@ -92,14 +92,16 @@ async function syncClerkUsers() {
       const avatarUrl = clerkUser.image_url || null;
 
       await User.findOneAndUpdate(
-        { clerkId: clerkUser.id },
+        {
+          $or: [{ clerkId: clerkUser.id }, { email: email }],
+        },
         {
           clerkId: clerkUser.id,
           name: name,
           email: email,
           avatarUrl: avatarUrl,
         },
-        { upsert: true, new: true, setDefaultsOnInsert: true }
+        { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
       );
 
       console.log(`👤 Synced: ${email}`);
