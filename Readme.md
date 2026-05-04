@@ -23,6 +23,38 @@ Welcome to the **PYQDeck** monorepo. This repository contains both the high-perf
 
 ---
 
+## 🏗️ Architectural Overview
+
+PYQDeck is built using a modern, scalable stack designed for high performance and developer productivity.
+
+```mermaid
+graph TD
+    User([User]) <--> Frontend[Next.js Frontend]
+    Frontend <--> Clerk{Clerk Auth}
+    Frontend <--> Backend[Express Backend]
+    Backend <--> MongoDB[(MongoDB)]
+    Backend <--> Clerk
+    Backend <--> S3[File Storage]
+```
+
+- **Frontend**: Next.js 15 application providing a seamless, fast user experience.
+- **Backend**: Express.js API handling business logic, data persistence, and integrations.
+- **Database**: MongoDB (via Mongoose) for flexible, document-based data storage.
+- **Authentication**: Clerk for secure, managed user authentication and identity.
+- **Storage**: Integration with S3/UploadThing for storing question papers and solutions.
+
+---
+
+## ✨ Feature Highlights
+
+- 🔍 **Advanced Search**: Quickly find question papers by university, subject, or year.
+- 📑 **Smart Bookmarking**: Save important papers and solutions to your personal collection.
+- 💡 **Verified Solutions**: Access high-quality, peer-reviewed solutions for past questions.
+- 📊 **Learning Analytics**: Track your progress and identify areas for improvement.
+- 📤 **Community Contributions**: Upload and share papers to help fellow students.
+
+---
+
 ## 📂 Project Structure
 
 -   `backend/`: Express API with Mongoose models, controllers, and comprehensive Vitest suites.
@@ -59,6 +91,15 @@ We use Storybook to document our UI component library in isolation. This ensures
 -   pnpm (v10+)
 -   MongoDB (Local instance or Atlas)
 
+### 🛠️ Monorepo Workflow
+
+Since this project uses separate `pnpm` environments for backend and frontend without a root-level workspace manager, you should manage them in separate terminal sessions:
+
+1. **Terminal 1 (Backend)**: Run the API server.
+2. **Terminal 2 (Frontend)**: Run the Next.js application.
+
+This separation ensures that dependencies and build processes for each component remain isolated and manageable.
+
 ### 1. Backend Setup
 ```bash
 cd backend
@@ -71,10 +112,33 @@ pnpm dev
 ```bash
 cd frontend
 pnpm install
-cp .env.example .env.local
+# Ensure you have .env.local configured (see Environment Variables section)
 pnpm run gen:api # Generates the type-safe API SDK from backend
 pnpm dev
 ```
+
+---
+
+## 🔑 Environment Variables
+
+### Backend (`backend/.env`)
+
+| Variable | Description | Default |
+| :--- | :--- | :--- |
+| `PORT` | The port the backend server runs on. | `3000` |
+| `MONGODB_URI` | Connection string for your MongoDB instance. | `mongodb://localhost:27017/pyqdeck` |
+| `CLERK_PUBLISHABLE_KEY` | Clerk public key for client-side auth. | - |
+| `CLERK_SECRET_KEY` | Clerk secret key for server-side auth. | - |
+| `CLERK_WEBHOOK_SECRET` | Secret used to verify incoming Clerk webhooks. | - |
+| `RESEND_API_KEY` | API key for Resend email service. | - |
+
+### Frontend (`frontend/.env.local`)
+
+| Variable | Description | Default |
+| :--- | :--- | :--- |
+| `NEXT_PUBLIC_API_URL` | The base URL of the backend API. | `http://localhost:3000/api/v1` |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk public key (must match backend). | - |
+| `CLERK_SECRET_KEY` | Clerk secret key (must match backend). | - |
 
 ---
 
@@ -107,10 +171,17 @@ pnpm build  # Verify Next.js build & type-safety
 
 ---
 
-## 📊 Performance & Security
--   **Security**: Automated CodeQL scanning and dependency auditing.
--   **Load Testing**: Performance baselines tracked via k6 (see `backend/tests/load`).
--   **Observability**: Integrated with Sentry and Logtail for production monitoring.
+## 🛠️ Troubleshooting
+
+- **MongoDB Connection Issues**: Ensure your MongoDB service is running or that your `MONGODB_URI` is correct. If using Atlas, ensure your IP is whitelisted.
+- **Clerk Integration**: Double-check that your keys are correctly copied into both `.env` and `.env.local`. Ensure your Clerk instance is properly configured for webhooks if you're using them.
+- **SDK Regeneration**: If the frontend types are out of sync with the backend, run `pnpm run gen:api` in the `frontend` directory. Ensure the backend is configured correctly as this script exports the OpenAPI spec first.
+
+---
+
+## 🤝 Contribution
+
+We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on branch naming, the pull request process, and coding standards.
 
 ---
 
