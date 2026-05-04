@@ -126,7 +126,7 @@ export function ImportUniversitiesDialog({ open, onOpenChange }) {
         if (summary.failed > 0) {
           toast.warning(
             `Import completed: ${summary.success} added, ${summary.failed} skipped (duplicates/errors).`,
-            { duration: 5000 }
+            { duration: 3000 }
           );
         } else {
           toast.success(
