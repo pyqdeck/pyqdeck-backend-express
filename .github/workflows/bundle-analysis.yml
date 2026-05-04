@@ -30,8 +30,8 @@ jobs:
         run: cd frontend && pnpm run build
 
       - name: Analyze bundle
-        uses: report-ci/nextjs-bundle-analysis-action@v1
+        uses: ijkml/next-bundle-analysis@v1
         with:
           working-directory: frontend
-          build-artifact-name: bundle-analysis
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
