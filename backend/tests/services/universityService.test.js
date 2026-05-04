@@ -60,6 +60,41 @@ describe('UniversityService', () => {
         { page: 1, limit: 10 }
       );
     });
+
+    it('should escape special characters in search and location filters', async () => {
+      universityRepository.findAll.mockResolvedValue({ items: [], total: 0 });
+
+      await universityService.list(
+        { search: 'a.b', state: 'c^d', country: 'e$f' },
+        { page: 1, limit: 10 }
+      );
+
+      expect(universityRepository.findAll).toHaveBeenCalledWith(
+        {
+          $or: [
+            { name: { $regex: 'a\\.b', $options: 'i' } },
+            { shortName: { $regex: 'a\\.b', $options: 'i' } },
+          ],
+          state: { $regex: 'c\\^d', $options: 'i' },
+          country: { $regex: 'e\\$f', $options: 'i' },
+        },
+        { page: 1, limit: 10 }
+      );
+    });
+
+    it('should ignore non-string search and location filters', async () => {
+      universityRepository.findAll.mockResolvedValue({ items: [], total: 0 });
+
+      await universityService.list(
+        { search: ['a', 'b'], state: { key: 'val' }, country: 123 },
+        { page: 1, limit: 10 }
+      );
+
+      expect(universityRepository.findAll).toHaveBeenCalledWith(
+        {},
+        { page: 1, limit: 10 }
+      );
+    });
   });
 
   describe('getBySlug', () => {
