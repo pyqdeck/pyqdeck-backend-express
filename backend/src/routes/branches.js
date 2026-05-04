@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { z } from 'zod';
 import {
   requireAuthentication,
   isAdmin,
@@ -13,6 +14,8 @@ const router = Router({ mergeParams: true }); // mergeParams gives us :universit
 const updateBranchSchema = branchZodSchema
   .partial()
   .omit({ universityId: true });
+
+const bulkBranchSchema = z.array(branchZodSchema.omit({ universityId: true }));
 
 /**
  * @openapi
@@ -256,6 +259,7 @@ router.post(
   '/bulk',
   requireAuthentication,
   isAdmin,
+  validateBody(bulkBranchSchema),
   branchController.bulkCreate
 );
 

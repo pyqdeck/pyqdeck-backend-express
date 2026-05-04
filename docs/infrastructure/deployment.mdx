@@ -60,7 +60,7 @@ git diff --exit-code backend/openapi.json
 This is the most critical stage:
 
 1. **Vitest** runs all backend tests with an in-memory MongoDB (MongoMemoryServer)
-2. **Coverage** is uploaded to Codecov — minimum thresholds: 80% lines/functions/statements, 70% branches
+2. **Coverage** is uploaded to Codecov — minimum thresholds: 80% lines/functions/statements, 65% branches
 3. **Contract Check** verifies that `openapi.json` is in sync with the route code. If a developer changes an API route without updating the JSDoc annotations (or vice versa), the build fails
 
 ### Stage 3: Frontend Build & SDK Validation

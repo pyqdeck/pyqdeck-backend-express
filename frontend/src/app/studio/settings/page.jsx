@@ -1,6 +1,8 @@
 import { SettingsTabs } from '../_components/settings-tabs';
 import { getApiServer } from '@/lib/api-server';
 
+export const dynamic = 'force-dynamic';
+
 export default async function SettingsPage() {
   let health = null;
   let platformConfig = null;

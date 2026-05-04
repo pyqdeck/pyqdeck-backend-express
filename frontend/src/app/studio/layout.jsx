@@ -19,6 +19,8 @@ import { Roboto } from 'next/font/google';
 
 import { getApiServer } from '@/lib/api-server';
 
+export const dynamic = 'force-dynamic';
+
 const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
   subsets: ['latin'],

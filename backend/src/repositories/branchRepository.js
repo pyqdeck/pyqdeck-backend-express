@@ -21,6 +21,9 @@ class BranchRepository {
   }
 
   async createMany(data) {
+    if (!Array.isArray(data)) {
+      throw new Error('Data must be an array for bulk operations');
+    }
     try {
       const results = await Branch.insertMany(data, {
         ordered: false,

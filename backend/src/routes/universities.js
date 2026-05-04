@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { z } from 'zod';
 import {
   requireAuthentication,
   isAdmin,
@@ -11,6 +12,7 @@ import * as universityController from '../controllers/universityController.js';
 const router = Router();
 
 const updateUniversitySchema = universityZodSchema.partial();
+const bulkUniversitySchema = z.array(universityZodSchema);
 
 /**
  * @openapi
@@ -160,6 +162,7 @@ router.post(
   '/bulk',
   requireAuthentication,
   isAdmin,
+  validateBody(bulkUniversitySchema),
   universityController.bulkCreate
 );
 
