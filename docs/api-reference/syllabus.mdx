@@ -11,16 +11,34 @@ Manage the curriculum structure (Modules and Topics).
 
 ### Get Syllabus
 
-`GET /syllabus/:subjectOfferingId`
+`GET /subject-offerings/:subjectOfferingId/syllabus`
+
+Retrieves the full syllabus hierarchy (modules and topics) for a specific subject offering.
+
+### Create Syllabus
+
+`POST /syllabus`
+
+Initialize a new syllabus for a subject offering.
+
+- **Auth**: Required (`admin` or `editor`)
 
 ### Create Module
 
-`POST /syllabus/modules`
+`POST /modules`
 
 - **Auth**: Required (`admin` or `editor`)
 
 ### Create Topic
 
-`POST /syllabus/topics`
+`POST /topics`
 
 - **Auth**: Required (`admin` or `editor`)
+
+### Get Questions for Module
+
+`GET /modules/:id/questions`
+
+### Get Questions for Topic
+
+`GET /topics/:id/questions`

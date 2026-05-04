@@ -13,6 +13,16 @@ Manage the global catalog of academic subjects.
 
 `GET /subjects`
 
+- **Query Parameters**:
+  - `page`: Page number for pagination
+  - `limit`: Number of items per page
+
+### Get Subject by Slug
+
+`GET /subjects/:slug`
+
+Retrieves a single subject by its unique slug.
+
 ### Create Subject
 
 `POST /subjects`

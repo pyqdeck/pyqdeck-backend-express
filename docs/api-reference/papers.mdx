@@ -14,13 +14,17 @@ Manage Previous Year Question (PYQ) papers.
 `GET /papers`
 
 - **Query Parameters**:
-  - `subjectOfferingId`: Filter by offering
-  - `year`: Filter by year
-  - `status`: draft/published/archived
+  - `subjectOfferingId`: Filter by offering ID
+  - `examYear`: Filter by exam year (e.g., 2023)
+  - `examType`: Filter by exam type (e.g., end-term, mid-term)
+  - `page`: Page number for pagination
+  - `limit`: Number of items per page
 
-### Get Paper
+### Get Paper by Slug
 
-`GET /papers/:id`
+`GET /papers/:slug`
+
+Retrieves a single paper by its unique slug.
 
 ### Create Paper
 
@@ -33,6 +37,16 @@ Manage Previous Year Question (PYQ) papers.
 `PATCH /papers/:id`
 
 - **Auth**: Required (`admin` or `editor`)
+
+### Update Paper Status
+
+`PATCH /papers/:id/status`
+
+Approve or reject a paper.
+
+- **Auth**: Required (`admin`)
+- **Body**:
+  - `status`: `draft`, `pending`, `approved`, or `rejected`
 
 ### Delete Paper
 
