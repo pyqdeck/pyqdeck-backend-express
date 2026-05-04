@@ -55,7 +55,7 @@ describe('universityController', () => {
       await universityController.list(req, res, next);
 
       expect(universityService.list).toHaveBeenCalledWith(
-        { isActive: true },
+        { isActive: 'true' },
         req.pagination
       );
       expect(res.json).toHaveBeenCalled();
@@ -72,7 +72,10 @@ describe('universityController', () => {
 
       await universityController.list(req, res, next);
 
-      expect(universityService.list).toHaveBeenCalledWith({}, req.pagination);
+      expect(universityService.list).toHaveBeenCalledWith(
+        { isActive: 'all' },
+        req.pagination
+      );
     });
 
     it('should call next on error', async () => {

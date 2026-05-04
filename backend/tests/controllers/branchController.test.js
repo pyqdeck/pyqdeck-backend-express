@@ -55,7 +55,7 @@ describe('branchController', () => {
       expect(branchService.listByUniversity).toHaveBeenCalledWith(
         'uni_1',
         req.pagination,
-        { isActive: true }
+        { isActive: 'true' }
       );
       expect(res.json).toHaveBeenCalled();
     });
@@ -74,7 +74,7 @@ describe('branchController', () => {
       expect(branchService.listByUniversity).toHaveBeenCalledWith(
         'uni_1',
         req.pagination,
-        {}
+        { isActive: 'all' }
       );
     });
 
