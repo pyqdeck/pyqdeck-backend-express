@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { fn } from '@storybook/test';
+import React from 'react';
 
 const moduleSchema = z.object({
   syllabusId: z.string().min(1, 'Syllabus ID is required'),
