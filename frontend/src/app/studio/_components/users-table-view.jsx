@@ -107,13 +107,13 @@ function UserDetailDialog({ user, stats, isLoadingStats, onClose }) {
           <div className="flex flex-col gap-5">
             {/* Identity */}
             <div className="flex items-center gap-4">
-              <Avatar className="border-muted bg-muted/50 h-16 w-16 rounded-xl border-2">
+              <Avatar className="border-muted bg-muted/50 h-16 w-16 rounded-full border-2">
                 <AvatarImage
                   src={user.avatarUrl}
                   alt={user.name}
-                  className="rounded-xl"
+                  className="rounded-full"
                 />
-                <AvatarFallback className="rounded-xl text-lg font-bold">
+                <AvatarFallback className="rounded-full text-lg font-bold">
                   {user.name?.charAt(0)}
                 </AvatarFallback>
               </Avatar>
@@ -380,13 +380,13 @@ export function UsersTableView({
                     <TableCell className="px-6 py-3">
                       <div className="flex items-center gap-4">
                         <div className="relative shrink-0">
-                          <Avatar className="border-muted bg-muted/50 h-12 w-12 rounded-lg border-2">
+                          <Avatar className="border-muted bg-muted/50 h-12 w-12 rounded-full border-2">
                             <AvatarImage
                               src={user.avatarUrl}
                               alt={user.name}
-                              className="rounded-lg"
+                              className="rounded-full"
                             />
-                            <AvatarFallback className="rounded-lg">
+                            <AvatarFallback className="rounded-full">
                               {user.name?.charAt(0)}
                             </AvatarFallback>
                           </Avatar>
