@@ -2,6 +2,10 @@
 
 Thank you for your interest in contributing to PYQDeck! We welcome contributions from the community to help make this platform better for students.
 
+## 📜 Code of Conduct
+
+This project and everyone participating in it are governed by the [PYQDeck Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [INSERT EMAIL ADDRESS].
+
 ## 🌿 Branch Naming Conventions
 
 To keep our repository organized, please use the following prefixes for your branch names:
@@ -33,6 +37,7 @@ Please ensure your code passes all linting and formatting checks before submitti
 ## 🧪 Testing
 
 Always run existing tests and add new ones for any new functionality:
+
 - Backend: `cd backend && pnpm test`
 - Frontend: `cd frontend && pnpm test`
 
