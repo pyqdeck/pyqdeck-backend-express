@@ -12,14 +12,14 @@ Welcome to the **PYQDeck** monorepo. This repository contains both the high-perf
 
 ## 🚀 Mission Control
 
-| Component | Tech Stack | Production URL |
-| :--- | :--- | :--- |
-| **Backend API** | Node.js, Express, MongoDB, Clerk | [backend.pyqdeck.in](https://backend.pyqdeck.in/) |
-| **Frontend Web** | Next.js 15, Tailwind 4, shadcn/ui | [app.pyqdeck.in](https://app.pyqdeck.in/) |
-| **UI Library** | Storybook 8, Radix UI, Vite | [storybook.pyqdeck.in](https://storybook.pyqdeck.in/) |
-| **API Docs** | Swagger / OpenAPI 3.0 | [/api-docs](https://backend.pyqdeck.in/api-docs) |
-| **Engineering Docs** | Mintlify | [docs.pyqdeck.in](https://docs.pyqdeck.in/) |
-| **Status** | Custom Status Page | [status.pyqdeck.in](https://status.pyqdeck.in/) |
+| Component            | Tech Stack                        | Production URL                                        |
+| :------------------- | :-------------------------------- | :---------------------------------------------------- |
+| **Backend API**      | Node.js, Express, MongoDB, Clerk  | [backend.pyqdeck.in](https://backend.pyqdeck.in/)     |
+| **Frontend Web**     | Next.js 15, Tailwind 4, shadcn/ui | [app.pyqdeck.in](https://app.pyqdeck.in/)             |
+| **UI Library**       | Storybook 8, Radix UI, Vite       | [storybook.pyqdeck.in](https://storybook.pyqdeck.in/) |
+| **API Docs**         | Swagger / OpenAPI 3.0             | [/api-docs](https://backend.pyqdeck.in/api-docs)      |
+| **Engineering Docs** | Mintlify                          | [docs.pyqdeck.in](https://docs.pyqdeck.in/)           |
+| **Status**           | Custom Status Page                | [status.pyqdeck.in](https://status.pyqdeck.in/)       |
 
 ---
 
@@ -57,9 +57,9 @@ graph TD
 
 ## 📂 Project Structure
 
--   `backend/`: Express API with Mongoose models, controllers, and comprehensive Vitest suites.
--   `frontend/`: Next.js application with a type-safe SDK generated from the backend OpenAPI spec.
--   `docs/`: Mintlify-based internal engineering documentation.
+- `backend/`: Express API with Mongoose models, controllers, and comprehensive Vitest suites.
+- `frontend/`: Next.js application with a type-safe SDK generated from the backend OpenAPI spec.
+- `docs/`: Mintlify-based internal engineering documentation.
 
 ---
 
@@ -71,25 +71,26 @@ We use **Storybook** for UI components and **Mintlify** for full engineering doc
 
 Our internal docs site covers API references, architecture, and local development flows.
 
--   **Live Site**: [docs.pyqdeck.in](https://docs.pyqdeck.in/)
--   **Tech**: Mintlify with OpenAPI synchronization.
+- **Live Site**: [docs.pyqdeck.in](https://docs.pyqdeck.in/)
+- **Tech**: Mintlify with OpenAPI synchronization.
 
 ### Component Library
 
 We use Storybook to document our UI component library in isolation. This ensures visual consistency and accessibility across the platform.
 
--   **Live Preview**: [View Component Library](https://storybook.pyqdeck.in/)
--   **Coverage**: 100% of core UI components (50+) documented with interactive stories.
--   **Tech**: Radix UI primitives, Tailwind CSS 4, and Framer Motion.
+- **Live Preview**: [View Component Library](https://storybook.pyqdeck.in/)
+- **Coverage**: 100% of core UI components (50+) documented with interactive stories.
+- **Tech**: Radix UI primitives, Tailwind CSS 4, and Framer Motion.
 
 ---
 
 ## 💻 Local Development
 
 ### Prerequisites
--   Node.js (v20+)
--   pnpm (v10+)
--   MongoDB (Local instance or Atlas)
+
+- Node.js (v20+)
+- pnpm (v10+)
+- MongoDB (Local instance or Atlas)
 
 ### 🛠️ Monorepo Workflow
 
@@ -101,6 +102,7 @@ Since this project uses separate `pnpm` environments for backend and frontend wi
 This separation ensures that dependencies and build processes for each component remain isolated and manageable.
 
 ### 1. Backend Setup
+
 ```bash
 cd backend
 pnpm install
@@ -109,6 +111,7 @@ pnpm dev
 ```
 
 ### 2. Frontend Setup
+
 ```bash
 cd frontend
 pnpm install
@@ -123,22 +126,22 @@ pnpm dev
 
 ### Backend (`backend/.env`)
 
-| Variable | Description | Default |
-| :--- | :--- | :--- |
-| `PORT` | The port the backend server runs on. | `3000` |
-| `MONGODB_URI` | Connection string for your MongoDB instance. | `mongodb://localhost:27017/pyqdeck` |
-| `CLERK_PUBLISHABLE_KEY` | Clerk public key for client-side auth. | - |
-| `CLERK_SECRET_KEY` | Clerk secret key for server-side auth. | - |
-| `CLERK_WEBHOOK_SECRET` | Secret used to verify incoming Clerk webhooks. | - |
-| `RESEND_API_KEY` | API key for Resend email service. | - |
+| Variable                | Description                                    | Default                             |
+| :---------------------- | :--------------------------------------------- | :---------------------------------- |
+| `PORT`                  | The port the backend server runs on.           | `3000`                              |
+| `MONGODB_URI`           | Connection string for your MongoDB instance.   | `mongodb://localhost:27017/pyqdeck` |
+| `CLERK_PUBLISHABLE_KEY` | Clerk public key for client-side auth.         | -                                   |
+| `CLERK_SECRET_KEY`      | Clerk secret key for server-side auth.         | -                                   |
+| `CLERK_WEBHOOK_SECRET`  | Secret used to verify incoming Clerk webhooks. | -                                   |
+| `RESEND_API_KEY`        | API key for Resend email service.              | -                                   |
 
 ### Frontend (`frontend/.env.local`)
 
-| Variable | Description | Default |
-| :--- | :--- | :--- |
-| `NEXT_PUBLIC_API_URL` | The base URL of the backend API. | `http://localhost:3000/api/v1` |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk public key (must match backend). | - |
-| `CLERK_SECRET_KEY` | Clerk secret key (must match backend). | - |
+| Variable                            | Description                            | Default                        |
+| :---------------------------------- | :------------------------------------- | :----------------------------- |
+| `NEXT_PUBLIC_API_URL`               | The base URL of the backend API.       | `http://localhost:3000/api/v1` |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk public key (must match backend). | -                              |
+| `CLERK_SECRET_KEY`                  | Clerk secret key (must match backend). | -                              |
 
 ---
 
@@ -156,6 +159,7 @@ We use a **Unified Monorepo Pipeline** that guarantees stability across the stac
 ## 🧪 Quality & Testing
 
 ### Backend
+
 ```bash
 cd backend
 pnpm test          # Run Vitest suites
@@ -163,6 +167,7 @@ pnpm test:coverage # Generate coverage (Target: 80%+)
 ```
 
 ### Frontend
+
 ```bash
 cd frontend
 pnpm lint   # Run ESLint
@@ -182,6 +187,8 @@ pnpm build  # Verify Next.js build & type-safety
 ## 🤝 Contribution
 
 We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on branch naming, the pull request process, and coding standards.
+
+By participating in this project, you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ---
 
