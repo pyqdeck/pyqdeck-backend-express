@@ -1,15 +1,16 @@
-import { AddBranchDialogView } from './add-branch-dialog.view';
+import { fn } from '@storybook/test';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { fn } from '@storybook/test';
+import { AddBranchDialogView } from './add-branch-dialog.view';
 
 const branchSchema = z.object({
-  universityId: z.string().min(1),
-  name: z.string().min(1),
-  shortName: z.string().min(1),
+  universityId: z.string().min(1, 'Please select a university'),
+  name: z.string().min(1, 'Branch name is required'),
+  shortName: z.string().min(1, 'Short name is required'),
   branchCode: z.string().optional(),
-  slug: z.string().min(1),
+  slug: z.string().min(1, 'Slug is required'),
+  isActive: z.boolean().default(true),
 });
 
 const meta = {
@@ -18,6 +19,30 @@ const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+  },
+  argTypes: {
+    universities: {
+      control: 'object',
+      description: 'List of universities to select from',
+    },
+    open: {
+      control: 'boolean',
+      description: 'Whether the dialog is open',
+    },
+    onOpenChange: {
+      description: 'Callback when open state changes',
+    },
+    onSubmit: {
+      description: 'Callback when form is submitted',
+    },
+    trigger: {
+      control: 'boolean',
+      description: 'Whether to show the default trigger button',
+    },
+  },
+  args: {
+    onOpenChange: fn(),
+    onSubmit: fn(),
   },
 };
 
@@ -32,6 +57,7 @@ const FormWrapper = ({ mockSubmitting = false, ...args }) => {
       shortName: '',
       branchCode: '',
       slug: '',
+      isActive: true,
     },
   });
 
@@ -39,7 +65,6 @@ const FormWrapper = ({ mockSubmitting = false, ...args }) => {
     ...form,
     formState: {
       ...form.formState,
-      errors: form.formState.errors,
       isSubmitting: mockSubmitting,
     },
   };
@@ -48,11 +73,25 @@ const FormWrapper = ({ mockSubmitting = false, ...args }) => {
 };
 
 const mockUniversities = [
-  { id: 'u1', name: 'University of Mumbai', shortName: 'MU' },
+  {
+    id: 'u1',
+    name: 'University of Mumbai',
+    shortName: 'MU',
+  },
   {
     id: 'u2',
-    name: 'Indian Institute of Technology Bombay',
-    shortName: 'IITB',
+    name: 'Savitribai Phule Pune University',
+    shortName: 'SPPU',
+  },
+  {
+    id: 'u3',
+    name: 'Gujarat Technological University',
+    shortName: 'GTU',
+  },
+  {
+    id: 'u4',
+    name: 'Anna University',
+    shortName: 'AU',
   },
 ];
 
@@ -61,8 +100,7 @@ export const Default = {
   args: {
     universities: mockUniversities,
     open: true,
-    onOpenChange: fn(),
-    onSubmit: fn(),
+    trigger: true,
   },
 };
 
@@ -71,5 +109,21 @@ export const Submitting = {
   args: {
     ...Default.args,
     mockSubmitting: true,
+  },
+};
+
+export const Empty = {
+  render: (args) => <FormWrapper {...args} />,
+  args: {
+    ...Default.args,
+    universities: [],
+  },
+};
+
+export const WithoutTrigger = {
+  render: (args) => <FormWrapper {...args} />,
+  args: {
+    ...Default.args,
+    trigger: false,
   },
 };
