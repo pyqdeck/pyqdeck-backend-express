@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Badge } from './badge';
 import { Star } from 'lucide-react';
 
@@ -21,6 +20,12 @@ export default {
         'amber',
         'emerald',
       ],
+    },
+    asChild: {
+      control: 'boolean',
+    },
+    children: {
+      control: 'text',
     },
   },
 };
@@ -97,20 +102,25 @@ export const Emerald = {
 
 export const AsChild = {
   args: {
-    asChild: true,
-    children: <a href="https://pyqdeck.in">Link</a>,
     variant: 'outline',
+    asChild: true,
   },
+  render: (args) => (
+    <Badge {...args}>
+      <a href="https://pyqdeck.in">Link Badge</a>
+    </Badge>
+  ),
 };
 
 export const WithIcon = {
   args: {
-    children: (
-      <>
-        <Star />
-        <span>Featured</span>
-      </>
-    ),
     variant: 'default',
+    children: 'Featured',
   },
+  render: ({ children, ...args }) => (
+    <Badge {...args}>
+      <Star className="mr-1" />
+      {children}
+    </Badge>
+  ),
 };
