@@ -14,7 +14,7 @@ export default {
   tags: ['autodocs'],
   argTypes: {
     type: {
-      control: 'select',
+      control: { type: 'select' },
       options: ['single', 'multiple'],
       description:
         'Determines whether one or multiple items can be opened at the same time.',
@@ -23,7 +23,7 @@ export default {
       },
     },
     collapsible: {
-      control: 'boolean',
+      control: { type: 'boolean' },
       description:
         'When type is "single", allows closing content when clicking trigger for an open item.',
       table: {
@@ -31,7 +31,7 @@ export default {
       },
     },
     disabled: {
-      control: 'boolean',
+      control: { type: 'boolean' },
       description:
         'When true, prevents the user from interacting with the accordion and all its items.',
       table: {
