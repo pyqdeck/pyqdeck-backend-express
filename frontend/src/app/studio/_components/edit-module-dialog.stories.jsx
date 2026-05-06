@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { fn } from '@storybook/test';
+import { useEffect } from 'react';
 
 const moduleSchema = z.object({
   moduleNumber: z.number().int().min(1, 'Must be at least 1'),
@@ -12,19 +13,38 @@ const moduleSchema = z.object({
   coMapping: z.string().max(50).optional().nullable(),
 });
 
-export default {
-  title: 'Studio/Curriculum/EditModuleDialog',
+const meta = {
+  title: 'Studio/Academics/EditModuleDialog',
   component: EditModuleDialogView,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
+  argTypes: {
+    open: {
+      control: 'boolean',
+      description: 'Whether the dialog is open',
+      table: { defaultValue: { summary: 'false' } },
+    },
+    onOpenChange: {
+      description: 'Callback when the open state changes',
+    },
+    onSubmit: {
+      description: 'Callback when the form is submitted',
+    },
+    form: {
+      description: 'The react-hook-form instance',
+      control: false,
+    },
+  },
 };
 
-const FormWrapper = ({ mockSubmitting = false, ...args }) => {
+export default meta;
+
+const FormWrapper = ({ mockSubmitting = false, initialData, ...args }) => {
   const form = useForm({
     resolver: zodResolver(moduleSchema),
-    defaultValues: {
+    defaultValues: initialData || {
       moduleNumber: 1,
       title: 'Introduction to Artificial Intelligence',
       description: 'Foundational concepts of AI, history, and applications.',
@@ -45,10 +65,20 @@ const FormWrapper = ({ mockSubmitting = false, ...args }) => {
   return <EditModuleDialogView {...args} form={proxiedForm} />;
 };
 
+const mockModule = {
+  moduleNumber: 2,
+  title: 'Machine Learning Fundamentals',
+  description:
+    'Introduction to supervised and unsupervised learning algorithms.',
+  weightage: 20,
+  coMapping: 'CO2',
+};
+
 export const Default = {
   render: (args) => <FormWrapper {...args} />,
   args: {
     open: true,
+    initialData: mockModule,
     onOpenChange: fn(),
     onSubmit: fn(),
   },
@@ -59,5 +89,30 @@ export const Submitting = {
   args: {
     ...Default.args,
     mockSubmitting: true,
+  },
+};
+
+export const WithErrors = {
+  render: (args) => {
+    const form = useForm({
+      resolver: zodResolver(moduleSchema),
+      defaultValues: {
+        moduleNumber: 0,
+        title: '',
+        description: 'Exceeding the character limit '.repeat(50),
+        weightage: 150,
+        coMapping:
+          'CO_MAPPING_THAT_IS_TOO_LONG_FOR_THE_LIMIT_DEFINED_IN_SCHEMA',
+      },
+    });
+
+    useEffect(() => {
+      form.trigger();
+    }, [form]);
+
+    return <EditModuleDialogView {...args} form={form} />;
+  },
+  args: {
+    ...Default.args,
   },
 };
