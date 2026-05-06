@@ -1,22 +1,55 @@
 import { CoverageRadarView } from './coverage-radar-view';
 
-export default {
+const meta = {
   title: 'Studio/Analytics/CoverageRadar',
   component: CoverageRadarView,
   tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+  },
+  argTypes: {
+    data: {
+      control: 'object',
+      description: 'The data to display in the radar chart',
+    },
+    loading: {
+      control: 'boolean',
+      description: 'Whether the component is in a loading state',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+    },
+  },
 };
 
+export default meta;
+
 const mockData = [
-  { subject: 'Math', A: 120, B: 110, fullMark: 150 },
-  { subject: 'Physics', A: 98, B: 130, fullMark: 150 },
-  { subject: 'Coding', A: 86, B: 130, fullMark: 150 },
-  { subject: 'AI', A: 99, B: 100, fullMark: 150 },
-  { subject: 'Data', A: 85, B: 90, fullMark: 150 },
-  { subject: 'Cloud', A: 65, B: 85, fullMark: 150 },
+  { subject: 'Data Structures', A: 120, fullMark: 150 },
+  { subject: 'Algorithms', A: 98, fullMark: 150 },
+  { subject: 'Operating Systems', A: 86, fullMark: 150 },
+  { subject: 'Database Systems', A: 99, fullMark: 150 },
+  { subject: 'Computer Networks', A: 85, fullMark: 150 },
+  { subject: 'Software Engineering', A: 65, fullMark: 150 },
 ];
 
 export const Default = {
   args: {
     data: mockData,
+    loading: false,
+  },
+};
+
+export const Loading = {
+  args: {
+    data: [],
+    loading: true,
+  },
+};
+
+export const Empty = {
+  args: {
+    data: [],
+    loading: false,
   },
 };
