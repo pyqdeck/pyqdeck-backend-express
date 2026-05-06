@@ -5,31 +5,19 @@ export default defineConfig({
     globals: true,
     environment: 'node',
     setupFiles: ['./tests/setup.js'],
-    include: ['tests/**/*.test.js'],
-    exclude: ['tests/**/*.integration.test.js'],
-
-    // Vitest 4: pool options moved to top-level under test
+    include: ['tests/**/*.integration.test.js'],
     pool: 'forks',
     forks: {
-      singleFork: true,
+      singleFork: false,
     },
-
-    // Increased timeouts for heavy CI/local runs
+    // Increased timeouts for integration tests
     hookTimeout: 120000,
     testTimeout: 120000,
-
     reporters: ['default', 'junit'],
-    outputFile: 'test-report.junit.xml',
-
+    outputFile: 'test-report-integration.junit.xml',
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json-summary', 'json', 'html', 'lcov'],
-      thresholds: {
-        lines: 80,
-        functions: 80,
-        branches: 65,
-        statements: 80,
-      },
       exclude: [
         'node_modules/',
         'tests/',
