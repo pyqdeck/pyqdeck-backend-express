@@ -15,13 +15,72 @@ const offeringSchema = z.object({
   isActive: z.boolean().default(true),
 });
 
-export default {
+const meta = {
   title: 'Studio/Academics/AddOfferingDialog',
   component: AddOfferingDialogView,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
+  argTypes: {
+    open: {
+      control: 'boolean',
+      description: 'Whether the dialog is open',
+      table: { defaultValue: { summary: 'false' } },
+    },
+    onOpenChange: {
+      description: 'Callback when open state changes',
+    },
+    onSubmit: {
+      description: 'Callback when form is submitted',
+    },
+    universities: {
+      description: 'List of available universities',
+    },
+    branches: {
+      description: 'List of available branches',
+    },
+    semesters: {
+      description: 'List of available semesters',
+    },
+    subjects: {
+      description: 'List of available subjects',
+    },
+    trigger: {
+      control: 'boolean',
+      description: 'Whether to show the trigger button',
+      table: { defaultValue: { summary: 'true' } },
+    },
+  },
+};
+
+export default meta;
+
+const FormWrapper = ({ mockSubmitting = false, ...args }) => {
+  const form = useForm({
+    resolver: zodResolver(offeringSchema),
+    defaultValues: {
+      universityId: '',
+      branchId: '',
+      semesterId: '',
+      subjectId: '',
+      regulation: '',
+      academicYear: '',
+      slug: '',
+      isActive: true,
+    },
+  });
+
+  const proxiedForm = {
+    ...form,
+    formState: {
+      ...form.formState,
+      errors: form.formState.errors,
+      isSubmitting: mockSubmitting,
+    },
+  };
+
+  return <AddOfferingDialogView {...args} form={proxiedForm} />;
 };
 
 const mockUniversities = [
@@ -82,48 +141,16 @@ const mockSubjects = [
   },
 ];
 
-const FormWrapper = ({ mockSubmitting = false, ...args }) => {
-  const form = useForm({
-    resolver: zodResolver(offeringSchema),
-    defaultValues: {
-      universityId: '',
-      branchId: '',
-      semesterId: '',
-      subjectId: '',
-      regulation: '',
-      academicYear: '',
-      slug: '',
-      isActive: true,
-    },
-  });
-
-  const proxiedForm = {
-    ...form,
-    formState: {
-      ...form.formState,
-      errors: form.formState.errors,
-      isSubmitting: mockSubmitting,
-    },
-  };
-
-  return (
-    <AddOfferingDialogView
-      {...args}
-      form={proxiedForm}
-      universities={mockUniversities}
-      branches={mockBranches}
-      semesters={mockSemesters}
-      subjects={mockSubjects}
-    />
-  );
-};
-
 export const Default = {
   render: (args) => <FormWrapper {...args} />,
   args: {
     open: true,
     onOpenChange: fn(),
     onSubmit: fn(),
+    universities: mockUniversities,
+    branches: mockBranches,
+    semesters: mockSemesters,
+    subjects: mockSubjects,
   },
 };
 
