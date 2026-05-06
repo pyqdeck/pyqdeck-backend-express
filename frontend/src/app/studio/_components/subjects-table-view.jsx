@@ -66,8 +66,8 @@ export function SubjectsTableView({
               <TableRow className="bg-muted/50">
                 <TableHead className="w-[300px]">Subject</TableHead>
                 <TableHead>Code</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Resources</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Units</TableHead>
                 <TableHead className="w-[100px]"></TableHead>
               </TableRow>
             </TableHeader>
