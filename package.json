@@ -1,0 +1,13 @@
+{
+  "name": "pyqdeck-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "format": "pnpm -C backend format && pnpm -C frontend format",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}
