@@ -6,9 +6,8 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
-    "test": "vitest run && vitest run -c vitest.integration.config.js",
-    "test:integration": "vitest run -c vitest.integration.config.js",
-    "test:coverage": "vitest run --coverage && vitest run -c vitest.integration.config.js --coverage",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
     "format": "prettier --write .",
     "lint": "eslint .",

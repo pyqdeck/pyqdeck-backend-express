@@ -6,7 +6,6 @@ export default defineConfig({
     environment: 'node',
     setupFiles: ['./tests/setup.js'],
     include: ['tests/**/*.test.js'],
-    exclude: ['tests/**/*.integration.test.js'],
 
     // Vitest 4: pool options moved to top-level under test
     pool: 'forks',

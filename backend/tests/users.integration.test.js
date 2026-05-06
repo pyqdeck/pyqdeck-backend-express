@@ -5,21 +5,11 @@ import { User } from '../src/models/User.js';
 import { getAuth } from '@clerk/express';
 
 // Mock getAuth to control authentication state in integration tests
-vi.mock('@clerk/express', async () => {
+vi.mock('@clerk/express', async (importOriginal) => {
+  const actual = await importOriginal();
   return {
-    clerkMiddleware: () => (req, res, next) => next(),
+    ...actual,
     getAuth: vi.fn(),
-    clerkClient: {
-      users: {
-        getUser: vi.fn().mockResolvedValue({
-          id: 'test_user_123',
-          firstName: 'Test',
-          lastName: 'User',
-          emailAddresses: [{ id: 'email_1', emailAddress: 'test@example.com' }],
-          primaryEmailAddressId: 'email_1',
-        }),
-      },
-    },
   };
 });
 
