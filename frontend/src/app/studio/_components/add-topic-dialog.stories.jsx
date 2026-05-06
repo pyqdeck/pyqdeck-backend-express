@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { AddTopicDialogView } from './add-topic-dialog.view';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,20 +13,44 @@ const topicSchema = z.object({
   order: z.number().int().default(0),
 });
 
-export default {
-  title: 'Studio/Curriculum/AddTopicDialog',
+const meta = {
+  title: 'Studio/Academics/AddTopicDialog',
   component: AddTopicDialogView,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
+  argTypes: {
+    open: {
+      control: 'boolean',
+      description: 'Whether the dialog is open',
+      table: { defaultValue: { summary: 'false' } },
+    },
+    onOpenChange: {
+      description: 'Callback called when the open state changes',
+    },
+    onSubmit: {
+      description: 'Callback called when the form is submitted',
+    },
+    trigger: {
+      control: 'boolean',
+      description: 'Whether to show the default trigger button',
+      table: { defaultValue: { summary: 'true' } },
+    },
+    moduleName: {
+      control: 'text',
+      description: 'Name of the module to which the topic is being added',
+    },
+  },
 };
+
+export default meta;
 
 const FormWrapper = ({ mockSubmitting = false, ...args }) => {
   const form = useForm({
     resolver: zodResolver(topicSchema),
     defaultValues: {
-      moduleId: 'mod1',
+      moduleId: args.moduleId || 'mod_adv_nn_123',
       title: '',
       description: '',
       slug: '',
@@ -33,11 +58,24 @@ const FormWrapper = ({ mockSubmitting = false, ...args }) => {
     },
   });
 
+  const { watch, setValue } = form;
+  const title = watch('title');
+
+  // Auto-generate slug (matching AddTopicDialog container logic)
+  useEffect(() => {
+    if (title) {
+      const generatedSlug = title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      setValue('slug', generatedSlug, { shouldValidate: true });
+    }
+  }, [title, setValue]);
+
   const proxiedForm = {
     ...form,
     formState: {
       ...form.formState,
-      errors: form.formState.errors,
       isSubmitting: mockSubmitting,
     },
   };
@@ -51,6 +89,8 @@ export const Default = {
     open: true,
     onOpenChange: fn(),
     onSubmit: fn(),
+    moduleName: 'Advanced Neural Networks',
+    trigger: false,
   },
 };
 
@@ -59,5 +99,14 @@ export const Submitting = {
   args: {
     ...Default.args,
     mockSubmitting: true,
+  },
+};
+
+export const WithTrigger = {
+  render: (args) => <FormWrapper {...args} />,
+  args: {
+    ...Default.args,
+    open: false,
+    trigger: true,
   },
 };
