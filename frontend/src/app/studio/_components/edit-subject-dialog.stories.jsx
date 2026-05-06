@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { fn } from '@storybook/test';
+import { useEffect } from 'react';
 
 const subjectSchema = z.object({
   name: z.string().min(1, 'Name is required').max(200),
@@ -13,46 +14,96 @@ const subjectSchema = z.object({
   isActive: z.boolean().default(true),
 });
 
-export default {
+const meta = {
   title: 'Studio/Academics/EditSubjectDialog',
   component: EditSubjectDialogView,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
+  argTypes: {
+    subject: {
+      control: 'object',
+      description: 'The subject data to edit',
+    },
+    open: {
+      control: 'boolean',
+      description: 'Whether the dialog is open',
+      table: { defaultValue: { summary: 'false' } },
+    },
+    onOpenChange: {
+      description: 'Callback when the open state changes',
+      action: 'onOpenChange',
+    },
+    onSubmit: {
+      description: 'Callback when the form is submitted',
+      action: 'onSubmit',
+    },
+    mockSubmitting: {
+      control: 'boolean',
+      description: 'Mock the submitting state of the form',
+      table: { defaultValue: { summary: 'false' } },
+    },
+    mockErrors: {
+      control: 'object',
+      description: 'Mock form validation errors',
+    },
+  },
 };
 
-const FormWrapper = ({ mockSubmitting = false, ...args }) => {
+export default meta;
+
+const FormWrapper = ({
+  mockSubmitting = false,
+  mockErrors = null,
+  subject,
+  ...args
+}) => {
   const form = useForm({
     resolver: zodResolver(subjectSchema),
     defaultValues: {
-      name: args.subject?.name || '',
-      shortName: args.subject?.shortName || '',
-      subjectCode: args.subject?.subjectCode || '',
-      description: args.subject?.description || '',
-      credits: args.subject?.credits || 0,
-      isActive: args.subject?.isActive ?? true,
+      name: subject?.name || '',
+      shortName: subject?.shortName || '',
+      subjectCode: subject?.subjectCode || '',
+      description: subject?.description || '',
+      credits: subject?.credits || 0,
+      isActive: subject?.isActive ?? true,
     },
   });
+
+  // Sync form with subject prop changes
+  useEffect(() => {
+    if (subject) {
+      form.reset({
+        name: subject.name || '',
+        shortName: subject.shortName || '',
+        subjectCode: subject.subjectCode || '',
+        description: subject.description || '',
+        credits: subject.credits || 0,
+        isActive: subject.isActive ?? true,
+      });
+    }
+  }, [subject, form]);
 
   const proxiedForm = {
     ...form,
     formState: {
       ...form.formState,
-      errors: form.formState.errors,
       isSubmitting: mockSubmitting,
+      errors: mockErrors || form.formState.errors,
     },
   };
 
-  return <EditSubjectDialogView {...args} form={proxiedForm} />;
+  return <EditSubjectDialogView {...args} subject={subject} form={proxiedForm} />;
 };
 
 const mockSubject = {
-  id: 's1',
-  name: 'Data Structures and Algorithms',
-  shortName: 'DSA',
-  subjectCode: 'CS301',
-  description: 'Core course on data structures and algorithmic complexity.',
+  id: 'subj-101',
+  name: 'Advanced Data Structures',
+  shortName: 'ADS',
+  subjectCode: 'CS302',
+  description:
+    'In-depth study of advanced data structures including B-trees, Fibonacci heaps, and graph algorithms.',
   credits: 4,
   isActive: true,
 };
@@ -72,5 +123,15 @@ export const Submitting = {
   args: {
     ...Default.args,
     mockSubmitting: true,
+  },
+};
+
+export const ValidationError = {
+  render: (args) => <FormWrapper {...args} />,
+  args: {
+    ...Default.args,
+    mockErrors: {
+      name: { message: 'Subject name is required' },
+    },
   },
 };
