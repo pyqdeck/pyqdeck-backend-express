@@ -1,5 +1,6 @@
-import { Alert, AlertTitle, AlertDescription } from './alert';
+import { Alert, AlertTitle, AlertDescription, AlertAction } from './alert';
 import { Terminal, AlertCircle } from 'lucide-react';
+import { Button } from './button';
 
 export default {
   title: 'UI/Alert',
@@ -14,6 +15,9 @@ export default {
 };
 
 export const Default = {
+  args: {
+    variant: 'default',
+  },
   render: (args) => (
     <Alert {...args}>
       <Terminal className="h-4 w-4" />
@@ -36,6 +40,26 @@ export const Destructive = {
       <AlertDescription>
         Your session has expired. Please log in again.
       </AlertDescription>
+    </Alert>
+  ),
+};
+
+export const WithAction = {
+  args: {
+    variant: 'default',
+  },
+  render: (args) => (
+    <Alert {...args}>
+      <Terminal className="h-4 w-4" />
+      <AlertTitle>Update available</AlertTitle>
+      <AlertDescription>
+        A new version of the software is available. Please update now.
+      </AlertDescription>
+      <AlertAction>
+        <Button variant="outline" size="sm">
+          Update
+        </Button>
+      </AlertAction>
     </Alert>
   ),
 };
