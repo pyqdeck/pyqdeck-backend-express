@@ -50,7 +50,7 @@ const branches = [
 const VerticalTemplate = (args) => (
   <ScrollArea {...args} className="h-72 w-64 rounded-md border">
     <div className="p-4">
-      <h4 className="mb-4 text-sm font-medium leading-none">Branches</h4>
+      <h4 className="mb-4 text-sm leading-none font-medium">Branches</h4>
       {branches.map((branch) => (
         <div key={branch}>
           <div className="text-sm">{branch}</div>
