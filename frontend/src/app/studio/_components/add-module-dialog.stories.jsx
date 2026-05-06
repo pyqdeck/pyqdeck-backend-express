@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { fn } from '@storybook/test';
-import React from 'react';
+import { useEffect } from 'react';
 
 const moduleSchema = z.object({
   syllabusId: z.string().min(1, 'Syllabus ID is required'),
@@ -15,20 +15,44 @@ const moduleSchema = z.object({
   slug: z.string().min(1, 'Slug is required'),
 });
 
-export default {
-  title: 'Studio/Curriculum/AddModuleDialog',
+const meta = {
+  title: 'Studio/Academics/AddModuleDialog',
   component: AddModuleDialogView,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
+  argTypes: {
+    open: {
+      control: 'boolean',
+      description: 'Whether the dialog is open',
+      table: { defaultValue: { summary: 'false' } },
+    },
+    onOpenChange: {
+      description: 'Callback when the open state changes',
+    },
+    onSubmit: {
+      description: 'Callback when the form is submitted',
+    },
+    trigger: {
+      control: 'boolean',
+      description: 'Whether to show the trigger button',
+      table: { defaultValue: { summary: 'true' } },
+    },
+    form: {
+      description: 'The react-hook-form instance',
+      control: false,
+    },
+  },
 };
+
+export default meta;
 
 const FormWrapper = ({ mockSubmitting = false, ...args }) => {
   const form = useForm({
     resolver: zodResolver(moduleSchema),
     defaultValues: {
-      syllabusId: 'syl1',
+      syllabusId: 'syl-cs-301',
       moduleNumber: 1,
       title: '',
       description: '',
@@ -56,6 +80,7 @@ export const Default = {
     open: true,
     onOpenChange: fn(),
     onSubmit: fn(),
+    trigger: true,
   },
 };
 
@@ -75,15 +100,15 @@ export const WithErrors = {
         syllabusId: '',
         moduleNumber: 0,
         title: '',
-        description: 'Too long '.repeat(200),
+        description: 'Detailing excessive content '.repeat(50),
         weightage: 150,
-        coMapping: '',
+        coMapping: 'INVALID_CO',
         slug: '',
       },
     });
 
     // Manually trigger validation to show errors
-    React.useEffect(() => {
+    useEffect(() => {
       form.trigger();
     }, [form]);
 
@@ -93,5 +118,6 @@ export const WithErrors = {
     open: true,
     onOpenChange: fn(),
     onSubmit: fn(),
+    trigger: true,
   },
 };
