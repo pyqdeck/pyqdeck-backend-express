@@ -52,7 +52,9 @@ export const WithError = {
     <Field {...args} data-invalid="true">
       <FieldLabel>University ID</FieldLabel>
       <Input defaultValue="invalid-id" />
-      <FieldError>Please enter a valid university ID (e.g., UNIT-12345).</FieldError>
+      <FieldError>
+        Please enter a valid university ID (e.g., UNIT-12345).
+      </FieldError>
     </Field>
   ),
   args: {
