@@ -62,7 +62,10 @@ export const FirstPage = {
     <Pagination {...args}>
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious href="#" className="pointer-events-none opacity-50" />
+          <PaginationPrevious
+            href="#"
+            className="pointer-events-none opacity-50"
+          />
         </PaginationItem>
         <PaginationItem>
           <PaginationLink href="?page=1" isActive>
