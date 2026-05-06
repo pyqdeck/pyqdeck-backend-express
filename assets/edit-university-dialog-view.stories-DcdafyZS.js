@@ -1,0 +1,18 @@
+import{n as e,s as t}from"./chunk-CzyJ72yW.js";import{Br as n,Ci as r}from"./iframe-D2p6Jp2S.js";import{r as i,t as a}from"./button-0jMvQ0ZB.js";import{a as o,i as s,l as c,o as l,r as u,s as d,t as f}from"./sheet-B65Zv2Oj.js";import{a as p,c as m,d as h,o as g,r as _,s as v,t as y,u as b}from"./zod-Ny7ltigL.js";import{n as x,t as S}from"./dist-Cc0aPTuP.js";import{n as C,t as w}from"./university-form-CkFr6T4n.js";function T({university:e,open:t,onOpenChange:n,form:r,onSubmit:i}){return(0,E.jsx)(f,{open:t,onOpenChange:n,children:(0,E.jsxs)(u,{className:`font-roboto flex flex-col gap-0 overflow-hidden border-l-2 p-0 shadow-none sm:max-w-[500px]`,children:[(0,E.jsxs)(l,{className:`bg-muted/5 border-b p-6`,children:[(0,E.jsx)(d,{className:`text-2xl font-black tracking-tight`,children:`Edit University`}),(0,E.jsxs)(s,{children:[`Update the institution profile for `,e?.name,`.`]})]}),(0,E.jsx)(`div`,{className:`min-h-0 flex-1 overflow-y-auto`,children:(0,E.jsx)(`div`,{className:`p-6`,children:(0,E.jsx)(`form`,{id:`edit-university-form`,onSubmit:r.handleSubmit(i),className:`space-y-6 pb-24`,children:(0,E.jsx)(w,{form:r})})})}),(0,E.jsxs)(o,{className:`bg-muted/10 flex-row items-center gap-3 border-t p-6`,children:[(0,E.jsx)(a,{type:`button`,variant:`outline`,onClick:()=>n(!1),className:`flex-1 border-2 font-bold`,children:`Cancel`}),(0,E.jsx)(a,{type:`submit`,form:`edit-university-form`,disabled:r.formState.isSubmitting,className:`flex-1 font-bold`,children:r.formState.isSubmitting?`Saving...`:`Save Changes`})]})]})})}var E,D=e((()=>{E=t(n(),1),r(),i(),c(),C(),T.__docgenInfo={description:``,methods:[],displayName:`EditUniversityDialogView`}})),O,k,A,j,M,N,P,F;e((()=>{O=t(n(),1),D(),b(),m(),y(),x(),k=p({name:g().min(2),shortName:g().min(2).max(10),slug:g().min(2),websiteUrl:g().url().optional().or(_(``)),state:g().min(2),country:g().default(`India`),logo:g().url().optional().or(_(``)),description:g().optional()}),A={title:`Studio/Academics/EditUniversityDialogView`,component:T,tags:[`autodocs`],parameters:{layout:`centered`}},j={id:`1`,name:`University of Mumbai`,shortName:`MU`,slug:`mumbai-university`,logo:``,state:`Maharashtra`,country:`India`,websiteUrl:`https://mu.ac.in`,description:`A historic university in Mumbai.`},M=({mockSubmitting:e=!1,...t})=>{let n=h({resolver:v(k),defaultValues:{name:t.university?.name||``,shortName:t.university?.shortName||``,slug:t.university?.slug||``,websiteUrl:t.university?.websiteUrl||``,state:t.university?.state||``,country:t.university?.country||`India`,logo:t.university?.logo||``,description:t.university?.description||``}}),r={...n,formState:{...n.formState,errors:n.formState.errors,isSubmitting:e||n.formState.isSubmitting}};return(0,O.jsx)(T,{...t,form:r})},N={render:e=>(0,O.jsx)(M,{...e}),args:{university:j,open:!0,onOpenChange:S(),onSubmit:async e=>{console.log(`Update submitted:`,e),await new Promise(e=>setTimeout(e,2e3))}}},P={render:e=>(0,O.jsx)(M,{...e}),args:{...N.args,mockSubmitting:!0}},N.parameters={...N.parameters,docs:{...N.parameters?.docs,source:{originalSource:`{
+  render: args => <FormWrapper {...args} />,
+  args: {
+    university: mockUniversity,
+    open: true,
+    onOpenChange: fn(),
+    onSubmit: async data => {
+      console.log('Update submitted:', data);
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+  }
+}`,...N.parameters?.docs?.source}}},P.parameters={...P.parameters,docs:{...P.parameters?.docs,source:{originalSource:`{
+  render: args => <FormWrapper {...args} />,
+  args: {
+    ...Default.args,
+    mockSubmitting: true
+  }
+}`,...P.parameters?.docs?.source}}},F=[`Default`,`Submitting`]}))();export{N as Default,P as Submitting,F as __namedExportsOrder,A as default};
