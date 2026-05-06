@@ -82,8 +82,18 @@ const CarouselTemplate = (args) => (
       args.orientation === 'vertical' ? 'h-[400px]' : ''
     )}
   >
-    <Carousel {...args} className="w-full max-w-xs">
-      <CarouselContent>
+    <Carousel
+      {...args}
+      className={cn(
+        'w-full max-w-xs',
+        args.orientation === 'vertical'
+          ? 'h-full [&_[data-slot=carousel-content]]:h-full'
+          : ''
+      )}
+    >
+      <CarouselContent
+        className={cn(args.orientation === 'vertical' ? 'h-full' : '')}
+      >
         {academicPapers.map((paper, index) => (
           <CarouselItem key={index}>
             <div className="p-1">
