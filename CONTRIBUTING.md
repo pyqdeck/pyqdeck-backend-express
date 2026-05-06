@@ -8,38 +8,91 @@ This project and everyone participating in it are governed by the [PYQDeck Code 
 
 ## 🌿 Branch Naming Conventions
 
-To keep our repository organized, please use the following prefixes for your branch names:
+Use the following prefixes for branch names:
 
-- `feat/`: For new features or enhancements.
-- `fix/`: For bug fixes.
-- `docs/`: For documentation changes.
+| Prefix | Use for |
+|---|---|
+| `feat/` | New features or enhancements |
+| `fix/` | Bug fixes |
+| `docs/` | Documentation changes |
 
 Example: `feat/add-search-filters` or `fix/broken-bookmark-button`.
 
 ## 🔄 Pull Request Process
 
-1. **Fork the Repository**: Create a personal fork of the project on GitHub.
-2. **Create a Branch**: Create a new branch from `main` using the naming conventions mentioned above.
-3. **Make Your Changes**: Implement your feature or fix.
-4. **Commit Your Changes**: Write clear and concise commit messages.
-5. **Push to GitHub**: Push your branch to your forked repository.
-6. **Open a Pull Request**: Submit a PR to the `main` branch of the original repository. Provide a detailed description of your changes.
+1. **Fork the Repository** — Create a personal fork of the project on GitHub.
+2. **Create a Branch** — Branch off `main` using the naming conventions above.
+3. **Make Your Changes** — Implement your feature or fix.
+4. **Format & Lint** — Run the formatting and linting commands below before committing (see [Coding Standards](#-coding-standards)).
+5. **Commit Your Changes** — Write clear and concise commit messages.
+6. **Push to GitHub** — Push your branch to your forked repository.
+7. **Open a Pull Request** — Submit a PR to `main`. Provide a detailed description of your changes.
 
 ## 🎨 Coding Standards
 
-We maintain high code quality through automated linting and formatting.
+We use **Prettier** for formatting and **ESLint** for linting in both `frontend/` and `backend/`. You **must** run both before committing.
 
-- **Formatting**: We use [Prettier](https://prettier.io/) for consistent code styling. Run `pnpm format` before committing.
-- **Linting**: We use [ESLint](https://eslint.org/) to catch common errors and enforce best practices. Run `pnpm lint` to check for issues.
+### Frontend (`frontend/`)
 
-Please ensure your code passes all linting and formatting checks before submitting a Pull Request.
+```sh
+cd frontend
+pnpm format        # auto-fix all formatting
+pnpm format:check  # check without writing (used in CI)
+pnpm lint          # ESLint — must pass with 0 errors
+```
+
+**Prettier config** (`frontend/.prettierrc`):
+
+| Rule | Value |
+|---|---|
+| `singleQuote` | `true` |
+| `semi` | `true` |
+| `trailingComma` | `"es5"` |
+| `printWidth` | `80` |
+| `tabWidth` | `2` |
+| `plugins` | `prettier-plugin-tailwindcss` (auto-sorts Tailwind classes) |
+
+**ESLint**: `eslint-config-next/core-web-vitals` + `eslint-plugin-storybook`.
+
+### Backend (`backend/`)
+
+```sh
+cd backend
+pnpm format    # auto-fix all formatting
+pnpm lint      # ESLint — must pass with 0 errors
+pnpm lint:fix  # auto-fix ESLint issues where possible
+```
+
+**Prettier config** (`backend/.prettierrc`):
+
+| Rule | Value |
+|---|---|
+| `singleQuote` | `true` |
+| `semi` | `true` |
+| `trailingComma` | `"es5"` |
+| `printWidth` | `80` |
+| `tabWidth` | `2` |
+
+**ESLint**: `@eslint/js` recommended + `eslint-config-prettier`.
+
+### Quick reference — run both at once
+
+```sh
+# From the repo root
+cd frontend && pnpm format && pnpm lint && cd ../backend && pnpm format && pnpm lint
+```
 
 ## 🧪 Testing
 
 Always run existing tests and add new ones for any new functionality:
 
-- Backend: `cd backend && pnpm test`
-- Frontend: `cd frontend && pnpm test`
+```sh
+# Backend
+cd backend && pnpm test
+
+# Frontend
+cd frontend && pnpm test
+```
 
 ---
 
