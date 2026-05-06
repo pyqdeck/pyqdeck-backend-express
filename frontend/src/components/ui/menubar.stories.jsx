@@ -1,3 +1,4 @@
+import { fn } from '@storybook/test';
 import {
   Menubar,
   MenubarCheckboxItem,
@@ -6,7 +7,6 @@ import {
   MenubarItem,
   MenubarLabel,
   MenubarMenu,
-  MenubarPortal,
   MenubarRadioGroup,
   MenubarRadioItem,
   MenubarSeparator,
@@ -17,86 +17,118 @@ import {
   MenubarTrigger,
 } from './menubar';
 
-export default {
+/**
+ * A horizontal menu bar typically visible at the top of an application, contains buttons that open menus.
+ */
+const meta = {
   title: 'UI/Menubar',
   component: Menubar,
   tags: ['autodocs'],
+  argTypes: {
+    className: {
+      control: 'text',
+      description: 'Additional CSS classes for the menubar.',
+    },
+  },
 };
 
+export default meta;
+
 export const Default = {
-  render: () => (
-    <Menubar>
+  render: (args) => (
+    <Menubar {...args}>
       <MenubarMenu>
         <MenubarTrigger>File</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem>
+          <MenubarItem onSelect={fn()}>
             New Tab <MenubarShortcut>⌘T</MenubarShortcut>
           </MenubarItem>
-          <MenubarItem>
+          <MenubarItem onSelect={fn()}>
             New Window <MenubarShortcut>⌘N</MenubarShortcut>
           </MenubarItem>
-          <MenubarItem disabled>New Incognito Window</MenubarItem>
-          <MenubarSeparator />
-          <MenubarSub>
-            <MenubarSubTrigger>Share</MenubarSubTrigger>
-            <MenubarSubContent>
-              <MenubarItem>Email link</MenubarItem>
-              <MenubarItem>Messages</MenubarItem>
-              <MenubarItem>Notes</MenubarItem>
-            </MenubarSubContent>
-          </MenubarSub>
-          <MenubarSeparator />
-          <MenubarItem>
-            Print... <MenubarShortcut>⌘P</MenubarShortcut>
+          <MenubarItem disabled onSelect={fn()}>
+            New Incognito Window
           </MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem onSelect={fn()}>Share</MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem onSelect={fn()}>Print</MenubarItem>
         </MenubarContent>
       </MenubarMenu>
       <MenubarMenu>
         <MenubarTrigger>Edit</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem>
-            Undo <MenubarShortcut>⌘Z</MenubarShortcut>
+          <MenubarItem onSelect={fn()}>Undo</MenubarItem>
+          <MenubarItem onSelect={fn()}>Redo</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+    </Menubar>
+  ),
+  args: {},
+};
+
+export const Complex = {
+  render: (args) => (
+    <Menubar {...args}>
+      <MenubarMenu>
+        <MenubarTrigger>Academics</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem onSelect={fn()}>
+            New Branch <MenubarShortcut>⌘N</MenubarShortcut>
           </MenubarItem>
-          <MenubarItem>
-            Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>
+          <MenubarItem onSelect={fn()}>
+            Import CSV <MenubarShortcut>⌘I</MenubarShortcut>
           </MenubarItem>
           <MenubarSeparator />
           <MenubarSub>
-            <MenubarSubTrigger>Find</MenubarSubTrigger>
+            <MenubarSubTrigger>Syllabus</MenubarSubTrigger>
             <MenubarSubContent>
-              <MenubarItem>Search the web</MenubarItem>
-              <MenubarSeparator />
-              <MenubarItem>Find...</MenubarItem>
-              <MenubarItem>Find Next</MenubarItem>
-              <MenubarItem>Find Previous</MenubarItem>
+              <MenubarItem onSelect={fn()}>View All</MenubarItem>
+              <MenubarItem onSelect={fn()}>Export PDF</MenubarItem>
             </MenubarSubContent>
           </MenubarSub>
           <MenubarSeparator />
-          <MenubarItem>Cut</MenubarItem>
-          <MenubarItem>Copy</MenubarItem>
-          <MenubarItem>Paste</MenubarItem>
+          <MenubarItem variant="destructive" onSelect={fn()}>
+            Delete All Data
+          </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
       <MenubarMenu>
         <MenubarTrigger>View</MenubarTrigger>
         <MenubarContent>
-          <MenubarCheckboxItem>Always Show Bookmarks Bar</MenubarCheckboxItem>
-          <MenubarCheckboxItem checked>
-            Always Show Full URLs
+          <MenubarCheckboxItem onSelect={fn()}>
+            Show Sidebar
+          </MenubarCheckboxItem>
+          <MenubarCheckboxItem checked onSelect={fn()}>
+            Show Analytics
           </MenubarCheckboxItem>
           <MenubarSeparator />
-          <MenubarItem inset>
+          <MenubarItem inset onSelect={fn()}>
             Reload <MenubarShortcut>⌘R</MenubarShortcut>
           </MenubarItem>
-          <MenubarItem disabled inset>
-            Force Reload <MenubarShortcut>⇧⌘R</MenubarShortcut>
-          </MenubarItem>
-          <MenubarSeparator />
-          <MenubarItem inset>Toggle Fullscreen</MenubarItem>
-          <MenubarSeparator />
-          <MenubarItem inset>Hide Sidebar</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>Profiles</MenubarTrigger>
+        <MenubarContent>
+          <MenubarRadioGroup value="admin">
+            <MenubarLabel inset>Role</MenubarLabel>
+            <MenubarSeparator />
+            <MenubarRadioItem value="admin" onSelect={fn()}>
+              Admin
+            </MenubarRadioItem>
+            <MenubarRadioItem value="moderator" onSelect={fn()}>
+              Moderator
+            </MenubarRadioItem>
+            <MenubarRadioItem value="student" onSelect={fn()}>
+              Student
+            </MenubarRadioItem>
+          </MenubarRadioGroup>
         </MenubarContent>
       </MenubarMenu>
     </Menubar>
   ),
+  args: {
+    className: 'w-fit',
+  },
 };
