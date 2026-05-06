@@ -1,8 +1,9 @@
-import { AddSubjectDialogView } from './add-subject-dialog.view';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { fn } from '@storybook/test';
+import { AddSubjectDialogView } from './add-subject-dialog.view';
 
 const subjectSchema = z.object({
   name: z.string().min(1, 'Name is required').max(200),
@@ -14,14 +15,34 @@ const subjectSchema = z.object({
   isActive: z.boolean().default(true),
 });
 
-export default {
+const meta = {
   title: 'Studio/Academics/AddSubjectDialog',
   component: AddSubjectDialogView,
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
+  argTypes: {
+    open: {
+      control: 'boolean',
+      description: 'Whether the dialog is open',
+      table: { defaultValue: { summary: 'false' } },
+    },
+    onOpenChange: {
+      description: 'Callback when open state changes',
+    },
+    onSubmit: {
+      description: 'Callback when form is submitted',
+    },
+    trigger: {
+      control: 'boolean',
+      description: 'Whether to show the trigger button',
+      table: { defaultValue: { summary: 'true' } },
+    },
+  },
 };
+
+export default meta;
 
 const FormWrapper = ({ mockSubmitting = false, ...args }) => {
   const form = useForm({
@@ -37,11 +58,21 @@ const FormWrapper = ({ mockSubmitting = false, ...args }) => {
     },
   });
 
+  const name = form.watch('name');
+  useEffect(() => {
+    if (name) {
+      const generatedSlug = name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+      form.setValue('slug', generatedSlug, { shouldValidate: true });
+    }
+  }, [name, form]);
+
   const proxiedForm = {
     ...form,
     formState: {
       ...form.formState,
-      errors: form.formState.errors,
       isSubmitting: mockSubmitting,
     },
   };
@@ -55,6 +86,7 @@ export const Default = {
     open: true,
     onOpenChange: fn(),
     onSubmit: fn(),
+    trigger: true,
   },
 };
 
@@ -63,5 +95,13 @@ export const Submitting = {
   args: {
     ...Default.args,
     mockSubmitting: true,
+  },
+};
+
+export const WithoutTrigger = {
+  render: (args) => <FormWrapper {...args} />,
+  args: {
+    ...Default.args,
+    trigger: false,
   },
 };
