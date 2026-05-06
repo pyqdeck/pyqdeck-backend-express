@@ -46,10 +46,7 @@ const meta = {
 export default meta;
 
 const Template = (args) => (
-  <Collapsible
-    {...args}
-    className={cn('w-[350px] space-y-2', args.className)}
-  >
+  <Collapsible {...args} className={cn('w-[350px] space-y-2', args.className)}>
     <div className="flex items-center justify-between space-x-4 px-4">
       <h4 className="text-sm font-semibold">
         Syllabus: Data Structures & Algorithms
