@@ -12,7 +12,10 @@ const meta = {
   },
   render: (args) => (
     <div className="w-[450px]">
-      <AspectRatio {...args} className="bg-muted text-muted-foreground flex items-center justify-center overflow-hidden rounded-md border">
+      <AspectRatio
+        {...args}
+        className="bg-muted text-muted-foreground flex items-center justify-center overflow-hidden rounded-md border"
+      >
         <img
           src="https://raw.githubusercontent.com/hasanraiyan/hasanraiyan/refs/heads/main/portfolio.png"
           alt="Portfolio"
