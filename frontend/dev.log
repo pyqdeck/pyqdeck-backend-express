@@ -1,0 +1,7 @@
+
+> frontend@0.1.0 dev /app/frontend
+> next dev -p 3001
+
+sh: 1: next: not found
+ ELIFECYCLE  Command failed.
+ WARN   Local package.json exists, but node_modules missing, did you mean to install?
