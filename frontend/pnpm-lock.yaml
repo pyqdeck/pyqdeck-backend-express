@@ -122,7 +122,7 @@ importers:
         specifier: ^10.3.6
         version: 10.3.6(@babel/core@7.29.0)(esbuild@0.27.7)(next@16.2.4(@babel/core@7.29.0)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(storybook@10.3.6(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(typescript@6.0.3)(vite@8.0.10(@types/node@25.6.0)(esbuild@0.27.7)(jiti@2.6.1)(yaml@2.8.3))
       '@storybook/test':
-        specifier: ^8.6.15
+        specifier: 8.6.15
         version: 8.6.15(storybook@10.3.6(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4))
       '@tailwindcss/postcss':
         specifier: ^4
@@ -152,7 +152,7 @@ importers:
         specifier: ^0.8.0
         version: 0.8.0(prettier@3.8.3)
       storybook:
-        specifier: ^10.3.6
+        specifier: 10.3.6
         version: 10.3.6(@testing-library/dom@10.4.1)(prettier@3.8.3)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       swagger-typescript-api:
         specifier: ^13.7.2
