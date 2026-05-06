@@ -83,9 +83,7 @@ const Template = (args) => (
       <ContextMenuRadioGroup value="pedro">
         <ContextMenuLabel inset>People</ContextMenuLabel>
         <ContextMenuSeparator />
-        <ContextMenuRadioItem value="pedro">
-          Pedro Duarte
-        </ContextMenuRadioItem>
+        <ContextMenuRadioItem value="pedro">Pedro Duarte</ContextMenuRadioItem>
         <ContextMenuRadioItem value="colm">Colm Tuite</ContextMenuRadioItem>
       </ContextMenuRadioGroup>
     </ContextMenuContent>
