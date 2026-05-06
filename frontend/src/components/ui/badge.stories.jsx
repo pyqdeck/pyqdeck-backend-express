@@ -1,4 +1,6 @@
+import * as React from 'react';
 import { Badge } from './badge';
+import { Star } from 'lucide-react';
 
 export default {
   title: 'UI/Badge',
@@ -25,29 +27,43 @@ export default {
 
 export const Default = {
   args: {
-    children: 'Badge',
+    children: 'B.Tech',
     variant: 'default',
   },
 };
 
 export const Secondary = {
   args: {
-    children: 'Secondary',
+    children: 'Semester 4',
     variant: 'secondary',
   },
 };
 
 export const Destructive = {
   args: {
-    children: 'Destructive',
+    children: 'Critical',
     variant: 'destructive',
   },
 };
 
 export const Outline = {
   args: {
-    children: 'Outline',
+    children: 'KTU',
     variant: 'outline',
+  },
+};
+
+export const Ghost = {
+  args: {
+    children: 'Ghost Badge',
+    variant: 'ghost',
+  },
+};
+
+export const Link = {
+  args: {
+    children: 'Link Badge',
+    variant: 'link',
   },
 };
 
@@ -76,5 +92,25 @@ export const Emerald = {
   args: {
     children: 'Solved',
     variant: 'emerald',
+  },
+};
+
+export const AsChild = {
+  args: {
+    asChild: true,
+    children: <a href="https://pyqdeck.in">Link</a>,
+    variant: 'outline',
+  },
+};
+
+export const WithIcon = {
+  args: {
+    children: (
+      <>
+        <Star />
+        <span>Featured</span>
+      </>
+    ),
+    variant: 'default',
   },
 };
