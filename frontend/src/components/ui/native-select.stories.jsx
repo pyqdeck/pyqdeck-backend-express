@@ -1,38 +1,101 @@
+import { fn } from '@storybook/test';
 import {
   NativeSelect,
   NativeSelectOption,
   NativeSelectOptGroup,
 } from './native-select';
 
-export default {
+const meta = {
   title: 'UI/NativeSelect',
   component: NativeSelect,
   tags: ['autodocs'],
+  argTypes: {
+    size: {
+      control: 'select',
+      options: ['default', 'sm'],
+      description: 'The size of the select.',
+      table: {
+        defaultValue: { summary: 'default' },
+      },
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Whether the select is disabled.',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+    },
+  },
+  args: {
+    onChange: fn(),
+  },
 };
 
+/**
+ * A primitive select component using native HTML select element.
+ */
+export default meta;
+
+const Template = (args) => (
+  <NativeSelect {...args} className="w-[240px]">
+    <NativeSelectOption value="computer-engineering">
+      Computer Engineering
+    </NativeSelectOption>
+    <NativeSelectOption value="information-technology">
+      Information Technology
+    </NativeSelectOption>
+    <NativeSelectOption value="electronics-communication">
+      Electronics & Communication
+    </NativeSelectOption>
+    <NativeSelectOption value="mechanical-engineering">
+      Mechanical Engineering
+    </NativeSelectOption>
+  </NativeSelect>
+);
+
 export const Default = {
-  render: () => (
-    <NativeSelect className="w-[200px]">
-      <NativeSelectOption value="apple">Apple</NativeSelectOption>
-      <NativeSelectOption value="banana">Banana</NativeSelectOption>
-      <NativeSelectOption value="blueberry">Blueberry</NativeSelectOption>
-      <NativeSelectOption value="grapes">Grapes</NativeSelectOption>
-      <NativeSelectOption value="pineapple">Pineapple</NativeSelectOption>
-    </NativeSelect>
-  ),
+  render: Template,
+  args: {
+    size: 'default',
+  },
+};
+
+export const Small = {
+  render: Template,
+  args: {
+    size: 'sm',
+  },
+};
+
+export const Disabled = {
+  render: Template,
+  args: {
+    disabled: true,
+  },
 };
 
 export const WithGroups = {
-  render: () => (
-    <NativeSelect className="w-[200px]">
-      <NativeSelectOptGroup label="Fruits">
-        <NativeSelectOption value="apple">Apple</NativeSelectOption>
-        <NativeSelectOption value="banana">Banana</NativeSelectOption>
+  render: (args) => (
+    <NativeSelect {...args} className="w-[240px]">
+      <NativeSelectOptGroup label="Core Branches">
+        <NativeSelectOption value="computer-engineering">
+          Computer Engineering
+        </NativeSelectOption>
+        <NativeSelectOption value="information-technology">
+          Information Technology
+        </NativeSelectOption>
       </NativeSelectOptGroup>
-      <NativeSelectOptGroup label="Vegetables">
-        <NativeSelectOption value="carrot">Carrot</NativeSelectOption>
-        <NativeSelectOption value="potato">Potato</NativeSelectOption>
+      <NativeSelectOptGroup label="Other Branches">
+        <NativeSelectOption value="mechanical-engineering">
+          Mechanical Engineering
+        </NativeSelectOption>
+        <NativeSelectOption value="civil-engineering">
+          Civil Engineering
+        </NativeSelectOption>
       </NativeSelectOptGroup>
     </NativeSelect>
   ),
+  args: {
+    size: 'default',
+  },
 };
