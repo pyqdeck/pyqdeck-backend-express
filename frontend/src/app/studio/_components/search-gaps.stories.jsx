@@ -12,7 +12,10 @@ const meta = {
       control: 'object',
       description: 'Array of search gap objects containing query and count',
       table: {
-        type: { summary: 'array', detail: '[{ query: string, count: number }]' },
+        type: {
+          summary: 'array',
+          detail: '[{ query: string, count: number }]',
+        },
       },
     },
     loading: {
