@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import {
   Search,
@@ -20,7 +19,7 @@ import {
 } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
-const features = [
+const defaultFeatures = [
   {
     icon: Search,
     title: 'Smart Search',
@@ -71,7 +70,12 @@ const features = [
   },
 ];
 
-export function Features() {
+export function Features({
+  badgeText = 'Powerful Features',
+  title = 'Everything you need to ace your exams',
+  description = 'PyqDeck brings all your study resources together so you can focus on what matters — learning.',
+  features = defaultFeatures,
+}) {
   return (
     <section id="features" className="mx-auto w-full max-w-6xl px-4 py-28">
       <motion.div
@@ -85,14 +89,13 @@ export function Features() {
           className="mb-4 gap-1.5 rounded-full px-4 py-1.5"
         >
           <Zap className="text-warning size-3.5" />
-          Powerful Features
+          {badgeText}
         </Badge>
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          Everything you need to ace your exams
+          {title}
         </h2>
         <p className="text-muted-foreground mx-auto mt-4 max-w-md text-lg">
-          PyqDeck brings all your study resources together so you can focus on
-          what matters — learning.
+          {description}
         </p>
       </motion.div>
 
