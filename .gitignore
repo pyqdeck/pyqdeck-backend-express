@@ -7,3 +7,24 @@ test-report.junit.xml
 logs
 
 .kilo
+
+# Dependencies
+node_modules
+.pnpm-store
+
+# Next.js
+.next/
+out/
+
+# Storybook
+storybook-static/
+
+# Testing
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# OS files
+.DS_Store
+Thumbs.db
