@@ -94,7 +94,9 @@ const FormWrapper = ({
     },
   };
 
-  return <EditSubjectDialogView {...args} subject={subject} form={proxiedForm} />;
+  return (
+    <EditSubjectDialogView {...args} subject={subject} form={proxiedForm} />
+  );
 };
 
 const mockSubject = {
