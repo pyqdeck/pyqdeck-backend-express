@@ -6,6 +6,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Card,
   CardContent,
@@ -41,7 +42,7 @@ import {
   EmptyMedia,
 } from '@/components/ui/empty';
 
-export function PendingPapersView({ papers, onApprove, onReject }) {
+export function PendingPapersView({ papers, onApprove, onReject, loading }) {
   const header = (
     <CardHeader className="flex flex-row items-center justify-between pb-4">
       <div className="flex items-center gap-4">
@@ -65,6 +66,58 @@ export function PendingPapersView({ papers, onApprove, onReject }) {
       </Badge>
     </CardHeader>
   );
+
+  if (loading) {
+    return (
+      <Card className="border-border/50 hover:border-warning/20 border-2 shadow-none transition-all">
+        {header}
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader className="bg-muted/50">
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="font-roboto text-foreground h-12 py-0 font-bold">
+                  Document Details
+                </TableHead>
+                <TableHead className="font-roboto text-foreground h-12 py-0 font-bold">
+                  Academic Context
+                </TableHead>
+                <TableHead className="font-roboto text-foreground h-12 py-0 font-bold">
+                  Uploaded On
+                </TableHead>
+                <TableHead className="font-roboto text-foreground h-12 py-0 text-right font-bold">
+                  Actions
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[...Array(3)].map((_, i) => (
+                <TableRow key={i} className="hover:bg-transparent">
+                  <TableCell className="py-4">
+                    <div className="flex items-center gap-3">
+                      <Skeleton className="h-10 w-10 rounded-lg" />
+                      <div className="flex flex-col gap-2">
+                        <Skeleton className="h-4 w-[150px]" />
+                        <Skeleton className="h-3 w-[80px]" />
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="py-4">
+                    <Skeleton className="h-6 w-20 rounded-full" />
+                  </TableCell>
+                  <TableCell className="py-4">
+                    <Skeleton className="h-4 w-24" />
+                  </TableCell>
+                  <TableCell className="py-4 text-right">
+                    <Skeleton className="ml-auto h-8 w-8 rounded-full" />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    );
+  }
 
   if (!papers || papers.length === 0) {
     return (
