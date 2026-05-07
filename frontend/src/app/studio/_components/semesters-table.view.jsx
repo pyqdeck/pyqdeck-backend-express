@@ -27,6 +27,7 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -41,9 +42,68 @@ export function SemestersTableView({
   pagination,
   onEdit,
   onDelete,
+  loading = false,
 }) {
   const searchParams = useSearchParams();
-  const search = searchParams.get('search') || '';
+  const search = searchParams?.get('search') || '';
+
+  if (loading) {
+    return (
+      <Card className="border-border/50 overflow-hidden border-2 p-0 shadow-none">
+        <CardContent className="overflow-x-auto p-0">
+          <Table className="min-w-[480px]">
+            <TableHeader>
+              <TableRow className="bg-muted/30 border-b-2 hover:bg-transparent">
+                <TableHead className="font-roboto text-foreground h-12 w-[200px] px-6 font-bold tracking-wider uppercase">
+                  Semester
+                </TableHead>
+                <TableHead className="font-roboto text-foreground hidden h-12 px-6 font-bold tracking-wider uppercase sm:table-cell">
+                  Title / Label
+                </TableHead>
+                <TableHead className="font-roboto text-foreground h-12 px-6 font-bold tracking-wider uppercase">
+                  Branch
+                </TableHead>
+                <TableHead className="font-roboto text-foreground hidden h-12 px-6 font-bold tracking-wider uppercase sm:table-cell">
+                  URL Path
+                </TableHead>
+                <TableHead className="font-roboto text-foreground h-12 w-[100px] px-6 text-right font-bold tracking-wider uppercase">
+                  Actions
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[1, 2, 3, 4, 5].map((i) => (
+                <TableRow key={i} className="border-b">
+                  <TableCell className="px-6 py-3">
+                    <div className="flex items-center gap-3">
+                      <Skeleton className="h-9 w-9 rounded-lg" />
+                      <Skeleton className="h-5 w-24" />
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden px-6 py-3 sm:table-cell">
+                    <Skeleton className="h-4 w-32" />
+                  </TableCell>
+                  <TableCell className="px-6 py-3">
+                    <div className="flex flex-col gap-1.5">
+                      <Skeleton className="h-4 w-36" />
+                      <Skeleton className="h-3 w-20" />
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden px-6 py-3 sm:table-cell">
+                    <Skeleton className="h-5 w-24 rounded" />
+                  </TableCell>
+                  <TableCell className="px-6 py-3 text-right">
+                    <Skeleton className="ml-auto h-9 w-9 rounded-md" />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="border-border/50 overflow-hidden border-2 p-0 shadow-none">
       <CardContent className="overflow-x-auto p-0">
