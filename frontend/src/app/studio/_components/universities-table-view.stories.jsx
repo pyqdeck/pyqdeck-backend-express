@@ -1,20 +1,73 @@
 import { UniversitiesTableView } from './universities-table-view';
 import { fn } from '@storybook/test';
 
-export default {
-  title: 'Studio/Academics/UniversitiesTableView',
+/**
+ * The `UniversitiesTableView` component provides a tabular view of academic institutions.
+ * It supports loading states, empty states, searching, and pagination.
+ */
+const meta = {
+  title: 'Studio/Universities/UniversitiesTable',
   component: UniversitiesTableView,
   tags: ['autodocs'],
+  parameters: {
+    layout: 'fullscreen',
+  },
+  argTypes: {
+    universities: {
+      control: 'object',
+      description: 'Array of university objects to display',
+      table: {
+        type: {
+          summary: 'array',
+          detail:
+            'Array<{ id: string, name: string, shortName: string, slug: string, logo?: string, state?: string, country?: string, websiteUrl?: string, isActive: boolean }>',
+        },
+        defaultValue: { summary: '[]' },
+      },
+    },
+    pagination: {
+      control: 'object',
+      description: 'Pagination state object',
+      table: {
+        type: {
+          summary: 'object',
+          detail: '{ total: number, pages: number, current: number }',
+        },
+      },
+    },
+    onEdit: {
+      action: 'onEdit',
+      description: 'Callback when edit button is clicked',
+      table: {
+        type: { summary: '(university: object) => void' },
+      },
+    },
+    onDelete: {
+      action: 'onDelete',
+      description: 'Callback when delete button is clicked',
+      table: {
+        type: { summary: '(university: object) => void' },
+      },
+    },
+    loading: {
+      control: 'boolean',
+      description: 'Whether the table is in a loading state',
+      table: {
+        defaultValue: { summary: 'false' },
+      },
+    },
+  },
   args: {
-    onSearchChange: fn(),
     onEdit: fn(),
     onDelete: fn(),
   },
 };
 
+export default meta;
+
 const mockUniversities = [
   {
-    id: '1',
+    id: '64f1a2b3c4d5e6f7a8b9c0d1',
     name: 'University of Mumbai',
     shortName: 'MU',
     slug: 'mumbai-university',
@@ -25,7 +78,7 @@ const mockUniversities = [
     isActive: true,
   },
   {
-    id: '2',
+    id: '64f1a2b3c4d5e6f7a8b9c0d2',
     name: 'Delhi University',
     shortName: 'DU',
     slug: 'delhi-university',
@@ -36,7 +89,7 @@ const mockUniversities = [
     isActive: true,
   },
   {
-    id: '3',
+    id: '64f1a2b3c4d5e6f7a8b9c0d3',
     name: 'Indian Institute of Technology Bombay',
     shortName: 'IITB',
     slug: 'iit-bombay',
@@ -47,7 +100,7 @@ const mockUniversities = [
     isActive: true,
   },
   {
-    id: '4',
+    id: '64f1a2b3c4d5e6f7a8b9c0d4',
     name: 'Savitribai Phule Pune University',
     shortName: 'SPPU',
     slug: 'pune-university',
@@ -67,7 +120,14 @@ export const Default = {
       pages: 1,
       current: 1,
     },
-    search: '',
+    loading: false,
+  },
+};
+
+export const Loading = {
+  args: {
+    universities: [],
+    loading: true,
   },
 };
 
@@ -79,7 +139,7 @@ export const WithPagination = {
       pages: 5,
       current: 2,
     },
-    search: '',
+    loading: false,
   },
 };
 
@@ -91,7 +151,7 @@ export const Searching = {
       pages: 1,
       current: 1,
     },
-    search: 'Mumbai',
+    loading: false,
   },
   parameters: {
     nextjs: {
@@ -112,7 +172,7 @@ export const Empty = {
       pages: 0,
       current: 0,
     },
-    search: '',
+    loading: false,
   },
 };
 
@@ -124,7 +184,7 @@ export const NoResults = {
       pages: 0,
       current: 0,
     },
-    search: 'Something that does not exist',
+    loading: false,
   },
   parameters: {
     nextjs: {

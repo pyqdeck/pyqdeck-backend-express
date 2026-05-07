@@ -29,6 +29,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   Empty,
   EmptyDescription,
@@ -47,10 +48,11 @@ import {
 } from '@/components/ui/pagination';
 
 export function UniversitiesTableView({
-  universities,
+  universities = [],
   pagination,
   onEdit,
   onDelete,
+  loading = false,
 }) {
   const searchParams = useSearchParams();
   const search = searchParams?.get('search') || '';
@@ -63,6 +65,60 @@ export function UniversitiesTableView({
     params.set('page', '1');
     router.push(`${pathname}?${params.toString()}`);
   };
+
+  if (loading) {
+    return (
+      <Card className="border-border/50 overflow-hidden border-2 py-0 shadow-none">
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-muted/30 border-b-2 hover:bg-transparent">
+                <TableHead className="text-foreground font-roboto h-12 px-6 font-bold">
+                  Institution
+                </TableHead>
+                <TableHead className="text-foreground font-roboto hidden h-12 px-6 font-bold sm:table-cell">
+                  Location
+                </TableHead>
+                <TableHead className="text-foreground font-roboto h-12 px-6 font-bold">
+                  Status
+                </TableHead>
+                <TableHead className="text-foreground font-roboto h-12 w-[100px] px-6 text-right font-bold">
+                  Actions
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {[1, 2, 3, 4, 5].map((i) => (
+                <TableRow key={i}>
+                  <TableCell className="px-6 py-4">
+                    <div className="flex items-center gap-4">
+                      <Skeleton className="h-12 w-12 rounded-lg" />
+                      <div className="flex flex-col gap-2">
+                        <Skeleton className="h-5 w-40" />
+                        <Skeleton className="h-3 w-20" />
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="hidden px-6 py-4 sm:table-cell">
+                    <div className="flex flex-col gap-2">
+                      <Skeleton className="h-4 w-24" />
+                      <Skeleton className="h-3 w-16" />
+                    </div>
+                  </TableCell>
+                  <TableCell className="px-6 py-4">
+                    <Skeleton className="h-6 w-16 rounded-full" />
+                  </TableCell>
+                  <TableCell className="px-6 py-4 text-right">
+                    <Skeleton className="ml-auto h-9 w-9 rounded-md" />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="border-border/50 overflow-hidden border-2 py-0 shadow-none">
