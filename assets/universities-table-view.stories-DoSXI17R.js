@@ -1,0 +1,83 @@
+import{n as e,s as t}from"./chunk-CzyJ72yW.js";import{Br as n,Ci as r,Gr as i,Hr as a,Kr as o,Wr as s,a as c,i as l,n as u,o as d,r as ee,s as te,t as ne}from"./iframe-D-rf6A3B.js";import{n as f,r as re}from"./dist-BvuEP38C.js";import{N as ie,O as p,Q as m,at as h,d as ae,q as oe,st as g,t as _}from"./lucide-react-DrqD3YEE.js";import{r as v,t as y}from"./button-CFpZxpux.js";import{c as b,i as x,l as S,n as C,o as w,s as T,t as E}from"./table-BlwCPkr7.js";import{a as se,c as ce,r as D,t as O}from"./card-D8olUgh9.js";import{n as le,t as ue}from"./badge-lw-yJ2vZ.js";import{a as de,i as fe,o as pe,r as me,s as he,t as ge}from"./empty-By0kIeZz.js";import{t as _e}from"./link-Bzl_oe7k.js";import{a as k,g as A,h as j,o as M,r as N,t as P,u as F}from"./dropdown-menu-ikyxvXoE.js";import{a as I,c as ve,i as L,n as ye,o as be,r as xe,s as Se,t as Ce}from"./pagination-CUBTtZ1M.js";import{n as we,t as R}from"./skeleton-Bl_kPif_.js";import{o as Te,r as Ee,s as De,t as Oe}from"./avatar-BSo66Ufy.js";function z({label:e,tooltip:t,trigger:n,children:r,align:i=`end`,contentClassName:a,showSeparator:o=!0}){let s=n||(0,B.jsxs)(y,{variant:`outline`,size:`icon`,className:`h-8 w-8 border-2 shadow-none`,children:[(0,B.jsx)(g,{className:`h-4 w-4`}),(0,B.jsx)(`span`,{className:`sr-only`,children:`Open actions`})]}),c=(0,B.jsxs)(N,{align:i,className:d(`font-roboto w-56 border-2 p-2 shadow-none`,a),children:[e&&(0,B.jsxs)(B.Fragment,{children:[(0,B.jsx)(M,{className:`text-muted-foreground px-2 py-1.5 text-xs font-semibold tracking-wider uppercase`,children:e}),o&&(0,B.jsx)(F,{className:`my-1 border-b`})]}),r]});return(0,B.jsxs)(P,{children:[t?(0,B.jsx)(ee,{children:(0,B.jsxs)(ne,{children:[(0,B.jsx)(l,{asChild:!0,children:(0,B.jsx)(j,{asChild:!0,children:s})}),(0,B.jsx)(u,{className:`font-roboto font-bold`,children:t})]})}):(0,B.jsx)(j,{asChild:!0,children:s}),c]})}var B,ke=e((()=>{B=t(n(),1),r(),_(),A(),v(),c(),te(),z.__docgenInfo={description:`A reusable action menu that combines a DropdownMenu with an optional Tooltip.
+
+@param {Object} props
+@param {string} [props.label] - Optional header label for the menu.
+@param {string} [props.tooltip] - Optional tooltip text for the trigger button.
+@param {React.ReactNode} [props.trigger] - Custom trigger element. Defaults to a MoreVertical icon button.
+@param {React.ReactNode} props.children - Menu items.
+@param {string} [props.align="end"] - Alignment of the dropdown content.
+@param {string} [props.contentClassName] - Additional classes for the dropdown content.
+@param {boolean} [props.showSeparator=true] - Whether to show a separator after the label.`,methods:[],displayName:`DropdownAction`,props:{align:{defaultValue:{value:`'end'`,computed:!1},required:!1},showSeparator:{defaultValue:{value:`true`,computed:!1},required:!1}}}}));function V({universities:e=[],pagination:t,onEdit:n,onDelete:r,loading:a=!1}){let c=o(),l=c?.get(`search`)||``,u=i(),d=s();return a?(0,H.jsx)(O,{className:`border-border/50 overflow-hidden border-2 py-0 shadow-none`,children:(0,H.jsx)(D,{className:`p-0`,children:(0,H.jsxs)(E,{children:[(0,H.jsx)(T,{children:(0,H.jsxs)(b,{className:`bg-muted/30 border-b-2 hover:bg-transparent`,children:[(0,H.jsx)(w,{className:`text-foreground font-roboto h-12 px-6 font-bold`,children:`Institution`}),(0,H.jsx)(w,{className:`text-foreground font-roboto hidden h-12 px-6 font-bold sm:table-cell`,children:`Location`}),(0,H.jsx)(w,{className:`text-foreground font-roboto h-12 px-6 font-bold`,children:`Status`}),(0,H.jsx)(w,{className:`text-foreground font-roboto h-12 w-[100px] px-6 text-right font-bold`,children:`Actions`})]})}),(0,H.jsx)(C,{children:[1,2,3,4,5].map(e=>(0,H.jsxs)(b,{children:[(0,H.jsx)(x,{className:`px-6 py-4`,children:(0,H.jsxs)(`div`,{className:`flex items-center gap-4`,children:[(0,H.jsx)(R,{className:`h-12 w-12 rounded-lg`}),(0,H.jsxs)(`div`,{className:`flex flex-col gap-2`,children:[(0,H.jsx)(R,{className:`h-5 w-40`}),(0,H.jsx)(R,{className:`h-3 w-20`})]})]})}),(0,H.jsx)(x,{className:`hidden px-6 py-4 sm:table-cell`,children:(0,H.jsxs)(`div`,{className:`flex flex-col gap-2`,children:[(0,H.jsx)(R,{className:`h-4 w-24`}),(0,H.jsx)(R,{className:`h-3 w-16`})]})}),(0,H.jsx)(x,{className:`px-6 py-4`,children:(0,H.jsx)(R,{className:`h-6 w-16 rounded-full`})}),(0,H.jsx)(x,{className:`px-6 py-4 text-right`,children:(0,H.jsx)(R,{className:`ml-auto h-9 w-9 rounded-md`})})]},e))})]})})}):(0,H.jsxs)(O,{className:`border-border/50 overflow-hidden border-2 py-0 shadow-none`,children:[(0,H.jsx)(D,{className:`overflow-x-auto p-0`,children:(0,H.jsxs)(E,{className:`min-w-[500px]`,children:[(0,H.jsx)(T,{children:(0,H.jsxs)(b,{className:`bg-muted/30 border-b-2 hover:bg-transparent`,children:[(0,H.jsx)(w,{className:`text-foreground font-roboto h-12 px-6 font-bold`,children:`Institution`}),(0,H.jsx)(w,{className:`text-foreground font-roboto hidden h-12 px-6 font-bold sm:table-cell`,children:`Location`}),(0,H.jsx)(w,{className:`text-foreground font-roboto h-12 px-6 font-bold`,children:`Status`}),(0,H.jsx)(w,{className:`text-foreground font-roboto h-12 w-[100px] px-6 text-right font-bold`,children:`Actions`})]})}),(0,H.jsx)(C,{children:e.length===0?(0,H.jsx)(b,{children:(0,H.jsx)(x,{colSpan:4,className:`h-72 p-0`,children:(0,H.jsxs)(ge,{className:`border-0 shadow-none`,children:[(0,H.jsxs)(fe,{children:[(0,H.jsx)(de,{variant:`icon`,children:(0,H.jsx)(p,{className:`size-4`})}),(0,H.jsx)(pe,{className:`text-lg`,children:l?`No matching universities`:`No universities found`}),(0,H.jsx)(me,{children:l?`We couldn't find any results for "${l}". Try adjusting your filters or search term.`:`Add your first institution to start managing your academic database.`})]}),l&&(0,H.jsx)(y,{variant:`outline`,onClick:()=>{let e=new URLSearchParams(c?.toString()||``);e.delete(`search`),e.set(`page`,`1`),u.push(`${d}?${e.toString()}`)},className:`mt-2 border-2`,children:`Clear Search`})]})})}):e.map(e=>(0,H.jsxs)(b,{className:`group border-b`,children:[(0,H.jsx)(x,{className:`px-6 py-4`,children:(0,H.jsxs)(`div`,{className:`flex items-center gap-4`,children:[(0,H.jsxs)(Oe,{className:`border-muted bg-muted/50 size-12 rounded-lg border-2 after:rounded-lg`,children:[(0,H.jsx)(Te,{src:e.logo,alt:e.name,className:`rounded-lg object-contain`}),(0,H.jsx)(Ee,{className:`rounded-lg text-lg font-bold`,children:e.name.charAt(0)})]}),(0,H.jsxs)(`div`,{className:`flex min-w-0 flex-col`,children:[(0,H.jsxs)(`span`,{className:`text-foreground group-hover:text-primary font-roboto flex items-center gap-1.5 truncate font-bold transition-colors`,children:[e.name,e.websiteUrl&&(0,H.jsx)(U.default,{href:e.websiteUrl,target:`_blank`,className:`text-muted-foreground hover:text-primary transition-colors`,children:(0,H.jsx)(h,{className:`size-3`})})]}),(0,H.jsxs)(`div`,{className:`flex items-center gap-2 leading-none`,children:[(0,H.jsx)(`span`,{className:`text-muted-foreground font-roboto text-[10px] font-bold tracking-wider uppercase`,children:e.shortName}),(0,H.jsx)(`span`,{className:`text-muted-foreground/30`,children:`•`}),(0,H.jsxs)(`span`,{className:`text-muted-foreground font-roboto text-xs lowercase`,children:[`/`,e.slug]})]})]})]})}),(0,H.jsx)(x,{className:`hidden px-6 py-4 sm:table-cell`,children:(0,H.jsxs)(`div`,{className:`flex flex-col`,children:[(0,H.jsx)(`span`,{className:`text-foreground font-roboto text-sm font-semibold`,children:e.state||`N/A`}),(0,H.jsx)(`span`,{className:`text-muted-foreground font-roboto text-xs`,children:e.country||`India`})]})}),(0,H.jsx)(x,{className:`px-6 py-4`,children:(0,H.jsx)(ue,{variant:e.isActive===!1?`secondary`:`default`,className:`font-roboto rounded-full px-2.5 py-0.5 font-semibold ${e.isActive===!1?`bg-muted text-muted-foreground`:`bg-success/10 text-success hover:bg-success/10`}`,children:e.isActive===!1?`Inactive`:`Active`})}),(0,H.jsx)(x,{className:`px-6 py-4 text-right`,children:(0,H.jsxs)(z,{label:`Management`,trigger:(0,H.jsxs)(y,{variant:`ghost`,className:`hover:bg-muted/50 size-9 border-2 p-0 transition-colors`,children:[(0,H.jsx)(`span`,{className:`sr-only`,children:`Open menu`}),(0,H.jsx)(g,{className:`size-4`})]}),children:[(0,H.jsxs)(k,{className:`focus:bg-primary/5 group cursor-pointer rounded-md py-2.5`,onClick:()=>n(e),children:[(0,H.jsx)(ie,{className:`text-muted-foreground group-hover:text-primary mr-3 size-4 transition-colors`}),(0,H.jsx)(`span`,{className:`font-medium`,children:`Edit University`})]}),e.websiteUrl&&(0,H.jsx)(k,{asChild:!0,className:`focus:bg-primary/5 group cursor-pointer rounded-md py-2.5`,children:(0,H.jsxs)(U.default,{href:e.websiteUrl,target:`_blank`,rel:`noopener noreferrer`,className:`flex w-full items-center`,children:[(0,H.jsx)(h,{className:`text-muted-foreground group-hover:text-primary mr-3 size-4 transition-colors`}),(0,H.jsx)(`span`,{className:`font-medium`,children:`Visit Website`})]})}),(0,H.jsx)(F,{className:`my-1 border-b`}),(0,H.jsx)(k,{asChild:!0,className:`focus:bg-primary/5 group cursor-pointer rounded-md py-2.5`,children:(0,H.jsxs)(U.default,{href:`/studio/branches?universityId=${e.id}`,className:`flex w-full items-center`,children:[(0,H.jsx)(oe,{className:`text-muted-foreground group-hover:text-primary mr-3 size-4 transition-colors`}),(0,H.jsx)(`span`,{className:`text-primary font-medium`,children:`View Branches`})]})}),(0,H.jsx)(k,{asChild:!0,className:`focus:bg-primary/5 group cursor-pointer rounded-md py-2.5`,children:(0,H.jsxs)(U.default,{href:`/studio/semesters?universityId=${e.id}`,className:`flex w-full items-center`,children:[(0,H.jsx)(m,{className:`text-muted-foreground group-hover:text-warning mr-3 size-4 transition-colors`}),(0,H.jsx)(`span`,{className:`text-warning font-medium`,children:`View Semesters`})]})}),(0,H.jsx)(F,{className:`my-1 border-b`}),(0,H.jsxs)(k,{className:`text-destructive focus:text-destructive focus:bg-destructive/5 group cursor-pointer rounded-md py-2.5`,onClick:()=>r(e),children:[(0,H.jsx)(ae,{className:`text-destructive/70 group-hover:text-destructive mr-3 size-4 transition-colors`}),(0,H.jsx)(`span`,{className:`font-bold`,children:`Delete Institution`})]})]})})]},e.id))})]})}),t&&t.pages>1&&(0,H.jsxs)(se,{className:`flex-col items-start gap-4 border-t-2 pt-6 sm:flex-row sm:items-center`,children:[(0,H.jsx)(Ce,{className:`mx-0 w-auto justify-start`,children:(0,H.jsxs)(ye,{children:[(0,H.jsx)(L,{children:(0,H.jsx)(Se,{href:t.current>1?`?page=${t.current-1}`:`#`,className:t.current===1?`pointer-events-none opacity-50`:`border-2`})}),[...Array(t.pages)].map((e,n)=>{let r=n+1;return r===1||r===t.pages||r>=t.current-1&&r<=t.current+1?(0,H.jsx)(L,{children:(0,H.jsx)(I,{href:`?page=${r}`,isActive:r===t.current,className:`font-roboto border-2 font-bold`,children:r})},r):r===t.current-2||r===t.current+2?(0,H.jsx)(L,{children:(0,H.jsx)(xe,{})},r):null}),(0,H.jsx)(L,{children:(0,H.jsx)(be,{href:t.current<t.pages?`?page=${t.current+1}`:`#`,className:t.current===t.pages?`pointer-events-none opacity-50`:`border-2`})})]})}),(0,H.jsxs)(`div`,{className:`text-muted-foreground font-roboto text-sm sm:ml-auto`,children:[`Showing`,` `,(0,H.jsx)(`span`,{className:`text-foreground font-bold`,children:(t.current-1)*10+1}),` `,`to`,` `,(0,H.jsx)(`span`,{className:`text-foreground font-bold`,children:Math.min(t.current*10,t.total)}),` `,`of`,` `,(0,H.jsx)(`span`,{className:`text-foreground font-bold`,children:t.total}),` `,`entries`]})]})]})}var H,U,W=e((()=>{H=t(n(),1),r(),a(),U=t(_e(),1),ke(),A(),_(),ce(),S(),De(),le(),v(),we(),he(),ve(),V.__docgenInfo={description:``,methods:[],displayName:`UniversitiesTableView`,props:{universities:{defaultValue:{value:`[]`,computed:!1},required:!1},loading:{defaultValue:{value:`false`,computed:!1},required:!1}}}})),G,K,q,J,Y,X,Z,Q,$;e((()=>{W(),re(),G={title:`Studio/Universities/UniversitiesTable`,component:V,tags:[`autodocs`],parameters:{layout:`fullscreen`,docs:{description:{component:"The `UniversitiesTableView` component provides a tabular view of academic institutions.\nIt supports loading states, empty states, searching, and pagination."}}},argTypes:{universities:{control:`object`,description:`Array of university objects to display`,table:{type:{summary:`array`,detail:`Array<{ id: string, name: string, shortName: string, slug: string, logo?: string, state?: string, country?: string, websiteUrl?: string, isActive: boolean }>`},defaultValue:{summary:`[]`}}},pagination:{control:`object`,description:`Pagination state object`,table:{type:{summary:`object`,detail:`{ total: number, pages: number, current: number }`}}},onEdit:{action:`onEdit`,description:`Callback when edit button is clicked`,table:{type:{summary:`(university: object) => void`}}},onDelete:{action:`onDelete`,description:`Callback when delete button is clicked`,table:{type:{summary:`(university: object) => void`}}},loading:{control:`boolean`,description:`Whether the table is in a loading state`,table:{defaultValue:{summary:`false`}}}},args:{onEdit:f(),onDelete:f()}},K=[{id:`64f1a2b3c4d5e6f7a8b9c0d1`,name:`University of Mumbai`,shortName:`MU`,slug:`mumbai-university`,logo:`https://upload.wikimedia.org/wikipedia/en/thumb/5/5a/University_of_Mumbai_logo.png/220px-University_of_Mumbai_logo.png`,state:`Maharashtra`,country:`India`,websiteUrl:`https://mu.ac.in`,isActive:!0},{id:`64f1a2b3c4d5e6f7a8b9c0d2`,name:`Delhi University`,shortName:`DU`,slug:`delhi-university`,logo:``,state:`Delhi`,country:`India`,websiteUrl:`https://du.ac.in`,isActive:!0},{id:`64f1a2b3c4d5e6f7a8b9c0d3`,name:`Indian Institute of Technology Bombay`,shortName:`IITB`,slug:`iit-bombay`,logo:`https://upload.wikimedia.org/wikipedia/en/thumb/1/1d/IIT_Bombay_Logo.svg/1200px-IIT_Bombay_Logo.svg.png`,state:`Maharashtra`,country:`India`,websiteUrl:`https://iitb.ac.in`,isActive:!0},{id:`64f1a2b3c4d5e6f7a8b9c0d4`,name:`Savitribai Phule Pune University`,shortName:`SPPU`,slug:`pune-university`,logo:``,state:`Maharashtra`,country:`India`,websiteUrl:`https://unipune.ac.in`,isActive:!1}],q={args:{universities:K,pagination:{total:4,pages:1,current:1},loading:!1}},J={args:{universities:[],loading:!0}},Y={args:{universities:K,pagination:{total:45,pages:5,current:2},loading:!1}},X={args:{universities:[K[0]],pagination:{total:1,pages:1,current:1},loading:!1},parameters:{nextjs:{navigation:{query:{search:`Mumbai`}}}}},Z={args:{universities:[],pagination:{total:0,pages:0,current:0},loading:!1}},Q={args:{universities:[],pagination:{total:0,pages:0,current:0},loading:!1},parameters:{nextjs:{navigation:{query:{search:`Something that does not exist`}}}}},q.parameters={...q.parameters,docs:{...q.parameters?.docs,source:{originalSource:`{
+  args: {
+    universities: mockUniversities,
+    pagination: {
+      total: 4,
+      pages: 1,
+      current: 1
+    },
+    loading: false
+  }
+}`,...q.parameters?.docs?.source}}},J.parameters={...J.parameters,docs:{...J.parameters?.docs,source:{originalSource:`{
+  args: {
+    universities: [],
+    loading: true
+  }
+}`,...J.parameters?.docs?.source}}},Y.parameters={...Y.parameters,docs:{...Y.parameters?.docs,source:{originalSource:`{
+  args: {
+    universities: mockUniversities,
+    pagination: {
+      total: 45,
+      pages: 5,
+      current: 2
+    },
+    loading: false
+  }
+}`,...Y.parameters?.docs?.source}}},X.parameters={...X.parameters,docs:{...X.parameters?.docs,source:{originalSource:`{
+  args: {
+    universities: [mockUniversities[0]],
+    pagination: {
+      total: 1,
+      pages: 1,
+      current: 1
+    },
+    loading: false
+  },
+  parameters: {
+    nextjs: {
+      navigation: {
+        query: {
+          search: 'Mumbai'
+        }
+      }
+    }
+  }
+}`,...X.parameters?.docs?.source}}},Z.parameters={...Z.parameters,docs:{...Z.parameters?.docs,source:{originalSource:`{
+  args: {
+    universities: [],
+    pagination: {
+      total: 0,
+      pages: 0,
+      current: 0
+    },
+    loading: false
+  }
+}`,...Z.parameters?.docs?.source}}},Q.parameters={...Q.parameters,docs:{...Q.parameters?.docs,source:{originalSource:`{
+  args: {
+    universities: [],
+    pagination: {
+      total: 0,
+      pages: 0,
+      current: 0
+    },
+    loading: false
+  },
+  parameters: {
+    nextjs: {
+      navigation: {
+        query: {
+          search: 'Something that does not exist'
+        }
+      }
+    }
+  }
+}`,...Q.parameters?.docs?.source}}},$=[`Default`,`Loading`,`WithPagination`,`Searching`,`Empty`,`NoResults`]}))();export{q as Default,Z as Empty,J as Loading,Q as NoResults,X as Searching,Y as WithPagination,$ as __namedExportsOrder,G as default};
