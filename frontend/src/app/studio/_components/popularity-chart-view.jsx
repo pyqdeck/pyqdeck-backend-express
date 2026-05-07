@@ -23,8 +23,9 @@ import {
   EmptyDescription,
   EmptyMedia,
 } from '@/components/ui/empty';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export function PopularityChartView({ data }) {
+export function PopularityChartView({ data, loading = false }) {
   const chartData = React.useMemo(() => {
     return (data || []).map((item, index) => ({
       subject: item.subject,
@@ -58,7 +59,11 @@ export function PopularityChartView({ data }) {
         </div>
       </CardHeader>
       <CardContent className="mt-4 flex-1 pb-0">
-        {chartData.length === 0 ? (
+        {loading ? (
+          <div className="flex h-[250px] items-center justify-center p-4">
+            <Skeleton className="h-[200px] w-[200px] rounded-full" />
+          </div>
+        ) : chartData.length === 0 ? (
           <div className="flex h-[250px] items-center justify-center">
             <Empty className="border-none shadow-none">
               <EmptyMedia
