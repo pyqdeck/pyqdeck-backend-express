@@ -1,19 +1,46 @@
 import { OfferingsTableView } from './offerings-table-view';
 import { fn } from '@storybook/test';
 
-export default {
-  title: 'Studio/Academics/OfferingsTableView',
+const meta = {
+  title: 'Studio/Academics/OfferingsTable',
   component: OfferingsTableView,
   tags: ['autodocs'],
+  parameters: {
+    layout: 'fullscreen',
+  },
+  argTypes: {
+    offerings: {
+      control: 'object',
+      description: 'List of subject offerings to display',
+    },
+    pagination: {
+      control: 'object',
+      description: 'Pagination state',
+    },
+    search: {
+      control: 'text',
+      description: 'Search query for filtering offerings',
+    },
+    loading: {
+      control: 'boolean',
+      description: 'Loading state of the table',
+      table: { defaultValue: { summary: 'false' } },
+    },
+    onDelete: {
+      description: 'Callback when an offering is withdrawn',
+    },
+  },
   args: {
-    onSearchChange: fn(),
     onDelete: fn(),
+    search: '',
   },
 };
 
+export default meta;
+
 const mockOfferings = [
   {
-    id: 'o1',
+    id: '65f1a2b3c4d5e6f7a8b9c0d1',
     subjectId: { name: 'Data Structures', subjectCode: 'CS301' },
     universityId: { name: 'University of Mumbai', shortName: 'MU' },
     branchId: { name: 'Computer Engineering', shortName: 'COMP' },
@@ -22,7 +49,7 @@ const mockOfferings = [
     academicYear: '2023-24',
   },
   {
-    id: 'o2',
+    id: '65f1a2b3c4d5e6f7a8b9c0d2',
     subjectId: { name: 'Operating Systems', subjectCode: 'CS401' },
     universityId: { name: 'University of Mumbai', shortName: 'MU' },
     branchId: { name: 'Computer Engineering', shortName: 'COMP' },
@@ -31,7 +58,7 @@ const mockOfferings = [
     academicYear: '2023-24',
   },
   {
-    id: 'o3',
+    id: '65f1a2b3c4d5e6f7a8b9c0d3',
     subjectId: { name: 'Mathematics-III', subjectCode: 'MA301' },
     universityId: { name: 'IIT Bombay', shortName: 'IITB' },
     branchId: { name: 'Mechanical Engineering', shortName: 'MECH' },
@@ -69,5 +96,39 @@ export const Empty = {
       current: 0,
     },
     loading: false,
+  },
+};
+
+export const WithPagination = {
+  args: {
+    offerings: mockOfferings,
+    pagination: {
+      total: 30,
+      pages: 10,
+      current: 1,
+    },
+    loading: false,
+  },
+};
+
+export const NoResults = {
+  args: {
+    offerings: [],
+    pagination: {
+      total: 0,
+      pages: 0,
+      current: 0,
+    },
+    search: 'Quantum Physics',
+    loading: false,
+  },
+  parameters: {
+    nextjs: {
+      navigation: {
+        query: {
+          search: 'Quantum Physics',
+        },
+      },
+    },
   },
 };
