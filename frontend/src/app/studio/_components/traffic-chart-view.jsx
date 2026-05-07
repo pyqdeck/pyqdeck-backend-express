@@ -22,8 +22,18 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+import { Skeleton } from '@/components/ui/skeleton';
+import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyMedia,
+} from '@/components/ui/empty';
 
-export function TrafficChartView({ data }) {
+export function TrafficChartView({ data, loading = false }) {
+  const chartData = React.useMemo(() => data || [], [data]);
+
   return (
     <Card className="border-border/50 border-2 shadow-none">
       <CardHeader className="flex flex-row items-center gap-3">
@@ -37,57 +47,99 @@ export function TrafficChartView({ data }) {
           </CardDescription>
         </div>
       </CardHeader>
-      <CardContent className="h-[350px]">
-        <ChartContainer
-          config={{
-            views: { label: 'Views', color: 'hsl(var(--primary))' },
-            users: { label: 'Users', color: 'hsl(var(--chart-2))' },
-          }}
-        >
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={data}>
-              <defs>
-                <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor="hsl(var(--primary))"
-                    stopOpacity={0.3}
-                  />
-                  <stop
-                    offset="95%"
-                    stopColor="hsl(var(--primary))"
-                    stopOpacity={0}
-                  />
-                </linearGradient>
-              </defs>
-              <CartesianGrid
-                strokeDasharray="3 3"
-                vertical={false}
-                stroke="hsl(var(--border))"
-              />
-              <XAxis
-                dataKey="name"
-                axisLine={false}
-                tickLine={false}
-                tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-              />
-              <YAxis
-                axisLine={false}
-                tickLine={false}
-                tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-              />
-              <ChartTooltip content={<ChartTooltipContent />} />
-              <Area
-                type="monotone"
-                dataKey="views"
-                stroke="hsl(var(--primary))"
-                strokeWidth={2}
-                fillOpacity={1}
-                fill="url(#colorViews)"
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </ChartContainer>
+      <CardContent className="flex h-[350px] flex-col items-center justify-center">
+        {loading ? (
+          <div className="flex h-full w-full items-center justify-center p-8">
+            <Skeleton className="h-full w-full rounded-xl" />
+          </div>
+        ) : chartData.length === 0 ? (
+          <Empty className="border-none shadow-none">
+            <EmptyMedia
+              variant="icon"
+              className="rounded-full bg-slate-50 dark:bg-slate-900/50"
+            >
+              <TrendingUp className="text-muted-foreground/50 h-6 w-6" />
+            </EmptyMedia>
+            <EmptyHeader>
+              <EmptyTitle className="text-base">No traffic data yet</EmptyTitle>
+              <EmptyDescription>
+                Wait for users to visit the platform to see traffic analytics.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        ) : (
+          <ChartContainer
+            config={{
+              views: { label: 'Views', color: 'hsl(var(--primary))' },
+              users: { label: 'Users', color: 'hsl(var(--chart-2))' },
+            }}
+            className="h-full w-full"
+          >
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={chartData}>
+                <defs>
+                  <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
+                    <stop
+                      offset="5%"
+                      stopColor="hsl(var(--primary))"
+                      stopOpacity={0.3}
+                    />
+                    <stop
+                      offset="95%"
+                      stopColor="hsl(var(--primary))"
+                      stopOpacity={0}
+                    />
+                  </linearGradient>
+                  <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                    <stop
+                      offset="5%"
+                      stopColor="hsl(var(--chart-2))"
+                      stopOpacity={0.3}
+                    />
+                    <stop
+                      offset="95%"
+                      stopColor="hsl(var(--chart-2))"
+                      stopOpacity={0}
+                    />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid
+                  strokeDasharray="3 3"
+                  vertical={false}
+                  stroke="hsl(var(--border))"
+                />
+                <XAxis
+                  dataKey="name"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+                />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+                />
+                <ChartTooltip content={<ChartTooltipContent />} />
+                <Area
+                  type="monotone"
+                  dataKey="views"
+                  stroke="hsl(var(--primary))"
+                  strokeWidth={2}
+                  fillOpacity={1}
+                  fill="url(#colorViews)"
+                />
+                <Area
+                  type="monotone"
+                  dataKey="users"
+                  stroke="hsl(var(--chart-2))"
+                  strokeWidth={2}
+                  fillOpacity={1}
+                  fill="url(#colorUsers)"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </ChartContainer>
+        )}
       </CardContent>
     </Card>
   );
