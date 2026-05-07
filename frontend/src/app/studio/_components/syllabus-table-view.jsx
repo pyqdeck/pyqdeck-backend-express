@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Fragment } from 'react';
+import { useSearchParams } from 'next/navigation';
 import {
   Edit,
   Trash2,
@@ -9,9 +10,8 @@ import {
   Plus,
   CheckCircle2,
   AlertCircle,
-  FileText,
   ChevronRight,
-  GripVertical,
+  Search,
 } from 'lucide-react';
 import {
   Table,
@@ -33,8 +33,26 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
+  CardFooter,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from '@/components/ui/empty';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 import { AddModuleDialog } from './add-module-dialog';
 import { DropdownAction } from '@/components/dropdown-action';
 import { cn } from '@/lib/utils';
@@ -42,13 +60,18 @@ import { cn } from '@/lib/utils';
 export function SyllabusTableView({
   syllabus,
   modules = [],
+  pagination,
   onModuleAdd,
   onTopicAdd,
   onEditModule,
   onDeleteModule,
   onEditTopic,
   onDeleteTopic,
+  loading = false,
 }) {
+  const searchParams = useSearchParams();
+  const search = searchParams?.get('search') || '';
+
   const sortedModules = [...modules].sort(
     (a, b) => (a.moduleNumber || 0) - (b.moduleNumber || 0)
   );
@@ -73,56 +96,78 @@ export function SyllabusTableView({
               <CardTitle className="font-roboto text-2xl font-bold">
                 Curriculum Structure
               </CardTitle>
-              <Badge
-                className={cn(
-                  'font-roboto rounded-full border-none px-2.5 py-0.5 font-bold',
-                  syllabus?.isActive
-                    ? 'bg-success/10 text-success'
-                    : 'bg-warning/10 text-warning'
-                )}
-              >
-                {syllabus?.isActive ? (
-                  <CheckCircle2 className="mr-1.5 h-3.5 w-3.5" />
-                ) : (
-                  <AlertCircle className="mr-1.5 h-3.5 w-3.5" />
-                )}
-                {syllabus?.isActive ? 'Active' : 'Draft'}
-              </Badge>
+              {loading ? (
+                <Skeleton className="h-6 w-20 rounded-full" />
+              ) : (
+                <Badge
+                  className={cn(
+                    'font-roboto rounded-full border-none px-2.5 py-0.5 font-bold',
+                    syllabus?.isActive
+                      ? 'bg-success/10 text-success'
+                      : 'bg-warning/10 text-warning'
+                  )}
+                >
+                  {syllabus?.isActive ? (
+                    <CheckCircle2 className="mr-1.5 h-3.5 w-3.5" />
+                  ) : (
+                    <AlertCircle className="mr-1.5 h-3.5 w-3.5" />
+                  )}
+                  {syllabus?.isActive ? 'Active' : 'Draft'}
+                </Badge>
+              )}
             </div>
-            <CardDescription className="font-roboto max-w-2xl text-sm">
-              {syllabus?.description ||
-                'Build and organize the modules and learning outcomes for this academic subject.'}
-            </CardDescription>
+            <div className="min-h-[20px]">
+              {loading ? (
+                <Skeleton className="h-4 w-full max-w-xl" />
+              ) : (
+                <CardDescription className="font-roboto max-w-2xl text-sm">
+                  {syllabus?.description ||
+                    'Build and organize the modules and learning outcomes for this academic subject.'}
+                </CardDescription>
+              )}
+            </div>
 
             <div className="flex flex-wrap items-center gap-6 pt-3">
               <div className="flex flex-col gap-0.5">
                 <span className="text-muted-foreground font-roboto text-[10px] font-bold tracking-widest uppercase">
                   Modules
                 </span>
-                <span className="text-foreground font-roboto text-sm font-bold">
-                  {sortedModules.length}
-                </span>
+                {loading ? (
+                  <Skeleton className="h-5 w-8" />
+                ) : (
+                  <span className="text-foreground font-roboto text-sm font-bold">
+                    {sortedModules.length}
+                  </span>
+                )}
               </div>
               <div className="flex flex-col gap-0.5">
                 <span className="text-muted-foreground font-roboto text-[10px] font-bold tracking-widest uppercase">
                   Topics
                 </span>
-                <span className="text-foreground font-roboto text-sm font-bold">
-                  {totalTopics}
-                </span>
+                {loading ? (
+                  <Skeleton className="h-5 w-8" />
+                ) : (
+                  <span className="text-foreground font-roboto text-sm font-bold">
+                    {totalTopics}
+                  </span>
+                )}
               </div>
               <div className="flex flex-col gap-0.5">
                 <span className="text-muted-foreground font-roboto text-[10px] font-bold tracking-widest uppercase">
                   Total Weightage
                 </span>
-                <span
-                  className={cn(
-                    'font-roboto text-sm font-bold',
-                    totalWeightage === 100 ? 'text-success' : 'text-warning'
-                  )}
-                >
-                  {totalWeightage}%
-                </span>
+                {loading ? (
+                  <Skeleton className="h-5 w-12" />
+                ) : (
+                  <span
+                    className={cn(
+                      'font-roboto text-sm font-bold',
+                      totalWeightage === 100 ? 'text-success' : 'text-warning'
+                    )}
+                  >
+                    {totalWeightage}%
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -164,18 +209,52 @@ export function SyllabusTableView({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sortedModules.length === 0 ? (
+              {loading ? (
+                [1, 2, 3, 4, 5].map((i) => (
+                  <TableRow key={i} className="border-b transition-all">
+                    <TableCell className="px-6 py-4">
+                      <div className="flex items-center gap-4">
+                        <Skeleton className="h-11 w-11 rounded-2xl" />
+                        <div className="flex flex-col gap-2">
+                          <Skeleton className="h-5 w-40" />
+                          <Skeleton className="h-3 w-20" />
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell className="hidden px-6 py-4 lg:table-cell">
+                      <Skeleton className="h-4 w-60" />
+                    </TableCell>
+                    <TableCell className="px-6 py-4 text-center">
+                      <Skeleton className="mx-auto h-6 w-12 rounded-full" />
+                    </TableCell>
+                    <TableCell className="hidden px-6 py-4 sm:table-cell">
+                      <Skeleton className="h-4 w-16" />
+                    </TableCell>
+                    <TableCell className="px-6 py-4 text-right">
+                      <Skeleton className="ml-auto h-9 w-9 rounded-xl" />
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : sortedModules.length === 0 ? (
                 <TableRow>
-                  <TableCell
-                    colSpan={5}
-                    className="text-muted-foreground font-roboto h-64 text-center italic"
-                  >
-                    <div className="flex flex-col items-center justify-center gap-3">
-                      <FileText className="h-10 w-10 opacity-20" />
-                      <p>
-                        No curriculum modules defined for this syllabus yet.
-                      </p>
-                    </div>
+                  <TableCell colSpan={5} className="h-72 p-0">
+                    <Empty className="border-0 shadow-none">
+                      <EmptyHeader>
+                        <EmptyMedia variant="icon">
+                          <Search className="size-4" />
+                        </EmptyMedia>
+                        <EmptyTitle className="text-lg">
+                          {search
+                            ? 'No matching modules'
+                            : 'No modules defined'}
+                        </EmptyTitle>
+                        <EmptyDescription>
+                          {search
+                            ? `We couldn't find any modules matching "${search}". Try adjusting your filters.`
+                            : 'Build and organize the modules and learning outcomes for this academic subject.'}
+                        </EmptyDescription>
+                      </EmptyHeader>
+                    </Empty>
                   </TableCell>
                 </TableRow>
               ) : (
@@ -360,6 +439,93 @@ export function SyllabusTableView({
           </Table>
         </div>
       </CardContent>
+      {pagination && pagination.pages > 1 && (
+        <CardFooter className="flex-col items-start gap-4 border-t-2 pt-6 sm:flex-row sm:items-center">
+          <Pagination className="mx-0 w-auto justify-start">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  href={
+                    pagination.current > 1
+                      ? `?page=${pagination.current - 1}`
+                      : '#'
+                  }
+                  className={
+                    pagination.current === 1
+                      ? 'pointer-events-none opacity-50'
+                      : 'border-2'
+                  }
+                />
+              </PaginationItem>
+
+              {[...Array(pagination.pages)].map((_, i) => {
+                const pageNumber = i + 1;
+                if (
+                  pageNumber === 1 ||
+                  pageNumber === pagination.pages ||
+                  (pageNumber >= pagination.current - 1 &&
+                    pageNumber <= pagination.current + 1)
+                ) {
+                  return (
+                    <PaginationItem key={pageNumber}>
+                      <PaginationLink
+                        href={`?page=${pageNumber}`}
+                        isActive={pageNumber === pagination.current}
+                        className="font-roboto border-2 font-bold"
+                      >
+                        {pageNumber}
+                      </PaginationLink>
+                    </PaginationItem>
+                  );
+                }
+
+                if (
+                  pageNumber === pagination.current - 2 ||
+                  pageNumber === pagination.current + 2
+                ) {
+                  return (
+                    <PaginationItem key={pageNumber}>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                  );
+                }
+
+                return null;
+              })}
+
+              <PaginationItem>
+                <PaginationNext
+                  href={
+                    pagination.current < pagination.pages
+                      ? `?page=${pagination.current + 1}`
+                      : '#'
+                  }
+                  className={
+                    pagination.current === pagination.pages
+                      ? 'pointer-events-none opacity-50'
+                      : 'border-2'
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+          <div className="text-muted-foreground font-roboto text-sm sm:ml-auto">
+            Showing{' '}
+            <span className="text-foreground font-bold">
+              {(pagination.current - 1) * 10 + 1}
+            </span>{' '}
+            to{' '}
+            <span className="text-foreground font-bold">
+              {Math.min(pagination.current * 10, pagination.total)}
+            </span>{' '}
+            of{' '}
+            <span className="text-foreground font-bold">
+              {pagination.total}
+            </span>{' '}
+            entries
+          </div>
+        </CardFooter>
+      )}
     </Card>
   );
 }
