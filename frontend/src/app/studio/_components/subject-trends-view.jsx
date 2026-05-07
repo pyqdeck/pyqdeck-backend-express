@@ -17,8 +17,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { Skeleton } from '@/components/ui/skeleton';
 
-export function SubjectTrendsView({ subjects }) {
+export function SubjectTrendsView({ subjects = [], loading = false }) {
   return (
     <Card className="border-border/50 border-2 shadow-none">
       <CardHeader className="flex flex-row items-center gap-3">
@@ -42,28 +43,48 @@ export function SubjectTrendsView({ subjects }) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {subjects.map((s) => (
-              <TableRow key={s.id}>
-                <TableCell className="font-medium">{s.name}</TableCell>
-                <TableCell className="text-right">{s.views}</TableCell>
-                <TableCell className="text-right">
-                  <div className="flex items-center justify-end gap-1">
-                    {s.status === 'up' ? (
-                      <TrendingUp className="text-success h-3 w-3" />
-                    ) : (
-                      <TrendingDown className="text-destructive h-3 w-3" />
-                    )}
-                    <span
-                      className={
-                        s.status === 'up' ? 'text-success' : 'text-destructive'
-                      }
-                    >
-                      {s.trend}
-                    </span>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
+            {loading
+              ? Array.from({ length: 5 }).map((_, i) => (
+                  <TableRow key={i}>
+                    <TableCell>
+                      <Skeleton className="h-4 w-[150px]" />
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end">
+                        <Skeleton className="h-4 w-[60px]" />
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end">
+                        <Skeleton className="h-4 w-[40px]" />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              : subjects.map((s) => (
+                  <TableRow key={s.id}>
+                    <TableCell className="font-medium">{s.name}</TableCell>
+                    <TableCell className="text-right">{s.views}</TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-1">
+                        {s.status === 'up' ? (
+                          <TrendingUp className="text-success h-3 w-3" />
+                        ) : (
+                          <TrendingDown className="text-destructive h-3 w-3" />
+                        )}
+                        <span
+                          className={
+                            s.status === 'up'
+                              ? 'text-success'
+                              : 'text-destructive'
+                          }
+                        >
+                          {s.trend}
+                        </span>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
           </TableBody>
         </Table>
       </CardContent>
