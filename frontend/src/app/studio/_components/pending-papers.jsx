@@ -4,7 +4,7 @@ import * as React from 'react';
 import { PendingPapersView } from './pending-papers-view';
 import { toast } from 'sonner';
 
-export function PendingPapers({ papers }) {
+export function PendingPapers({ papers, loading }) {
   const handleApprove = (paper) => {
     toast.success(`Approved paper: ${paper.title}`);
     // API logic will go here
@@ -20,6 +20,7 @@ export function PendingPapers({ papers }) {
       papers={papers}
       onApprove={handleApprove}
       onReject={handleReject}
+      loading={loading}
     />
   );
 }
